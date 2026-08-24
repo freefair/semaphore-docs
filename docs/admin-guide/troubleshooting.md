@@ -78,6 +78,37 @@ This means that you are trying to access a repository over HTTPS that requires a
 
 ---
 
+## Git clone or pull fails intermittently
+
+Task logs may show messages like `Git pull failed (...), retrying in 2s` followed by either success or a final failure after several attempts.
+
+### Why this happens
+
+The git server (GitHub, GitLab, Bitbucket, or a self-hosted instance) was temporarily unreachable, returned a transient HTTP error, or the network between Semaphore and the server had a brief outage. Semaphore retries clone and pull operations automatically before failing the task.
+
+### How to fix this
+
+1. **Transient outages**: Usually resolve on their own. Semaphore retries up to `git_attempts` times (default 4) with exponential backoff between attempts.
+2. **Frequent failures**: Increase the attempt budget in your configuration:
+
+```json
+{
+  "git_attempts": 8
+}
+```
+
+Or with an environment variable:
+
+```bash
+export SEMAPHORE_GIT_ATTEMPTS=8
+```
+
+3. **Immediate, consistent failures**: Retries will not help. Check repository URL, branch name, access keys, and network connectivity from the Semaphore server or runner host.
+
+See [Git operations](/admin-guide/configuration/config-file#git-operations) for details on `git_client` and `git_attempts`.
+
+---
+
 ## unable to read LDAP response packet: unexpected EOF
 
 Most likely, you are trying to connect to the LDAP server using an insecure method, although it expects a secure connection (via TLS).
