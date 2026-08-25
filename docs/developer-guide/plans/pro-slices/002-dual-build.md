@@ -11,11 +11,11 @@ A maintainer can build and identify both editions from one pinned core/enhanced 
 
 ## Implementation
 
-- [ ] Define Community and enhanced matrix jobs with pinned toolchains and module revisions.
-- [ ] Build server, runner, frontend, and containers for both editions.
-- [ ] Keep enhanced checkout credentials out of Community jobs, logs, layers, and build arguments.
-- [ ] Emit edition, core revision, enhanced revision, SBOM, and provenance with each artifact.
-- [ ] Add startup smoke checks for edition and effective capability payload.
+- [x] Define Community and enhanced matrix jobs with pinned toolchains and module revisions.
+- [x] Build server, runner, frontend, and containers for both editions.
+- [x] Keep enhanced checkout credentials out of Community jobs, logs, layers, and build arguments.
+- [x] Emit edition, core revision, enhanced revision, SBOM, and provenance with each artifact.
+- [x] Add startup smoke checks for edition and effective capability payload.
 
 ## Tests and Acceptance
 
@@ -26,6 +26,6 @@ A maintainer can build and identify both editions from one pinned core/enhanced 
 | API | Required: `/api/info` reports the expected edition in both artifacts |
 | UI | Required: production bundles load the correct edition presentation in a browser smoke test |
 
-- [ ] Identical inputs produce equivalent artifacts.
-- [ ] Community jobs cannot access enhanced repository credentials.
-- [ ] Every artifact is traceable to both source revisions where applicable.
+- [x] Identical inputs produce equivalent artifacts.
+- [x] Community jobs cannot access enhanced repository credentials.
+- [x] Every artifact is traceable to both source revisions where applicable.

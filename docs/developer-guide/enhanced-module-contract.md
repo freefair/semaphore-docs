@@ -16,6 +16,7 @@ The executable contract is versioned independently from product releases.
 An implementation is compatible only when its `CompatibilityVersion` equals the core `CoreContractVersion`.
 Changing an interface, constructor signature, response contract, or shared record requires a contract-version decision and synchronized contract tests in both repositories.
 Release artifacts additionally record the exact core and enhanced source revisions; the semantic contract version is not a substitute for those immutable revisions.
+See [Reproducible Edition Builds](edition-builds.md) for the build, artifact, and runtime identity contracts.
 
 ## Source Provenance
 
