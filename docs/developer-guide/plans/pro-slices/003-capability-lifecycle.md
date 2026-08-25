@@ -11,11 +11,11 @@ An administrator can activate or disable a test capability, and API, worker, and
 
 ## Implementation
 
-- [ ] Define typed capability identifiers, limits, reason codes, and immutable request snapshots.
-- [ ] Implement a clean-room provider backed by non-secret internal configuration.
-- [ ] Guard one test route and one background action server-side before exposing the same state through `/api/info`.
-- [ ] Define active, unavailable, disabled, expired, read-only, and insufficient-permission responses.
-- [ ] Preserve stored feature data across disable and re-enable transitions.
+- [x] Define typed capability identifiers, limits, reason codes, and immutable request snapshots.
+- [x] Implement a clean-room provider backed by non-secret internal configuration.
+- [x] Guard one test route and one background action server-side before exposing the same state through `/api/info`.
+- [x] Define active, unavailable, disabled, expired, read-only, and insufficient-permission responses.
+- [x] Preserve stored feature data across disable and re-enable transitions.
 
 ## Tests and Acceptance
 
@@ -26,6 +26,8 @@ An administrator can activate or disable a test capability, and API, worker, and
 | API | Required: direct calls and worker paths reject disabled operations |
 | UI | Required: browser shows the server reason and never implies UI hiding is enforcement |
 
-- [ ] API, workers, and UI observe one effective snapshot per request.
-- [ ] Disabled writes fail without data deletion.
-- [ ] Existing opaque user sessions remain unchanged.
+- [x] API, workers, and UI observe one effective snapshot per request.
+- [x] Disabled writes fail without data deletion.
+- [x] Existing opaque user sessions remain unchanged.
+
+Implementation details and verification commands are recorded in [Capability Lifecycle](../../capability-lifecycle.md).

@@ -9,7 +9,7 @@ The executable contract is versioned independently from product releases.
 
 | Component | Current value | Source |
 |---|---|---|
-| Core contract | `1.0.0` | `pro_interfaces.CoreContractVersion` |
+| Core contract | `1.1.0` | `pro_interfaces.CoreContractVersion` |
 | Community implementation | `community-1` | `pro/pkg/features.ImplementationVersion` |
 | Clean-room test implementation | `clean-room-test-1` | `test/edition-contract/enhanced/pkg/features` |
 
@@ -17,6 +17,7 @@ An implementation is compatible only when its `CompatibilityVersion` equals the 
 Changing an interface, constructor signature, response contract, or shared record requires a contract-version decision and synchronized contract tests in both repositories.
 Release artifacts additionally record the exact core and enhanced source revisions; the semantic contract version is not a substitute for those immutable revisions.
 See [Reproducible Edition Builds](edition-builds.md) for the build, artifact, and runtime identity contracts.
+See [Capability Lifecycle](capability-lifecycle.md) for backend enforcement, state semantics, and downgrade behavior.
 
 ## Source Provenance
 
@@ -32,7 +33,7 @@ The core-owned contract types live in `pro_interfaces/`:
 
 | Area | Interfaces and shared records |
 |---|---|
-| Capability presentation | `Features`, `Edition`, `Compatibility` |
+| Capability presentation | `Features`, `Edition`, `Compatibility`, `CapabilityProvider`, `CapabilityServiceFacade`, typed decisions, limits, snapshots, and DTOs |
 | Subscription | `SubscriptionController`, `SubscriptionService`, `SubscriptionToken` |
 | Project runners | `ProjectRunnerController` |
 | Terraform inventory | `TerraformInventoryController` |
@@ -48,7 +49,7 @@ The replaceable module exports these application entry points:
 | `pro/api/projects` | project runner, Terraform inventory, and workflow controllers |
 | `pro/db/factory` | Terraform, Ansible task-summary, and workflow repositories |
 | `pro/db` | workflow validation, condition matching, and root-node selection |
-| `pro/pkg/features` | capability snapshot and compatibility metadata |
+| `pro/pkg/features` | capability provider, guarded lifecycle-test service, and compatibility metadata |
 | `pro/pkg/stage_parsers` | task-stage progression |
 | `pro/services/ha` | node registry, schedule deduplication, WebSocket broadcast, orphan cleanup, cluster inspection, and workflow locking |
 | `pro/services/server` | subscription, structured logging, workflow, secret-storage, and external-secret serializers |

@@ -91,7 +91,7 @@ The lockfile is the input because npm documents it as the exact dependency-tree 
 ## Runtime Verification
 
 The authenticated `GET /api/info` response is authoritative for the running server.
-It reports `edition`, `contract_version`, `implementation_version`, `core_revision`, the optional `enhanced_revision`, and the effective `features` payload.
+It reports `edition`, `contract_version`, `implementation_version`, `core_revision`, the optional `enhanced_revision`, the legacy `features` payload, and the sanitized effective `capabilities` snapshot described in [Capability Lifecycle](capability-lifecycle.md).
 The frontend uses that server edition after startup and embeds `data-edition` in the production document for pre-startup presentation.
 
 CI verifies each edition by:
