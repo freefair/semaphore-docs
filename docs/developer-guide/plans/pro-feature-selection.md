@@ -30,7 +30,7 @@ Select exactly one option before implementation begins.
 - [ ] **D01 — Use the official licensed Semaphore Pro/Enterprise module.**
   This is the lowest-risk and shortest path when the objective is to use the currently sold product features without owning their implementation.
   It requires commercial access to the proprietary module and does not provide implementation control.
-- [ ] **D02 — Build an independent clean-room enhanced module.**
+- [x] **D02 — Build an independent clean-room enhanced module.**
   This preserves the existing replaceable Go module boundary and implements only behavior derived from the MIT-licensed repository, public documentation, and original design work.
   It has the highest engineering cost but gives full control over behavior and roadmap.
 - [ ] **D03 — Move enhanced behavior into the Community module.**
@@ -44,77 +44,82 @@ Select exactly one option before implementation begins.
 
 These items are required for D02 and D03.
 
-- [ ] **F01 — Executable Community/enhanced contract suite.**
+- **F01 — Executable Community/enhanced contract suite.**
   Pin the current public interfaces, HTTP behavior, database compatibility, and Community no-op behavior before implementing features.
-- [ ] **F02 — Reproducible enhanced build and test matrix.**
+- **F02 — Reproducible enhanced build and test matrix.**
   Build Community and enhanced variants from the same core commit and run backend, frontend, migration, and container tests for both.
-- [ ] **F03 — Backend-authoritative capability service.**
+- **F03 — Backend-authoritative capability service.**
   Resolve feature availability and limits on the server, enforce them in every API path, and expose the same matrix to the UI.
-- [ ] **F04 — Upgrade, downgrade, and disabled-feature semantics.**
+- **F04 — Upgrade, downgrade, and disabled-feature semantics.**
   Define how existing enhanced data remains preserved but inaccessible when a capability is disabled.
-- [ ] **F05 — Compatibility and migration policy.**
+- **F05 — Compatibility and migration policy.**
   Support PostgreSQL, MySQL/MariaDB, and SQLite with reversible migrations and fixtures for upgrades from the current `develop` schema.
-- [ ] **F06 — Security and observability baseline.**
+- **F06 — Security and observability baseline.**
   Add authorization matrix tests, secret-redaction tests, audit events, metrics, and failure-mode documentation before feature rollout.
 
 ## Pro Capability Set
 
 These entries cover the current public Pro offering plus the Pro workflow surface already present in this repository.
 
-- [ ] **P01 — Isolated project runners.**
+- [x] **P01 — Isolated project runners.**
   Project-scoped runner CRUD, least-privilege registration, dispatch, cache management, health, and lifecycle visibility.
   Depends on F01–F06.
-  - [ ] **P01a — One-time runner registration tokens and re-registration.**
-  - [ ] **P01b — Runner version, platform, uptime, and historical task assignment.**
-  - [ ] **P01c — Runner timeout, requeue, and terminal-state reconciliation.**
-- [ ] **P02 — Tag-based runner routing and execution capabilities.**
+  - [x] **P01a — One-time runner registration tokens and re-registration.**
+  - [x] **P01b — Runner version, platform, uptime, and historical task assignment.**
+  - [x] **P01c — Runner timeout, requeue, and terminal-state reconciliation.**
+- [x] **P02 — Tag-based runner routing and execution capabilities.**
   Route by tags and supported executors, define deterministic fallback, and expose placement reasons.
   Depends on P01.
-  - [ ] **P02a — Per-template executor image selection.**
-  - [ ] **P02b — Runner registration options and secure mode.**
+  - [x] **P02a — Per-template executor image selection.**
+  - [x] **P02b — Runner registration options and secure mode.**
 - [ ] **P03 — Terraform/OpenTofu HTTP backend.**
   Authenticated state aliases, encrypted version history, protocol-correct locking, recovery, and audit events.
   Depends on F01–F06.
-- [ ] **P04 — Task execution summaries.**
+- [x] **P04 — Task execution summaries.**
   Persist host results and structured errors for Ansible tasks and render a useful summary without parsing the complete raw log in the browser.
   Depends on F01–F06.
-- [ ] **P05 — File-based and structured log export.**
+- [x] **P05 — File-based and structured log export.**
   Export event and task logs with rotation, redaction, delivery health, and a stable schema for SIEM ingestion.
   Depends on F06.
-  - [ ] **P05a — Extended audit fields and webhook sink.**
-  - [ ] **P05b — Configurable debug-log filters.**
-- [ ] **P06 — HashiCorp Vault and OpenBao secret storage.**
+  - [x] **P05a — Extended audit fields and webhook sink.**
+  - [x] **P05b — Configurable debug-log filters.**
+- [x] **P06 — HashiCorp Vault and OpenBao secret storage.**
   Resolve external secrets only at execution time, prevent plaintext persistence, and support safe synchronization and deletion behavior.
   Depends on F06 and F04.
-- [ ] **P07 — Pro authentication controls.**
+  - [ ] **P06b - Direct SOPS integration**
+    Integrates SOPS secret management, age-keys, etc.
+- [x] **P07 — Pro authentication controls.**
   Apply backend capability enforcement to the existing TOTP, LDAP/Active Directory, and OIDC surfaces without changing the opaque server-side session model.
   Depends on F03 and F04.
-- [ ] **P08 — Project workflows.**
+  - [x] TOTP
+  - [x] LDAP
+  - [ ] OIDC (maybe later)
+- [x] **P08 — Project workflows.**
   Complete the existing workflow persistence, orchestration, API, and UI surface.
   Depends on F01–F06 and P01c.
-  - [ ] **P08a — Workflow templates and DAG validation.**
-  - [ ] **P08b — Parallel conditional execution engine.**
-  - [ ] **P08c — Visual editor and run dashboard.**
-  - [ ] **P08d — Artifacts and variable passing between nodes.**
-  - [ ] **P08e — Workflow-level parameters, schedules, API, and webhook triggers.**
-  - [ ] **P08f — Per-node inventory, credential, variable-group, and CLI overrides.**
-  - [ ] **P08g — Human approval gates with timeout and notifications.**
+  - [x] **P08a — Workflow templates and DAG validation.**
+  - [x] **P08b — Parallel conditional execution engine.**
+  - [x] **P08c — Visual editor and run dashboard.**
+  - [x] **P08d — Artifacts and variable passing between nodes.**
+  - [x] **P08e — Workflow-level parameters, schedules, API, and webhook triggers.**
+  - [x] **P08f — Per-node inventory, credential, variable-group, and CLI overrides.**
+  - [x] **P08g — Human approval gates with timeout and notifications.**
 - [ ] **P09 — Usage accounting and configurable limits.**
   Count users, runners, Terraform states, managed nodes, and instances only when the selected delivery model requires commercial or internal quotas.
   Depends on F03.
 
 ## Enterprise Capability Set
 
-- [ ] **E01 — Active-active high availability.**
+- [x] **E01 — Active-active high availability.**
   Use SQL as the source of truth and Redis for coordination, heartbeats, Pub/Sub, and best-effort locks.
   Include schedule deduplication, orphan recovery, cross-node WebSocket delivery, and startup safety checks.
   Depends on F01–F06 and P01c.
-  - [ ] **E01a — Cluster dashboard and operational metrics.**
-  - [ ] **E01b — Failure injection and rolling-upgrade verification.**
-- [ ] **E02 — Custom global and project roles.**
+  - [x] **E01a — Cluster dashboard and operational metrics.**
+  - [x] **E01b — Failure injection and rolling-upgrade verification.**
+- [x] **E02 — Custom global and project roles.**
   Implement custom role CRUD, permission validation, template-level permissions, and least-privilege enforcement in middleware and services.
   Depends on F03 and F06.
-- [ ] **E03 — LDAP/OIDC group-to-role and project mapping.**
+- [x] **E03 — LDAP/OIDC group-to-role and project mapping.**
   Reconcile externally managed memberships deterministically and audit every grant and removal.
   Depends on E02 and the current external-identity baseline.
 - [ ] **E04 — Enterprise external secret stores.**
@@ -123,22 +128,22 @@ These entries cover the current public Pro offering plus the Pro workflow surfac
   - [ ] **E04a — AWS Secrets Manager.**
   - [ ] **E04b — Azure Key Vault.**
   - [ ] **E04c — Devolutions Server.**
-- [ ] **E05 — Docker executor.**
+- [x] **E05 — Docker executor.**
   Run tasks in constrained, ephemeral containers with explicit image policy, resource limits, network policy, and cleanup.
   Depends on P01 and P02.
-- [ ] **E06 — Kubernetes executor.**
+- [x] **E06 — Kubernetes executor.**
   Run tasks as isolated Jobs with service-account scoping, pod security, log streaming, cancellation, and garbage collection.
   Depends on P01 and P02.
-- [ ] **E07 — Enterprise workflows.**
+- [x] **E07 — Enterprise workflows.**
   Extend P08 with workflow RBAC, role-based approvals, cross-project references, and immutable definition versions with rollback.
   Depends on P08 and E02.
 - [ ] **E08 — Air-gapped and multi-instance entitlement support.**
   Required only for a commercial licensing model; define signed offline entitlements, clock-skew tolerance, instance identity, renewal grace, and recovery.
   Depends on F03 and the selected delivery model.
-- [ ] **E09 — Notification governance and incident integrations.**
+- [x] **E09 — Notification governance and incident integrations.**
   Add notification delivery history, role-controlled configuration, and optional PagerDuty, Opsgenie, or ServiceNow adapters.
   Depends on E02 and P05.
-- [ ] **E10 — Global credentials and secret access audit.**
+- [x] **E10 — Global credentials and secret access audit.**
   Share centrally managed credentials across projects without copying values and record every read, injection, sync, and deletion.
   Depends on E02, P06, and F06.
 
@@ -171,7 +176,7 @@ A selected enhanced capability may still add focused hardening or reuse them as 
 These selectable capabilities were found in remote branches or repository plans and are not complete in current `develop`.
 Items absorbed into a Pro or Enterprise capability are listed there instead of duplicated here.
 
-- [ ] **B04 — Server-generated SSH keys with public-key display.**
+- [x] **B04 — Server-generated SSH keys with public-key display.**
   Source: `origin/feat/gen_ssh_key`.
 - [ ] **B07 — Argon2id password hashing with opportunistic bcrypt migration.**
   Source: `origin/feat/password-hash` and `AGENTS/plans/2_19/password-hash-argon2id.md`.
@@ -184,7 +189,7 @@ Items absorbed into a Pro or Enterprise capability are listed there instead of d
 - [ ] **B10 — Secret values from mounted files.**
   Constrain paths to configured roots, reject traversal and symlink escapes, and keep values out of logs and API responses.
   Source: `origin/feat/secret_from_file`.
-- [ ] **B14 — Template search.**
+- [x] **B14 — Template search.**
   Search name, description, playbook, and tags with deterministic filtering and keyboard accessibility.
   Source: `origin/feat/template-search`.
 - [ ] **B16 — OIDC IdP-initiated login.**
@@ -195,7 +200,7 @@ Items absorbed into a Pro or Enterprise capability are listed there instead of d
 - [ ] **B22 — Reusable survey definitions.**
   Extract versioned survey definitions that templates can reference while preserving current inline surveys and schedule defaults.
   Source: `AGENTS/plans/2_20/survey-vars-reusable.md`.
-- [ ] **B24 — Per-schedule timezones.**
+- [x] **B24 — Per-schedule timezones.**
   Store an IANA timezone per schedule and define deterministic daylight-saving behavior.
   Source: `AGENTS/plans/2_20/schedule-timezone.md`.
 - [ ] **B26 — Contextual offline help panel.**
@@ -213,11 +218,11 @@ Items absorbed into a Pro or Enterprise capability are listed there instead of d
 
 These ideas were added because this plan was completed before 15:00 Europe/Berlin on 2026-08-24.
 
-- [ ] **X01 — Preflight execution preview.**
+- [x] **X01 — Preflight execution preview.**
   Show selected runner, inventory, credentials by reference, variable sources, command shape, and policy findings before a task starts without revealing secret values.
-- [ ] **X02 — Deployment windows and change freezes.**
+- [x] **X02 — Deployment windows and change freezes.**
   Permit scheduled execution only inside approved windows, with audited emergency override permissions.
-- [ ] **X03 — Policy-as-code guardrails.**
+- [x] **X03 — Policy-as-code guardrails.**
   Evaluate task, inventory, environment, and workflow metadata against versioned policies before enqueueing.
 - [ ] **X04 — Tamper-evident audit chain.**
   Hash-chain immutable audit batches, periodically seal them externally, and provide an offline verifier.
@@ -229,9 +234,9 @@ These ideas were added because this plan was completed before 15:00 Europe/Berli
   Run non-mutating Terraform/OpenTofu plans on a schedule, retain sanitized summaries, and alert on drift.
 - [ ] **X08 — Just-in-time credential leases.**
   Acquire short-lived external credentials immediately before execution and revoke or expire them after the task.
-- [ ] **X09 — Signed webhook delivery with replay protection.**
+- [x] **X09 — Signed webhook delivery with replay protection.**
   Sign outbound webhooks, attach event IDs and timestamps, retry idempotently, and expose delivery history.
-- [ ] **X10 — Artifact retention and provenance.**
+- [x] **X10 — Artifact retention and provenance.**
   Store workflow artifacts with checksums, producer task identity, retention policy, access audit, and safe download headers.
 
 ## Suggested Bundles
@@ -248,3 +253,4 @@ These bundles are recommendations, not implicit selections.
 After checking boxes, record the chosen delivery model and ordered capability IDs in a new implementation epic.
 Implement one vertical feature slice at a time.
 Do not merge a stale feature branch wholesale; use the branch assessment to port intent and tests onto current `develop`.
+The checked selection is expanded into implementation-ready work in [Selected Enhanced Edition Slices](pro-slices/README.md).

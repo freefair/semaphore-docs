@@ -29,6 +29,7 @@ The independent path is a clean-room implementation behind the repository's exis
 
 The [feature selection document](pro-feature-selection.md) is the approval surface.
 This document plans every selectable capability without treating any unchecked item as authorized implementation work.
+The checked D02 selection is expanded into the ordered [vertical-slice implementation backlog](pro-slices/README.md).
 
 ## Evidence Snapshot
 
