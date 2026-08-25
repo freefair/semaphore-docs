@@ -11,11 +11,11 @@ An enhanced test implementation can replace the Community `pro/` module while th
 
 ## Implementation
 
-- [ ] Inventory every exported enhanced constructor, interface, route, and Community response.
-- [ ] Add compile-time assertions for the Community module and a minimal clean-room test module.
-- [ ] Specify disabled HTTP responses, empty collections, and absence of side effects as black-box contracts.
-- [ ] Prove Go Workspace replacement without changing application imports.
-- [ ] Document source-provenance rules and the core/enhanced compatibility version pair.
+- [x] Inventory every exported enhanced constructor, interface, route, and Community response.
+- [x] Add compile-time assertions for the Community module and a minimal clean-room test module.
+- [x] Specify disabled HTTP responses, empty collections, and absence of side effects as black-box contracts.
+- [x] Prove Go Workspace replacement without changing application imports.
+- [x] Document source-provenance rules and the core/enhanced compatibility version pair.
 
 ## Tests and Acceptance
 
@@ -26,6 +26,8 @@ An enhanced test implementation can replace the Community `pro/` module while th
 | API | Required: disabled Community route contract with zero mutations |
 | UI | N/A: this slice changes no visible feature state |
 
-- [ ] Community builds without enhanced credentials or checkout.
-- [ ] Replacing `pro/` with the test module requires no application-source edit.
-- [ ] A contract change fails both implementations until reconciled.
+- [x] Community builds without enhanced credentials or checkout.
+- [x] Replacing `pro/` with the test module requires no application-source edit.
+- [x] A contract change fails both implementations until reconciled.
+
+Evidence and the authoritative inventory are recorded in [Enhanced Module Contract](../../enhanced-module-contract.md).
