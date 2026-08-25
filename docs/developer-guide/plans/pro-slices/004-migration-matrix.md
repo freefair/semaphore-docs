@@ -11,11 +11,11 @@ A maintainer can upgrade and roll back an enhanced schema fixture on every selec
 
 ## Implementation
 
-- [ ] Capture the current `develop` schema as upgrade fixtures for SQLite, PostgreSQL, and MySQL/MariaDB.
-- [ ] Add a migration harness for forward, rollback, restart, and mixed-version checks.
-- [ ] Require expand/backfill/switch/contract staging for active or large tables.
-- [ ] Define backup prerequisites and explicit handling for irreversible transformations.
-- [ ] Make enhanced tables harmless when the Community module is active.
+- [x] Capture the current `develop` schema as upgrade fixtures for SQLite, PostgreSQL, and MySQL/MariaDB.
+- [x] Add a migration harness for forward, rollback, restart, and mixed-version checks.
+- [x] Require expand/backfill/switch/contract staging for active or large tables.
+- [x] Define backup prerequisites and explicit handling for irreversible transformations.
+- [x] Make enhanced tables harmless when the Community module is active.
 
 ## Tests and Acceptance
 
@@ -26,6 +26,6 @@ A maintainer can upgrade and roll back an enhanced schema fixture on every selec
 | API | N/A: no user API behavior changes in this risk-reduction slice |
 | UI | N/A: no visible behavior changes |
 
-- [ ] A fresh install and current-schema upgrade reach the same semantic schema.
-- [ ] Reversible migrations restore the prior fixture.
-- [ ] No migration assumes one SQL dialect's syntax or constraint behavior.
+- [x] A fresh install and current-schema upgrade reach the same semantic schema.
+- [x] Reversible migrations restore the prior fixture.
+- [x] No migration assumes one SQL dialect's syntax or constraint behavior.

@@ -18,6 +18,8 @@ starting the server, or for rolling back.
 Always back up your database before applying or rolling back migrations.
 :::
 
+Before migrating a non-ephemeral database, create a database-native, transactionally consistent backup and verify that it can be restored into a separate database. Record both the application version and the current entry in the `migrations` table. Ensure the target has enough free storage for rewritten tables and new indexes, and quiesce writes when the release notes require it.
+
 ## Applying migrations {#applying-migrations}
 
 Apply all pending migrations and bring the database up to date:
@@ -34,7 +36,9 @@ semaphore migrate --apply-to 2.15.1
 
 ## Rolling back migrations {#rolling-back-migrations}
 
-Undo migrations down to a previous version:
+Review every undo migration in the requested range before proceeding. An undo may drop tables or columns created after the target version, including data written after the upgrade. A runtime capability downgrade is not a schema rollback.
+
+To undo migrations and roll back your database schema to a previous version:
 
 ```bash
 semaphore migrate --undo-to 2.13
@@ -43,6 +47,9 @@ semaphore migrate --undo-to 2.13
 Use the Semaphore version you are downgrading to. The binary you run `migrate`
 with must know about every migration being undone, so run it with the **newer**
 binary before installing the older one.
+
+If a release marks a transformation as irreversible, restore the pre-migration backup instead of using `--undo-to`. Restart the application only with a binary compatible with the restored migration version.
+
 
 ## Options {#options}
 
@@ -119,8 +126,10 @@ docker run --name semaphore \
 
 ## Troubleshooting {#troubleshooting}
 
+- Do not retry a failed migration blindly. Preserve the database and logs, identify the failed version, and determine whether its transaction committed before choosing forward recovery or backup restoration.
 - If a migration fails, check the logs for details and make sure the CLI binary
   is the same version as the Semaphore server.
 - Make sure the CLI uses the same configuration file (and therefore the same
   database) as the server. See
   [How the configuration file is found](/admin-guide/cli#how-the-configuration-file-is-found).
+Maintainers can find the cross-dialect test contract, staged-change rules, and recovery classifications in the [Migration Policy](../../developer-guide/migration-policy.md).

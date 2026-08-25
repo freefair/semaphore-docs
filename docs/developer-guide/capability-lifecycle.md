@@ -89,4 +89,4 @@ The implementation is covered by:
 - frontend state-presentation unit tests; and
 - a Chromium test of the production System Information dialog showing the backend state and reason.
 
-Slice 004 supplies the full SQLite, MySQL, and PostgreSQL migration matrix. Until that matrix is green, this capability slice is implemented but not independently release-ready.
+The migration matrix verifies fresh install, upgrade from `2.20.1`, rollback, restart, and Community compatibility on SQLite, MySQL, MariaDB, and PostgreSQL. See the [Migration Policy](migration-policy.md) for the executable fixture and release requirements.
