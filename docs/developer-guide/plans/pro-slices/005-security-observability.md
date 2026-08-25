@@ -11,11 +11,11 @@ A denied enhanced action produces a redacted audit event and measurable result w
 
 ## Implementation
 
-- [ ] Define the authorization test matrix for anonymous, user, project role, and administrator callers.
-- [ ] Define redaction allowlists for logs, errors, metrics labels, traces, and audit payloads.
-- [ ] Standardize correlation, actor, action, target, outcome, and source context.
-- [ ] Add dependency health, failure, latency, queue-depth, and dropped-record metrics.
-- [ ] Provide secret tripwire fixtures reused by every later slice.
+- [x] Define the authorization test matrix for anonymous, user, project role, and administrator callers.
+- [x] Define redaction allowlists for logs, errors, metrics labels, traces, and audit payloads.
+- [x] Standardize correlation, actor, action, target, outcome, and source context.
+- [x] Add dependency health, failure, latency, queue-depth, and dropped-record metrics.
+- [x] Provide secret tripwire fixtures reused by every later slice.
 
 ## Tests and Acceptance
 
@@ -26,6 +26,6 @@ A denied enhanced action produces a redacted audit event and measurable result w
 | API | Required: allow/deny outcomes and correlation IDs for one representative route |
 | UI | N/A: operator dashboards are delivered by later feature slices |
 
-- [ ] Every enhanced slice can reuse the same auth, audit, and redaction harness.
-- [ ] Denials are actionable without revealing protected values.
-- [ ] Optional dependency failure does not report the entire service unhealthy.
+- [x] Every enhanced slice can reuse the same auth, audit, and redaction harness.
+- [x] Denials are actionable without revealing protected values.
+- [x] Optional dependency failure does not report the entire service unhealthy.

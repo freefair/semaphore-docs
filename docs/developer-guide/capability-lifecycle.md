@@ -66,6 +66,8 @@ A denied request returns a stable body without protected data:
 
 Provider failures return `503` with `CAPABILITY_PROVIDER_ERROR`. Invalid configured states and record values return `400`. Unexpected operation failures return a generic `500` response while details remain in server logs.
 
+Every allow, deny, and operation failure crosses the shared [Enhanced Security and Observability Baseline](security-observability.md). Audit events contain only typed context and server-owned correlation IDs; request values and raw provider errors are excluded from audit, logs, metrics, and HTTP errors.
+
 ## Persistence and Downgrade
 
 Migration `2.20.2` creates two dedicated tables:
