@@ -9,7 +9,7 @@ The executable contract is versioned independently from product releases.
 
 | Component | Current value | Source |
 |---|---|---|
-| Core contract | `1.2.0` | `pro_interfaces.CoreContractVersion` |
+| Core contract | `1.3.0` | `pro_interfaces.CoreContractVersion` |
 | Community implementation | `community-1` | `pro/pkg/features.ImplementationVersion` |
 | Clean-room test implementation | `clean-room-test-1` | `test/edition-contract/enhanced/pkg/features` |
 
@@ -18,6 +18,7 @@ Changing an interface, constructor signature, response contract, or shared recor
 Release artifacts additionally record the exact core and enhanced source revisions; the semantic contract version is not a substitute for those immutable revisions.
 See [Reproducible Edition Builds](edition-builds.md) for the build, artifact, and runtime identity contracts.
 See [Capability Lifecycle](capability-lifecycle.md) for backend enforcement, state semantics, and downgrade behavior.
+See [Project Runner Registration](project-runner-registration.md) for the first project-runner consumer of this contract.
 
 ## Source Provenance
 

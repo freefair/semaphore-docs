@@ -15,6 +15,8 @@ The `lifecycle_test` route is the representative contract. Project roles do not 
 
 The backend applies authentication, administrator/project permission, and capability access independently. UI visibility is never accepted as authorization evidence. Admin-only configuration is audited by middleware before the controller; read, write, and execute decisions are audited at the capability guard.
 
+Project runner routes apply the same boundary with project-scoped permissions. They add the typed actions `project_runner_list`, `project_runner_read`, `project_runner_create`, and `project_runner_registration_issue`, plus the `project_runner` target type. Target IDs are restricted to `project:<positive integer>` and `runner:<positive integer>`; names, tags, registration material, and request bodies cannot enter the audit record. Cross-project lookups return `404` and record a denied result without disclosing the runner's origin project.
+
 ## Standard Context
 
 `pro_interfaces.AuditEvent` contains the reusable fields:

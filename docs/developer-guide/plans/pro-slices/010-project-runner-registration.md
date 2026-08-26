@@ -11,11 +11,11 @@ A project administrator creates a runner, copies a one-time registration token, 
 
 ## Implementation
 
-- [ ] Implement project-scoped create/list/detail and middleware authorization in the enhanced controller.
-- [ ] Reuse the current high-entropy `smrs_` registration-token format, hash storage, expiry, and atomic consumption.
-- [ ] Bind the registered identity permanently to the originating project.
-- [ ] Return plaintext registration material once and exclude it from logs, backups, and later reads.
-- [ ] Complete the project runner creation and registration UI states.
+- [x] Implement project-scoped create/list/detail and middleware authorization in the enhanced controller.
+- [x] Reuse the current high-entropy `smrs_` registration-token format, hash storage, expiry, and atomic consumption.
+- [x] Bind the registered identity permanently to the originating project.
+- [x] Return plaintext registration material once and exclude it from logs, backups, and later reads.
+- [x] Complete the project runner creation and registration UI states.
 
 ## Tests and Acceptance
 
@@ -26,6 +26,8 @@ A project administrator creates a runner, copies a one-time registration token, 
 | API | Required: project isolation, unauthorized access, expiry, replay, and success |
 | UI | Required: component tests plus browser create/copy/register/online flow |
 
-- [ ] A token cannot register twice or into another project.
-- [ ] The runner appears in its project after registration.
-- [ ] No persisted or diagnostic surface contains the plaintext token.
+- [x] A token cannot register twice or into another project.
+- [x] The runner appears in its project after registration.
+- [x] No persisted or diagnostic surface contains the plaintext token.
+
+Implementation details and verification commands are recorded in [Project Runner Registration](../../project-runner-registration.md).
