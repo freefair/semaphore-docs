@@ -15,7 +15,7 @@ The `lifecycle_test` route is the representative contract. Project roles do not 
 
 The backend applies authentication, administrator/project permission, and capability access independently. UI visibility is never accepted as authorization evidence. Admin-only configuration is audited by middleware before the controller; read, write, and execute decisions are audited at the capability guard.
 
-Project runner routes apply the same boundary with project-scoped permissions. They add the typed actions `project_runner_list`, `project_runner_read`, `project_runner_create`, and `project_runner_registration_issue`, plus the `project_runner` target type. Target IDs are restricted to `project:<positive integer>` and `runner:<positive integer>`; names, tags, registration material, and request bodies cannot enter the audit record. Cross-project lookups return `404` and record a denied result without disclosing the runner's origin project.
+Project runner routes apply the same boundary with project-scoped permissions. They add the typed actions `project_runner_list`, `project_runner_read`, `project_runner_create`, and `project_runner_registration_issue`, plus the `project_runner` target type. Target IDs are restricted to `project:<positive integer>` and `runner:<positive integer>`; names, tags, registration material, and request bodies cannot enter the audit record. Each project-runner event carries the requested positive `project_id`, and a `project:<id>` target must match it. Cross-project lookups return `404` and record a denied result under the requested project without disclosing the runner's origin project.
 
 ## Standard Context
 
@@ -25,6 +25,7 @@ Project runner routes apply the same boundary with project-scoped permissions. T
 |---|---|---|
 | `correlation_id` | One server-generated request identifier | 128 random bits, emitted as 32 lowercase hexadecimal characters |
 | `actor_id` | Authenticated database user ID, omitted for anonymous calls | Authentication context |
+| `project_id` | Positive project scope for project-runner events; omitted for global capability events | Authorized request project |
 | `action` | Typed operation such as `capability_write` | Route/service constant |
 | `target_type` | Typed resource family | Route/service constant |
 | `target_id` | Allowlisted non-secret identifier | Domain constant |
@@ -53,7 +54,7 @@ Semaphore does not currently configure a trace exporter. The allowlist is still 
 
 ## Audit Sinks and Failure Behavior
 
-`services/audit` writes the same JSON payload to the SQL `event` repository and the edition's `LogWriteService`. SQL events use object type `capability`. Both sinks are attempted independently: failure of one does not suppress the other, and the caller receives only `audit persistence failed`, never the underlying message.
+`services/audit` writes the same JSON payload to the SQL `event` repository and the edition's `LogWriteService`. SQL events use object type `capability` or `project_runner_audit`. Project-runner events for an existing project populate the existing project column in both sinks, so project membership scopes event-feed visibility; global capability events deliberately retain a null project. Anonymous attempts against a nonexistent project remain as unscoped `project_runner_audit` rows for operational review but are excluded from ordinary authenticated user feeds. Both sinks are attempted independently: failure of one does not suppress the other, and the caller receives only `audit persistence failed`, never the underlying message.
 
 An audit write failure does not change the primary allow/deny HTTP result. It emits safe structured context and increments sink-specific metrics. Operators can diagnose which sink failed without exposing the failed record.
 

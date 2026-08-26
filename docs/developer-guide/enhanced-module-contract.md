@@ -9,7 +9,7 @@ The executable contract is versioned independently from product releases.
 
 | Component | Current value | Source |
 |---|---|---|
-| Core contract | `1.3.0` | `pro_interfaces.CoreContractVersion` |
+| Core contract | `1.4.0` | `pro_interfaces.CoreContractVersion` |
 | Community implementation | `community-1` | `pro/pkg/features.ImplementationVersion` |
 | Clean-room test implementation | `clean-room-test-1` | `test/edition-contract/enhanced/pkg/features` |
 
@@ -39,7 +39,7 @@ The core-owned contract types live in `pro_interfaces/`:
 | Project runners | `ProjectRunnerController` |
 | Terraform inventory | `TerraformInventoryController` |
 | Workflows | `WorkflowController`, `WorkflowService`, `WorkflowTaskEnqueuer`, `WorkflowRunLocker`, `WorkflowReconciler` |
-| Structured logging | `LogWriteService`, `EventLogRecord`, `TaskLogRecord` |
+| Structured logging and audit | `LogWriteService`, `EventLogRecord`, `TaskLogRecord`, project-scoped `AuditEvent` |
 | High availability | `NodeRegistry`, `OrphanCleaner`, `ClusterInspector`, `NodeInfo`, `RedisInfo` |
 
 The replaceable module exports these application entry points:

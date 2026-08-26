@@ -50,7 +50,7 @@ Registration uses a conditional SQL update that requires all of the following at
 
 Only one concurrent request can update the row. A successful registration creates a separate opaque runner authentication token, activates the runner, and clears the registration hash and expiry. Values supplied by the runner cannot change the persisted project binding.
 
-Runner authentication tokens, registration hashes, and registration expiry fields are excluded from JSON and backup serialization. Audit records, application logs, metrics, and stable HTTP errors contain runner IDs and typed outcomes, never registration material.
+Runner authentication tokens, registration hashes, and registration expiry fields are excluded from JSON and backup serialization. Audit records, application logs, metrics, and stable HTTP errors contain runner IDs and typed outcomes, never registration material. Every runner audit record persists the requested project scope, so unrelated authenticated users cannot receive its metadata through the global event feed.
 
 ## User Interface
 
