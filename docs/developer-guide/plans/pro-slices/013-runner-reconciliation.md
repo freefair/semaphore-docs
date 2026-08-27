@@ -11,11 +11,11 @@ When a runner disappears, an operator sees the assignment requeued or failed acc
 
 ## Implementation
 
-- [ ] Define timeout policy by queued, starting, running, canceling, and webhook-runner state.
-- [ ] Requeue only tasks whose execution semantics permit retry; fail unsafe tasks with a clear reason.
-- [ ] Use conditional SQL transitions and assignment generations to reject stale completion.
-- [ ] Reconcile runner restart, duplicate poll, busy response, cancellation, and late result races.
-- [ ] Show recovery reason and attempt history in task details.
+- [x] Define timeout policy by queued, starting, running, canceling, and webhook-runner state.
+- [x] Requeue only tasks whose execution semantics permit retry; fail unsafe tasks with a clear reason.
+- [x] Use conditional SQL transitions and assignment generations to reject stale completion.
+- [x] Reconcile runner restart, duplicate poll, busy response, cancellation, and late result races.
+- [x] Show recovery reason and attempt history in task details.
 
 ## Tests and Acceptance
 
@@ -26,6 +26,8 @@ When a runner disappears, an operator sees the assignment requeued or failed acc
 | API | Required: poll, cancellation, and stale-result contracts |
 | UI | Required: component tests plus browser recovery reason and terminal state |
 
-- [ ] Every lost assignment converges to one terminal state or one live replacement.
-- [ ] An old runner cannot complete a reassigned task.
-- [ ] Recovery never creates two committed executions.
+- [x] Every lost assignment converges to one terminal state or one live replacement.
+- [x] An old runner cannot complete a reassigned task.
+- [x] Recovery never creates two committed executions.
+
+Implementation details and verification commands are recorded in [Project Runner Reconciliation](../../project-runner-reconciliation.md).

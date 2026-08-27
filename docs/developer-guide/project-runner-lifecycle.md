@@ -90,6 +90,7 @@ Migration `2.20.3` adds the nullable `task.runner_name` snapshot column.
 Migration `2.20.4` adds and backfills `task.runner_id_snapshot`.
 Reads remain compatible with historical migration-test schemas that predate either column.
 Current health and paginated assignment history are described in [Project Runner Health and History](project-runner-health-history.md).
+Deterministic lost-assignment handling, generation fencing, and per-task attempt history are described in [Project Runner Reconciliation](project-runner-reconciliation.md).
 
 ## Authorization and Audit
 

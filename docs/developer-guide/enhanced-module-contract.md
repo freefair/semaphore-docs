@@ -21,6 +21,7 @@ See [Capability Lifecycle](capability-lifecycle.md) for backend enforcement, sta
 See [Project Runner Registration](project-runner-registration.md) for the first project-runner consumer of this contract.
 See [Project Runner Lifecycle](project-runner-lifecycle.md) for safe mutations, assignment conflicts, cache acknowledgement, and historical attribution.
 See [Project Runner Health and History](project-runner-health-history.md) for runner reports, heartbeat semantics, and completed assignment pagination.
+See [Project Runner Reconciliation](project-runner-reconciliation.md) for assignment generations, lost-runner policy, and stale-result rejection.
 
 ## Source Provenance
 

@@ -83,8 +83,8 @@ Full list of available configuration options:
 | <br />`runner.executor.docker.cleanup_grace_seconds` <hr /> `SEMAPHORE_RUNNER_DOCKER_CLEANUP_GRACE_SECONDS` <br /><br /> | Timeout passed to `docker stop`, in seconds. Default: 30 |
 | <br />`runner.executor.docker.privileged` <hr /> `SEMAPHORE_RUNNER_DOCKER_PRIVILEGED` <br /><br /> | Run the build container with `--privileged`. Dangerous; off by default. |
 | **Runners (server-side fleet)** ||
-| <br />`runners.offline_timeout_sec` <hr /> `SEMAPHORE_RUNNERS_OFFLINE_TIMEOUT_SEC` <br /><br /> | Heartbeat staleness boundary in seconds. A runner remains online at the exact boundary and becomes offline after it. Its "starting" tasks are reassigned. Webhook runners do not use heartbeat polling. Default: 120 |
-| <br />`runners.task_fail_timeout_sec` <hr /> `SEMAPHORE_RUNNERS_TASK_FAIL_TIMEOUT_SEC` <br /><br /> | Heartbeat staleness (seconds) after which a runner's "running" tasks are failed. Values below `offline_timeout_sec` are clamped to it. Default: 420 |
+| <br />`runners.offline_timeout_sec` <hr /> `SEMAPHORE_RUNNERS_OFFLINE_TIMEOUT_SEC` <br /><br /> | Heartbeat staleness boundary in seconds. A runner remains online at the exact boundary and becomes offline after it. Unacknowledged `waiting`/`starting` tasks are safely reassigned, while offline cancellation converges to `stopped`. Webhook startup uses `task_fail_timeout_sec` instead. Default: 120 |
+| <br />`runners.task_fail_timeout_sec` <hr /> `SEMAPHORE_RUNNERS_TASK_FAIL_TIMEOUT_SEC` <br /><br /> | Heartbeat staleness (seconds) after which possibly executing tasks are failed rather than retried. Also bounds webhook startup and never-polled running assignments. Values below `offline_timeout_sec` are clamped to it. Default: 420 |
 | <br />`runners.reconcile_interval_sec` <hr /> `SEMAPHORE_RUNNERS_RECONCILE_INTERVAL_SEC` <br /><br /> | How often (seconds) dispatched tasks are reconciled against runner liveness. Default: 30 |
 | **Teams** ||
 | <br />`teams.invites_enabled` <hr /> `SEMAPHORE_TEAMS_INVITES_ENABLED` <br /><br /> | Allow users to invite members to teams. |
