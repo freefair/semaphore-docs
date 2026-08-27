@@ -2,6 +2,7 @@
 
 Runner reconciliation converts lost assignments into one deterministic result and prevents an older assignment from overwriting a replacement.
 SQL owns the transition: process-local state and HA coordination may reduce duplicate work, but they cannot authorize a status change by themselves.
+Initial selection and capacity reservation follow the [Project Runner Tag Placement](project-runner-placement.md) contract.
 
 ## Contents
 

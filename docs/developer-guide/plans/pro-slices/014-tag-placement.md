@@ -11,11 +11,11 @@ A template author selects runner tags, starts a task, and sees the eligible runn
 
 ## Implementation
 
-- [ ] Define tag normalization, match modes, project/global precedence, default runners, and deterministic tie-breaking.
-- [ ] Filter by project scope, active state, registration, heartbeat, capacity, and requested tags.
-- [ ] Return a redacted placement decision listing accepted and rejected criteria.
-- [ ] Persist the selected runner and placement reason with the task attempt.
-- [ ] Add tag selection and no-eligible-runner guidance to template and task UI.
+- [x] Define tag normalization, match modes, project/global precedence, default runners, and deterministic tie-breaking.
+- [x] Filter by project scope, active state, registration, heartbeat, capacity, and requested tags.
+- [x] Return a redacted placement decision listing accepted and rejected criteria.
+- [x] Persist the selected runner and placement reason with the task attempt.
+- [x] Add tag selection and no-eligible-runner guidance to template and task UI.
 
 ## Tests and Acceptance
 
@@ -26,6 +26,8 @@ A template author selects runner tags, starts a task, and sees the eligible runn
 | API | Required: tag CRUD/list and direct task-start placement contracts |
 | UI | Required: component tests plus browser tag selection, placement, and rejection flow |
 
-- [ ] The same eligible set produces the same selection.
-- [ ] Cross-project or stale runners are never selected.
-- [ ] The user can act on every no-runner reason.
+- [x] The same eligible set produces the same selection.
+- [x] Cross-project or stale runners are never selected.
+- [x] The user can act on every no-runner reason.
+
+Implementation details and verification commands are recorded in [Project Runner Tag Placement](../../project-runner-placement.md).
