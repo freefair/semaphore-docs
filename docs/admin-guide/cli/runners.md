@@ -120,6 +120,24 @@ available source, in this order:
 A token file that exists but is empty is an error. If no source provides a
 token, registration is attempted without one and the server rejects it.
 
+### Secure runner registration
+
+The administrator selects the runner's `standard` or `secure` registration
+policy in the runner form before issuing a one-time token. The CLI does not
+override that server-owned policy.
+
+For a secure runner, the one-time token starts with `smrs_secure_`. Use an
+`https://` `web_host` and either the system trust
+store or `runner.connection.server_ca_cert_file`. Do not enable
+`runner.connection.skip_tls_verify`. During registration the CLI generates an
+Ed25519 identity file beside the configuration with mode `0600`, reports its
+runner version, executor and transport trust, and prints the server's redacted
+compliance result in the registration output.
+
+If registration is rejected, the response identifies the failed criterion and
+the required remediation without including the registration token, runner token,
+CA contents, or identity key.
+
 ## Starting a runner (`runner start`) {#starting-a-runner-runner-start}
 
 Starts the runner, connects to the server, and begins accepting tasks. This is

@@ -168,6 +168,24 @@ Invalid or zero values fall back to the default of 1 second.
 
 You can assign one or more tags to a project runner. Templates can then require a tag so tasks run only on matching runners. Configure tags when adding a runner in the project UI, and set the required tag in the template settings.
 
+### Secure registration policy (Pro)
+
+Select **Secure** as the registration policy when the runner must fail closed.
+A secure runner must use a one-time registration token, HTTPS with verified
+server identity, Semaphore runner `2.20.0` or newer, security protocol version
+`1`, an explicit executor, and a generated runner identity.
+
+The runner generates its Ed25519 identity automatically during one-time
+registration. Its private key is stored beside the runner configuration with
+file mode `0600`; identity material and credentials are not included in policy
+diagnostics.
+
+If the UI reports a non-compliant secure runner, follow the displayed
+remediation. Common corrections are removing `skip_tls_verify`, configuring
+`server_ca_cert_file` for an internal CA, upgrading the runner, or registering
+again with a fresh one-time token. Secure mode never falls back to plaintext or
+the standard policy.
+
 ## Runner deregistration {#runner-deregistration}
 
 You can remove a runner using the web interface.
@@ -187,6 +205,9 @@ semaphore runner unregister --config /path/to/your/config/file.json
 Runners authenticate to the server with an opaque bearer token
 (`X-Runner-Token`), issued at registration. Protect this token like any other
 credential — store it in a restricted configuration file or secret manager.
+
+Secure-mode one-time registration also creates a persistent runner identity;
+only its public key is sent to Semaphore.
 
 :::warning
 Use HTTPS for communication between the server and the runner, especially when
