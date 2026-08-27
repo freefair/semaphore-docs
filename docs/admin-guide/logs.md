@@ -106,6 +106,10 @@ An administrator can inspect the effective destinations, queue depth and capacit
 last redacted write error, and last successful flush under **System Information → Structured file
 logs**. The same data is returned by the authenticated admin-only `GET /api/admin/info` endpoint.
 
+The enhanced writer can also capture filtered structured debug records. See
+[Debug Log Filtering](/developer-guide/debug-log-filtering) for matching semantics, reload behavior,
+diagnostics, and the operational cost of broad capture.
+
 #### Activity (events) logging options {#activity-events-logging-options}
 
 The Activity (events) logging options allow you to configure how Semaphore records user actions and system events to a file. These settings control the behavior of event logging, including whether it's enabled, the format of log entries, and specific logger configurations. When enabled, all user actions (like creating templates, managing teams, or running tasks) will be written to the specified log file according to these settings.

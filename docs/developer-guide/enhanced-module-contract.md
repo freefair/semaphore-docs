@@ -9,7 +9,7 @@ The executable contract is versioned independently from product releases.
 
 | Component | Current value | Source |
 |---|---|---|
-| Core contract | `1.8.0` | `pro_interfaces.CoreContractVersion` |
+| Core contract | `1.9.0` | `pro_interfaces.CoreContractVersion` |
 | Community implementation | `community-1` | `pro/pkg/features.ImplementationVersion` |
 | Clean-room test implementation | `clean-room-test-1` | `test/edition-contract/enhanced/pkg/features` |
 
@@ -25,6 +25,7 @@ See [Project Runner Reconciliation](project-runner-reconciliation.md) for assign
 See [Project Runner Tag Placement](project-runner-placement.md) for deterministic multi-tag routing, atomic capacity claims, and redacted decisions.
 See [Project Runner Executor Images](project-runner-executor-images.md) for capability-gated image overrides, runner compatibility, and immutable payloads.
 See [Audit Webhook Export](audit-webhook-export.md) for the versioned envelope, transactional outbox, delivery policy, and administration contract.
+See [Debug Log Filtering](debug-log-filtering.md) for per-instance matching, reload, structured debug output, and diagnostics.
 
 ## Source Provenance
 
@@ -45,7 +46,7 @@ The core-owned contract types live in `pro_interfaces/`:
 | Project runners | `ProjectRunnerController`, including health and history reads |
 | Terraform inventory | `TerraformInventoryController` |
 | Workflows | `WorkflowController`, `WorkflowService`, `WorkflowTaskEnqueuer`, `WorkflowRunLocker`, `WorkflowReconciler` |
-| Structured logging and audit | `LogWriteService`, `LogWriteServiceLifecycle`, versioned application/task/result envelopes, diagnostics, project-scoped `AuditEvent`, `AuditWebhookServiceFacade`, `AuditWebhookService`, configuration and delivery DTOs |
+| Structured logging and audit | `LogWriteService`, `LogWriteServiceLifecycle`, `DebugLogService`, per-instance `DebugFilter`, versioned application/task/result/debug envelopes, diagnostics, project-scoped `AuditEvent`, `AuditWebhookServiceFacade`, `AuditWebhookService`, configuration and delivery DTOs |
 | High availability | `NodeRegistry`, `OrphanCleaner`, `ClusterInspector`, `NodeInfo`, `RedisInfo` |
 
 The replaceable module exports these application entry points:

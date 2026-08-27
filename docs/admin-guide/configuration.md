@@ -176,6 +176,7 @@ Full list of available configuration options:
 | <br />`log.queue_size` ![Static Badge](https://img.shields.io/badge/pro-red) <hr /> `SEMAPHORE_LOG_QUEUE_SIZE` <br /><br /> | Bounded asynchronous writer queue. A full queue drops new records without blocking tasks. Default: `1024`. |
 | <br />`log.flush_interval` ![Static Badge](https://img.shields.io/badge/pro-red) <hr /> `SEMAPHORE_LOG_FLUSH_INTERVAL` <br /><br /> | Durable flush interval as a Go duration. Default: `1s`. |
 | <br />`log.rotation_interval` ![Static Badge](https://img.shields.io/badge/pro-red) <hr /> `SEMAPHORE_LOG_ROTATION_INTERVAL` <br /><br /> | Time-based rotation interval as a Go duration. Default: `24h`. |
+| <br />`log.debug_filter` ![Static Badge](https://img.shields.io/badge/pro-red) <hr /> `SEMAPHORE_DEBUG_FILTER` <br /><br /> | Exact and terminal-prefix component filters for debug output. Empty captures all components. See [Debug Log Filtering](/developer-guide/debug-log-filtering). |
 | <br />`log.events.format`      ![Static Badge](https://img.shields.io/badge/pro-red) <hr /> `SEMAPHORE_EVENT_LOG_FORMAT` <br /><br /> | Event log format. Structured file export requires `json`. |
 | <br />`log.events.enabled`     ![Static Badge](https://img.shields.io/badge/pro-red) <hr /> `SEMAPHORE_EVENT_LOG_ENABLED` <br /><br /> | Enable or disable event logging. |
 | <br />`log.events.logger`      ![Static Badge](https://img.shields.io/badge/pro-red) <hr /> `SEMAPHORE_EVENT_LOGGER` <br /><br /> | JSON map which contains event logger configuration. |
@@ -183,6 +184,9 @@ Full list of available configuration options:
 | <br />`log.tasks.enabled`      ![Static Badge](https://img.shields.io/badge/pro-red) <hr /> `SEMAPHORE_TASK_LOG_ENABLED` <br /><br /> | Enable or disable task logging. |
 | <br />`log.tasks.logger`       ![Static Badge](https://img.shields.io/badge/pro-red) <hr /> `SEMAPHORE_TASK_LOGGER` <br /><br /> | JSON map which contains task logger configuration. |
 | <br />`log.tasks.result_logger`  ![Static Badge](https://img.shields.io/badge/pro-red) <hr /> `SEMAPHORE_TASK_RESULT_LOGGER` <br /><br /> | JSON map which contains task result logger configuration. |
+| <br />`log.debug.enabled` ![Static Badge](https://img.shields.io/badge/pro-red) <hr /> `SEMAPHORE_DEBUG_LOG_ENABLED` <br /><br /> | Enable or disable structured debug file logging. |
+| <br />`log.debug.format` ![Static Badge](https://img.shields.io/badge/pro-red) <hr /> `SEMAPHORE_DEBUG_LOG_FORMAT` <br /><br /> | Structured debug file format. Must be `json`. |
+| <br />`log.debug.logger` ![Static Badge](https://img.shields.io/badge/pro-red) <hr /> `SEMAPHORE_DEBUG_LOGGER` <br /><br /> | JSON map containing structured debug logger configuration. |
 | <br />`syslog.enabled` ![Static Badge](https://img.shields.io/badge/pro-red) <hr /> `SEMAPHORE_SYSLOG_ENABLED` <br /><br /> | Enable or disable writing logs to the configured syslog server. |
 | <br />`syslog.network` ![Static Badge](https://img.shields.io/badge/pro-red) <hr /> `SEMAPHORE_SYSLOG_NETWORK` <br /><br /> | Protocol used to connect to the Syslog server: `udp` or `tcp`. |
 | <br />`syslog.address` ![Static Badge](https://img.shields.io/badge/pro-red) <hr /> `SEMAPHORE_SYSLOG_ADDRESS` <br /><br /> | Hostname and port of the Syslog server. Example: `localhost:514`. |
