@@ -11,13 +11,13 @@ An operator can enable bounded, redacted JSON Lines logs for application events,
 
 ## Implementation
 
-- [ ] Define versioned envelopes for application, task, and result records with timestamp, instance, correlation, project, and event type fields.
-- [ ] Put structured serialization, secret redaction, and path-safe file creation behind the enhanced log service interface.
-- [ ] Use a bounded asynchronous queue with a documented overflow policy so slow disks cannot block task execution indefinitely.
-- [ ] Create files with restrictive permissions and reject symlinks, traversal, and unsupported destinations.
-- [ ] Add size/time rotation, retention, flush-on-shutdown, and crash-safe line boundaries.
-- [ ] Expose effective configuration, queue depth, drops, last write error, and last successful flush through an authorized diagnostics API and System Info view.
-- [ ] Keep the Community no-op implementation and disabled enhanced configuration behavior unchanged.
+- [x] Define versioned envelopes for application, task, and result records with timestamp, instance, correlation, project, and event type fields.
+- [x] Put structured serialization, secret redaction, and path-safe file creation behind the enhanced log service interface.
+- [x] Use a bounded asynchronous queue with a documented overflow policy so slow disks cannot block task execution indefinitely.
+- [x] Create files with restrictive permissions and reject symlinks, traversal, and unsupported destinations.
+- [x] Add size/time rotation, retention, flush-on-shutdown, and crash-safe line boundaries.
+- [x] Expose effective configuration, queue depth, drops, last write error, and last successful flush through an authorized diagnostics API and System Info view.
+- [x] Keep the Community no-op implementation and disabled enhanced configuration behavior unchanged.
 
 ## Tests and Acceptance
 
@@ -28,6 +28,6 @@ An operator can enable bounded, redacted JSON Lines logs for application events,
 | API | Required: authorized diagnostics, disabled state, redacted write failure, and forbidden access contracts |
 | UI | Required: component tests plus browser evidence for healthy, disabled, dropping, and failed writer states |
 
-- [ ] Every emitted line is independently valid JSON and carries a schema version.
-- [ ] Known secrets and credential-shaped values do not appear in output or diagnostics.
-- [ ] A blocked or full destination degrades logging visibly without stalling task processing.
+- [x] Every emitted line is independently valid JSON and carries a schema version.
+- [x] Known secrets and credential-shaped values do not appear in output or diagnostics.
+- [x] A blocked or full destination degrades logging visibly without stalling task processing.

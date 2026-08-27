@@ -173,10 +173,13 @@ Full list of available configuration options:
 | <br />`ldap_mappings.uid`     <hr /> `SEMAPHORE_LDAP_MAPPING_UID` <br /><br /> | LDAP attribute to use as the user ID (UID) mapping for user authentication. |
 | <br />`ldap_mappings.cn`      <hr /> `SEMAPHORE_LDAP_MAPPING_CN` <br /><br /> | LDAP attribute to use as the common name (CN) mapping for user authentication. |
 | **Logging** ||
-| <br />`log.events.format`      ![Static Badge](https://img.shields.io/badge/pro-red) <hr /> `SEMAPHORE_EVENT_LOG_FORMAT` <br /><br /> | Event log format. Can be `json` or empty for text. |
+| <br />`log.queue_size` ![Static Badge](https://img.shields.io/badge/pro-red) <hr /> `SEMAPHORE_LOG_QUEUE_SIZE` <br /><br /> | Bounded asynchronous writer queue. A full queue drops new records without blocking tasks. Default: `1024`. |
+| <br />`log.flush_interval` ![Static Badge](https://img.shields.io/badge/pro-red) <hr /> `SEMAPHORE_LOG_FLUSH_INTERVAL` <br /><br /> | Durable flush interval as a Go duration. Default: `1s`. |
+| <br />`log.rotation_interval` ![Static Badge](https://img.shields.io/badge/pro-red) <hr /> `SEMAPHORE_LOG_ROTATION_INTERVAL` <br /><br /> | Time-based rotation interval as a Go duration. Default: `24h`. |
+| <br />`log.events.format`      ![Static Badge](https://img.shields.io/badge/pro-red) <hr /> `SEMAPHORE_EVENT_LOG_FORMAT` <br /><br /> | Event log format. Structured file export requires `json`. |
 | <br />`log.events.enabled`     ![Static Badge](https://img.shields.io/badge/pro-red) <hr /> `SEMAPHORE_EVENT_LOG_ENABLED` <br /><br /> | Enable or disable event logging. |
 | <br />`log.events.logger`      ![Static Badge](https://img.shields.io/badge/pro-red) <hr /> `SEMAPHORE_EVENT_LOGGER` <br /><br /> | JSON map which contains event logger configuration. |
-| <br />`log.tasks.format`       ![Static Badge](https://img.shields.io/badge/pro-red) <hr /> `SEMAPHORE_TASK_LOG_FORMAT` <br /><br /> | Task log format. Can be `json` or empty for text. |
+| <br />`log.tasks.format`       ![Static Badge](https://img.shields.io/badge/pro-red) <hr /> `SEMAPHORE_TASK_LOG_FORMAT` <br /><br /> | Task and result log format. Structured file export requires `json`. |
 | <br />`log.tasks.enabled`      ![Static Badge](https://img.shields.io/badge/pro-red) <hr /> `SEMAPHORE_TASK_LOG_ENABLED` <br /><br /> | Enable or disable task logging. |
 | <br />`log.tasks.logger`       ![Static Badge](https://img.shields.io/badge/pro-red) <hr /> `SEMAPHORE_TASK_LOGGER` <br /><br /> | JSON map which contains task logger configuration. |
 | <br />`log.tasks.result_logger`  ![Static Badge](https://img.shields.io/badge/pro-red) <hr /> `SEMAPHORE_TASK_RESULT_LOGGER` <br /><br /> | JSON map which contains task result logger configuration. |

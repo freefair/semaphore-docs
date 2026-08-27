@@ -30,45 +30,81 @@ The Activity Log captures all user actions performed in Semaphore, including:
 - Adding or removing team members.
 - Starting or stopping tasks.
 
-### Pro version 2.10 and later {#pro-version-210-and-later}
+### Enhanced edition structured file logs {#pro-version-210-and-later}
 
-**Semaphore Pro** 2.10+ supports writing the Activity Log and Task log to a file. To enable this, add the following configuration to your `config.json`:
+The enhanced edition can export application events, task lifecycle events, and normalized task
+results as versioned JSON Lines. File export is disabled by default and does not replace the
+database-backed Activity Log or Task History.
+
+Destinations must be absolute, normalized paths to regular files. Semaphore rejects relative
+paths, traversal, symlinks (including symlinked parent directories), directories, devices, and
+named pipes. It creates parent directories with mode `0700` and files with mode `0600`.
+
+Configure the writer in `config.json`:
 
 ```json
 {
   "log": {
+    "queue_size": 1024,
+    "flush_interval": "1s",
+    "rotation_interval": "24h",
     "events": {
       "enabled": true,
+      "format": "json",
       "logger": {
-        "filename": "./events.log"
-        // other logger options
+        "filename": "/var/log/semaphore/events.jsonl",
+        "maxsize": 100,
+        "maxage": 30,
+        "maxbackups": 10,
+        "compress": true
       }
     },
     "tasks": {
       "enabled": true,
+      "format": "json",
       "logger": {
-        "filename": "./tasks.log"
-        // other logger options
+        "filename": "/var/log/semaphore/tasks.jsonl",
+        "maxsize": 100,
+        "maxage": 30,
+        "maxbackups": 10,
+        "compress": true
       },
-			"result_logger": {
-				"filename": "./task_results.log"
-        // other logger options
-			}
+      "result_logger": {
+        "filename": "/var/log/semaphore/results.jsonl",
+        "maxsize": 100,
+        "maxage": 30,
+        "maxbackups": 10,
+        "compress": true
+      }
     }
   }
 }
 ```
 
-
-Or you can do this using following environment variables:
+The equivalent environment variables are:
 
 ```bash
-export SEMAPHORE_EVENT_LOG_ENABLED=True
-export SEMAPHORE_EVENT_LOG_LOGGER={"filename": "./events.log"}
-
-export SEMAPHORE_TASK_LOG_ENABLED=True
-export SEMAPHORE_EVENT_LOG_LOGGER={"filename": "./tasks.log"}
+export SEMAPHORE_LOG_QUEUE_SIZE=1024
+export SEMAPHORE_LOG_FLUSH_INTERVAL=1s
+export SEMAPHORE_LOG_ROTATION_INTERVAL=24h
+export SEMAPHORE_EVENT_LOG_ENABLED=true
+export SEMAPHORE_EVENT_LOG_FORMAT=json
+export SEMAPHORE_EVENT_LOG_LOGGER='{"filename":"/var/log/semaphore/events.jsonl","maxsize":100,"maxage":30,"maxbackups":10,"compress":true}'
+export SEMAPHORE_TASK_LOG_ENABLED=true
+export SEMAPHORE_TASK_LOG_FORMAT=json
+export SEMAPHORE_TASK_LOG_LOGGER='{"filename":"/var/log/semaphore/tasks.jsonl","maxsize":100,"maxage":30,"maxbackups":10,"compress":true}'
+export SEMAPHORE_TASK_RESULT_LOGGER='{"filename":"/var/log/semaphore/results.jsonl","maxsize":100,"maxage":30,"maxbackups":10,"compress":true}'
 ```
+
+`queue_size` bounds memory use and isolates task execution from slow disks. Producers enqueue
+without waiting. When the queue is full, Semaphore drops the new record, returns immediately,
+increments `dropped_records`, and changes writer state to `dropping`. File-system and flush errors
+change the state to `failed`; neither condition stalls normal task processing. Shutdown drains the
+queue and synchronizes every open destination.
+
+An administrator can inspect the effective destinations, queue depth and capacity, drop count,
+last redacted write error, and last successful flush under **System Information → Structured file
+logs**. The same data is returned by the authenticated admin-only `GET /api/admin/info` endpoint.
 
 #### Activity (events) logging options {#activity-events-logging-options}
 
@@ -77,7 +113,7 @@ The Activity (events) logging options allow you to configure how Semaphore recor
 | Parameter             | Environment Variables | Description           |
 | --------------------- | --------------------- | --------------------- |
 | `enabled`             | `SEMAPHORE_EVENT_LOG_ENABLED` | Enable event logging to file. |
-| `format`              | `SEMAPHORE_EVENT_LOG_FORMAT`  | Log record format. Can be `raw` or `json`. |
+| `format`              | `SEMAPHORE_EVENT_LOG_FORMAT`  | Log record format. Structured export requires `json`. |
 | `logger`              | `SEMAPHORE_EVENT_LOG_LOGGER`  | [Logger options](#logger-options). |
 
 #### Tasks logging options {#tasks-logging-options}
@@ -87,7 +123,7 @@ The Tasks logging options allow you to configure how Semaphore records task exec
 | Parameter             | Environment Variables | Description           |
 | --------------------- | --------------------- | --------------------- |
 | `enabled`             | `SEMAPHORE_TASK_LOG_ENABLED` | Enable task logging to file. |
-| `format`              | `SEMAPHORE_TASK_LOG_FORMAT`  | Log record format. Can be `raw` or `json`. |
+| `format`              | `SEMAPHORE_TASK_LOG_FORMAT`  | Log record format. Structured export requires `json`. |
 | `logger`              | `SEMAPHORE_TASK_LOG_LOGGER`  | [Logger options](#logger-options). |
 | `result_logger`       | `SEMAPHORE_TASK_RESULT_LOGGER`  | Logger options. |
 
@@ -97,7 +133,7 @@ The Tasks logging options allow you to configure how Semaphore records task exec
 
 | Parameter             | Type | Description           |
 | --------------------- | ------- | --------------------- |
-| `filename`     | String  | Path and name of the file to write logs to. Backup log files will be retained in the same directory.  It uses `processname`-lumberjack.log in temporary if empty. |
+| `filename`     | String  | Required absolute, normalized path to a regular file. Rotated files remain in the same directory. |
 | `maxsize`      | Integer | The maximum size in megabytes of the log file before it gets rotated. It defaults to 100 megabytes. |
 | `maxage`       | Integer | The maximum number of days to retain old log files based on the timestamp encoded in their filename.  Note that a day is defined as 24 hours and may not exactly correspond to calendar days due to daylight savings, leap seconds, etc. The default is not to remove old log files based on age. |
 | `maxbackups`   | Integer | The maximum number of old log files to retain.  The default is to retain all old log files (though MaxAge may still cause them to get deleted.) |
@@ -106,11 +142,18 @@ The Tasks logging options allow you to configure how Semaphore records task exec
 
 
 
-Each line in the file follows this format:
+Each line is independently valid JSON and uses one of three schemas:
 
+```json
+{"version":1,"schema":"semaphore.application.v1","timestamp":"2026-08-27T12:00:00Z","instance":"node-a","correlation_id":"request-a","project":42,"event_type":"project.created","payload":{"action":"project.created"}}
+{"version":1,"schema":"semaphore.task.v1","timestamp":"2026-08-27T12:00:01Z","instance":"node-a","correlation_id":"task-17","project":42,"event_type":"success","payload":{"task":17,"project":42,"status":"success"}}
+{"version":1,"schema":"semaphore.result.v1","timestamp":"2026-08-27T12:00:02Z","instance":"node-a","correlation_id":"host-web-1","project":42,"event_type":"host_summary","payload":{"version":1,"event":"host_summary","event_id":"host-web-1","host":"web-1","status":"success"}}
 ```
-2024-01-03 12:00:34 user=234234 object=template action=delete
-```
+
+Before serialization, credential-shaped object keys and inline values such as `password=...`,
+`token: ...`, authorization headers, API keys, cookies, and private keys are replaced with
+`[REDACTED]`. A partial final line left by a process crash is removed when the destination reopens,
+so collectors never consume a permanently malformed tail record.
 
 ---
 
