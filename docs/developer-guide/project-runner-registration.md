@@ -56,6 +56,8 @@ Runner authentication tokens, registration hashes, and registration expiry field
 
 Creating a runner from a project always selects the one-time registration flow. The response opens a dialog with copyable environment, configuration, and container commands. Closing the dialog removes the only normal UI view of the plaintext token; subsequent list and detail reads contain only registration and online state.
 
+After registration, state transitions and destructive-action conflict behavior follow the [Project Runner Lifecycle](project-runner-lifecycle.md) contract.
+
 ## Verification
 
 Run the backend and contract layers with:

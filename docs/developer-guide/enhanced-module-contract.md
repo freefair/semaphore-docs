@@ -9,7 +9,7 @@ The executable contract is versioned independently from product releases.
 
 | Component | Current value | Source |
 |---|---|---|
-| Core contract | `1.4.0` | `pro_interfaces.CoreContractVersion` |
+| Core contract | `1.5.0` | `pro_interfaces.CoreContractVersion` |
 | Community implementation | `community-1` | `pro/pkg/features.ImplementationVersion` |
 | Clean-room test implementation | `clean-room-test-1` | `test/edition-contract/enhanced/pkg/features` |
 
@@ -19,6 +19,7 @@ Release artifacts additionally record the exact core and enhanced source revisio
 See [Reproducible Edition Builds](edition-builds.md) for the build, artifact, and runtime identity contracts.
 See [Capability Lifecycle](capability-lifecycle.md) for backend enforcement, state semantics, and downgrade behavior.
 See [Project Runner Registration](project-runner-registration.md) for the first project-runner consumer of this contract.
+See [Project Runner Lifecycle](project-runner-lifecycle.md) for safe mutations, assignment conflicts, cache acknowledgement, and historical attribution.
 
 ## Source Provenance
 
