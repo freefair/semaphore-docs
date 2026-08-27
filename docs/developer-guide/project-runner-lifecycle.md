@@ -82,12 +82,14 @@ Repeated API requests remain idempotent because they only advance the request ti
 
 ## Deletion and Task History
 
-Deleting an idle runner snapshots its name into every task that references it before removing the runner record.
-The runner foreign key is then cleared by the database, while task-list reads use the snapshot as a fallback.
-Historical task rows therefore continue to show the runner name without retaining a live runner identity.
+Deleting an idle runner snapshots its name and stable ID into every task that references it before removing the runner record.
+The live runner foreign key is then cleared by the database, while task-list reads use the snapshots as a fallback.
+Historical task rows therefore continue to show a non-secret runner identity without retaining a live runner record.
 
 Migration `2.20.3` adds the nullable `task.runner_name` snapshot column.
-Reads remain compatible with historical migration-test schemas that predate this column.
+Migration `2.20.4` adds and backfills `task.runner_id_snapshot`.
+Reads remain compatible with historical migration-test schemas that predate either column.
+Current health and paginated assignment history are described in [Project Runner Health and History](project-runner-health-history.md).
 
 ## Authorization and Audit
 

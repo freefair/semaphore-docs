@@ -11,11 +11,11 @@ An operator sees version, platform, start time, uptime, heartbeat state, current
 
 ## Implementation
 
-- [ ] Extend runner reports and persistence with version, platform, start time, and bounded load metadata.
-- [ ] Derive online/offline status from a configurable heartbeat boundary and treat webhook runners explicitly.
-- [ ] Persist the selected runner identity on assignment and retain the display name after deletion.
-- [ ] Expose paginated assignment history without returning runner auth material.
-- [ ] Add health and history panels with unambiguous stale/offline messaging.
+- [x] Extend runner reports and persistence with version, platform, start time, and bounded load metadata.
+- [x] Derive online/offline status from a configurable heartbeat boundary and treat webhook runners explicitly.
+- [x] Persist the selected runner identity on assignment and retain the display name after deletion.
+- [x] Expose paginated assignment history without returning runner auth material.
+- [x] Add health and history panels with unambiguous stale/offline messaging.
 
 ## Tests and Acceptance
 
@@ -26,6 +26,8 @@ An operator sees version, platform, start time, uptime, heartbeat state, current
 | API | Required: scoped health/history payloads and authorization negatives |
 | UI | Required: component tests plus browser online/offline/restart/history states |
 
-- [ ] A runner restart resets uptime without losing task history.
-- [ ] Offline state appears after the configured boundary.
-- [ ] Finished tasks retain a non-secret runner identity.
+- [x] A runner restart resets uptime without losing task history.
+- [x] Offline state appears after the configured boundary.
+- [x] Finished tasks retain a non-secret runner identity.
+
+Implementation details and verification commands are recorded in [Project Runner Health and History](../../project-runner-health-history.md).

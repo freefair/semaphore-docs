@@ -9,7 +9,7 @@ The executable contract is versioned independently from product releases.
 
 | Component | Current value | Source |
 |---|---|---|
-| Core contract | `1.5.0` | `pro_interfaces.CoreContractVersion` |
+| Core contract | `1.6.0` | `pro_interfaces.CoreContractVersion` |
 | Community implementation | `community-1` | `pro/pkg/features.ImplementationVersion` |
 | Clean-room test implementation | `clean-room-test-1` | `test/edition-contract/enhanced/pkg/features` |
 
@@ -20,6 +20,7 @@ See [Reproducible Edition Builds](edition-builds.md) for the build, artifact, an
 See [Capability Lifecycle](capability-lifecycle.md) for backend enforcement, state semantics, and downgrade behavior.
 See [Project Runner Registration](project-runner-registration.md) for the first project-runner consumer of this contract.
 See [Project Runner Lifecycle](project-runner-lifecycle.md) for safe mutations, assignment conflicts, cache acknowledgement, and historical attribution.
+See [Project Runner Health and History](project-runner-health-history.md) for runner reports, heartbeat semantics, and completed assignment pagination.
 
 ## Source Provenance
 
@@ -37,7 +38,7 @@ The core-owned contract types live in `pro_interfaces/`:
 |---|---|
 | Capability presentation | `Features`, `Edition`, `Compatibility`, `CapabilityProvider`, `CapabilityServiceFacade`, typed decisions, limits, snapshots, and DTOs |
 | Subscription | `SubscriptionController`, `SubscriptionService`, `SubscriptionToken` |
-| Project runners | `ProjectRunnerController` |
+| Project runners | `ProjectRunnerController`, including health and history reads |
 | Terraform inventory | `TerraformInventoryController` |
 | Workflows | `WorkflowController`, `WorkflowService`, `WorkflowTaskEnqueuer`, `WorkflowRunLocker`, `WorkflowReconciler` |
 | Structured logging and audit | `LogWriteService`, `EventLogRecord`, `TaskLogRecord`, project-scoped `AuditEvent` |
@@ -69,7 +70,7 @@ Community routes remain registered so the router shape is stable, but disabled b
 | `200` with `[]` | role collections, project runner/tag collections, Terraform alias/state collections, workflow/run/approval collections |
 | `201` with `{}` | project runner registration-token regeneration |
 | `403` with an empty body | enhanced email-session verification |
-| `404` with no protected resource data | subscription mutations and reads; role mutations and details; Terraform state operations; project runner mutations and details; workflow mutations and details |
+| `404` with no protected resource data | subscription mutations and reads; role mutations and details; Terraform state operations; project runner mutations, details, health, and history; workflow mutations and details |
 
 Community middleware delegates to the next handler without mutating the request or invoking a repository.
 Community capability flags are all false, collection services return empty values, log writers have no side effects, and enhanced executor constructors return an explicit unavailable error.
