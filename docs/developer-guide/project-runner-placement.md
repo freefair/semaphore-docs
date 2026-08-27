@@ -1,6 +1,7 @@
 # Project Runner Tag Placement
 
 Runner tag placement maps one task to one eligible project or global runner and records why that runner won. The decision is deterministic for the same candidate state, capacity-safe across server nodes, and visible to project members without exposing runner credentials or task secrets.
+Container image compatibility extends this candidate policy as documented in [Project Runner Executor Images](project-runner-executor-images.md).
 
 ## Contents
 

@@ -23,6 +23,7 @@ See [Project Runner Lifecycle](project-runner-lifecycle.md) for safe mutations, 
 See [Project Runner Health and History](project-runner-health-history.md) for runner reports, heartbeat semantics, and completed assignment pagination.
 See [Project Runner Reconciliation](project-runner-reconciliation.md) for assignment generations, lost-runner policy, and stale-result rejection.
 See [Project Runner Tag Placement](project-runner-placement.md) for deterministic multi-tag routing, atomic capacity claims, and redacted decisions.
+See [Project Runner Executor Images](project-runner-executor-images.md) for capability-gated image overrides, runner compatibility, and immutable payloads.
 
 ## Source Provenance
 

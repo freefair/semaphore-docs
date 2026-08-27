@@ -11,11 +11,11 @@ A template author sets an allowed executor image and sees that exact image used 
 
 ## Implementation
 
-- [ ] Retain the existing `executor_image` migration, normalization, API field, and UI as the core baseline.
-- [ ] Validate image syntax and capability availability server-side at template save and task start.
-- [ ] Carry an immutable resolved image in the runner job payload and task attempt record.
-- [ ] Reject local or incompatible executors with an actionable placement reason.
-- [ ] Display requested and resolved image in task details without registry credentials.
+- [x] Retain the existing `executor_image` migration, normalization, API field, and UI as the core baseline.
+- [x] Validate image syntax and capability availability server-side at template save and task start.
+- [x] Carry an immutable resolved image in the runner job payload and task attempt record.
+- [x] Reject local or incompatible executors with an actionable placement reason.
+- [x] Display requested and resolved image in task details without registry credentials.
 
 ## Tests and Acceptance
 
@@ -26,6 +26,8 @@ A template author sets an allowed executor image and sees that exact image used 
 | API | Required: valid, invalid, disabled-capability, and incompatible-executor cases |
 | UI | Required: component tests plus browser save/run/resolved-image flow |
 
-- [ ] A compatible task receives exactly the saved image.
-- [ ] Incompatible execution fails before enqueue.
-- [ ] Clearing the image restores the runner default.
+- [x] A compatible task receives exactly the saved image.
+- [x] Incompatible execution fails before enqueue.
+- [x] Clearing the image restores the runner default.
+
+Implementation details and verification commands are recorded in [Project Runner Executor Images](../../project-runner-executor-images.md).
