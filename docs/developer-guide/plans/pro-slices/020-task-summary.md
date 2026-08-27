@@ -11,13 +11,13 @@ After a task finishes, an authorized user sees the real affected hosts, failed h
 
 ## Implementation
 
-- [ ] Define a versioned task-summary model containing normalized host, stage, status, timing, and redacted error fields.
-- [ ] Parse supported runner result events incrementally and make repeated or out-of-order ingestion idempotent.
-- [ ] Persist the summary in the same completion boundary as the task terminal state, with a repair path for interrupted writes.
-- [ ] Scope repository and API reads by project permission and task identity.
-- [ ] Replace UI demonstration values with explicit loading, empty, partial, success, and failure states backed by the API.
-- [ ] Bound host and error result pages so a large inventory cannot exhaust the API or browser.
-- [ ] Document which runner result versions can produce a summary and how an unsupported version is represented.
+- [x] Define a versioned task-summary model containing normalized host, stage, status, timing, and redacted error fields.
+- [x] Parse supported runner result events incrementally and make repeated or out-of-order ingestion idempotent.
+- [x] Persist the summary in the same completion boundary as the task terminal state, with a repair path for interrupted writes.
+- [x] Scope repository and API reads by project permission and task identity.
+- [x] Replace UI demonstration values with explicit loading, empty, partial, success, and failure states backed by the API.
+- [x] Bound host and error result pages so a large inventory cannot exhaust the API or browser.
+- [x] Document which runner result versions can produce a summary and how an unsupported version is represented.
 
 ## Tests and Acceptance
 
@@ -28,6 +28,8 @@ After a task finishes, an authorized user sees the real affected hosts, failed h
 | API | Required: authorized summary, partial summary, empty summary, pagination, forbidden project, and missing task contracts |
 | UI | Required: component states plus browser evidence for successful and partially failed multi-host tasks |
 
-- [ ] Refreshing the page returns the same persisted summary without reparsing logs.
-- [ ] A user cannot infer hosts or errors from a project they cannot access.
-- [ ] Summary failures never change the underlying task result and are visible as a diagnosable partial state.
+- [x] Refreshing the page returns the same persisted summary without reparsing logs.
+- [x] A user cannot infer hosts or errors from a project they cannot access.
+- [x] Summary failures never change the underlying task result and are visible as a diagnosable partial state.
+
+Implementation details and verification commands are recorded in [Persisted Ansible Task Summaries](../../task-summary.md).
