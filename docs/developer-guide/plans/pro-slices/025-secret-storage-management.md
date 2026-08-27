@@ -11,14 +11,14 @@ An administrator can manage an approved Vault or OpenBao storage and deliberatel
 
 ## Implementation
 
-- [ ] Add storage list, update, delete, enable, and permission checks to the enhanced service behind existing interfaces.
-- [ ] Model synchronization direction explicitly and default a new storage to read-only runtime resolution.
-- [ ] For outbound synchronization, write only administrator-selected keys to explicit remote paths and record a value-free content fingerprint.
-- [ ] Use a durable operation record and compare-and-set state so retries are idempotent and concurrent syncs cannot overwrite a newer request.
-- [ ] Detect remote version conflicts and require a new explicit decision instead of silently choosing a winner.
-- [ ] Schedule refresh through a lease-safe worker and retain manual sync as the first observable workflow.
-- [ ] Display last attempt, last success, changed references, skipped items, conflicts, and redacted errors in the UI.
-- [ ] Audit every configuration mutation and synchronization without recording secret values.
+- [x] Add storage list, update, delete, enable, and permission checks to the enhanced service behind existing interfaces.
+- [x] Model synchronization direction explicitly and default a new storage to read-only runtime resolution.
+- [x] For outbound synchronization, write only administrator-selected keys to explicit remote paths and record a value-free content fingerprint.
+- [x] Use a durable operation record and compare-and-set state so retries are idempotent and concurrent syncs cannot overwrite a newer request.
+- [x] Detect remote version conflicts and require a new explicit decision instead of silently choosing a winner.
+- [x] Schedule refresh through a lease-safe worker and retain manual sync as the first observable workflow.
+- [x] Display last attempt, last success, changed references, skipped items, conflicts, and redacted errors in the UI.
+- [x] Audit every configuration mutation and synchronization without recording secret values.
 
 ## Tests and Acceptance
 
@@ -29,6 +29,6 @@ An administrator can manage an approved Vault or OpenBao storage and deliberatel
 | API | Required: storage CRUD, manual sync, conflict response, history, permissions, and write-only credential contracts |
 | UI | Required: component tests plus browser evidence for read-only setup, manual sync, conflict, failure, and recovery |
 
-- [ ] A retry of the same synchronization operation cannot create a second logical write.
-- [ ] Read-only storage never performs a remote mutation.
-- [ ] Operators can explain the last synchronization outcome without gaining access to secret values.
+- [x] A retry of the same synchronization operation cannot create a second logical write.
+- [x] Read-only storage never performs a remote mutation.
+- [x] Operators can explain the last synchronization outcome without gaining access to secret values.
