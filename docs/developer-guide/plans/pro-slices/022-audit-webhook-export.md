@@ -11,13 +11,13 @@ An administrator can send a versioned, redacted audit stream to an HTTPS receive
 
 ## Implementation
 
-- [ ] Extend the audit envelope with actor, action, target, outcome, source IP, user agent, correlation ID, and immutable occurrence time.
-- [ ] Define an allow-listed export schema that omits secrets, tokens, raw task arguments, and unrestricted user content.
-- [ ] Persist an outbox entry in the same transaction as the audited mutation and dispatch it after commit.
-- [ ] Implement an HTTPS-only client with bounded timeouts, response-size limits, retry classification, exponential backoff, jitter, and a terminal failure state.
-- [ ] Give every delivery a stable event ID so receiver-side deduplication remains possible before cryptographic signing is added.
-- [ ] Provide permission-protected configuration, test delivery, pause/resume, and paginated delivery history workflows.
-- [ ] Emit health metrics for queue age, attempts, successes, permanent failures, and redaction failures.
+- [x] Extend the audit envelope with actor, action, target, outcome, source IP, user agent, correlation ID, and immutable occurrence time.
+- [x] Define an allow-listed export schema that omits secrets, tokens, raw task arguments, and unrestricted user content.
+- [x] Persist an outbox entry in the same transaction as the canonical audit event and dispatch it after commit.
+- [x] Implement an HTTPS-only client with bounded timeouts, response-size limits, retry classification, exponential backoff, jitter, and a terminal failure state.
+- [x] Give every delivery a stable event ID so receiver-side deduplication remains possible before cryptographic signing is added.
+- [x] Provide permission-protected configuration, test delivery, pause/resume, and paginated delivery history workflows.
+- [x] Emit health metrics for queue age, attempts, successes, permanent failures, and redaction failures.
 
 ## Tests and Acceptance
 
@@ -28,6 +28,8 @@ An administrator can send a versioned, redacted audit stream to an HTTPS receive
 | API | Required: configuration, test, history, pause/resume, permission, and secret-write-only contracts |
 | UI | Required: component tests plus browser evidence for setup, successful test, retrying delivery, and permanent failure |
 
-- [ ] A committed audited action eventually has either a successful delivery or an inspectable terminal failure.
-- [ ] Retrying never creates a different logical audit event ID.
-- [ ] Endpoint credentials are write-only and absent from API responses, logs, and UI state.
+- [x] A committed audited action eventually has either a successful delivery or an inspectable terminal failure.
+- [x] Retrying never creates a different logical audit event ID.
+- [x] Endpoint credentials are write-only and absent from API responses, logs, and UI state.
+
+Implementation and operations are documented in [Audit Webhook Export](../../audit-webhook-export.md).

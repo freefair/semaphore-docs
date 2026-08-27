@@ -9,7 +9,7 @@ The executable contract is versioned independently from product releases.
 
 | Component | Current value | Source |
 |---|---|---|
-| Core contract | `1.7.0` | `pro_interfaces.CoreContractVersion` |
+| Core contract | `1.8.0` | `pro_interfaces.CoreContractVersion` |
 | Community implementation | `community-1` | `pro/pkg/features.ImplementationVersion` |
 | Clean-room test implementation | `clean-room-test-1` | `test/edition-contract/enhanced/pkg/features` |
 
@@ -24,6 +24,7 @@ See [Project Runner Health and History](project-runner-health-history.md) for ru
 See [Project Runner Reconciliation](project-runner-reconciliation.md) for assignment generations, lost-runner policy, and stale-result rejection.
 See [Project Runner Tag Placement](project-runner-placement.md) for deterministic multi-tag routing, atomic capacity claims, and redacted decisions.
 See [Project Runner Executor Images](project-runner-executor-images.md) for capability-gated image overrides, runner compatibility, and immutable payloads.
+See [Audit Webhook Export](audit-webhook-export.md) for the versioned envelope, transactional outbox, delivery policy, and administration contract.
 
 ## Source Provenance
 
@@ -44,7 +45,7 @@ The core-owned contract types live in `pro_interfaces/`:
 | Project runners | `ProjectRunnerController`, including health and history reads |
 | Terraform inventory | `TerraformInventoryController` |
 | Workflows | `WorkflowController`, `WorkflowService`, `WorkflowTaskEnqueuer`, `WorkflowRunLocker`, `WorkflowReconciler` |
-| Structured logging and audit | `LogWriteService`, `LogWriteServiceLifecycle`, versioned application/task/result envelopes, diagnostics, project-scoped `AuditEvent` |
+| Structured logging and audit | `LogWriteService`, `LogWriteServiceLifecycle`, versioned application/task/result envelopes, diagnostics, project-scoped `AuditEvent`, `AuditWebhookServiceFacade`, `AuditWebhookService`, configuration and delivery DTOs |
 | High availability | `NodeRegistry`, `OrphanCleaner`, `ClusterInspector`, `NodeInfo`, `RedisInfo` |
 
 The replaceable module exports these application entry points:
@@ -58,7 +59,7 @@ The replaceable module exports these application entry points:
 | `pro/pkg/features` | capability provider, guarded lifecycle-test service, and compatibility metadata |
 | `pro/pkg/stage_parsers` | task-stage progression |
 | `pro/services/ha` | node registry, schedule deduplication, WebSocket broadcast, orphan cleanup, cluster inspection, and workflow locking |
-| `pro/services/server` | subscription, structured logging, workflow, secret-storage, and external-secret serializers |
+| `pro/services/server` | subscription, structured logging, audit webhook export, workflow, secret-storage, and external-secret serializers |
 | `pro/services/tasks` | task-state storage plus Docker and Kubernetes executor providers |
 
 Concrete Community controllers, services, and repositories carry compile-time assertions against their core interfaces.

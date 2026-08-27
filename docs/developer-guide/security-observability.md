@@ -23,6 +23,8 @@ Project runner routes apply the same boundary with project-scoped permissions. T
 
 | Field | Meaning | Source |
 |---|---|---|
+| `event_id` | Stable logical audit event identifier reused by webhook retries | 128 random bits, emitted as 32 lowercase hexadecimal characters |
+| `occurred_at` | Immutable UTC time assigned before audit persistence | Server clock |
 | `correlation_id` | One server-generated request identifier | 128 random bits, emitted as 32 lowercase hexadecimal characters |
 | `actor_id` | Authenticated database user ID, omitted for anonymous calls | Authentication context |
 | `project_id` | Positive project scope for project-runner events; omitted for global capability events | Authorized request project |
@@ -31,6 +33,8 @@ Project runner routes apply the same boundary with project-scoped permissions. T
 | `target_id` | Allowlisted non-secret identifier | Domain constant |
 | `outcome` | `allowed`, `denied`, or `failure` | Enforcement result |
 | `source` | `api` or `worker` | Execution boundary |
+| `source_ip` | Direct network peer IP, omitted when unavailable | Request socket; forwarding headers are not trusted |
+| `user_agent` | Printable, trimmed client identifier limited to 256 UTF-8 bytes | Sanitized request header |
 | `reason` | Stable allowlisted reason code | Enforcement result |
 
 The server ignores an incoming `X-Request-ID` and returns its own value in that header. This prevents a caller from smuggling protected material into logs or audit storage through a syntactically valid correlation value.
@@ -44,6 +48,7 @@ Observable surfaces accept the following data and nothing else:
 | Surface | Allowed data | Explicitly excluded |
 |---|---|---|
 | Audit database payload | Standard context above | Request/response bodies, credentials, raw errors, headers |
+| Audit webhook envelope | Versioned standard context with nested actor and target identifiers | Generic metadata, payloads, credentials, tokens, raw task arguments, unrestricted user content |
 | Structured file event | Standard context above plus existing numeric project/integration IDs | Domain values, connection details, raw errors |
 | Application logs | `AuditEvent.SafeFields()` only | Error strings and arbitrary request fields |
 | HTTP errors | Stable codes such as `CAPABILITY_DENIED`, `CAPABILITY_INPUT_INVALID`, and `CAPABILITY_OPERATION_ERROR` | Validation input and dependency messages |
@@ -54,7 +59,15 @@ Semaphore does not currently configure a trace exporter. The allowlist is still 
 
 ## Audit Sinks and Failure Behavior
 
-`services/audit` writes the same JSON payload to the SQL `event` repository and the edition's `LogWriteService`. SQL events use object type `capability` or `project_runner_audit`. Project-runner events for an existing project populate the existing project column in both sinks, so project membership scopes event-feed visibility; global capability events deliberately retain a null project. Anonymous attempts against a nonexistent project remain as unscoped `project_runner_audit` rows for operational review but are excluded from ordinary authenticated user feeds. Both sinks are attempted independently: failure of one does not suppress the other, and the caller receives only `audit persistence failed`, never the underlying message.
+`services/audit` writes the same JSON payload to the SQL `event` repository and the edition's `LogWriteService`.
+SQL events use object type `capability` or `project_runner_audit`.
+Project-runner events for an existing project populate the existing project column in both sinks, so project membership scopes event-feed visibility; global capability events deliberately retain a null project.
+Anonymous attempts against a nonexistent project remain as unscoped `project_runner_audit` rows for operational review but are excluded from ordinary authenticated user feeds.
+Both sinks are attempted independently: failure of one does not suppress the other, and the caller receives only `audit persistence failed`, never the underlying message.
+
+When webhook export is configured, the SQL repository commits the canonical audit event and its outbox row in one transaction.
+The worker is notified only after commit and later delivers the allowlisted envelope over HTTPS.
+See [Audit Webhook Export](audit-webhook-export.md) for schema, retry, administration, and operational contracts.
 
 An audit write failure does not change the primary allow/deny HTTP result. It emits safe structured context and increments sink-specific metrics. Operators can diagnose which sink failed without exposing the failed record.
 
@@ -68,6 +81,8 @@ The application registry exposes:
 - `semaphore_enhanced_dependency_latency_seconds{dependency}`;
 - `semaphore_enhanced_queue_depth{queue}`; and
 - `semaphore_enhanced_dropped_records_total{sink,reason}`.
+
+Audit webhook export adds bounded queue-age, attempt, success, permanent-failure, and redaction-failure metrics documented in [Audit Webhook Export](audit-webhook-export.md#metrics).
 
 Dependency and queue labels are fixed enums. Optional dependency failure changes only its dependency gauge and counters; `/api/ping` remains healthy. A later feature with a required dependency must define its readiness effect explicitly instead of reusing this optional behavior by accident.
 
