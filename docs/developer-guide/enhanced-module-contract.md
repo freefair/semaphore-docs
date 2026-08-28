@@ -83,7 +83,7 @@ Community routes remain registered so the router shape is stable, but disabled b
 
 Community middleware delegates to the next handler without mutating the request or invoking a repository.
 Community capability flags are all false, collection services return empty values, log writers have no side effects, and enhanced executor constructors return an explicit unavailable error.
-Community TOTP operations return unavailable; a configured legacy enrollment prevents password-only session creation and must be reset locally or opened with an Enhanced build.
+Community TOTP operations return unavailable; any persisted enrollment prevents password-only session creation regardless of the legacy rollout switch and must be reset locally or opened with an Enhanced build.
 
 ## Verification
 

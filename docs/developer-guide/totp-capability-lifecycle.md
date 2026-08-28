@@ -74,7 +74,7 @@ It intentionally bypasses the web API's last-administrator guard because access 
 It never prints the enrollment secret or recovery hashes.
 
 Community builds expose the Enhanced TOTP capability as unavailable.
-If a Community upgrade encounters an account that was already protected by enabled legacy TOTP, session creation fails closed with `TOTP_UNAVAILABLE` instead of issuing a password-only session.
+If a Community build encounters an account with any persisted TOTP enrollment, session creation fails closed with `TOTP_UNAVAILABLE` instead of issuing a password-only session, regardless of the legacy rollout switch.
 The local reset command is the recovery path for that state.
 
 ## HTTP contract
