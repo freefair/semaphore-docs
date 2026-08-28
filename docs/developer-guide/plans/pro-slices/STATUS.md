@@ -54,6 +54,42 @@ Last updated: 2026-08-28
   - [x] Complete the focused diff and security review without new findings
   - [x] Commit the verified UI integration changes (`5cccf59a`)
 
+## Current Slice
+
+- [>] 032 — Conditional parallel workflow
+  - [x] Define and prove the typed condition/result and join-semantics contracts
+    - [x] Restrict conditions to allow-listed immutable result fields
+    - [x] Specify deterministic empty-branch and skip behavior
+    - [x] Set bounded per-workflow parallelism defaults and limits
+  - [x] Extend the workflow domain, persistence schema, and migration matrix
+    - [x] Persist parallelism, join mode, source expression, compiled program, and immutable node result
+    - [x] Prove SQLite upgrade/backfill/rollback and MySQL-safe large text DDL
+    - [x] Pass the SQLite, MySQL 8.4, MariaDB 10.11, and PostgreSQL 12.22 migration matrix
+  - [x] Replace linear progression with idempotent DAG readiness planning
+  - [x] Prove diamond joins, simultaneous completion, retry, failure, and bounds
+  - [x] Extend API contracts for validated conditions and conditional run status
+  - [x] Add only the required condition, join, skip, and parallel UI hooks
+    - [x] Add the workflow parallelism field without restructuring the editor
+    - [x] Add edge condition expression and node join mode to existing controls
+    - [x] Render skipped/canceled states and compact parallel progress in the existing run view
+    - [x] Pass all 18 focused editor, run-view, and validation tests
+  - [>] Verify focused/full suites, race checks, builds, browser behavior, and review
+    - [x] Run the four-database migration matrix
+    - [x] Run full backend, frontend, race, lint, and production-build verification
+      - [x] Pass Community and Enhanced full Go suites, Enhanced race checks, and both vet scopes
+      - [x] Pass all 18 focused workflow UI tests and changed-file ESLint
+      - [x] Match the full frontend baseline with 96 passing and the same 3 unrelated failures
+      - [x] Build Community, Enhanced, and developer documentation production outputs
+    - [x] Exercise conditional branches and parallel joins in desktop and mobile browser layouts
+    - [>] Complete the focused implementation and security review
+      - [x] Restore `stopped` handling in the built-in failure condition
+      - [x] Reject explicit zero parallelism in client validation
+      - [ ] Run the final security diff scan against the settled patch
+  - [>] Document and commit Slice 032
+    - [x] Document the condition, join, skip, scheduling, persistence, API, and security contracts
+    - [x] Re-run final verification after review fixes
+    - [ ] Commit the documentation submodule and Slice 032 implementation
+
 ## Slice Plan
 
 - [x] 001 — Core contract
@@ -78,7 +114,7 @@ Last updated: 2026-08-28
 - [x] 027 — LDAP capability lifecycle
 - [x] 030 — Workflow editor and validation
 - [x] 031 — Linear workflow run
-- [ ] 032 — Conditional parallel workflow
+- [>] 032 — Conditional parallel workflow
 - [ ] 033 — Workflow artifacts
 - [ ] 034 — Workflow parameters and overrides
 - [ ] 035 — Workflow triggers

@@ -7,8 +7,9 @@ The Enhanced edition provides a project-scoped workflow authoring contract befor
 A workflow definition has `definition_version: 1` and a monotonically increasing `revision`. The definition contains metadata plus nodes and directed edges:
 
 - Node and edge `id` values are stable after the first save. The editor uses negative temporary IDs for unsaved elements; the server returns positive persisted IDs.
-- Nodes store their kind, optional display name, project-owned task template reference, convergence and approval settings, task parameters, note text, and canvas coordinates.
-- Edges store source and destination node IDs, execution condition, and an optional display label.
+- Workflow metadata includes `max_parallel_tasks`, with a default of 4 and an accepted range of 1 through 32.
+- Nodes store their kind, optional display name, project-owned task template reference, join and approval settings, task parameters, note text, and canvas coordinates.
+- Edges store source and destination node IDs, execution condition, an optional typed condition expression, and an optional display label.
 - Note nodes are annotations. They do not participate in the executable graph and cannot have edges.
 
 The current size bounds are 200 nodes and 1,000 edges per workflow.
@@ -21,6 +22,9 @@ Updates use compare-and-swap semantics on `revision`. A successful update increm
 
 Migration `v2.20.14` adds the definition version and revision to workflow templates and display metadata to nodes and edges. Existing definitions receive schema version 1 and revision 1.
 
+Migration `v2.20.16` adds the bounded parallelism setting, explicit join mode, compiled condition storage, and immutable node result storage.
+Existing workflows receive parallelism 4 and `all-successful` joins.
+
 ## Validation
 
 The backend normalizes safe defaults and then validates:
@@ -28,7 +32,8 @@ The backend normalizes safe defaults and then validates:
 - supported definition version and required name;
 - node and edge count limits;
 - non-zero, unique node and edge IDs;
-- supported node kinds, convergence modes, and edge conditions;
+- supported node kinds, join modes, edge conditions, and the parallelism bound;
+- typed condition expressions over the allow-listed immutable result fields;
 - existing edge endpoints, self-edges, cycles, exactly one executable root, and disconnected executable nodes;
 - note-node edge restrictions and approval-node field rules; and
 - task template ownership in the workflow's project.
@@ -58,4 +63,5 @@ Create, validate, and update accept workflow definition bodies up to 8 MiB. Larg
 
 The editor keeps the last loaded or saved definition as its baseline. **Discard** restores that baseline, including layout. **Validate** calls the authoritative validation endpoint. **Save** first validates, then replaces the local graph with the server response so temporary IDs and the new revision are adopted. A revision conflict leaves the local graph untouched and exposes an explicit action to reload the current server definition.
 
-Workflow execution, triggers, approvals, artifacts, and cross-project references are separate later slices and are not enabled by this authoring contract.
+The execution semantics for conditions, joins, branch skips, and parallel scheduling are documented in [Conditional Parallel Workflows](workflow-conditional-parallel.md).
+Triggers, approvals, artifacts, and cross-project references remain separate later slices.
