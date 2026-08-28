@@ -4,9 +4,9 @@ Legend: `[x]` complete · `[>]` active · `[ ]` queued
 
 Last updated: 2026-08-28
 
-## Current Slice
+## Last Completed Slice
 
-- [>] 031 — Linear workflow run
+- [x] 031 — Linear workflow run
   - [x] Define immutable workflow and template snapshots
   - [x] Add durable run/node states and SQL migration
   - [x] Prove repository transitions, idempotency, isolation, and rollback
@@ -25,17 +25,17 @@ Last updated: 2026-08-28
   - [x] Re-run final verification after the review fixes and complete the focused diff review
   - [x] Record final verification and commit Slice 031 documentation and implementation
   - [x] Run the committed Slice 031 security diff scan
-  - [>] Replace persistence-model responses with permission-safe run DTOs
+  - [x] Replace persistence-model responses with permission-safe run DTOs
     - [x] Reproduce snapshot, template, and task configuration disclosure on every run response
     - [x] Preserve only the immutable graph and task fields required by the existing run UI
     - [x] Verify the fix across API contracts and full suites while retaining the browser-verified UI contract
     - [x] Independently verify the original attack path is closed
-  - [>] Commit the verified Slice 031 security fix
+  - [x] Commit the verified Slice 031 security fix
 
-## Next Compatibility Checkpoint
+## Current Compatibility Checkpoint
 
-- [ ] Audit all UI changes from Slices 001–031 before starting Slice 032
-  - [ ] Compare the accumulated UI diff with the upstream baseline
+- [>] Audit all UI changes from Slices 001–031 before starting Slice 032
+  - [>] Establish the repository-contained upstream baseline and inventory the accumulated UI diff
   - [ ] Classify each change as required by an interface/acceptance contract or optional polish
   - [ ] Remove optional UI changes while preserving Community behavior
   - [ ] Re-run frontend tests and browser verification for the retained minimum
@@ -63,7 +63,7 @@ Last updated: 2026-08-28
 - [x] 026 — TOTP capability lifecycle
 - [x] 027 — LDAP capability lifecycle
 - [x] 030 — Workflow editor and validation
-- [>] 031 — Linear workflow run
+- [x] 031 — Linear workflow run
 - [ ] 032 — Conditional parallel workflow
 - [ ] 033 — Workflow artifacts
 - [ ] 034 — Workflow parameters and overrides
