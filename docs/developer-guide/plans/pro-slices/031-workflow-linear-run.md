@@ -11,13 +11,13 @@ An authorized user can start a valid two-node workflow and observe each task pro
 
 ## Implementation
 
-- [ ] Snapshot the selected workflow definition and referenced template revisions when a run starts.
-- [ ] Define durable pending, queued, running, succeeded, failed, stopped, and blocked states for a run and its nodes.
-- [ ] Create the first task through the normal task service and enqueue the second only after the first succeeds.
-- [ ] Advance state with conditional SQL transitions so duplicate callbacks or retries cannot start a node twice.
-- [ ] Propagate first-node failure to a terminal failed workflow with the dependent node marked blocked.
-- [ ] Preserve actor, project, task IDs, definition revision, correlation ID, and timestamps for audit and diagnostics.
-- [ ] Add a run dashboard with node status, task links, elapsed time, terminal reason, and live refresh through the existing event path.
+- [x] Snapshot the selected workflow definition and referenced template revisions when a run starts.
+- [x] Define durable pending, queued, running, succeeded, failed, stopped, and blocked states for a run and its nodes.
+- [x] Create the first task through the normal task service and enqueue the second only after the first succeeds.
+- [x] Advance state with conditional SQL transitions so duplicate callbacks or retries cannot start a node twice.
+- [x] Propagate first-node failure to a terminal failed workflow with the dependent node marked blocked.
+- [x] Preserve actor, project, task IDs, definition revision, correlation ID, and timestamps for audit and diagnostics.
+- [x] Add a run dashboard with node status, task links, elapsed time, terminal reason, and live refresh through the existing event path.
 
 ## Tests and Acceptance
 
@@ -28,6 +28,6 @@ An authorized user can start a valid two-node workflow and observe each task pro
 | API | Required: start, status, node/task links, stale definition behavior, duplicate request, capability, and permission contracts |
 | UI | Required: component tests plus browser evidence for successful and failed two-node runs with live transitions |
 
-- [ ] Exactly one task is created per node in one workflow attempt.
-- [ ] The second node never starts before the first succeeds.
-- [ ] Editing the workflow after start does not change the running snapshot.
+- [x] Exactly one task is created per node in one workflow attempt.
+- [x] The second node never starts before the first succeeds.
+- [x] Editing the workflow after start does not change the running snapshot.
