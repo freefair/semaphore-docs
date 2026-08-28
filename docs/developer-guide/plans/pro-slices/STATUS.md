@@ -6,16 +6,16 @@ Last updated: 2026-08-28
 
 ## Last Completed Slice
 
-- [x] 033 — Workflow artifacts
-  - [x] Define bounded typed output declarations and reachable input references
-  - [x] Persist immutable, value-free provenance and attempt-bound output values
-  - [x] Capture declared Ansible outputs and resolve downstream inputs just in time
-  - [x] Route sensitive values only through encrypted task secrets and redact every user-visible surface
-  - [x] Add the required API contracts and compact controls inside the existing workflow views
-  - [x] Verify declaration, linking, validation, redaction, and metadata in desktop and mobile browsers
-  - [x] Pass the four-database migration matrix, full suites, race checks, vet, lint, builds, and docs build
-  - [x] Complete the committed security diff scan with 0 findings
-  - [x] Commit documentation (`3d8a9d5`), its root pointer (`82ae3374`), and implementation (`db1cd1f2`)
+- [x] 034 — Workflow parameters and node overrides
+  - [x] Add bounded string, integer, boolean, enumeration, and secret-reference declarations
+  - [x] Resolve default, trigger, user, and node values into immutable run snapshots
+  - [x] Enforce backend allow-lists for inventories, variable groups, arguments, branches, and credentials
+  - [x] Resolve approved credentials just in time and scope them to explicitly authorized nodes
+  - [x] Keep UI integration inside focused components and narrow existing workflow hooks
+  - [x] Verify authoring, invalid input, explicit empty strings, UTF-8 byte limits, secret redaction, and responsive audit rendering in the browser
+  - [x] Pass the four-database migration matrix, full Go suites, race checks, vet, focused lint, web/docs builds, and the established frontend baseline
+  - [x] Complete the final security diff scan with 24/24 items and 0 findings
+  - [x] Commit documentation (`915e995`, `a21681c`), its root pointer (`afaba44c`), and implementation (`47b9ce82`)
 
 ## Current Compatibility Checkpoint
 
@@ -41,33 +41,23 @@ Last updated: 2026-08-28
 
 ## Current Slice
 
-- [>] 034 — Workflow parameters and node overrides
-  - [>] Establish the existing workflow-start, task-override, credential, and permission contracts
-    - [x] Inventory duplicate or reusable parameter and override implementations
-    - [x] Confirm the architecture and OSS API/UI reference patterns
-    - [x] Specify typed values, bounds, precedence, immutable snapshots, and redaction
-    - [x] Prove the contract with external failing tests before production edits
-  - [x] Add parameter declarations and backend validation
-    - [x] Support string, integer, boolean, enumeration, and secret-reference parameters
-    - [x] Reject invalid names, unknown values, out-of-bound values, and plaintext secrets
-  - [x] Resolve immutable run inputs and node overrides
-    - [x] Apply definition defaults, trigger values, user values, and node overrides with documented precedence
-    - [x] Restrict inventory, environment, arguments, branch, and credentials to backend allow-lists
-    - [x] Store effective non-secret values and value-free secret fingerprints
-  - [x] Map the frozen snapshot to every task dispatch without observing later definition edits
-    - [x] Resolve credential references immediately before each task dispatch so rotation is observed safely
-    - [x] Scope credential parameters to an explicit per-node allow-list so unrelated tasks never receive them
-  - [>] Extend API contracts and minimal existing UI surfaces
-    - [x] Isolate the UI in focused components with narrow hooks in the existing workflow views
-    - [x] Add compact parameter and override-policy controls without changing navigation or graph structure
-    - [x] Preserve one-click start for workflows without configurable inputs
-    - [x] Add typed start validation and effective/redacted audit details
-    - [x] Verify the editor, start dialog, audit panel, and responsive layout in the browser
-      - [x] Reject invalid input before start and persist the accepted value with its source
-      - [x] Verify the audit panel at desktop and 390×844 without horizontal overflow or console errors
-      - [x] Verify secret-reference selection, per-node scope, and redacted browser audit on the disposable QA instance
-  - [ ] Verify persistence, concurrency, retries, permissions, browser behavior, full suites, and security
-  - [ ] Document and commit Slice 034
+- [>] 035 — Workflow triggers
+  - [>] Establish the existing scheduler, webhook, workflow-start, permission, and audit contracts
+    - [ ] Inventory reusable schedule, integration, credential, idempotency, and history implementations
+    - [ ] Define versioned trigger resources and one shared start boundary
+    - [ ] Prove mapping, occurrence identity, idempotency, credential hashing, and disabled-state contracts with external failing tests
+  - [ ] Persist manual, schedule, API, and webhook triggers
+    - [ ] Store owner, enabled state, input mapping, audit metadata, and bounded invocation history
+    - [ ] Store only hashes for revocable opaque API/webhook credentials and reveal plaintext once
+  - [ ] Route every trigger through the same workflow-start use case
+    - [ ] Revalidate mappings against the current workflow definition at save and fire time
+    - [ ] Scope external idempotency to the trigger and derive stable scheduled occurrence identities
+    - [ ] Retain initiating trigger and effective immutable input snapshot on each run
+  - [ ] Add trigger lifecycle interfaces with minimal existing-workflow UI hooks
+    - [ ] Support create, enable/disable, rotate, test, last-fired/result, and paginated history
+    - [ ] Preserve existing workflow navigation and graph/editor structure
+  - [ ] Verify scheduler/API/webhook execution, duplicates, rotation, retries, definition changes, permissions, browser behavior, full suites, and security
+  - [ ] Document and commit Slice 035
 
 ## Slice Plan
 
@@ -95,8 +85,8 @@ Last updated: 2026-08-28
 - [x] 031 — Linear workflow run
 - [x] 032 — Conditional parallel workflow
 - [x] 033 — Workflow artifacts
-- [>] 034 — Workflow parameters and overrides
-- [ ] 035 — Workflow triggers
+- [x] 034 — Workflow parameters and overrides
+- [>] 035 — Workflow triggers
 - [ ] 036 — Workflow approvals
 - [ ] 037 — Workflow reconciliation
 - [ ] 040 — HA cluster dashboard
