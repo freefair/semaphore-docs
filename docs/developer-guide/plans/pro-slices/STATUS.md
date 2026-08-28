@@ -6,17 +6,16 @@ Last updated: 2026-08-28
 
 ## Last Completed Slice
 
-- [x] 032 — Conditional parallel workflow
-  - [x] Define a bounded typed condition language over immutable result fields
-  - [x] Persist compiled conditions, explicit joins, parallelism, skips, cancellations, and sanitized results
-  - [x] Replace linear progression with idempotent DAG readiness planning
-  - [x] Prove diamond joins, simultaneous completion, retries, failure paths, and parallelism bounds
-  - [x] Add the required API contracts and minimal editor/run-view hooks
-  - [x] Verify conditional branch authoring and execution in desktop and mobile browsers
+- [x] 033 — Workflow artifacts
+  - [x] Define bounded typed output declarations and reachable input references
+  - [x] Persist immutable, value-free provenance and attempt-bound output values
+  - [x] Capture declared Ansible outputs and resolve downstream inputs just in time
+  - [x] Route sensitive values only through encrypted task secrets and redact every user-visible surface
+  - [x] Add the required API contracts and compact controls inside the existing workflow views
+  - [x] Verify declaration, linking, validation, redaction, and metadata in desktop and mobile browsers
   - [x] Pass the four-database migration matrix, full suites, race checks, vet, lint, builds, and docs build
-  - [x] Fix stopped-predecessor and explicit-zero validation regressions found during review
   - [x] Complete the committed security diff scan with 0 findings
-  - [x] Commit documentation (`aa1be43`) and implementation (`841cd536`)
+  - [x] Commit documentation (`3d8a9d5`), its root pointer (`82ae3374`), and implementation (`db1cd1f2`)
 
 ## Current Compatibility Checkpoint
 
@@ -42,37 +41,25 @@ Last updated: 2026-08-28
 
 ## Current Slice
 
-- [>] 033 — Workflow artifacts
-	- [x] Establish the existing structured-result and secret-injection contracts
-	  - [x] Inventory current task-summary, result, variable, and secret-safe paths
-	  - [x] Define bounded typed JSON declarations, provenance, sensitivity, and size limits
-	  - [x] Prove validation and redaction behavior in external tests before production edits
-	- [x] Add artifact persistence and migration coverage
-	  - [x] Keep sensitive values out of definition snapshots and user-visible payloads
-	  - [x] Bind outputs to the producing run, task, and assignment attempt
-	  - [x] Prove SQLite upgrade, backfill, rollback, and MySQL-compatible large columns
-	  - [x] Pass the SQLite, MySQL, MariaDB, and PostgreSQL migration matrix
-	  - [x] Re-read the persistence diff for cross-dialect and transaction invariants
-	- [x] Validate graph reachability and resolve downstream inputs immediately before task creation
-	  - [x] Freeze value-free input provenance before creating the consumer task
-	  - [x] Route sensitive values through the existing encrypted task-secret path
-	  - [x] Block required missing inputs and tolerate optional unavailable inputs
-	- [x] Capture declared outputs from structured task results and fail invalid producers safely
-	- [x] Extend API contracts with value-free provenance and redacted sensitivity metadata
-	- [x] Add only acceptance-required declaration controls and metadata states to the existing workflow UI
-	  - [x] Add compact task-node declaration and reference rows to the existing properties panel
-	  - [x] Show value-free availability, provenance, type, and sensitivity in the existing run view
-	  - [x] Keep the workflow graph, navigation, and Community host views unchanged
-	  - [x] Verify desktop and mobile artifact layouts plus a clean browser console
-	  - [x] Record the existing selected-node mobile panel overflow as an out-of-scope side defect
-  - [>] Verify focused/full suites, race checks, builds, browser behavior, and security review
-    - [x] Pass focused backend and frontend tests, lint, callback compilation, and Enhanced production build
-    - [x] Verify declaration, reachable linking, missing inputs, sensitivity redaction, and metadata in a real browser
-    - [ ] Pass the full Go suites, race checks, vet, full frontend baseline, and docs build
-    - [ ] Complete the final diff and security reviews
-  - [>] Document and commit Slice 033
-    - [x] Document the definition, Ansible publishing, resolution, redaction, API, retry, and migration contracts
-    - [ ] Commit the verified documentation and implementation atomically
+- [>] 034 — Workflow parameters and node overrides
+  - [>] Establish the existing workflow-start, task-override, credential, and permission contracts
+    - [ ] Inventory duplicate or reusable parameter and override implementations
+    - [ ] Confirm the architecture and OSS API/UI reference patterns
+    - [ ] Specify typed values, bounds, precedence, immutable snapshots, and redaction
+    - [ ] Prove the contract with external failing tests before production edits
+  - [ ] Add parameter declarations and backend validation
+    - [ ] Support string, integer, boolean, enumeration, and secret-reference parameters
+    - [ ] Reject invalid names, unknown values, out-of-bound values, and plaintext secrets
+  - [ ] Resolve immutable run inputs and node overrides
+    - [ ] Apply definition defaults, trigger values, user values, and node overrides with documented precedence
+    - [ ] Restrict inventory, environment, arguments, branch, and credentials to one backend allow-list
+    - [ ] Store effective non-secret values and value-free secret fingerprints
+  - [ ] Map the frozen snapshot to every task attempt without observing later definition edits
+  - [ ] Extend API contracts and minimal existing UI surfaces
+    - [ ] Add compact parameter declaration controls to the existing editor
+    - [ ] Add start validation and effective/redacted audit details without changing navigation or graph structure
+  - [ ] Verify persistence, concurrency, retries, permissions, browser behavior, full suites, and security
+  - [ ] Document and commit Slice 034
 
 ## Slice Plan
 
@@ -99,8 +86,8 @@ Last updated: 2026-08-28
 - [x] 030 — Workflow editor and validation
 - [x] 031 — Linear workflow run
 - [x] 032 — Conditional parallel workflow
-- [>] 033 — Workflow artifacts
-- [ ] 034 — Workflow parameters and overrides
+- [x] 033 — Workflow artifacts
+- [>] 034 — Workflow parameters and overrides
 - [ ] 035 — Workflow triggers
 - [ ] 036 — Workflow approvals
 - [ ] 037 — Workflow reconciliation
