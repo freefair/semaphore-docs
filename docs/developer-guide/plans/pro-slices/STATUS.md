@@ -2,7 +2,7 @@
 
 Legend: `[x]` complete · `[>]` active · `[ ]` queued
 
-Last updated: 2026-08-28
+Last updated: 2026-08-29
 
 ## Last Completed Slice
 
@@ -43,21 +43,56 @@ Last updated: 2026-08-28
 
 - [>] 035 — Workflow triggers
   - [>] Establish the existing scheduler, webhook, workflow-start, permission, and audit contracts
-    - [ ] Inventory reusable schedule, integration, credential, idempotency, and history implementations
-    - [ ] Define versioned trigger resources and one shared start boundary
-    - [ ] Prove mapping, occurrence identity, idempotency, credential hashing, and disabled-state contracts with external failing tests
-  - [ ] Persist manual, schedule, API, and webhook triggers
-    - [ ] Store owner, enabled state, input mapping, audit metadata, and bounded invocation history
-    - [ ] Store only hashes for revocable opaque API/webhook credentials and reveal plaintext once
-  - [ ] Route every trigger through the same workflow-start use case
-    - [ ] Revalidate mappings against the current workflow definition at save and fire time
-    - [ ] Scope external idempotency to the trigger and derive stable scheduled occurrence identities
-    - [ ] Retain initiating trigger and effective immutable input snapshot on each run
-  - [ ] Add trigger lifecycle interfaces with minimal existing-workflow UI hooks
-    - [ ] Support create, enable/disable, rotate, test, last-fired/result, and paginated history
-    - [ ] Preserve existing workflow navigation and graph/editor structure
-  - [ ] Verify scheduler/API/webhook execution, duplicates, rotation, retries, definition changes, permissions, browser behavior, full suites, and security
-  - [ ] Document and commit Slice 035
+    - [x] Inventory reusable schedule, integration, credential, idempotency, and history implementations
+      - [x] Reuse the existing workflow correlation CAS for committed-run idempotency
+      - [x] Reuse opaque token hashing, workflow input validation, audit, pagination, and cron parsing patterns
+      - [x] Keep workflow triggers separate from legacy template schedules and integrations
+    - [x] Define versioned trigger resources and one shared start boundary
+      - [x] Use explicit fixed/request input bindings with no implicit request-field passthrough
+      - [x] Scope external request hashes to trigger and credential generation
+      - [x] Derive scheduled occurrence identity from trigger revision, definition revision, and UTC instant
+    - [x] Prove mapping, occurrence identity, idempotency, credential hashing, and disabled-state contracts with external failing tests
+    - [x] Implement the bounded trigger domain model and validation as the first green layer
+  - [>] Persist manual, schedule, API, and webhook triggers
+    - [x] Add the additive trigger and invocation schema plus rollback across all database engines
+    - [x] Store owner, enabled state, input mapping, audit metadata, and bounded invocation history
+    - [x] Claim external invocation keys atomically and retain scheduled identity through the workflow run
+    - [x] Store only hashes for revocable opaque API/webhook credentials and reveal plaintext once
+      - [x] Persist 71-character domain-separated SHA-256 hashes without plaintext columns
+      - [x] Issue and rotate plaintext credentials at the service boundary only
+  - [>] Route every trigger through the same workflow-start use case
+    - [x] Revalidate mappings against the current workflow definition at save and fire time
+    - [x] Scope external idempotency to trigger and credential generation and derive stable scheduled occurrence identities
+    - [x] Retain initiating trigger and effective immutable input snapshot on each run
+    - [x] Retry failed starts through the same correlation CAS without creating a second run
+    - [x] Complete runtime wiring and end-to-end API/scheduler verification
+      - [x] Prove API and webhook duplicate delivery against the real local server
+      - [x] Prove rotation/revocation and disabled direct-fire rejection
+      - [x] Prove the scheduler creates one stable UTC occurrence and run snapshot
+  - [x] Add trigger lifecycle interfaces with minimal existing-workflow UI hooks
+    - [x] Support create, enable/disable, rotate, test, last-fired/result, and paginated history in the backend contract
+    - [x] Add one focused Enhanced trigger surface behind a narrow workflow hook
+    - [x] Re-audit the host diff and gate it strictly on the Enhanced `workflow_triggers` capability
+    - [x] Preserve existing workflow navigation and graph/editor structure
+    - [x] Verify the isolated dialog at desktop and mobile widths before accepting the UI
+      - [x] Create all four trigger types, rotate credentials, test-fire, and inspect history
+      - [x] Replace the clipped mobile table with component-local cards after browser evidence exposed inaccessible actions
+      - [x] Verify 1280 px and 390×844 layouts without page overflow or browser-console findings
+  - [>] Verify scheduler/API/webhook execution, duplicates, rotation, retries, definition changes, permissions, full suites, and security
+    - [x] Complete focused domain, repository, service, API, UI, build, and browser checks
+    - [x] Run the four-database migration matrix and full repository/module suites
+      - [x] Pass SQLite, PostgreSQL, MySQL, and MariaDB migrate/rollback/reapply checks
+      - [x] Pass the full root, Community, and Enhanced Go suites
+      - [x] Pass root and Enhanced race checks plus `go vet` in all three workspaces
+      - [x] Match the established frontend baseline: 116 passing and the same 3 unrelated failures
+      - [x] Complete the production frontend and Docusaurus builds
+    - [>] Complete the final diff, security, and acceptance review
+      - [x] Re-read every new domain, repository, service, controller, migration, and UI boundary
+      - [x] Confirm hash-only credential persistence, scoped authorization, and atomic idempotency controls
+      - [>] Complete the native working-tree security diff scan
+  - [>] Document and commit Slice 035
+    - [x] Add the developer contract for mappings, APIs, credentials, schedules, persistence, and compatibility
+    - [x] Mark the Slice 035 implementation and acceptance checklist complete
 
 ## Slice Plan
 

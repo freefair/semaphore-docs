@@ -2,6 +2,8 @@
 
 A workflow can start from a schedule, authenticated API request, or project webhook with the same validation, authorization, and immutable input rules as a manual start.
 
+The implemented contract is documented in [Workflow Triggers](../../workflow-triggers.md).
+
 | Field | Value |
 |---|---|
 | Selection | P08e |
@@ -11,13 +13,13 @@ A workflow can start from a schedule, authenticated API request, or project webh
 
 ## Implementation
 
-- [ ] Model manual, schedule, API, and webhook triggers as versioned resources with owner, enabled state, input mapping, and audit metadata.
-- [ ] Route every trigger through one workflow-start use case so validation, permissions, capability gates, snapshotting, and idempotency are consistent.
-- [ ] Give API and webhook invocations an idempotency key scoped to trigger and retain the result for a bounded window.
-- [ ] Give scheduled occurrences a stable identity derived from trigger, scheduled instant, and definition revision.
-- [ ] Validate trigger parameter mappings against the workflow definition when saving and again when firing.
-- [ ] Issue revocable opaque webhook/API credentials, store only hashes, and show the plaintext once at creation.
-- [ ] Add enable/disable, rotate, test, last-fired, last-result, and paginated invocation history workflows.
+- [x] Model manual, schedule, API, and webhook triggers as versioned resources with owner, enabled state, input mapping, and audit metadata.
+- [x] Route every trigger through one workflow-start use case so validation, permissions, capability gates, snapshotting, and idempotency are consistent.
+- [x] Give API and webhook invocations an idempotency key scoped to trigger and retain the result for a bounded window.
+- [x] Give scheduled occurrences a stable identity derived from trigger, scheduled instant, and definition revision.
+- [x] Validate trigger parameter mappings against the workflow definition when saving and again when firing.
+- [x] Issue revocable opaque webhook/API credentials, store only hashes, and show the plaintext once at creation.
+- [x] Add enable/disable, rotate, test, last-fired, last-result, and paginated invocation history workflows.
 
 ## Tests and Acceptance
 
@@ -28,6 +30,6 @@ A workflow can start from a schedule, authenticated API request, or project webh
 | API | Required: trigger CRUD/test/fire/history, invalid input, duplicate key, revoked credential, capability, and permission contracts |
 | UI | Required: component tests plus browser evidence for creating each trigger, rotating credentials, test fire, and history |
 
-- [ ] The same scheduled occurrence or idempotent external request starts at most one workflow run.
-- [ ] Triggered runs retain the initiating trigger and effective input snapshot.
-- [ ] Disabled or revoked triggers cannot start new runs through direct API use.
+- [x] The same scheduled occurrence or idempotent external request starts at most one workflow run.
+- [x] Triggered runs retain the initiating trigger and effective input snapshot.
+- [x] Disabled or revoked triggers cannot start new runs through direct API use.
