@@ -19,9 +19,7 @@ semaphore users --help
 | [`users delete`](#delete-a-user) | Remove a user. |
 | [`users token create`](#create-a-token) | Create an API token for a user. |
 | [`users token list`](#list-tokens) | List a user's API tokens. |
-| [`users totp enable`](#totp-management) | Enable TOTP for a user. |
-| [`users totp show`](#totp-management) | Show a user's TOTP details. |
-| [`users totp disable`](#totp-management) | Disable TOTP for a user. |
+| [`users totp disable`](#totp-management) | Reset TOTP and revoke all user sessions. |
 
 ## Add a user {#add-a-user}
 
@@ -153,32 +151,20 @@ expiry), separated by tabs. Token values are never printed.
 
 ## TOTP management {#totp-management}
 
-Manage time-based one-time password (2FA) verification via the CLI:
+Use the host-local TOTP command as an administrator recovery path:
 
 ```bash
 semaphore user totp --help
 ```
 
 ```bash
-# Enable TOTP for a user (prints a recovery code, the otpauth URL, and a QR code)
-semaphore user totp enable --login john
-
-# Show the current TOTP details (otpauth URL and QR code)
-semaphore user totp show --login john
-
-# Disable TOTP for a user
+# Reset TOTP and revoke every session for the user
 semaphore user totp disable --login john
 ```
 
-All TOTP subcommands require `--login`.
-
-- `enable` prints a one-time recovery code, the `otpauth://` URL, and a
-  scannable QR code. Store the recovery code in a safe place. It fails if TOTP
-  is already enabled for the user.
-- `show` prints the `otpauth://` URL and QR code again, or `TOTP disabled` if
-  the user has no TOTP set up.
-- `disable` removes the user's TOTP verification. It fails if TOTP is not
-  enabled.
-
-The issuer shown in authenticator apps is taken from the `mfa.totp.app_name`
-configuration option (`SEMAPHORE_TOTP_ISSUER`). It defaults to `Semaphore`.
+The command requires `--login`, deletes the enrollment, and revokes every
+session in one database transaction. It is intended for recovery when the last
+administrator cannot use the web UI, so host and database access are the
+recovery authority. Enrollment and QR display are available only through the
+authenticated web ceremony; the CLI never prints TOTP secrets or recovery
+hashes.

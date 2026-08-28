@@ -15,7 +15,10 @@ Semaphore supports secure authentication and flexible authorization mechanisms:
 
   - **OpenID Connect (OIDC)**<br />Enables single sign-on with identity providers like Google, Azure AD, or Keycloak. Supports custom claims and group mappings.
 
-- **Two-Factor authentication (2FA)**<br />TOTP-based 2FA is available and recommended for all users. It can be enabled per user and supports optional recovery codes. See configuration options `auth.totp.enabled` and `auth.totp.allow_recovery`.
+- **Two-Factor authentication (2FA)**<br />The Enhanced TOTP lifecycle supports staged rollout, password-confirmed enrollment, encrypted secrets, single-use recovery codes, replay protection, throttling, and session revocation.
+  Administrators configure `disabled`, `shadow`, `optional`, selected-required, or required mode in the System Info capability panel.
+  Required mode remains blocked until at least one local administrator has an acknowledged unused recovery code, and external accounts cannot enroll while it is active.
+  The host-local recovery command is `semaphore user totp disable --login <login>`.
 
 - **Role-based access control**<br />You can assign different roles to users such as Admin, Maintainer, or Viewer, limiting access based on responsibility.
 
@@ -142,4 +145,3 @@ We use CodeQL, Codacy, Snyk and Renovate to analyze the codebase and dependencie
 - **No public exploits**<br />Do not share vulnerabilities publicly until patched.
 
 - **Acknowledgments**<br />Security researchers may be acknowledged in release notes if desired.
-

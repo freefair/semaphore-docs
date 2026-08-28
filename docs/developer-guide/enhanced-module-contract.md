@@ -9,7 +9,7 @@ The executable contract is versioned independently from product releases.
 
 | Component | Current value | Source |
 |---|---|---|
-| Core contract | `1.11.0` | `pro_interfaces.CoreContractVersion` |
+| Core contract | `1.12.0` | `pro_interfaces.CoreContractVersion` |
 | Community implementation | `community-1` | `pro/pkg/features.ImplementationVersion` |
 | Clean-room test implementation | `clean-room-test-1` | `test/edition-contract/enhanced/pkg/features` |
 
@@ -27,6 +27,7 @@ See [Project Runner Executor Images](project-runner-executor-images.md) for capa
 See [Audit Webhook Export](audit-webhook-export.md) for the versioned envelope, transactional outbox, delivery policy, and administration contract.
 See [Debug Log Filtering](debug-log-filtering.md) for per-instance matching, reload, structured debug output, and diagnostics.
 See [Vault and OpenBao Runtime Secrets](runtime-secrets.md) for provider configuration, value-free references, task-boundary resolution, managed outbound synchronization, and failure policy.
+See [TOTP Capability Lifecycle](totp-capability-lifecycle.md) for rollout states, enrollment, replay protection, session revocation, and administrator recovery.
 
 ## Source Provenance
 
@@ -49,6 +50,7 @@ The core-owned contract types live in `pro_interfaces/`:
 | Workflows | `WorkflowController`, `WorkflowService`, `WorkflowTaskEnqueuer`, `WorkflowRunLocker`, `WorkflowReconciler` |
 | Structured logging and audit | `LogWriteService`, `LogWriteServiceLifecycle`, `DebugLogService`, per-instance `DebugFilter`, versioned application/task/result/debug envelopes, diagnostics, project-scoped `AuditEvent`, `AuditWebhookServiceFacade`, `AuditWebhookService`, configuration and delivery DTOs |
 | Runtime secrets | `SecretReference`, `SecretProviderConfiguration`, `SecretProviderHealth`, `ManagedSecretField`, `ManagedSecretProvider`, `VaultOpenBaoClient`, and `RuntimeSecretResolver` |
+| TOTP lifecycle | `TOTPService`, enrollment and rollout requests, status and ceremony DTOs, session requirements, and stable security errors |
 | High availability | `NodeRegistry`, `OrphanCleaner`, `ClusterInspector`, `NodeInfo`, `RedisInfo` |
 
 The replaceable module exports these application entry points:
@@ -59,7 +61,7 @@ The replaceable module exports these application entry points:
 | `pro/api/projects` | project runner, Terraform inventory, and workflow controllers |
 | `pro/db/factory` | Terraform, Ansible task-summary, and workflow repositories |
 | `pro/db` | workflow validation, condition matching, and root-node selection |
-| `pro/pkg/features` | capability provider, guarded lifecycle-test service, and compatibility metadata |
+| `pro/pkg/features` | capability provider, guarded lifecycle-test service, TOTP lifecycle service, and compatibility metadata |
 | `pro/pkg/stage_parsers` | task-stage progression |
 | `pro/services/ha` | node registry, schedule deduplication, WebSocket broadcast, orphan cleanup, cluster inspection, and workflow locking |
 | `pro/services/server` | subscription, structured logging, audit webhook export, workflow, secret-storage, and external-secret serializers |
@@ -81,6 +83,7 @@ Community routes remain registered so the router shape is stable, but disabled b
 
 Community middleware delegates to the next handler without mutating the request or invoking a repository.
 Community capability flags are all false, collection services return empty values, log writers have no side effects, and enhanced executor constructors return an explicit unavailable error.
+Community TOTP operations return unavailable; a configured legacy enrollment prevents password-only session creation and must be reset locally or opened with an Enhanced build.
 
 ## Verification
 

@@ -104,7 +104,7 @@ Full list of available configuration options:
 | <br /> `*.options`    <hr /> `SEMAPHORE_DB_OPTIONS`<br /><br /> | JSON map which contains database connection options. |
 | **Security** ||
 | <br />`access_key_encryption` <hr /> `SEMAPHORE_ACCESS_KEY_ENCRYPTION`<br /><br /> | Base64-encoded key used for encrypting access keys stored in the database. Read more in [Database encryption reference](/admin-guide/security#database-encryption). |
-| <br />`option_encryption` <hr /> `SEMAPHORE_OPTION_ENCRYPTION`<br /><br /> | Base64-encoded key used to encrypt DB options (the JWT signing key) with the old single-key scheme (no rotation). Falls back to the access key when unset. |
+| <br />`option_encryption` <hr /> `SEMAPHORE_OPTION_ENCRYPTION`<br /><br /> | Base64-encoded key used to encrypt DB options and Enhanced TOTP provisioning secrets. Falls back to the access key when unset. TOTP enrollment and legacy migration fail closed when neither key is active. |
 | <br />`cookie_hash`           <hr /> `SEMAPHORE_COOKIE_HASH`<br /><br /> | Base64-encoded HMAC key used to sign cookies. |
 | <br />`cookie_encryption`     <hr /> `SEMAPHORE_COOKIE_ENCRYPTION`<br /><br /> | Base64-encoded key used to encrypt cookies. |
 | <br />`web_host`       <hr /> `SEMAPHORE_WEB_ROOT`<br /><br /> | Can be useful if you want to use Semaphore by the subpath, for example: [http://yourdomain.com/semaphore](http://yourdomain.com/semaphore). Do not add a trailing `/`. |
@@ -113,9 +113,9 @@ Full list of available configuration options:
 | <br />`tls.key_file`   <hr /> `SEMAPHORE_TLS_KEY_FILE`<br /><br /> | Path to TLS key file. |
 | <br />`tls.http_redirect_addr` <hr /> `SEMAPHORE_TLS_HTTP_REDIRECT_ADDR`<br /><br /> | Address (`host[:port]`) for the HTTP→HTTPS redirect listener. Mutually exclusive with `tls.http_redirect_port`. |
 | <br />`tls.http_redirect_port` <hr /> `SEMAPHORE_TLS_HTTP_REDIRECT_PORT`<br /><br /> | Port to redirect HTTP traffic to HTTPS. Mutually exclusive with `tls.http_redirect_addr`. |
-| <br />`mfa.totp.enabled`         <hr /> `SEMAPHORE_TOTP_ENABLED` <br /><br /> | Enable Two-factor authentication using TOTP. |
+| <br />`mfa.totp.enabled`         <hr /> `SEMAPHORE_TOTP_ENABLED` <br /><br /> | Legacy TOTP compatibility switch. Enhanced rollout and enforcement are configured through the TOTP capability lifecycle in the administrator UI. |
 | <br />`mfa.totp.app_name` ![Static Badge](https://img.shields.io/badge/v2.17.0-red) <hr /> `SEMAPHORE_TOTP_ISSUER` ![Static Badge](https://img.shields.io/badge/v2.17.0-red) <br /><br /> | Issuer label (Semaphore title) shown in TOTP authenticator apps. |
-| <br />`mfa.totp.allow_recovery`  <hr /> `SEMAPHORE_TOTP_ALLOW_RECOVERY` <br /><br /> | Allow users to reset TOTP using a recovery code. |
+| <br />`mfa.totp.allow_recovery`  <hr /> `SEMAPHORE_TOTP_ALLOW_RECOVERY` <br /><br /> | Legacy recovery compatibility switch. Enhanced enrollments always issue hashed, single-use recovery codes and do not disable TOTP when a code is used. |
 | <br />`mfa.email.enabled`        <hr /> `SEMAPHORE_EMAIL_2TP_ENABLED` <br /><br /> | Enable email-based multi-factor authentication. |
 | <br />`mfa.email.allow_login_as_external_user` <hr /> `SEMAPHORE_EMAIL_2TP_ALLOW_LOGIN_AS_EXTERNAL_USER` <br /><br /> | Allow login as an external (email-only) user. |
 | <br />`mfa.email.allow_create_external_user` <hr /> `SEMAPHORE_EMAIL_2TP_ALLOW_CREATE_EXTERNAL_USER` <br /><br /> | Allow creating external users on first login. |
