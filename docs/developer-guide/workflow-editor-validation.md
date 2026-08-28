@@ -52,6 +52,8 @@ All paths are scoped below `/api/project/{project_id}` and require the existing 
 
 Create and update return `422 WORKFLOW_VALIDATION_FAILED` with located issues when the graph is invalid. Project scoping is derived from the authenticated route context; request body IDs cannot move a workflow or template reference across projects.
 
+Create, validate, and update accept workflow definition bodies up to 8 MiB. Larger requests are rejected before JSON decoding with HTTP `413` and code `WORKFLOW_DEFINITION_TOO_LARGE`; the 200-node and 1,000-edge semantic limits remain a separate validation boundary.
+
 ## Editor lifecycle
 
 The editor keeps the last loaded or saved definition as its baseline. **Discard** restores that baseline, including layout. **Validate** calls the authoritative validation endpoint. **Save** first validates, then replaces the local graph with the server response so temporary IDs and the new revision are adopted. A revision conflict leaves the local graph untouched and exposes an explicit action to reload the current server definition.
