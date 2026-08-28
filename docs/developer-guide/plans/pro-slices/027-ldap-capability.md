@@ -2,6 +2,8 @@
 
 An administrator can validate and enable LDAP authentication while retaining a tested local-administrator recovery path.
 
+Implementation details and operational guidance are documented in [LDAP Capability Lifecycle](../../ldap-capability-lifecycle.md).
+
 | Field | Value |
 |---|---|
 | Selection | P07 LDAP |
@@ -11,14 +13,14 @@ An administrator can validate and enable LDAP authentication while retaining a t
 
 ## Implementation
 
-- [ ] Put all LDAP transport and protocol behavior behind an outbound client interface and keep authentication orchestration in the identity service.
-- [ ] Require TLS with explicit trust configuration and reject silent downgrade, referral escape, and unbounded directory responses.
-- [ ] Use a fixed user search base, escaped filter parameters, an allow-listed unique identity attribute, and normalized immutable external IDs.
-- [ ] Encrypt bind credentials at rest and return them only as write-only configuration fields.
-- [ ] Add disabled, shadow, selected-user, and active lifecycle states with connection, search, and bind readiness checks.
-- [ ] Define account linking and collision behavior for existing local users without silently merging identities by display name.
-- [ ] Rate-limit authentication failures, redact directory diagnostics, and audit configuration and login outcomes.
-- [ ] Preserve a tested local administrator login and make provider outage behavior explicit on the login screen.
+- [x] Put all LDAP transport and protocol behavior behind an outbound client interface and keep authentication orchestration in the identity service.
+- [x] Require TLS with explicit trust configuration and reject silent downgrade, referral escape, and unbounded directory responses.
+- [x] Use a fixed user search base, escaped filter parameters, an allow-listed unique identity attribute, and normalized immutable external IDs.
+- [x] Encrypt bind credentials at rest and return them only as write-only configuration fields.
+- [x] Add disabled, shadow, selected-user, and active lifecycle states with connection, search, and bind readiness checks.
+- [x] Define account linking and collision behavior for existing local users without silently merging identities by display name.
+- [x] Rate-limit authentication failures, redact directory diagnostics, and audit configuration and login outcomes.
+- [x] Preserve a tested local administrator login and make provider outage behavior explicit on the login screen.
 
 ## Tests and Acceptance
 
@@ -29,6 +31,6 @@ An administrator can validate and enable LDAP authentication while retaining a t
 | API | Required: configure/test/enable/disable, write-only bind secret, login, collision, lifecycle, and permission contracts |
 | UI | Required: component tests plus browser evidence for setup, test failure, LDAP login, outage messaging, and local recovery |
 
-- [ ] User-controlled values never become executable LDAP filter fragments.
-- [ ] LDAP failure does not lock out the designated local recovery administrator.
-- [ ] Disabling LDAP stops new directory login without deleting linked account history.
+- [x] User-controlled values never become executable LDAP filter fragments.
+- [x] LDAP failure does not lock out the designated local recovery administrator.
+- [x] Disabling LDAP stops new directory login without deleting linked account history.
