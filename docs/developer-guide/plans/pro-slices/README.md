@@ -7,6 +7,7 @@ Unchecked capabilities, including Terraform state, SOPS, P07 OIDC gating, extern
 ## Table of Contents
 
 - [Delivery Rules](#delivery-rules)
+- [UI Compatibility Checkpoint](#ui-compatibility-checkpoint)
 - [Ordered Slice Index](#ordered-slice-index)
 - [Selection Interpretation](#selection-interpretation)
 - [Architecture Decisions](#architecture-decisions)
@@ -22,6 +23,29 @@ Unchecked capabilities, including Terraform state, SOPS, P07 OIDC gating, extern
 - Run every test layer marked Required in the slice document.
 - For visible behavior, retain browser evidence in addition to frontend unit tests.
 - Port intent and focused tests from old branches; never merge a stale branch wholesale.
+- Keep shared Community views structurally close to their upstream baseline. Put enhanced-only
+  rendering and API orchestration in focused components behind narrow host hooks.
+
+## UI Compatibility Checkpoint
+
+After Slice 031, the accumulated UI diff was audited against the repository-contained
+`origin/develop` baseline at `071b312b8993121a2ce4a34b84c0e12b73477729`.
+
+- Visible surfaces were retained only when a Slice 001–031 interface or acceptance contract names
+  them. Runner lifecycle, health, placement, executor-image, task-summary, observability, runtime
+  secret, TOTP, LDAP, audit-webhook, and workflow interfaces remain required.
+- Enhanced system diagnostics, required TOTP enrollment, runner-attempt details, and secret-storage
+  synchronization history were moved into focused components. Their Community host views now
+  contain only props, events, and component placement needed for integration.
+- The optional responsive rewrite of the existing Task Details tables was removed. Existing
+  Community markup and behavior remain the baseline around the retained runner identity and image
+  fields.
+- The runner page retains its lifecycle and policy hooks because its mutations and observable states
+  are direct acceptance requirements; splitting those handlers further would add component seams
+  without reducing integration logic in the host.
+- Verification includes the host-structure regression contract, 64 focused UI tests, the production
+  build, the full-suite baseline comparison, and credential-free browser rendering at desktop and
+  mobile widths without horizontal overflow or console errors.
 
 ## Ordered Slice Index
 

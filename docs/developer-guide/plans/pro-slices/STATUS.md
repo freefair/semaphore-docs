@@ -34,11 +34,25 @@ Last updated: 2026-08-28
 
 ## Current Compatibility Checkpoint
 
-- [>] Audit all UI changes from Slices 001–031 before starting Slice 032
-  - [>] Establish the repository-contained upstream baseline and inventory the accumulated UI diff
-  - [ ] Classify each change as required by an interface/acceptance contract or optional polish
-  - [ ] Remove optional UI changes while preserving Community behavior
-  - [ ] Re-run frontend tests and browser verification for the retained minimum
+- [x] Audit all UI changes from Slices 001–031 before starting Slice 032
+  - [x] Establish `origin/develop` as the repository-contained upstream baseline
+  - [x] Inventory and classify the accumulated UI diff by slice acceptance contract
+  - [x] Restore the Community `SystemInfoDialog`, `Auth`, and `TaskDetails` structures
+  - [x] Isolate Enhanced system, TOTP enrollment, runner detail, and sync-history interfaces
+  - [x] Remove the optional Task Details responsive-table rewrite
+  - [x] Review the remaining required host hooks and runner UI for avoidable churn
+  - [x] Re-run focused and full frontend tests plus the production build
+    - [x] Pass the temporary upstream-host structure regression test
+    - [x] Pass all 64 focused Enhanced UI contract tests
+    - [x] Pass ESLint for every audit-touched source and test file
+    - [x] Complete the production frontend build
+    - [x] Match the full-suite baseline: 91 passing and the same 3 unrelated failures
+  - [x] Verify the retained interfaces in desktop and mobile browser layouts
+    - [x] Exercise the four extracted components with real Vue/Vuetify rendering and synthetic data
+    - [x] Verify 1280 px and 390×844 layouts without horizontal overflow
+    - [x] Verify the synchronization-history dialog and a clean browser console
+  - [x] Complete the focused diff and security review without new findings
+  - [x] Commit the verified UI integration changes (`5cccf59a`)
 
 ## Slice Plan
 
