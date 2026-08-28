@@ -43,21 +43,29 @@ Last updated: 2026-08-28
 
 - [>] 034 — Workflow parameters and node overrides
   - [>] Establish the existing workflow-start, task-override, credential, and permission contracts
-    - [ ] Inventory duplicate or reusable parameter and override implementations
-    - [ ] Confirm the architecture and OSS API/UI reference patterns
-    - [ ] Specify typed values, bounds, precedence, immutable snapshots, and redaction
-    - [ ] Prove the contract with external failing tests before production edits
-  - [ ] Add parameter declarations and backend validation
-    - [ ] Support string, integer, boolean, enumeration, and secret-reference parameters
-    - [ ] Reject invalid names, unknown values, out-of-bound values, and plaintext secrets
-  - [ ] Resolve immutable run inputs and node overrides
-    - [ ] Apply definition defaults, trigger values, user values, and node overrides with documented precedence
-    - [ ] Restrict inventory, environment, arguments, branch, and credentials to one backend allow-list
-    - [ ] Store effective non-secret values and value-free secret fingerprints
-  - [ ] Map the frozen snapshot to every task attempt without observing later definition edits
-  - [ ] Extend API contracts and minimal existing UI surfaces
-    - [ ] Add compact parameter declaration controls to the existing editor
-    - [ ] Add start validation and effective/redacted audit details without changing navigation or graph structure
+    - [x] Inventory duplicate or reusable parameter and override implementations
+    - [x] Confirm the architecture and OSS API/UI reference patterns
+    - [x] Specify typed values, bounds, precedence, immutable snapshots, and redaction
+    - [x] Prove the contract with external failing tests before production edits
+  - [x] Add parameter declarations and backend validation
+    - [x] Support string, integer, boolean, enumeration, and secret-reference parameters
+    - [x] Reject invalid names, unknown values, out-of-bound values, and plaintext secrets
+  - [x] Resolve immutable run inputs and node overrides
+    - [x] Apply definition defaults, trigger values, user values, and node overrides with documented precedence
+    - [x] Restrict inventory, environment, arguments, branch, and credentials to backend allow-lists
+    - [x] Store effective non-secret values and value-free secret fingerprints
+  - [x] Map the frozen snapshot to every task dispatch without observing later definition edits
+    - [x] Resolve credential references immediately before each task dispatch so rotation is observed safely
+    - [x] Scope credential parameters to an explicit per-node allow-list so unrelated tasks never receive them
+  - [>] Extend API contracts and minimal existing UI surfaces
+    - [x] Isolate the UI in focused components with narrow hooks in the existing workflow views
+    - [x] Add compact parameter and override-policy controls without changing navigation or graph structure
+    - [x] Preserve one-click start for workflows without configurable inputs
+    - [x] Add typed start validation and effective/redacted audit details
+    - [x] Verify the editor, start dialog, audit panel, and responsive layout in the browser
+      - [x] Reject invalid input before start and persist the accepted value with its source
+      - [x] Verify the audit panel at desktop and 390×844 without horizontal overflow or console errors
+      - [x] Verify secret-reference selection, per-node scope, and redacted browser audit on the disposable QA instance
   - [ ] Verify persistence, concurrency, retries, permissions, browser behavior, full suites, and security
   - [ ] Document and commit Slice 034
 
