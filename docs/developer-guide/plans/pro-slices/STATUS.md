@@ -6,31 +6,17 @@ Last updated: 2026-08-28
 
 ## Last Completed Slice
 
-- [x] 031 — Linear workflow run
-  - [x] Define immutable workflow and template snapshots
-  - [x] Add durable run/node states and SQL migration
-  - [x] Prove repository transitions, idempotency, isolation, and rollback
-  - [x] Implement and compile sequential task orchestration
-  - [x] Fix root-task state update discovered during implementation
-  - [x] Add service tests for success, failure, retry, restart, and snapshot isolation
-  - [x] Verify immutable template execution through the real TaskPool path
-  - [x] Implement run API endpoints and controller tests
-  - [x] Wire the existing run views to live data with minimal UI changes and frontend tests
-  - [x] Fix missing run-task lookup found by browser verification
-  - [x] Preserve the distinct blocked-node status in the existing graph
-  - [x] Verify success/failure flows, task links, responsive layouts, and console output in-browser
-  - [x] Run the four-database migration matrix, full test suites, race checks, vet, and docs build
-  - [x] Replace unbounded local workflow lock retention found during focused review
-  - [x] Expand MySQL snapshot columns to match the accepted workflow definition size
-  - [x] Re-run final verification after the review fixes and complete the focused diff review
-  - [x] Record final verification and commit Slice 031 documentation and implementation
-  - [x] Run the committed Slice 031 security diff scan
-  - [x] Replace persistence-model responses with permission-safe run DTOs
-    - [x] Reproduce snapshot, template, and task configuration disclosure on every run response
-    - [x] Preserve only the immutable graph and task fields required by the existing run UI
-    - [x] Verify the fix across API contracts and full suites while retaining the browser-verified UI contract
-    - [x] Independently verify the original attack path is closed
-  - [x] Commit the verified Slice 031 security fix
+- [x] 032 — Conditional parallel workflow
+  - [x] Define a bounded typed condition language over immutable result fields
+  - [x] Persist compiled conditions, explicit joins, parallelism, skips, cancellations, and sanitized results
+  - [x] Replace linear progression with idempotent DAG readiness planning
+  - [x] Prove diamond joins, simultaneous completion, retries, failure paths, and parallelism bounds
+  - [x] Add the required API contracts and minimal editor/run-view hooks
+  - [x] Verify conditional branch authoring and execution in desktop and mobile browsers
+  - [x] Pass the four-database migration matrix, full suites, race checks, vet, lint, builds, and docs build
+  - [x] Fix stopped-predecessor and explicit-zero validation regressions found during review
+  - [x] Complete the committed security diff scan with 0 findings
+  - [x] Commit documentation (`aa1be43`) and implementation (`841cd536`)
 
 ## Current Compatibility Checkpoint
 
@@ -56,39 +42,21 @@ Last updated: 2026-08-28
 
 ## Current Slice
 
-- [>] 032 — Conditional parallel workflow
-  - [x] Define and prove the typed condition/result and join-semantics contracts
-    - [x] Restrict conditions to allow-listed immutable result fields
-    - [x] Specify deterministic empty-branch and skip behavior
-    - [x] Set bounded per-workflow parallelism defaults and limits
-  - [x] Extend the workflow domain, persistence schema, and migration matrix
-    - [x] Persist parallelism, join mode, source expression, compiled program, and immutable node result
-    - [x] Prove SQLite upgrade/backfill/rollback and MySQL-safe large text DDL
-    - [x] Pass the SQLite, MySQL 8.4, MariaDB 10.11, and PostgreSQL 12.22 migration matrix
-  - [x] Replace linear progression with idempotent DAG readiness planning
-  - [x] Prove diamond joins, simultaneous completion, retry, failure, and bounds
-  - [x] Extend API contracts for validated conditions and conditional run status
-  - [x] Add only the required condition, join, skip, and parallel UI hooks
-    - [x] Add the workflow parallelism field without restructuring the editor
-    - [x] Add edge condition expression and node join mode to existing controls
-    - [x] Render skipped/canceled states and compact parallel progress in the existing run view
-    - [x] Pass all 18 focused editor, run-view, and validation tests
-  - [>] Verify focused/full suites, race checks, builds, browser behavior, and review
-    - [x] Run the four-database migration matrix
-    - [x] Run full backend, frontend, race, lint, and production-build verification
-      - [x] Pass Community and Enhanced full Go suites, Enhanced race checks, and both vet scopes
-      - [x] Pass all 18 focused workflow UI tests and changed-file ESLint
-      - [x] Match the full frontend baseline with 96 passing and the same 3 unrelated failures
-      - [x] Build Community, Enhanced, and developer documentation production outputs
-    - [x] Exercise conditional branches and parallel joins in desktop and mobile browser layouts
-    - [>] Complete the focused implementation and security review
-      - [x] Restore `stopped` handling in the built-in failure condition
-      - [x] Reject explicit zero parallelism in client validation
-      - [ ] Run the final security diff scan against the settled patch
-  - [>] Document and commit Slice 032
-    - [x] Document the condition, join, skip, scheduling, persistence, API, and security contracts
-    - [x] Re-run final verification after review fixes
-    - [ ] Commit the documentation submodule and Slice 032 implementation
+- [>] 033 — Workflow artifacts
+  - [>] Establish the existing structured-result and secret-injection contracts
+    - [ ] Inventory current task-summary, result, variable, and secret-safe paths
+    - [ ] Define bounded typed JSON declarations, provenance, sensitivity, and size limits
+    - [ ] Prove validation and redaction behavior in external tests before production edits
+  - [ ] Add artifact persistence and migration coverage
+    - [ ] Keep sensitive values out of definition snapshots and user-visible payloads
+    - [ ] Bind outputs to the producing run and attempt
+    - [ ] Pass SQLite, MySQL, MariaDB, and PostgreSQL migration tests
+  - [ ] Validate graph reachability and resolve downstream inputs immediately before task creation
+  - [ ] Capture declared outputs from structured task results and fail invalid producers safely
+  - [ ] Extend API contracts with value-free provenance and redacted sensitivity metadata
+  - [ ] Add only acceptance-required output controls and states to the existing workflow UI
+  - [ ] Verify focused/full suites, race checks, builds, browser behavior, and security review
+  - [ ] Document and commit Slice 033
 
 ## Slice Plan
 
@@ -114,8 +82,8 @@ Last updated: 2026-08-28
 - [x] 027 — LDAP capability lifecycle
 - [x] 030 — Workflow editor and validation
 - [x] 031 — Linear workflow run
-- [>] 032 — Conditional parallel workflow
-- [ ] 033 — Workflow artifacts
+- [x] 032 — Conditional parallel workflow
+- [>] 033 — Workflow artifacts
 - [ ] 034 — Workflow parameters and overrides
 - [ ] 035 — Workflow triggers
 - [ ] 036 — Workflow approvals
