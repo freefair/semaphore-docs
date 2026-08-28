@@ -19,8 +19,12 @@ Last updated: 2026-08-28
   - [x] Fix missing run-task lookup found by browser verification
   - [x] Preserve the distinct blocked-node status in the existing graph
   - [x] Verify success/failure flows, task links, responsive layouts, and console output in-browser
-  - [>] Run migration matrix, full test suites, race checks, vet, docs build, and focused review
-  - [ ] Update documentation, archive task journal, and commit Slice 031
+  - [x] Run the four-database migration matrix, full test suites, race checks, vet, and docs build
+  - [x] Replace unbounded local workflow lock retention found during focused review
+  - [x] Expand MySQL snapshot columns to match the accepted workflow definition size
+  - [x] Re-run final verification after the review fixes and complete the focused diff review
+  - [>] Record final verification and commit Slice 031 documentation and implementation
+  - [ ] Run the committed Slice 031 security diff scan and address validated in-scope findings
 
 ## Next Compatibility Checkpoint
 
