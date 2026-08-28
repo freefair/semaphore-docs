@@ -64,4 +64,5 @@ Create, validate, and update accept workflow definition bodies up to 8 MiB. Larg
 The editor keeps the last loaded or saved definition as its baseline. **Discard** restores that baseline, including layout. **Validate** calls the authoritative validation endpoint. **Save** first validates, then replaces the local graph with the server response so temporary IDs and the new revision are adopted. A revision conflict leaves the local graph untouched and exposes an explicit action to reload the current server definition.
 
 The execution semantics for conditions, joins, branch skips, and parallel scheduling are documented in [Conditional Parallel Workflows](workflow-conditional-parallel.md).
-Triggers, approvals, artifacts, and cross-project references remain separate later slices.
+Typed downstream values and their value-free provenance contract are documented in [Workflow Artifacts](workflow-artifacts.md).
+Triggers, approvals, and cross-project references remain separate later slices.

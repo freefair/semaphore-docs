@@ -43,20 +43,36 @@ Last updated: 2026-08-28
 ## Current Slice
 
 - [>] 033 — Workflow artifacts
-  - [>] Establish the existing structured-result and secret-injection contracts
-    - [ ] Inventory current task-summary, result, variable, and secret-safe paths
-    - [ ] Define bounded typed JSON declarations, provenance, sensitivity, and size limits
-    - [ ] Prove validation and redaction behavior in external tests before production edits
-  - [ ] Add artifact persistence and migration coverage
-    - [ ] Keep sensitive values out of definition snapshots and user-visible payloads
-    - [ ] Bind outputs to the producing run and attempt
-    - [ ] Pass SQLite, MySQL, MariaDB, and PostgreSQL migration tests
-  - [ ] Validate graph reachability and resolve downstream inputs immediately before task creation
-  - [ ] Capture declared outputs from structured task results and fail invalid producers safely
-  - [ ] Extend API contracts with value-free provenance and redacted sensitivity metadata
-  - [ ] Add only acceptance-required output controls and states to the existing workflow UI
-  - [ ] Verify focused/full suites, race checks, builds, browser behavior, and security review
-  - [ ] Document and commit Slice 033
+	- [x] Establish the existing structured-result and secret-injection contracts
+	  - [x] Inventory current task-summary, result, variable, and secret-safe paths
+	  - [x] Define bounded typed JSON declarations, provenance, sensitivity, and size limits
+	  - [x] Prove validation and redaction behavior in external tests before production edits
+	- [x] Add artifact persistence and migration coverage
+	  - [x] Keep sensitive values out of definition snapshots and user-visible payloads
+	  - [x] Bind outputs to the producing run, task, and assignment attempt
+	  - [x] Prove SQLite upgrade, backfill, rollback, and MySQL-compatible large columns
+	  - [x] Pass the SQLite, MySQL, MariaDB, and PostgreSQL migration matrix
+	  - [x] Re-read the persistence diff for cross-dialect and transaction invariants
+	- [x] Validate graph reachability and resolve downstream inputs immediately before task creation
+	  - [x] Freeze value-free input provenance before creating the consumer task
+	  - [x] Route sensitive values through the existing encrypted task-secret path
+	  - [x] Block required missing inputs and tolerate optional unavailable inputs
+	- [x] Capture declared outputs from structured task results and fail invalid producers safely
+	- [x] Extend API contracts with value-free provenance and redacted sensitivity metadata
+	- [x] Add only acceptance-required declaration controls and metadata states to the existing workflow UI
+	  - [x] Add compact task-node declaration and reference rows to the existing properties panel
+	  - [x] Show value-free availability, provenance, type, and sensitivity in the existing run view
+	  - [x] Keep the workflow graph, navigation, and Community host views unchanged
+	  - [x] Verify desktop and mobile artifact layouts plus a clean browser console
+	  - [x] Record the existing selected-node mobile panel overflow as an out-of-scope side defect
+  - [>] Verify focused/full suites, race checks, builds, browser behavior, and security review
+    - [x] Pass focused backend and frontend tests, lint, callback compilation, and Enhanced production build
+    - [x] Verify declaration, reachable linking, missing inputs, sensitivity redaction, and metadata in a real browser
+    - [ ] Pass the full Go suites, race checks, vet, full frontend baseline, and docs build
+    - [ ] Complete the final diff and security reviews
+  - [>] Document and commit Slice 033
+    - [x] Document the definition, Ansible publishing, resolution, redaction, API, retry, and migration contracts
+    - [ ] Commit the verified documentation and implementation atomically
 
 ## Slice Plan
 

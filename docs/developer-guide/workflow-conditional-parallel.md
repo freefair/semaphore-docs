@@ -88,6 +88,7 @@ The migration is reversible and preserves existing definitions with compatible d
 Workflow definition create, validate, update, and read responses use the fields described in [Workflow Editor and Definition Validation](workflow-editor-validation.md).
 Workflow run detail responses include the frozen parallel limit, node join modes, condition source, node status, and only the sanitized immutable node result.
 The internal compiled program, template snapshots, task arguments, vault configuration, and other execution data are excluded from run presentation responses.
+Run-scoped typed values use the separate value-free API and security contract described in [Workflow Artifacts](workflow-artifacts.md).
 
 ## Security Boundary
 
