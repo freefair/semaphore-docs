@@ -23,8 +23,14 @@ Last updated: 2026-08-28
   - [x] Replace unbounded local workflow lock retention found during focused review
   - [x] Expand MySQL snapshot columns to match the accepted workflow definition size
   - [x] Re-run final verification after the review fixes and complete the focused diff review
-  - [>] Record final verification and commit Slice 031 documentation and implementation
-  - [ ] Run the committed Slice 031 security diff scan and address validated in-scope findings
+  - [x] Record final verification and commit Slice 031 documentation and implementation
+  - [x] Run the committed Slice 031 security diff scan
+  - [>] Replace persistence-model responses with permission-safe run DTOs
+    - [x] Reproduce snapshot, template, and task configuration disclosure on every run response
+    - [x] Preserve only the immutable graph and task fields required by the existing run UI
+    - [x] Verify the fix across API contracts and full suites while retaining the browser-verified UI contract
+    - [x] Independently verify the original attack path is closed
+  - [>] Commit the verified Slice 031 security fix
 
 ## Next Compatibility Checkpoint
 
