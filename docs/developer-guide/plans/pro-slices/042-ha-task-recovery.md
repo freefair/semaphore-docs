@@ -11,13 +11,13 @@ When a server node dies, another node identifies its orphaned task control work 
 
 ## Implementation
 
-- [ ] Persist task-control owner boot identity, lease fencing token, executor/runner execution identity, and last observed progress.
-- [ ] Renew ownership only while the node is ready and relinquish it before drain completes.
-- [ ] Let a new owner claim expired work with a higher fencing token and reject writes from the former owner.
-- [ ] Query the executor or runner by stable execution identity before deciding to observe, cancel, retry, or fail a task.
-- [ ] Never start a replacement solely because a heartbeat was missed; require evidence that the original execution is absent or terminal.
-- [ ] Quarantine ambiguous executions for operator action instead of risking duplicate infrastructure changes.
-- [ ] Display ownership transfer, recovery decision, evidence, and available safe action in task diagnostics.
+- [x] Persist task-control owner boot identity, lease fencing token, executor/runner execution identity, and last observed progress.
+- [x] Renew ownership only while the node is ready and relinquish it before drain completes.
+- [x] Let a new owner claim expired work with a higher fencing token and reject writes from the former owner.
+- [x] Query the executor or runner by stable execution identity before deciding to observe, cancel, retry, or fail a task.
+- [x] Never start a replacement solely because a heartbeat was missed; require evidence that the original execution is absent or terminal.
+- [x] Quarantine ambiguous executions for operator action instead of risking duplicate infrastructure changes.
+- [x] Display ownership transfer, recovery decision, evidence, and available safe action in task diagnostics.
 
 ## Tests and Acceptance
 
@@ -28,6 +28,6 @@ When a server node dies, another node identifies its orphaned task control work 
 | API | Required: ownership/recovery diagnostics, retry-safe action, stale owner, ambiguous execution, and permission contracts |
 | UI | Required: component tests plus browser evidence for automatic recovery and quarantined ambiguous execution |
 
-- [ ] Node loss does not create a second execution while the first may still be running.
-- [ ] A recovered task reaches the same terminal result visible from any node.
-- [ ] Ambiguity is explicit and actionable rather than converted into a misleading terminal state.
+- [x] Node loss does not create a second execution while the first may still be running.
+- [x] A recovered task reaches the same terminal result visible from any node.
+- [x] Ambiguity is explicit and actionable rather than converted into a misleading terminal state.

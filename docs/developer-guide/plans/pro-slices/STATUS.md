@@ -99,8 +99,15 @@ Last updated: 2026-08-29
   - [x] Register and renew task ownership through the Enhanced boundary only while the node is ready
   - [x] Relinquish every owned lease before drain completes and resume ownership only after the node returns to Ready
   - [x] Claim expired work with a higher fence and recover only after a complete post-transfer runner snapshot
+  - [x] Bind every recovery-only task mutation to the same atomically installed task-control fence
+    - [x] Reproduce the pause-after-decision stale-owner race with an external failing contract
+    - [x] Reject stale quarantine, requeue, stop, fail, terminal-result, and assignment-revocation writes after a newer takeover
+    - [x] Return a conflict instead of a misleading successful safe-retry response when ownership changed
+  - [x] Require a complete evidence snapshot strictly after transfer or assignment revocation
+    - [x] Reproduce and reject equal second-resolution database timestamps as insufficient ordering evidence
+    - [x] Verify task-control claim and recovery reads on SQLite, MySQL 8.4, MariaDB 10.11, and PostgreSQL 16
   - [x] Reconcile exact terminal evidence, quarantine ambiguity, and expose a retry-safe operator action
-  - [>] Keep UI work to the existing `TaskRunnerDetails` hook only
+  - [x] Keep UI work to the existing `TaskRunnerDetails` hook only
     - [x] Add scoped value-free diagnostics and retry API contracts
     - [x] Render ownership transfer, fence, evidence, decision, and the safe retry action
     - [x] Add the queued/running/canceling/completing integration matrix and browser evidence
@@ -108,9 +115,9 @@ Last updated: 2026-08-29
       - [x] Verify the existing task-details dialog at 1280 px and 390×844 with no console errors
       - [x] Remove the mobile alert overflow found during browser QA without changing the surrounding task UI
     - [>] Run full Root, Community, Enhanced, migration, frontend, documentation, and review gates
-      - [>] Re-run the complete backend, race, vet, migration, and frontend suites
-      - [ ] Re-read the implementation diff against the Slice 042 acceptance contract
-      - [ ] Complete the final security-focused diff review and atomic commits
+      - [x] Re-run the complete backend, race, vet, migration, and frontend suites
+      - [x] Re-read the implementation diff against the Slice 042 acceptance contract
+      - [>] Complete the final security-focused diff review and atomic commits
 
 ## Completed Slice Detail
 

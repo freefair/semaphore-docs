@@ -122,7 +122,7 @@ All cluster-node endpoints require an authenticated administrator.
 The drain API is intentionally separate from the small dashboard table to keep the upstream UI surface unchanged.
 
 > **Important:** The membership dashboard is an observability and readiness boundary only.
-> Task ownership recovery, workflow progression, and resilience verification follow in Slices 042–044 and must not be inferred from a Ready dashboard state.
+> Workflow progression and resilience verification remain separate boundaries and must not be inferred from a Ready dashboard state.
 
 ### Environment variables {#environment-variables}
 
@@ -150,6 +150,43 @@ SEMAPHORE_HA_REDIS_PASS=***
 | `ha.redis.tls_skip_verify` | `SEMAPHORE_HA_REDIS_TLS_SKIP_VERIFY` | Skip TLS certificate verification for Redis. |
 
 See [Configuration](/admin-guide/configuration) for the full list of available options.
+
+## Task ownership recovery
+
+Every remote-runner assignment receives a stable execution identity derived from the runner, task, and assignment generation.
+The dispatching Semaphore process claims a renewable SQL task-control lease with its boot identity and a monotonically increasing fencing token before a runner can observe the assignment.
+The lease is renewed only while that process is Ready and is released before the process finishes draining.
+
+After an owner disappears, another Ready process may claim the expired control with a higher fence.
+The takeover and the task row's recovery fence are committed atomically, so a paused former owner cannot later change task state.
+The new owner then waits for a complete runner snapshot observed strictly after the ownership transfer.
+A missed Semaphore heartbeat alone never proves that the remote execution stopped.
+
+Recovery follows these evidence rules:
+
+| Runner evidence | Recovery behavior |
+| --- | --- |
+| The exact execution is still running | Keep observing it without creating a replacement. |
+| The exact execution reports a terminal status | Persist that same terminal result and finalize the task. |
+| A complete post-transfer snapshot proves the exact execution absent | Requeue a not-yet-running task, stop a canceled task, or fail a running task without starting a duplicate execution. |
+| Evidence is missing, stale, incomplete, or otherwise ambiguous | Keep the task nonterminal and quarantine recovery for operator review. |
+
+For a not-yet-running assignment, recovery first revokes the assignment without enqueueing a replacement.
+It requeues only after a strictly later complete runner snapshot proves that the revoked generation is absent.
+This two-step transition prevents an old runner from starting work concurrently with a replacement.
+
+Task Details uses the existing runner-details area to show the current and previous boot owner, fence, runner generation, evidence, recovery decision, and operator-safe reason.
+A quarantined task offers **Retry safe recovery check**.
+That action re-evaluates current evidence only while the receiving process still owns the current fence; it does not force a replacement or convert ambiguity into a terminal result.
+
+The task endpoints use the existing project task permissions:
+
+| Method | Path | Purpose |
+| --- | --- | --- |
+| `GET` | `/api/project/{project_id}/tasks/{task_id}/recovery` | Return value-free ownership, evidence, and recovery diagnostics. |
+| `POST` | `/api/project/{project_id}/tasks/{task_id}/retry-recovery` | Retry the server-declared safe recovery check for a quarantined task. |
+
+Recovery diagnostics never include task output, executor environment values, credentials, or the internal stable execution identifier.
 
 ## Load balancer {#load-balancer}
 
@@ -213,7 +250,7 @@ See [Reverse Proxy](/admin-guide/reverse-proxy/nginx) for more NGINX configurati
 ## How job execution works {#how-job-execution-works}
 
 > **Note:** The coordination behavior in this section is the intended completed HA architecture.
-> Slice 040 implements only the cluster membership dashboard described above.
+> Cluster membership, schedule coordination, live-event delivery, and remote-runner task recovery are implemented as separate correctness boundaries.
 
 In a multi-node deployment, task execution follows a coordinated flow:
 
