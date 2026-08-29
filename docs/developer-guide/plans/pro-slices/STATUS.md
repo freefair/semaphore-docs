@@ -6,16 +6,14 @@ Last updated: 2026-08-29
 
 ## Last Completed Slice
 
-- [x] 034 — Workflow parameters and node overrides
-  - [x] Add bounded string, integer, boolean, enumeration, and secret-reference declarations
-  - [x] Resolve default, trigger, user, and node values into immutable run snapshots
-  - [x] Enforce backend allow-lists for inventories, variable groups, arguments, branches, and credentials
-  - [x] Resolve approved credentials just in time and scope them to explicitly authorized nodes
-  - [x] Keep UI integration inside focused components and narrow existing workflow hooks
-  - [x] Verify authoring, invalid input, explicit empty strings, UTF-8 byte limits, secret redaction, and responsive audit rendering in the browser
-  - [x] Pass the four-database migration matrix, full Go suites, race checks, vet, focused lint, web/docs builds, and the established frontend baseline
-  - [x] Complete the final security diff scan with 24/24 items and 0 findings
-  - [x] Commit documentation (`915e995`, `a21681c`), its root pointer (`afaba44c`), and implementation (`47b9ce82`)
+- [x] 035 — Workflow triggers
+  - [x] Implement versioned manual, schedule, API, and webhook trigger resources through one shared workflow-start boundary
+  - [x] Persist hash-only opaque credentials, scoped idempotency, immutable trigger/input snapshots, and invocation history
+  - [x] Add the UTC scheduler, management and public API routes, capability/permission enforcement, and Community stubs
+  - [x] Keep the UI to one focused capability-gated workflow dialog with desktop and mobile rendering
+  - [x] Verify API/webhook/scheduler behavior in the local server and browser, the four-database migration matrix, Root/Community/Enhanced suites, race checks, vet, builds, and the established frontend baseline
+  - [x] Complete the security diff scan, reproduce the rotation/disable race, and bind current revision, enabled state, and credential generation to the durable claim before `StartWorkflow`
+  - [x] Commit documentation (`88abe29`), its root pointer (`88b52b0b`), and implementation (`97d0e9da`)
 
 ## Current Compatibility Checkpoint
 
@@ -41,62 +39,16 @@ Last updated: 2026-08-29
 
 ## Current Slice
 
-- [>] 035 — Workflow triggers
-  - [>] Establish the existing scheduler, webhook, workflow-start, permission, and audit contracts
-    - [x] Inventory reusable schedule, integration, credential, idempotency, and history implementations
-      - [x] Reuse the existing workflow correlation CAS for committed-run idempotency
-      - [x] Reuse opaque token hashing, workflow input validation, audit, pagination, and cron parsing patterns
-      - [x] Keep workflow triggers separate from legacy template schedules and integrations
-    - [x] Define versioned trigger resources and one shared start boundary
-      - [x] Use explicit fixed/request input bindings with no implicit request-field passthrough
-      - [x] Scope external request hashes to trigger and credential generation
-      - [x] Derive scheduled occurrence identity from trigger revision, definition revision, and UTC instant
-    - [x] Prove mapping, occurrence identity, idempotency, credential hashing, and disabled-state contracts with external failing tests
-    - [x] Implement the bounded trigger domain model and validation as the first green layer
-  - [>] Persist manual, schedule, API, and webhook triggers
-    - [x] Add the additive trigger and invocation schema plus rollback across all database engines
-    - [x] Store owner, enabled state, input mapping, audit metadata, and bounded invocation history
-    - [x] Claim external invocation keys atomically and retain scheduled identity through the workflow run
-    - [x] Store only hashes for revocable opaque API/webhook credentials and reveal plaintext once
-      - [x] Persist 71-character domain-separated SHA-256 hashes without plaintext columns
-      - [x] Issue and rotate plaintext credentials at the service boundary only
-  - [>] Route every trigger through the same workflow-start use case
-    - [x] Revalidate mappings against the current workflow definition at save and fire time
-    - [x] Scope external idempotency to trigger and credential generation and derive stable scheduled occurrence identities
-    - [x] Retain initiating trigger and effective immutable input snapshot on each run
-    - [x] Retry failed starts through the same correlation CAS without creating a second run
-    - [x] Complete runtime wiring and end-to-end API/scheduler verification
-      - [x] Prove API and webhook duplicate delivery against the real local server
-      - [x] Prove rotation/revocation and disabled direct-fire rejection
-      - [x] Prove the scheduler creates one stable UTC occurrence and run snapshot
-  - [x] Add trigger lifecycle interfaces with minimal existing-workflow UI hooks
-    - [x] Support create, enable/disable, rotate, test, last-fired/result, and paginated history in the backend contract
-    - [x] Add one focused Enhanced trigger surface behind a narrow workflow hook
-    - [x] Re-audit the host diff and gate it strictly on the Enhanced `workflow_triggers` capability
-    - [x] Preserve existing workflow navigation and graph/editor structure
-    - [x] Verify the isolated dialog at desktop and mobile widths before accepting the UI
-      - [x] Create all four trigger types, rotate credentials, test-fire, and inspect history
-      - [x] Replace the clipped mobile table with component-local cards after browser evidence exposed inaccessible actions
-      - [x] Verify 1280 px and 390×844 layouts without page overflow or browser-console findings
-  - [>] Verify scheduler/API/webhook execution, duplicates, rotation, retries, definition changes, permissions, full suites, and security
-    - [x] Complete focused domain, repository, service, API, UI, build, and browser checks
-    - [x] Run the four-database migration matrix and full repository/module suites
-      - [x] Pass SQLite, PostgreSQL, MySQL, and MariaDB migrate/rollback/reapply checks
-      - [x] Pass the full root, Community, and Enhanced Go suites
-      - [x] Pass root and Enhanced race checks plus `go vet` in all three workspaces
-      - [x] Match the established frontend baseline: 116 passing and the same 3 unrelated failures
-      - [x] Complete the production frontend and Docusaurus builds
-    - [x] Complete the final diff, security, and acceptance review
-      - [x] Re-read every new domain, repository, service, controller, migration, and UI boundary
-      - [x] Confirm hash-only credential persistence, scoped authorization, and atomic idempotency controls
-      - [x] Complete the native working-tree security diff scan
-      - [x] Reproduce and fix the in-flight rotation/disable race before committing
-        - [x] Bind revision, enabled state, and credential generation to the durable SQL invocation claim
-        - [x] Prove rotation and disable reject a blocked external invocation with the race detector
-        - [x] Preserve normal API and schedule idempotency after the guard
-  - [>] Document and commit Slice 035
-    - [x] Add the developer contract for mappings, APIs, credentials, schedules, persistence, and compatibility
-    - [x] Mark the Slice 035 implementation and acceptance checklist complete
+- [>] 036 — Workflow approvals
+  - [>] Establish the approval-node, planner, workflow-run, role, and audit contracts
+    - [ ] Inventory the existing approval status stub and all workflow progression transition points
+    - [ ] Define the approval request state machine, immutable audit fields, and timeout/reconciliation boundaries
+    - [ ] Prove eligibility, separation-of-duties, state transition, and timeout contracts with failing external tests
+  - [ ] Persist and conditionally resolve approval requests
+  - [ ] Pause and resume workflow progression without downstream task creation before an allowed outcome
+  - [ ] Add the capability/permission-gated inbox, run action, expiry worker, API, and minimal focused UI
+  - [ ] Verify concurrent decisions, restart recovery, audit immutability, APIs, browser flows, full suites, and security review
+  - [ ] Document and commit Slice 036
 
 ## Slice Plan
 
@@ -125,8 +77,8 @@ Last updated: 2026-08-29
 - [x] 032 — Conditional parallel workflow
 - [x] 033 — Workflow artifacts
 - [x] 034 — Workflow parameters and overrides
-- [>] 035 — Workflow triggers
-- [ ] 036 — Workflow approvals
+- [x] 035 — Workflow triggers
+- [>] 036 — Workflow approvals
 - [ ] 037 — Workflow reconciliation
 - [ ] 040 — HA cluster dashboard
 - [ ] 041 — Cross-node coordination
