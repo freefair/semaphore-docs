@@ -70,6 +70,41 @@ Enable HA by adding the `ha` block to your `config.json` on each node:
 
 Each node must have a unique `ha.node_id`. All other configuration should be identical across nodes.
 
+## Cluster membership dashboard
+
+The Cluster Dashboard at `/cluster` is the operator view of Enhanced cluster membership.
+It records one durable SQL row for every process lifetime and derives live state from a Redis heartbeat, so a restarted node is never confused with its earlier process.
+The configured `ha.node_id` is the stable operator-managed identity and is required when HA is enabled.
+Each process receives a fresh cryptographic boot identity at startup.
+
+The dashboard refreshes its heartbeat every 10 seconds with a 30-second Redis TTL.
+Redis `TIME`, rather than a node-local clock, supplies registration, observed, and liveness timestamps.
+SQL history is retained for seven days after its last server-timed heartbeat, then removed; boot identities are never reused.
+
+A node is Ready only if its SQL registration and live Redis heartbeat are both present, it uses the current cluster protocol and schema, it advertises the `cluster-dashboard` capability, and it is not draining.
+Expired heartbeats appear as Stale.
+Schema, protocol, or capability mismatches appear as Incompatible and cannot be Ready.
+Draining is an operator-controlled durable state that also prevents readiness.
+
+The existing dashboard table shows node identity, state, last heartbeat, start time, version context, aggregate health counts, and Redis diagnostics.
+No new navigation surface is required.
+
+### Admin API
+
+All cluster-node endpoints require an authenticated administrator.
+
+| Method | Path | Purpose |
+| --- | --- | --- |
+| `GET` | `/api/cluster` | Dashboard summary with health aggregation and Redis diagnostics. |
+| `GET` | `/api/cluster/nodes?limit=20&offset=0` | Paginated node history. `limit` is capped at 100. |
+| `GET` | `/api/cluster/nodes/{boot_id}` | One process lifetime by immutable boot identity. |
+| `POST` | `/api/cluster/nodes/{boot_id}/draining` | Persist an operator drain transition with `{"draining": true}` or `{"draining": false}`. |
+
+The drain API is intentionally separate from the small dashboard table to keep the upstream UI surface unchanged.
+
+> **Important:** The membership dashboard is an observability and readiness boundary only.
+> Cross-node scheduling, task recovery, workflow progression, and resilience verification follow in Slices 041–044 and must not be inferred from a Ready dashboard state.
+
 ### Environment variables {#environment-variables}
 
 Alternatively, configure HA using environment variables:
@@ -157,6 +192,9 @@ server {
 See [Reverse Proxy](/admin-guide/reverse-proxy/nginx) for more NGINX configuration details.
 
 ## How job execution works {#how-job-execution-works}
+
+> **Note:** The coordination behavior in this section is the intended completed HA architecture.
+> Slice 040 implements only the cluster membership dashboard described above.
 
 In a multi-node deployment, task execution follows a coordinated flow:
 
