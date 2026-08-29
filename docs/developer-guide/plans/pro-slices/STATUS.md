@@ -122,36 +122,32 @@ Last updated: 2026-08-29
         - [x] Serialize in-flight ownership operations, drain/release/resume, and persisted drain transitions (`ee93e2c4`)
         - [x] Pass the fixed-range security verification with no findings (`a24829c4-bf2f-48d2-af9c-91b2d4b30de9`)
 
+## Last Completed Slice
+
+- [x] 043 — HA workflow progression
+  - [x] Persist renewable SQL ownership leases, boot transfer history, database-time expiry, and monotonically increasing fences
+  - [x] Fence task creation, approval transitions, planner-node finalization, and run status against owner loss
+  - [x] Rebuild readiness from SQL, interleave projects fairly, and compose bounded task/workflow drain behavior
+  - [x] Expose value-free run and cluster diagnostics through the existing APIs and two minimal UI hooks
+  - [x] Verify Root, Community, Clean-room Enhanced, race, vet, four-dialect migration, frontend, docs, desktop/mobile browser, and security gates
+  - [x] Complete Security scan `c2b1247a-ec7d-465f-897e-e52d7ea17d4d` with 16/16 production files covered and no findings
+  - [x] Commit documentation (`2b3ab66`), its root pointer (`1a31195a`), and implementation (`edbb2381`)
+
 ## Current Slice
 
-- [>] 043 — HA workflow progression
-  - [x] Inventory workflow reconciliation ownership, durable wake facts, conditional progression writes, and existing diagnostics seams
-    - [x] Trace every task-completion, approval, stop, and reconciliation entry point
-    - [x] Identify the smallest Enhanced interface boundary and preserve the existing workflow-run UI
-  - [x] Define workflow ownership, fencing, readiness replay, fairness, and drain contracts in external failing tests
-    - [x] Prove owner exclusion, expired transfer, fence increment, and stale release rejection
-    - [x] Prove stale-owner task-attempt rejection at the atomic create boundary
-    - [x] Prove project-interleaved reconciliation ordering
-  - [x] Persist renewable workflow reconciliation leases and transfer history
-  - [x] Reconcile exclusively from SQL facts with conditional node-attempt creation
-    - [x] Keep task completion, approval decisions, and stop requests as durable wake facts
-    - [x] Fence task, approval, planner, and run-status writes against mid-transition ownership loss
-  - [x] Partition nonterminal-run scanning fairly across projects
-  - [x] Add bounded drain/release behavior and value-free run/cluster diagnostics
-    - [x] Compose task and workflow ownership workers behind the existing drain transition
-    - [x] Expose SQL-derived owner, lease age, transfer history, recovered state, and lag models
-    - [x] Roll back earlier workers when a composite drain or persisted drain transition fails
-    - [x] Exclude terminal ownership history from cluster lag and distinguish same-boot reclaims from transfers
-    - [x] Add permanent drain, replay, diagnostics, and API contracts
-  - [>] Verify concurrent reconcilers, node death, duplicate/lost events, API permissions, minimal UI, browser transfer coherence, and full gates
-    - [x] Pass focused SQL, HA locker/drain, concurrent reconciliation, and workflow API suites
-    - [x] Document ownership, fencing, fairness, drain, run diagnostics, and cluster diagnostics
-    - [x] Run Root, Community, Enhanced, race, vet, migration, frontend, and documentation gates
-    - [x] Exercise coherent ownership transfer in the local browser at desktop and mobile widths
-      - [x] Preserve the same workflow nodes and task identities across the simulated owner transfer
-      - [x] Render the single transfer alert and cluster progression chip at 1280 px and 390×844
-      - [x] Verify no horizontal overflow and a clean browser console
-    - [>] Complete manual diff/security review and atomic commits
+- [>] 044 — HA resilience verification
+  - [>] Inventory the existing HA harness, deployment health/readiness, failure seams, and release-gate wiring
+    - [>] Map reusable multi-node SQL, Redis, runner, server, and browser fixtures from Slices 040–043
+    - [ ] Identify every named fault boundary and the invariant that must be probed before, during, and after recovery
+    - [ ] Keep product UI unchanged unless browser recovery exposes a required compatibility defect
+  - [ ] Define the supported rolling-upgrade skew and readiness rejection matrix
+  - [ ] Build a reproducible multi-node fault topology and machine-readable report contract
+    - [ ] Inject node kill, pause, partition, Redis restart, SQL loss, runner reconnect, and rolling replacement
+    - [ ] Continuously probe API availability and assert schedule, task, workflow, approval, and audit uniqueness
+  - [ ] Add the enhanced release gate and retain its result artifact
+  - [ ] Publish operator runbooks for scale-out, drain, upgrade, degraded Redis, failed nodes, and ambiguous execution
+  - [ ] Verify cluster, task, and workflow browser recovery through node replacement at desktop and mobile widths
+  - [ ] Run full verification, manual review, security review, and atomic commits
 
 ## Completed Slice Detail
 
@@ -203,8 +199,8 @@ Last updated: 2026-08-29
 - [x] 040 — HA cluster dashboard
 - [x] 041 — Cross-node coordination
 - [x] 042 — HA task recovery
-- [>] 043 — HA workflow progression
-- [ ] 044 — HA resilience verification
+- [x] 043 — HA workflow progression
+- [>] 044 — HA resilience verification
 - [ ] 045 — Custom project roles
 - [ ] 046 — Global and template roles
 - [ ] 047 — LDAP group mapping
