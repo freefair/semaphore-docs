@@ -61,9 +61,9 @@ Last updated: 2026-08-29
   - [x] Add the capability/permission-gated inbox, run action, expiry worker, API, and minimal focused UI
   - [x] Verify concurrent decisions, restart recovery, audit immutability, APIs, browser flows, full suites, and security review
     - [x] Prove cancel, both timeout outcomes, concurrent terminal decisions, eligibility, and restart recovery with focused tests
-    - [ ] Run migrations and full Root, Community, Enhanced, and frontend verification
-    - [ ] Complete local browser flows at desktop and mobile widths
-    - [ ] Complete diff/security review and documentation
+    - [x] Run migrations and full Root, Community, Enhanced, and frontend verification
+    - [x] Complete local browser flows at desktop and mobile widths
+    - [x] Complete diff/security review and documentation
   - [x] Document and commit Slice 036
 
 ## Slice Plan
