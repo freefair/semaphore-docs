@@ -52,9 +52,9 @@ Last updated: 2026-08-29
   - [x] Complete the focused diff and security review without new findings
   - [x] Commit the verified UI integration changes (`5cccf59a`)
 
-## Current Slice
+## Last Completed Slice
 
-- [>] 040 — HA cluster dashboard
+- [x] 040 — HA cluster dashboard
   - [x] Inventory the existing HA interfaces, registry stubs, cluster endpoints, and local Redis test boundaries
   - [x] Define the stable node/boot identity, SQL history, Redis-server-time liveness, compatibility, and readiness contracts
     - [x] Prove stable configured node identity and fresh cryptographic boot identity with an external failing contract
@@ -72,6 +72,20 @@ Last updated: 2026-08-29
     - [x] Complete desktop and 390×844 browser checks for Ready, Stale, Incompatible, Draining, recovery, version context, and a clean console
     - [x] Run full Root, Community, Clean-room Enhanced, migration, frontend, documentation, review, and security-diff gates
     - [x] Commit operator documentation (`b0594f2`), its root pointer (`dfa5ca8d`), and implementation (`414fbb8e`)
+
+## Current Slice
+
+- [>] 041 — HA cross-node coordination
+  - [x] Inventory scheduler, lock, Redis transport, SQL lease, API, and existing dashboard seams
+  - [>] Define lease fencing, ownership, event ordering, and safe fallback contracts
+    - [x] Prove a UTC-normalized occurrence key that binds schedule identity, intended fire instant, and relevant revision
+    - [x] Persist renewable SQL leases with server-derived expiry, boot-owner fencing, compare-and-set release, and completed-occurrence rejection
+    - [x] Bind legacy scheduled tasks to the durable occurrence through a unique SQL task key and a fenced pre-create re-check
+    - [x] Add bounded Redis Pub/Sub fan-out with local delivery, echo/duplicate suppression, subscriber queue bounds, and reconnect backoff
+    - [x] Expose SQL-authoritative coordinator health and live-event degradation through the existing cluster API and dashboard header
+  - [>] Verify coordinator API/UI, multi-node recovery, documentation, review, and commit the bounded coordination slice
+    - [x] Pass Root, Community, and Clean-room Enhanced compilation/suites, focused lease/fencing/PubSub tests, Root Vet, and the frontend build
+    - [>] Complete the authenticated desktop/mobile browser evidence; Credential-Guard approval for the disposable local test admin is pending after ntfy reply delivery failed
 
 ## Completed Slice Detail
 

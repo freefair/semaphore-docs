@@ -86,8 +86,27 @@ Expired heartbeats appear as Stale.
 Schema, protocol, or capability mismatches appear as Incompatible and cannot be Ready.
 Draining is an operator-controlled durable state that also prevents readiness.
 
-The existing dashboard table shows node identity, state, last heartbeat, start time, version context, aggregate health counts, and Redis diagnostics.
+The existing dashboard table shows node identity, state, last heartbeat, start time, version context, aggregate health counts, Redis diagnostics, and the separate live-event transport state.
 No new navigation surface is required.
+
+## Cross-node schedule coordination
+
+The scheduler derives one immutable occurrence for every intended schedule fire.
+Its identity binds the schedule ID, a digest of the relevant schedule definition, and the intended UTC instant.
+An edit therefore cannot reuse a claim made for an older definition.
+
+The occurrence is claimed in SQL with the configured node's boot identity, a monotonically increasing fencing token, and a database-server-derived lease expiry.
+Every task creation re-checks that exact lease immediately before the insert.
+The created task persists the occurrence key under a unique SQL constraint, then the occurrence records the task as complete.
+If a node fails between these operations, a later claim discovers the unique task key and repairs the occurrence instead of creating another logical run.
+
+Redis Pub/Sub distributes only bounded, lossy live-event notifications between WebSocket nodes.
+It has a fixed channel name, message-size and subscriber-queue limits, echo/duplicate suppression, and reconnect backoff.
+A missed Redis event can delay a browser update but cannot change or lose durable state: clients recover from the existing SQL-backed API refresh.
+
+The cluster API returns `coordinator.sql_authoritative: true` independently of `coordinator.live_events`.
+`healthy`, `degraded`, and `unavailable` describe only the live-notification path.
+Operators should investigate a degraded Redis path, but must not infer that completed task or schedule state has become unavailable.
 
 ### Admin API
 
@@ -103,7 +122,7 @@ All cluster-node endpoints require an authenticated administrator.
 The drain API is intentionally separate from the small dashboard table to keep the upstream UI surface unchanged.
 
 > **Important:** The membership dashboard is an observability and readiness boundary only.
-> Cross-node scheduling, task recovery, workflow progression, and resilience verification follow in Slices 041–044 and must not be inferred from a Ready dashboard state.
+> Task ownership recovery, workflow progression, and resilience verification follow in Slices 042–044 and must not be inferred from a Ready dashboard state.
 
 ### Environment variables {#environment-variables}
 
