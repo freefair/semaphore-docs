@@ -6,6 +6,13 @@ Last updated: 2026-08-29
 
 ## Last Completed Slice
 
+- [x] 037 — Workflow reconciliation
+  - [x] Persist desired run state, reconciliation diagnostics, retry backoff, quarantine, and the immediate startup scan
+  - [x] Make stop requests, node claims, approval opening, and stale diagnostic updates safe during callback and recovery races
+  - [x] Expose redacted diagnostics and manual retry through the existing run API and run view only
+  - [x] Verify Root, Community, Clean-room Enhanced, race, migration, frontend, docs, desktop/mobile browser, and final security-diff gates
+  - [x] Commit documentation (`5dc56aa`), its root pointer (`268a895f`), and implementation (`63feab87`)
+
 - [x] 036 — Workflow approvals
   - [x] Persist immutable request snapshots and conditional approval, rejection, expiry, and cancellation transitions
   - [x] Enforce project permission eligibility, separation of duties, bounded user comments, and durable attribution
@@ -47,16 +54,11 @@ Last updated: 2026-08-29
 
 ## Current Slice
 
-- [>] 037 — Workflow reconciliation
-  - [x] Audit durable desired/observed state, stop boundary, and reconciler recovery path
-  - [>] Persist stop/retry/quarantine state and implement conditional recovery transitions
-    - [x] Persist durable `running` / `stopping` / `stopped` desired state and recover a stop after service restart
-    - [x] Block late node claims and stale diagnostic writes after a durable stop request
-    - [x] Persist bounded retry backoff, poison-run quarantine, and manual diagnostic reset
-  - [x] Expose status and retry reconciliation through the existing run API/UI surfaces
-    - [x] Add the retry endpoint and field-safe run-status response
-    - [x] Show stopping, stopped, recovering, and quarantined states only in the existing run view
-  - [ ] Verify restart, cancellation, races, browser flows, security review, and documentation
+- [>] 040 — HA cluster dashboard
+  - [>] Inventory the existing HA interfaces, registry stubs, cluster endpoints, and local Redis test boundaries
+  - [ ] Define the stable node/boot identity, SQL history, Redis-server-time liveness, compatibility, and readiness contracts
+  - [ ] Implement authenticated summary/detail APIs and the smallest existing admin UI hook
+  - [ ] Verify multi-instance lifecycle, compatibility, cleanup, browser states, documentation, review, and commits
 
 ## Completed Slice Detail
 
@@ -104,8 +106,8 @@ Last updated: 2026-08-29
 - [x] 034 — Workflow parameters and overrides
 - [x] 035 — Workflow triggers
 - [x] 036 — Workflow approvals
-- [ ] 037 — Workflow reconciliation
-- [ ] 040 — HA cluster dashboard
+- [x] 037 — Workflow reconciliation
+- [>] 040 — HA cluster dashboard
 - [ ] 041 — Cross-node coordination
 - [ ] 042 — HA task recovery
 - [ ] 043 — HA workflow progression
