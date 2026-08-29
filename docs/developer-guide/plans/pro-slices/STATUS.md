@@ -133,9 +133,9 @@ Last updated: 2026-08-29
   - [x] Complete Security scan `c2b1247a-ec7d-465f-897e-e52d7ea17d4d` with 16/16 production files covered and no findings
   - [x] Commit documentation (`2b3ab66`), its root pointer (`1a31195a`), and implementation (`edbb2381`)
 
-## Current Slice
+## Slice 044 Completion
 
-- [>] 044 — HA resilience verification
+- [x] 044 — HA resilience verification
   - [x] Inventory the existing HA harness, deployment health/readiness, failure seams, and release-gate wiring
     - [x] Map reusable multi-node SQL, Redis, runner, server, and browser fixtures from Slices 040–043
     - [x] Identify every named fault boundary and the invariant that must be probed before, during, and after recovery
@@ -187,13 +187,28 @@ Last updated: 2026-08-29
         - [x] Rerun the complete isolated HA topology from empty volumes with all seven scenarios and invariants passing
     - [x] Verify the succeeded workflow run, ownership-transfer notice, approved node, and live node rejoin at desktop width
     - [x] Repeat cluster, task, and workflow verification at 390×844 with no document overflow and an empty browser diagnostic log
-  - [>] Run full verification, manual review, security review, and atomic commits
+  - [x] Run full verification, manual review, security review, and atomic commits
     - [x] Pass the current Root, Community, Clean-room Enhanced, full race, Root/Enhanced vet, and eight Bats contract suites
     - [x] Match the unchanged frontend baseline at 126 passing with the same three unrelated failures and complete the Enhanced production build
     - [x] Complete the Docusaurus production build and recheck both repository diffs for whitespace errors
     - [x] Validate the retained HA report with seven scenarios, zero duplicates, eight converged writes, zero probe failures, and continuous audit history
     - [x] Seal Security scan `a5e7236a-f278-4423-99da-5b5b9082b3c2` with complete coverage, no findings, and no deferred work
-    - [>] Commit operator documentation, its root pointer, implementation, and final status atomically
+    - [x] Commit operator documentation (`b2b56c4`), its root pointer (`3aff205d`), and implementation (`f74ebb87`)
+
+## Current Slice
+
+- [>] 045 — Custom project roles
+  - [>] Inventory the current built-in role model, project membership mutations, permission checks, audit seams, and narrow UI host points
+    - [ ] Prove there is no duplicate custom-role implementation or repository contract
+    - [ ] Map every existing built-in role to its effective permissions before adding persistence
+    - [ ] Select one real project action for the first end-to-end allow/deny enforcement path
+    - [ ] Keep Community behavior and shared project UI structurally unchanged outside required interfaces
+  - [ ] Define the typed permission catalog and project-scoped custom-role contract with an external failing test
+  - [ ] Persist immutable role IDs, unique per-project names, assignments, and migration-compatible built-in mappings
+  - [ ] Enforce project isolation, capability prerequisites, stale writes, and the last-administrator invariant in the backend
+  - [ ] Add audited role CRUD, assignment, and effective-permission APIs
+  - [ ] Add only the required capability-gated role management, preview, assignment, and denied-state UI hooks
+  - [ ] Verify unit, integration, API, migration, two-user browser, full-suite, documentation, and security gates
 
 ## Completed Slice Detail
 
@@ -246,8 +261,8 @@ Last updated: 2026-08-29
 - [x] 041 — Cross-node coordination
 - [x] 042 — HA task recovery
 - [x] 043 — HA workflow progression
-- [>] 044 — HA resilience verification
-- [ ] 045 — Custom project roles
+- [x] 044 — HA resilience verification
+- [>] 045 — Custom project roles
 - [ ] 046 — Global and template roles
 - [ ] 047 — LDAP group mapping
 - [ ] 048 — OIDC group mapping
