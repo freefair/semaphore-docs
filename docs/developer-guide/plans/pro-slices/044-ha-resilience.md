@@ -11,13 +11,13 @@ An operator can perform a documented rolling upgrade and node-failure exercise w
 
 ## Implementation
 
-- [ ] Create a reproducible multi-node test topology with shared SQL, Redis, runners, and controlled network/process failure injection.
-- [ ] Define supported rolling-upgrade version skew and block node readiness outside that matrix.
-- [ ] Add graceful drain hooks and readiness behavior for server, scheduler, task control, and workflow ownership.
-- [ ] Exercise node kill, pause, partition, Redis restart, database connection loss, runner reconnect, and rolling replacement at named state boundaries.
-- [ ] Verify API availability, schedule uniqueness, live-update recovery, task ownership, workflow progression, and audit continuity after each fault.
-- [ ] Publish operator runbooks for scale-out, drain, rolling upgrade, degraded Redis, failed node, and ambiguous execution.
-- [ ] Make the fault suite a required enhanced release gate with retained machine-readable results.
+- [x] Create a reproducible multi-node test topology with shared SQL, Redis, runners, and controlled network/process failure injection.
+- [x] Define supported rolling-upgrade version skew and block node readiness outside that matrix.
+- [x] Add graceful drain hooks and readiness behavior for server, scheduler, task control, and workflow ownership.
+- [x] Exercise node kill, pause, partition, Redis restart, database connection loss, runner reconnect, and rolling replacement at named state boundaries.
+- [x] Verify API availability, schedule uniqueness, live-update recovery, task ownership, workflow progression, and audit continuity after each fault.
+- [x] Publish operator runbooks for scale-out, drain, rolling upgrade, degraded Redis, failed node, and ambiguous execution.
+- [x] Make the fault suite a required enhanced release gate with retained machine-readable results.
 
 ## Tests and Acceptance
 
@@ -28,6 +28,6 @@ An operator can perform a documented rolling upgrade and node-failure exercise w
 | API | Required: continuous health/read/write probes and final consistency assertions through different nodes |
 | UI | Required: browser evidence that cluster, task, and workflow views recover through a node replacement without contradictory state |
 
-- [ ] The test report proves no duplicate logical schedules, tasks, workflow nodes, or approval decisions.
-- [ ] Supported rolling replacement maintains an available API and converges every accepted operation.
-- [ ] Every injected failure has a documented observable symptom and operator response.
+- [x] The test report proves no duplicate logical schedules, tasks, workflow nodes, or approval decisions.
+- [x] Supported rolling replacement maintains an available API and converges every accepted operation.
+- [x] Every injected failure has a documented observable symptom and operator response.

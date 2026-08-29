@@ -10,6 +10,7 @@ The enhanced edition replaces the `github.com/semaphoreui/semaphore/pro` module 
 - [Artifact Contract](#artifact-contract)
 - [Reproducibility Decisions](#reproducibility-decisions)
 - [Runtime Verification](#runtime-verification)
+- [Enhanced HA Release Gate](#enhanced-ha-release-gate)
 
 ## Pinned Inputs
 
@@ -103,3 +104,15 @@ CI verifies each edition by:
 5. starting the runner executable from its container image.
 
 No workflow in this stage publishes or pushes an artifact.
+
+## Enhanced HA Release Gate
+
+`Enhanced HA resilience contract` is an independent required CI job and does not read the separate enhanced-module repository or its credentials.
+It creates a `.git`-free build context, installs the repository's Clean-room Enhanced contract fixture as `pro_impl`, and supplies every revision and timestamp input explicitly.
+The job starts two compatible but visibly skewed application builds with shared PostgreSQL and Redis, an NGINX proxy, and a real runner.
+
+The gate injects node pause, kill, network partition, Redis restart, database loss, runner reconnect, and a drained rolling replacement.
+It fails unless the API remains available where specified, readiness fails closed on SQL loss, coordinated work degrades safely on Redis loss, every accepted write converges, audit history remains continuous, and no duplicate schedule, task, workflow-node, or approval decision exists.
+
+The machine-readable result is uploaded as `enhanced-ha-resilience-<core-sha>` from `dist/ha-resilience/report.json` and retained for 14 days.
+The operator procedures and report acceptance fields are documented in [High Availability](../admin-guide/ha.md#operator-runbooks).

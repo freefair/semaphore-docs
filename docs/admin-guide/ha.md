@@ -218,6 +218,102 @@ The cluster summary exposes `coordinator.workflow_progression` for nonterminal r
 The cluster dashboard renders this as one small workflow-progression status chip in the existing coordinator header.
 An expired ownership or growing lag is an operator signal to inspect node readiness and reconciliation errors; it is not evidence that a duplicate transition occurred.
 
+## Operator runbooks
+
+Use these runbooks for planned changes and HA incidents.
+The shared SQL database is the durable authority; Redis heartbeat and Pub/Sub state are coordination and live-update signals.
+Do not infer that a task stopped merely because a Semaphore node or runner heartbeat disappeared.
+
+Before every procedure:
+
+1. Confirm that at least one other node is Ready in `/cluster` and through its direct `/api/ready` endpoint.
+2. Record the target node's stable node ID and current boot ID.
+3. Check that `coordinator.sql_authoritative` is `true`, no workflow ownership is expired, and no task recovery is quarantined without an assigned operator.
+4. Keep the load balancer health check on `/api/ready`; `/api/ping` is liveness only and remains successful during a database outage.
+5. Stop the procedure if the surviving capacity cannot serve authenticated reads and one reversible write through the load balancer.
+
+### Scale out a node
+
+1. Deploy the same edition, cluster protocol, database schema, required capabilities, and shared configuration as the Ready nodes.
+2. Assign a unique `ha.node_id`; never reuse the boot ID because Semaphore creates it for each process lifetime.
+3. Start the node outside the load-balancer pool.
+4. Wait for its direct `/api/ready` response to return HTTP `200` with `ready: true` and `accepting_coordinated_work: true`.
+5. Confirm in `/cluster` that the new boot ID is Ready and compatibility is not Incompatible.
+6. Add the node to the load balancer and verify authenticated reads, a reversible write, and live task updates through the shared address.
+
+If readiness reports an edition, protocol, schema, or capability mismatch, keep the node out of traffic and deploy a compatible build.
+If only Redis is degraded, follow the degraded Redis runbook before adding coordinated-work capacity.
+
+### Drain a node
+
+1. Resolve the target boot ID from `/cluster`; the drain transition addresses a process lifetime, not only the stable node ID.
+2. Send `POST /api/cluster/nodes/{boot_id}/draining` with `{"draining": true}` as an administrator.
+3. Wait for the target's direct `/api/ready` endpoint to return HTTP `503`.
+4. Confirm that schedule claims, task ownership, workflow ownership, and workflow-trigger scheduling have stopped accepting new work and released their existing leases.
+5. Remove the node from load-balancer traffic, then stop or replace it.
+
+If any drain participant fails, Semaphore resumes already-drained participants and does not persist a partially drained Ready state.
+Investigate the failing subsystem and repeat the drain instead of stopping an un-drained process for planned maintenance.
+
+### Perform a rolling upgrade
+
+Application version and build metadata may differ during one rolling replacement only when the edition and HA protocol are identical, the database schema is identical, and every required capability remains present.
+Any edition, protocol, schema, or required-capability mismatch fails readiness and is not a supported rolling skew.
+
+1. Back up the shared database and verify the restore procedure before an upgrade that includes migrations.
+2. Verify the candidate against the HA resilience release report for the exact core revision.
+3. Drain one node and wait for HTTP `503` readiness as described above.
+4. Replace only that node, retaining its unique stable node ID and shared configuration.
+5. Wait for a new boot ID to become Ready, then return the node to the load balancer.
+6. Verify that the previous boot ID remains in cluster history, API probes have no failures, and accepted writes are present.
+7. Repeat one node at a time; never advance while a replacement is Incompatible, Stale, Draining, or has degraded SQL readiness.
+
+Abort the rollout and restore the previous application build if a replacement cannot join without changing the shared schema again.
+Do not roll the database backward while a newer node can still write to it.
+
+### Operate with degraded Redis
+
+Expected symptoms are `degraded_live_events`, `accepting_coordinated_work: false`, delayed WebSocket updates, and SQL-backed API traffic that remains Ready.
+
+1. Confirm directly on each node that `/api/ready` still returns HTTP `200`, `ready: true`, and `accepting_coordinated_work: false`.
+2. Verify an authenticated SQL-backed read through the load balancer.
+3. Pause planned drains, scale changes, scheduled coordination, and workflow-trigger changes until Redis recovers.
+4. Restore Redis connectivity without clearing the shared SQL database.
+5. Wait for every node to report `accepting_coordinated_work: true` and for live-event health to recover.
+6. Refresh the cluster, task, and workflow views and confirm that their SQL-backed state converges without duplicate work.
+
+If SQL-backed reads also fail, treat the incident as a database or broader network outage rather than Redis degradation.
+
+### Recover a failed or partitioned node
+
+1. Remove the failed node from the load balancer and prevent a partitioned process from reaching shared state until its ownership is understood.
+2. Confirm that a surviving node remains Ready and that expired task or workflow leases move to a higher fencing token before recovery writes occur.
+3. Inspect task recovery and workflow reconciliation diagnostics for the previous boot owner.
+4. Restart the process only with its existing stable node ID and shared configuration, or replace it with a compatible build.
+5. Wait for the new boot ID to become Ready before returning it to traffic.
+6. Verify schedule occurrence, task, workflow-node, approval-decision, and audit cardinality after convergence.
+
+A stale process cannot write through an older fence after another node takes ownership.
+Do not bypass that rejection or manually lower a fencing token.
+
+### Resolve ambiguous execution
+
+Ambiguous execution means that ownership moved but complete runner evidence cannot prove whether the exact remote execution is still active or absent.
+
+1. Keep the task quarantined and nonterminal; do not create a replacement execution.
+2. In Task Details, compare the current and previous boot owner, task-control fence, runner assignment generation, observation time, and recovery reason.
+3. Restore the original runner connection when possible and wait for a complete snapshot observed strictly after ownership transfer or assignment revocation.
+4. Use **Retry safe recovery check** only after new evidence exists.
+5. Accept the server-selected outcome: observe the same execution, persist its exact terminal result, requeue a proven not-started assignment, or keep the task quarantined.
+
+Never mark an ambiguous task failed merely to unblock a queue and never start a replacement based only on a missing heartbeat.
+
+### Verify the release evidence
+
+The required `Enhanced HA resilience contract` CI job retains `dist/ha-resilience/report.json` for 14 days.
+The report is valid only when `result` is `passed`, all seven named fault scenarios contain passing assertions, duplicate counts are zero, every accepted write is present, the rolling-replacement probe has zero failures, and the audit count is continuous.
+The Clean-room Enhanced fixture implements the published repository contracts and does not depend on access to a separate Pro or Enterprise module.
+
 ## Load balancer {#load-balancer}
 
 Place a load balancer in front of the Semaphore nodes to distribute traffic. The load balancer must support **WebSocket connections** for real-time UI updates.

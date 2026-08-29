@@ -136,18 +136,64 @@ Last updated: 2026-08-29
 ## Current Slice
 
 - [>] 044 — HA resilience verification
-  - [>] Inventory the existing HA harness, deployment health/readiness, failure seams, and release-gate wiring
-    - [>] Map reusable multi-node SQL, Redis, runner, server, and browser fixtures from Slices 040–043
-    - [ ] Identify every named fault boundary and the invariant that must be probed before, during, and after recovery
-    - [ ] Keep product UI unchanged unless browser recovery exposes a required compatibility defect
-  - [ ] Define the supported rolling-upgrade skew and readiness rejection matrix
-  - [ ] Build a reproducible multi-node fault topology and machine-readable report contract
-    - [ ] Inject node kill, pause, partition, Redis restart, SQL loss, runner reconnect, and rolling replacement
-    - [ ] Continuously probe API availability and assert schedule, task, workflow, approval, and audit uniqueness
-  - [ ] Add the enhanced release gate and retain its result artifact
-  - [ ] Publish operator runbooks for scale-out, drain, upgrade, degraded Redis, failed nodes, and ambiguous execution
-  - [ ] Verify cluster, task, and workflow browser recovery through node replacement at desktop and mobile widths
-  - [ ] Run full verification, manual review, security review, and atomic commits
+  - [x] Inventory the existing HA harness, deployment health/readiness, failure seams, and release-gate wiring
+    - [x] Map reusable multi-node SQL, Redis, runner, server, and browser fixtures from Slices 040–043
+    - [x] Identify every named fault boundary and the invariant that must be probed before, during, and after recovery
+    - [x] Keep product UI unchanged unless browser recovery exposes a required compatibility defect
+  - [x] Define the supported rolling-upgrade skew and readiness rejection matrix
+    - [x] Allow application-version/build skew only inside one edition with exact protocol, schema, and required-capability parity
+    - [x] Fail readiness for edition, protocol, schema, capability, drain, registration, and SQL failures
+    - [x] Preserve API traffic readiness while Redis-backed live events and coordinated work are degraded
+    - [x] Drain schedule claims and workflow-trigger runs alongside task and workflow ownership
+  - [x] Build a reproducible multi-node fault topology and machine-readable report contract
+    - [x] Pin shared PostgreSQL/Redis, two server nodes, load balancer, and runner fixtures
+      - [x] Build `.git`-free Candidate and compatible skew images with explicit traceability metadata
+      - [x] Verify final candidate and skew manifests as `sha256:dfabae732866…` and `sha256:c7fbdc4e1ed4…`
+    - [x] Boot the isolated topology and seed one schedule task and one approval workflow through the API
+      - [x] Correct the Clean-room AES-256 key encoding exposed by the first real boot
+      - [x] Preserve one SchedulePool identity so every preloaded job observes the HA deduplicator
+      - [x] Make scheduled workflow-trigger selection portable to PostgreSQL's integer-backed enabled column
+      - [x] Mark the registered QA runner as default through the admin API and refresh random ports after restart
+      - [x] Rebuild the corrected images and rerun the topology from empty volumes
+      - [x] Reproduce PostgreSQL rejection of Go booleans for integer-backed approval fields
+      - [x] Encode persisted workflow-node and approval booleans as portable `0`/`1` values
+      - [x] Rebuild the PostgreSQL boolean portability fix and continue from empty volumes
+      - [x] Reproduce PostgreSQL rejection of the unquoted workflow-run `end` column
+      - [x] Quote every workflow-run `end` write through the existing dialect translator
+      - [x] Rebuild the reserved-word fix and continue the topology from empty volumes
+      - [x] Reproduce the paused-upstream timeout exceeding the QA client's availability budget
+      - [x] Bound proxy read failover to two seconds and verify the config contract with Bats
+      - [x] Rerun all fault scenarios from empty volumes
+    - [x] Inject node kill, pause, partition, Redis restart, SQL loss, runner reconnect, and rolling replacement
+    - [x] Continuously probe API availability and assert schedule, task, workflow, approval, and audit uniqueness
+      - [x] Pass all seven scenarios with zero duplicate invariants, eight converged writes, zero replacement probe failures, and continuous audit history
+  - [x] Add the enhanced release gate and retain its result artifact
+    - [x] Keep the required job independent of the unavailable Pro/Enterprise module and its credentials
+    - [x] Validate and upload the machine-readable report for 14 days on every job outcome
+  - [x] Publish operator runbooks for scale-out, drain, upgrade, degraded Redis, failed nodes, and ambiguous execution
+  - [x] Verify cluster, task, and workflow browser recovery through node replacement at desktop and mobile widths
+    - [x] Verify the existing cluster and task surfaces at desktop width without document-level horizontal overflow
+    - [x] Diagnose the browser-exposed duplicate runner-attempt generation during recovered task reassignment
+      - [x] Trace the recovery/requeue/dispatch transaction from task ownership evidence to the unique attempt insert
+      - [x] Add an external and repository regression test that reproduces the duplicate generation
+      - [x] Fence the `waiting` → `starting` transition with a SQL-authoritative compare-and-set claim
+      - [x] Pass focused database and task-service verification after the root-cause fix
+      - [x] Strengthen the HA gate to kill the actual task owner and wait for recovery to a terminal state
+        - [x] Create a dedicated recovery task and prove its first fenced runner assignment
+        - [x] Kill the node recorded as owner instead of a hard-coded node
+        - [x] Compare runner restarts with the generation-specific assignment time so recovered work is not requeued again
+        - [x] Prove exactly two unique attempt generations, safe requeue, terminal convergence, and absence of the original constraint error
+        - [x] Keep the fixed two-node QA proxy available across restart/kill DNS transitions and reload it after address-changing replacement
+        - [x] Rerun the complete isolated HA topology from empty volumes with all seven scenarios and invariants passing
+    - [x] Verify the succeeded workflow run, ownership-transfer notice, approved node, and live node rejoin at desktop width
+    - [x] Repeat cluster, task, and workflow verification at 390×844 with no document overflow and an empty browser diagnostic log
+  - [>] Run full verification, manual review, security review, and atomic commits
+    - [x] Pass the current Root, Community, Clean-room Enhanced, full race, Root/Enhanced vet, and eight Bats contract suites
+    - [x] Match the unchanged frontend baseline at 126 passing with the same three unrelated failures and complete the Enhanced production build
+    - [x] Complete the Docusaurus production build and recheck both repository diffs for whitespace errors
+    - [x] Validate the retained HA report with seven scenarios, zero duplicates, eight converged writes, zero probe failures, and continuous audit history
+    - [x] Seal Security scan `a5e7236a-f278-4423-99da-5b5b9082b3c2` with complete coverage, no findings, and no deferred work
+    - [>] Commit operator documentation, its root pointer, implementation, and final status atomically
 
 ## Completed Slice Detail
 
