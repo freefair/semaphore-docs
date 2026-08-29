@@ -40,14 +40,18 @@ Last updated: 2026-08-29
 ## Current Slice
 
 - [>] 036 — Workflow approvals
-  - [>] Establish the approval-node, planner, workflow-run, role, and audit contracts
-    - [ ] Inventory the existing approval status stub and all workflow progression transition points
-    - [ ] Define the approval request state machine, immutable audit fields, and timeout/reconciliation boundaries
-    - [ ] Prove eligibility, separation-of-duties, state transition, and timeout contracts with failing external tests
-  - [ ] Persist and conditionally resolve approval requests
-  - [ ] Pause and resume workflow progression without downstream task creation before an allowed outcome
-  - [ ] Add the capability/permission-gated inbox, run action, expiry worker, API, and minimal focused UI
-  - [ ] Verify concurrent decisions, restart recovery, audit immutability, APIs, browser flows, full suites, and security review
+  - [x] Establish the approval-node, planner, workflow-run, role, and audit contracts
+    - [x] Inventory the existing approval status stub and all workflow progression transition points
+    - [x] Define the approval request state machine, immutable audit fields, and timeout/reconciliation boundaries
+    - [x] Prove eligibility, separation-of-duties, state transition, and timeout contracts with failing external tests
+  - [x] Persist and conditionally resolve immutable approval requests
+  - [x] Pause and resume workflow progression without downstream task creation before an allowed outcome
+  - [x] Add the capability/permission-gated inbox, run action, expiry worker, API, and minimal focused UI
+  - [>] Verify concurrent decisions, restart recovery, audit immutability, APIs, browser flows, full suites, and security review
+    - [x] Prove cancel, both timeout outcomes, concurrent terminal decisions, eligibility, and restart recovery with focused tests
+    - [ ] Run migrations and full Root, Community, Enhanced, and frontend verification
+    - [ ] Complete local browser flows at desktop and mobile widths
+    - [ ] Complete diff/security review and documentation
   - [ ] Document and commit Slice 036
 
 ## Slice Plan
