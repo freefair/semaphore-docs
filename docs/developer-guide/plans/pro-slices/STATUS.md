@@ -66,11 +66,12 @@ Last updated: 2026-08-29
     - [x] Add admin-only cluster-node list pagination and boot-ID detail routes
     - [x] Add health aggregation and the existing dashboard state labels
     - [x] Persist and expose the admin drain transition for one boot identity
-  - [>] Verify multi-instance lifecycle, compatibility, cleanup, browser states, documentation, review, and commits
+  - [x] Verify multi-instance lifecycle, compatibility, cleanup, browser states, documentation, review, and commits
     - [x] Prove a shared SQL/Redis registry, expiry, restart history, durable drain state, and seven-day SQL history cleanup
     - [x] Verify authenticated list/detail/drain API contracts and minimal dashboard state chips
     - [x] Complete desktop and 390×844 browser checks for Ready, Stale, Incompatible, Draining, recovery, version context, and a clean console
-    - [>] Run full Root, Community, Clean-room Enhanced, migration, frontend, documentation, review, and security-diff gates
+    - [x] Run full Root, Community, Clean-room Enhanced, migration, frontend, documentation, review, and security-diff gates
+    - [x] Commit operator documentation (`b0594f2`), its root pointer (`dfa5ca8d`), and implementation (`414fbb8e`)
 
 ## Completed Slice Detail
 
