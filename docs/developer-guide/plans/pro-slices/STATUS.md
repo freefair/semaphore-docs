@@ -125,15 +125,33 @@ Last updated: 2026-08-29
 ## Current Slice
 
 - [>] 043 — HA workflow progression
-  - [>] Inventory workflow reconciliation ownership, durable wake facts, conditional progression writes, and existing diagnostics seams
-    - [>] Trace every task-completion, approval, stop, and reconciliation entry point
-    - [ ] Identify the smallest Enhanced interface boundary and preserve the existing workflow-run UI
-  - [ ] Define workflow ownership, fencing, readiness replay, fairness, and drain contracts in external failing tests
-  - [ ] Persist renewable workflow reconciliation leases and transfer history
-  - [ ] Reconcile exclusively from SQL facts with conditional node-attempt creation
-  - [ ] Partition nonterminal-run scanning fairly across projects
-  - [ ] Add bounded drain/release behavior and value-free run/cluster diagnostics
-  - [ ] Verify concurrent reconcilers, node death, duplicate/lost events, API permissions, minimal UI, browser transfer coherence, and full gates
+  - [x] Inventory workflow reconciliation ownership, durable wake facts, conditional progression writes, and existing diagnostics seams
+    - [x] Trace every task-completion, approval, stop, and reconciliation entry point
+    - [x] Identify the smallest Enhanced interface boundary and preserve the existing workflow-run UI
+  - [x] Define workflow ownership, fencing, readiness replay, fairness, and drain contracts in external failing tests
+    - [x] Prove owner exclusion, expired transfer, fence increment, and stale release rejection
+    - [x] Prove stale-owner task-attempt rejection at the atomic create boundary
+    - [x] Prove project-interleaved reconciliation ordering
+  - [x] Persist renewable workflow reconciliation leases and transfer history
+  - [x] Reconcile exclusively from SQL facts with conditional node-attempt creation
+    - [x] Keep task completion, approval decisions, and stop requests as durable wake facts
+    - [x] Fence task, approval, planner, and run-status writes against mid-transition ownership loss
+  - [x] Partition nonterminal-run scanning fairly across projects
+  - [x] Add bounded drain/release behavior and value-free run/cluster diagnostics
+    - [x] Compose task and workflow ownership workers behind the existing drain transition
+    - [x] Expose SQL-derived owner, lease age, transfer history, recovered state, and lag models
+    - [x] Roll back earlier workers when a composite drain or persisted drain transition fails
+    - [x] Exclude terminal ownership history from cluster lag and distinguish same-boot reclaims from transfers
+    - [x] Add permanent drain, replay, diagnostics, and API contracts
+  - [>] Verify concurrent reconcilers, node death, duplicate/lost events, API permissions, minimal UI, browser transfer coherence, and full gates
+    - [x] Pass focused SQL, HA locker/drain, concurrent reconciliation, and workflow API suites
+    - [x] Document ownership, fencing, fairness, drain, run diagnostics, and cluster diagnostics
+    - [x] Run Root, Community, Enhanced, race, vet, migration, frontend, and documentation gates
+    - [x] Exercise coherent ownership transfer in the local browser at desktop and mobile widths
+      - [x] Preserve the same workflow nodes and task identities across the simulated owner transfer
+      - [x] Render the single transfer alert and cluster progression chip at 1280 px and 390×844
+      - [x] Verify no horizontal overflow and a clean browser console
+    - [>] Complete manual diff/security review and atomic commits
 
 ## Completed Slice Detail
 

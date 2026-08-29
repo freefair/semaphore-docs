@@ -188,6 +188,36 @@ The task endpoints use the existing project task permissions:
 
 Recovery diagnostics never include task output, executor environment values, credentials, or the internal stable execution identifier.
 
+## Workflow progression ownership
+
+Every nonterminal workflow transition is serialized by a renewable SQL ownership lease.
+The lease identifies the owning process by boot identity and carries a monotonically increasing fencing token.
+A task-completion callback, approval decision, stop request, or periodic scan only wakes reconciliation; the durable SQL task, approval, desired-state, and node rows remain authoritative.
+
+Before changing a run, a Semaphore process claims ownership and reloads all readiness from SQL.
+Task creation, approval opening and completion, planner finalization, and run-status changes verify the same live fence in their database transaction.
+If the lease expires during a transition, that transition is rejected and the next owner rebuilds progress from SQL.
+The unique run/node task boundary and conditional approval boundary ensure that replay cannot create a second logical task or approval.
+
+The periodic scan interleaves runs across projects rather than exhausting one project's backlog first.
+When a node begins draining, it stops taking start and progression ownership, waits for in-flight transitions, releases their leases, and only then persists the node's Draining state.
+If any worker or the persisted drain transition fails, already-drained workers resume so the node is not left partially drained.
+
+Run payloads expose value-free `reconciliation_ownership` diagnostics with the current and previous boot owner, fence, lease age, transfer count, recovered state, and reconciliation lag.
+The existing run view shows a compact recovery notice only after ownership actually transfers.
+The cluster summary exposes `coordinator.workflow_progression` for nonterminal runs:
+
+| Field | Meaning |
+| --- | --- |
+| `current_ownerships` | Nonterminal runs with a live reconciliation lease. |
+| `expired_ownerships` | Nonterminal runs whose persisted lease can be recovered. |
+| `transfer_count` | Ownership changes between different boot identities. Same-boot lease renewal or reclaim is not a transfer. |
+| `max_lag_seconds` | Greatest SQL-derived time since a nonterminal run was last reconciled or first acquired. Terminal history is excluded. |
+| `observed_at` | Database server time used for this summary. |
+
+The cluster dashboard renders this as one small workflow-progression status chip in the existing coordinator header.
+An expired ownership or growing lag is an operator signal to inspect node readiness and reconciliation errors; it is not evidence that a duplicate transition occurred.
+
 ## Load balancer {#load-balancer}
 
 Place a load balancer in front of the Semaphore nodes to distribute traffic. The load balancer must support **WebSocket connections** for real-time UI updates.
