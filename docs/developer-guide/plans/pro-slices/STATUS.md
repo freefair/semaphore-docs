@@ -91,10 +91,26 @@ Last updated: 2026-08-29
 ## Current Slice
 
 - [>] 042 — HA task recovery
-  - [>] Inventory task ownership, runner reconciliation, executor identity, and existing task diagnostics seams
-  - [ ] Define the durable owner/fencing and stable execution-evidence contracts in an external failing test
-  - [ ] Specify recovery decisions for queued, running, canceling, completing, and ambiguous executions before production changes
-  - [ ] Keep UI work to existing task diagnostics only; defer rendering until the backend decision contract is proven
+  - [x] Inventory task ownership, runner reconciliation, executor identity, and existing task diagnostics seams
+  - [x] Define the durable owner/fencing and stable execution-evidence contracts in an external failing test
+  - [x] Persist the SQL task-control lease with server-derived expiry, fenced renewal/release, and immutable execution identity binding
+  - [x] Persist complete value-free runner snapshots atomically, including explicit absence, server-time observation, and stale-generation rejection
+  - [x] Specify recovery decisions for queued, running, canceling, completing, and ambiguous executions before production changes
+  - [x] Register and renew task ownership through the Enhanced boundary only while the node is ready
+  - [x] Relinquish every owned lease before drain completes and resume ownership only after the node returns to Ready
+  - [x] Claim expired work with a higher fence and recover only after a complete post-transfer runner snapshot
+  - [x] Reconcile exact terminal evidence, quarantine ambiguity, and expose a retry-safe operator action
+  - [>] Keep UI work to the existing `TaskRunnerDetails` hook only
+    - [x] Add scoped value-free diagnostics and retry API contracts
+    - [x] Render ownership transfer, fence, evidence, decision, and the safe retry action
+    - [x] Add the queued/running/canceling/completing integration matrix and browser evidence
+      - [x] Verify a real expired-owner takeover, fence increment, observation window, quarantine, and safe retry against the isolated HA instance
+      - [x] Verify the existing task-details dialog at 1280 px and 390×844 with no console errors
+      - [x] Remove the mobile alert overflow found during browser QA without changing the surrounding task UI
+    - [>] Run full Root, Community, Enhanced, migration, frontend, documentation, and review gates
+      - [>] Re-run the complete backend, race, vet, migration, and frontend suites
+      - [ ] Re-read the implementation diff against the Slice 042 acceptance contract
+      - [ ] Complete the final security-focused diff review and atomic commits
 
 ## Completed Slice Detail
 
