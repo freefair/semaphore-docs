@@ -31,3 +31,11 @@ A workflow can pause at an approval node until an authorized user approves, reje
 - [x] Exactly one terminal decision wins when users act concurrently.
 - [x] No downstream task exists before an approval outcome permits it.
 - [x] Every decision is attributable and immutable.
+
+## Completion Evidence
+
+- Focused service and API tests cover eligibility, separation of duties, cancellation, both timeout outcomes, concurrent decisions, and restart recovery.
+- Root and clean-room Enhanced Go suites pass, and the focused approval race test passes.
+- The frontend production build passes; the full unit suite remains at the established baseline of 117 passing tests and three unrelated failures in `ArgsPicker`, `Socket`, and `YesNoDialog`.
+- Browser verification on a local Enhanced instance covers the approval-node editor configuration, the project inbox, approval, rejection, terminal attribution, and 390×844 mobile rendering.
+- The Slice 036 security diff scan reviewed 18 changed source and migration files with no reportable finding.

@@ -6,6 +6,14 @@ Last updated: 2026-08-29
 
 ## Last Completed Slice
 
+- [x] 036 — Workflow approvals
+  - [x] Persist immutable request snapshots and conditional approval, rejection, expiry, and cancellation transitions
+  - [x] Enforce project permission eligibility, separation of duties, bounded user comments, and durable attribution
+  - [x] Reconcile expired approvals and resume eligible timeout outcomes after service restart without duplicate tasks
+  - [x] Keep UI changes focused to approval-node properties, one workflow-list inbox dialog, and existing run-view actions
+  - [x] Verify approval, rejection, inbox filtering, timeout outcomes, cancellation, concurrent decisions, restart recovery, migrations, Root and Enhanced suites, build, and desktop/mobile browser flows
+  - [x] Complete the security diff review without reportable findings and commit documentation (`5d4648d`), its root pointer (`0b190e4d`), and implementation (`8dee30ee`)
+
 - [x] 035 — Workflow triggers
   - [x] Implement versioned manual, schedule, API, and webhook trigger resources through one shared workflow-start boundary
   - [x] Persist hash-only opaque credentials, scoped idempotency, immutable trigger/input snapshots, and invocation history
@@ -37,9 +45,13 @@ Last updated: 2026-08-29
   - [x] Complete the focused diff and security review without new findings
   - [x] Commit the verified UI integration changes (`5cccf59a`)
 
-## Current Slice
+## Next Slice
 
-- [>] 036 — Workflow approvals
+- [ ] 037 — Workflow reconciliation
+
+## Completed Slice Detail
+
+- [x] 036 — Workflow approvals
   - [x] Establish the approval-node, planner, workflow-run, role, and audit contracts
     - [x] Inventory the existing approval status stub and all workflow progression transition points
     - [x] Define the approval request state machine, immutable audit fields, and timeout/reconciliation boundaries
@@ -47,12 +59,12 @@ Last updated: 2026-08-29
   - [x] Persist and conditionally resolve immutable approval requests
   - [x] Pause and resume workflow progression without downstream task creation before an allowed outcome
   - [x] Add the capability/permission-gated inbox, run action, expiry worker, API, and minimal focused UI
-  - [>] Verify concurrent decisions, restart recovery, audit immutability, APIs, browser flows, full suites, and security review
+  - [x] Verify concurrent decisions, restart recovery, audit immutability, APIs, browser flows, full suites, and security review
     - [x] Prove cancel, both timeout outcomes, concurrent terminal decisions, eligibility, and restart recovery with focused tests
     - [ ] Run migrations and full Root, Community, Enhanced, and frontend verification
     - [ ] Complete local browser flows at desktop and mobile widths
     - [ ] Complete diff/security review and documentation
-  - [ ] Document and commit Slice 036
+  - [x] Document and commit Slice 036
 
 ## Slice Plan
 
@@ -82,7 +94,7 @@ Last updated: 2026-08-29
 - [x] 033 — Workflow artifacts
 - [x] 034 — Workflow parameters and overrides
 - [x] 035 — Workflow triggers
-- [>] 036 — Workflow approvals
+- [x] 036 — Workflow approvals
 - [ ] 037 — Workflow reconciliation
 - [ ] 040 — HA cluster dashboard
 - [ ] 041 — Cross-node coordination
