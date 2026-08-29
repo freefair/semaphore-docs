@@ -148,6 +148,9 @@ The invocation stores hashes or derived identities, the exact trigger and defini
 It never stores the raw bearer credential or caller idempotency key.
 
 The service claims an invocation identity before calling the shared workflow-start service.
+The claim atomically checks the trigger's current revision, enabled state, and credential generation in the same SQL operation that creates the invocation.
+A completed credential rotation, disable, or trigger update therefore rejects any earlier in-flight request before it can create a run.
+A later trigger mutation does not cancel an invocation that has already committed its durable claim.
 A retry after a temporary start failure reuses the same invocation and workflow correlation ID.
 The workflow service's existing correlation compare-and-set is the final authority that prevents a second run when a prior attempt committed but its response was lost.
 

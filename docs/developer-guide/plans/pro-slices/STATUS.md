@@ -86,10 +86,14 @@ Last updated: 2026-08-29
       - [x] Pass root and Enhanced race checks plus `go vet` in all three workspaces
       - [x] Match the established frontend baseline: 116 passing and the same 3 unrelated failures
       - [x] Complete the production frontend and Docusaurus builds
-    - [>] Complete the final diff, security, and acceptance review
+    - [x] Complete the final diff, security, and acceptance review
       - [x] Re-read every new domain, repository, service, controller, migration, and UI boundary
       - [x] Confirm hash-only credential persistence, scoped authorization, and atomic idempotency controls
-      - [>] Complete the native working-tree security diff scan
+      - [x] Complete the native working-tree security diff scan
+      - [x] Reproduce and fix the in-flight rotation/disable race before committing
+        - [x] Bind revision, enabled state, and credential generation to the durable SQL invocation claim
+        - [x] Prove rotation and disable reject a blocked external invocation with the race detector
+        - [x] Preserve normal API and schedule idempotency after the guard
   - [>] Document and commit Slice 035
     - [x] Add the developer contract for mappings, APIs, credentials, schedules, persistence, and compatibility
     - [x] Mark the Slice 035 implementation and acceptance checklist complete
