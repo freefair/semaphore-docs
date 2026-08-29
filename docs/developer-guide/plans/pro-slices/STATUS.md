@@ -75,17 +75,18 @@ Last updated: 2026-08-29
 
 ## Current Slice
 
-- [>] 041 — HA cross-node coordination
+- [x] 041 — HA cross-node coordination
   - [x] Inventory scheduler, lock, Redis transport, SQL lease, API, and existing dashboard seams
-  - [>] Define lease fencing, ownership, event ordering, and safe fallback contracts
+  - [x] Define lease fencing, ownership, event ordering, and safe fallback contracts
     - [x] Prove a UTC-normalized occurrence key that binds schedule identity, intended fire instant, and relevant revision
     - [x] Persist renewable SQL leases with server-derived expiry, boot-owner fencing, compare-and-set release, and completed-occurrence rejection
     - [x] Bind legacy scheduled tasks to the durable occurrence through a unique SQL task key and a fenced pre-create re-check
     - [x] Add bounded Redis Pub/Sub fan-out with local delivery, echo/duplicate suppression, subscriber queue bounds, and reconnect backoff
     - [x] Expose SQL-authoritative coordinator health and live-event degradation through the existing cluster API and dashboard header
-  - [>] Verify coordinator API/UI, multi-node recovery, documentation, review, and commit the bounded coordination slice
+  - [x] Verify coordinator API/UI, multi-node recovery, documentation, review, and commit the bounded coordination slice
     - [x] Pass Root, Community, and Clean-room Enhanced compilation/suites, focused lease/fencing/PubSub tests, Root Vet, and the frontend build
-    - [>] Complete the authenticated desktop/mobile browser evidence; Credential-Guard approval for the disposable local test admin is pending after ntfy reply delivery failed
+    - [x] Complete authenticated desktop and 390×844 browser evidence for Healthy, Degraded, and recovered live-event transport states, with Redis diagnostics, SQL stale fallback, no horizontal overflow, and no console errors
+    - [x] Preserve coordinator and Redis status during a Redis outage; a real Pub/Sub health probe now reaches the bounded reconnect path
 
 ## Completed Slice Detail
 
@@ -134,9 +135,9 @@ Last updated: 2026-08-29
 - [x] 035 — Workflow triggers
 - [x] 036 — Workflow approvals
 - [x] 037 — Workflow reconciliation
-- [>] 040 — HA cluster dashboard
-- [ ] 041 — Cross-node coordination
-- [ ] 042 — HA task recovery
+- [x] 040 — HA cluster dashboard
+- [x] 041 — Cross-node coordination
+- [>] 042 — HA task recovery
 - [ ] 043 — HA workflow progression
 - [ ] 044 — HA resilience verification
 - [ ] 045 — Custom project roles
