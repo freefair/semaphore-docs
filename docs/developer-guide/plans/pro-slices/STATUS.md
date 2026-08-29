@@ -45,9 +45,18 @@ Last updated: 2026-08-29
   - [x] Complete the focused diff and security review without new findings
   - [x] Commit the verified UI integration changes (`5cccf59a`)
 
-## Next Slice
+## Current Slice
 
-- [ ] 037 — Workflow reconciliation
+- [>] 037 — Workflow reconciliation
+  - [x] Audit durable desired/observed state, stop boundary, and reconciler recovery path
+  - [>] Persist stop/retry/quarantine state and implement conditional recovery transitions
+    - [x] Persist durable `running` / `stopping` / `stopped` desired state and recover a stop after service restart
+    - [x] Block late node claims and stale diagnostic writes after a durable stop request
+    - [x] Persist bounded retry backoff, poison-run quarantine, and manual diagnostic reset
+  - [x] Expose status and retry reconciliation through the existing run API/UI surfaces
+    - [x] Add the retry endpoint and field-safe run-status response
+    - [x] Show stopping, stopped, recovering, and quarantined states only in the existing run view
+  - [ ] Verify restart, cancellation, races, browser flows, security review, and documentation
 
 ## Completed Slice Detail
 
