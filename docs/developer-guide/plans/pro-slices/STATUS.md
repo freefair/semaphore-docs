@@ -73,7 +73,7 @@ Last updated: 2026-08-29
     - [x] Run full Root, Community, Clean-room Enhanced, migration, frontend, documentation, review, and security-diff gates
     - [x] Commit operator documentation (`b0594f2`), its root pointer (`dfa5ca8d`), and implementation (`414fbb8e`)
 
-## Current Slice
+## Last Completed Slice
 
 - [x] 041 — HA cross-node coordination
   - [x] Inventory scheduler, lock, Redis transport, SQL lease, API, and existing dashboard seams
@@ -87,6 +87,14 @@ Last updated: 2026-08-29
     - [x] Pass Root, Community, and Clean-room Enhanced compilation/suites, focused lease/fencing/PubSub tests, Root Vet, and the frontend build
     - [x] Complete authenticated desktop and 390×844 browser evidence for Healthy, Degraded, and recovered live-event transport states, with Redis diagnostics, SQL stale fallback, no horizontal overflow, and no console errors
     - [x] Preserve coordinator and Redis status during a Redis outage; a real Pub/Sub health probe now reaches the bounded reconnect path
+
+## Current Slice
+
+- [>] 042 — HA task recovery
+  - [>] Inventory task ownership, runner reconciliation, executor identity, and existing task diagnostics seams
+  - [ ] Define the durable owner/fencing and stable execution-evidence contracts in an external failing test
+  - [ ] Specify recovery decisions for queued, running, canceling, completing, and ambiguous executions before production changes
+  - [ ] Keep UI work to existing task diagnostics only; defer rendering until the backend decision contract is proven
 
 ## Completed Slice Detail
 
