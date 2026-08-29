@@ -28,6 +28,7 @@ See [Audit Webhook Export](audit-webhook-export.md) for the versioned envelope, 
 See [Debug Log Filtering](debug-log-filtering.md) for per-instance matching, reload, structured debug output, and diagnostics.
 See [Vault and OpenBao Runtime Secrets](runtime-secrets.md) for provider configuration, value-free references, task-boundary resolution, managed outbound synchronization, and failure policy.
 See [TOTP Capability Lifecycle](totp-capability-lifecycle.md) for rollout states, enrollment, replay protection, session revocation, and administrator recovery.
+See [Custom Project Roles](project-roles.md) for the typed permission catalog, scoped role identity, assignment invariants, backend enforcement, and audit contract.
 
 ## Source Provenance
 
@@ -51,6 +52,7 @@ The core-owned contract types live in `pro_interfaces/`:
 | Structured logging and audit | `LogWriteService`, `LogWriteServiceLifecycle`, `DebugLogService`, per-instance `DebugFilter`, versioned application/task/result/debug envelopes, diagnostics, project-scoped `AuditEvent`, `AuditWebhookServiceFacade`, `AuditWebhookService`, configuration and delivery DTOs |
 | Runtime secrets | `SecretReference`, `SecretProviderConfiguration`, `SecretProviderHealth`, `ManagedSecretField`, `ManagedSecretProvider`, `VaultOpenBaoClient`, and `RuntimeSecretResolver` |
 | TOTP lifecycle | `TOTPService`, enrollment and rollout requests, status and ceremony DTOs, session requirements, and stable security errors |
+| Project roles | Typed permission catalog, immutable project-role IDs, capability prerequisites, project assignment revisions, and audit actions |
 | High availability | `NodeRegistry`, `OrphanCleaner`, `ClusterInspector`, `NodeInfo`, `RedisInfo` |
 
 The replaceable module exports these application entry points:

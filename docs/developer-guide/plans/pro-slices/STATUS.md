@@ -1,25 +1,17 @@
 # Enhanced Edition Implementation Status
 
-Legend: `[x]` complete · `[>]` active · `[ ]` queued
-
-Last updated: 2026-08-29
-
 ## Current Slice
 
 - [>] 045 — Custom project roles
-  - [>] Inventory the current built-in role model, project membership mutations, permission checks, audit seams, and narrow UI host points
-    - [ ] Prove there is no duplicate custom-role implementation or repository contract
-    - [ ] Map every existing built-in role to its effective permissions before adding persistence
-    - [ ] Select one real project action for the first end-to-end allow/deny enforcement path
-    - [ ] Keep Community behavior and shared project UI structurally unchanged outside required interfaces
-  - [ ] Define the typed permission catalog and project-scoped custom-role contract with an external failing test
-  - [ ] Persist immutable role IDs, unique per-project names, assignments, and migration-compatible built-in mappings
-  - [ ] Enforce project isolation, capability prerequisites, stale writes, and the last-administrator invariant in the backend
-  - [ ] Add audited role CRUD, assignment, and effective-permission APIs
-  - [ ] Add only the required capability-gated role management, preview, assignment, and denied-state UI hooks
-  - [ ] Verify unit, integration, API, migration, two-user browser, full-suite, documentation, and security gates
+  - [x] Map the existing role, membership, permission, audit, and UI seams
+  - [x] Define the typed permission catalog and project-scoped custom-role contract
+  - [x] Persist immutable role IDs, scoped assignments, and compatible built-in mappings
+  - [x] Enforce project isolation, stale-write protection, and the last-administrator invariant
+  - [x] Add capability-gated, audited role CRUD and assignment APIs
+  - [x] Add the minimal role management, permission preview, assignment, and denied-state UI hooks
+  - [>] Verify unit, integration, API, migration, two-user browser, full-suite, documentation, and security gates
 
-## Slice Plan
+## All Slices
 
 - [x] 001 — Core contract
 - [x] 002 — Dual-build verification
