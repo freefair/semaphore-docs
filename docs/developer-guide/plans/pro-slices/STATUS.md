@@ -88,9 +88,9 @@ Last updated: 2026-08-29
     - [x] Complete authenticated desktop and 390×844 browser evidence for Healthy, Degraded, and recovered live-event transport states, with Redis diagnostics, SQL stale fallback, no horizontal overflow, and no console errors
     - [x] Preserve coordinator and Redis status during a Redis outage; a real Pub/Sub health probe now reaches the bounded reconnect path
 
-## Current Slice
+## Last Completed Slice
 
-- [>] 042 — HA task recovery
+- [x] 042 — HA task recovery
   - [x] Inventory task ownership, runner reconciliation, executor identity, and existing task diagnostics seams
   - [x] Define the durable owner/fencing and stable execution-evidence contracts in an external failing test
   - [x] Persist the SQL task-control lease with server-derived expiry, fenced renewal/release, and immutable execution identity binding
@@ -114,10 +114,26 @@ Last updated: 2026-08-29
       - [x] Verify a real expired-owner takeover, fence increment, observation window, quarantine, and safe retry against the isolated HA instance
       - [x] Verify the existing task-details dialog at 1280 px and 390×844 with no console errors
       - [x] Remove the mobile alert overflow found during browser QA without changing the surrounding task UI
-    - [>] Run full Root, Community, Enhanced, migration, frontend, documentation, and review gates
+    - [x] Run full Root, Community, Enhanced, migration, frontend, documentation, and review gates
       - [x] Re-run the complete backend, race, vet, migration, and frontend suites
       - [x] Re-read the implementation diff against the Slice 042 acceptance contract
-      - [>] Complete the final security-focused diff review and atomic commits
+      - [x] Complete the final security-focused diff review and atomic commits
+        - [x] Record the reproduced drain/claim race as one Medium finding in scan `9e3a97fc-7741-4200-831f-d15ac779514f`
+        - [x] Serialize in-flight ownership operations, drain/release/resume, and persisted drain transitions (`ee93e2c4`)
+        - [x] Pass the fixed-range security verification with no findings (`a24829c4-bf2f-48d2-af9c-91b2d4b30de9`)
+
+## Current Slice
+
+- [>] 043 — HA workflow progression
+  - [>] Inventory workflow reconciliation ownership, durable wake facts, conditional progression writes, and existing diagnostics seams
+    - [>] Trace every task-completion, approval, stop, and reconciliation entry point
+    - [ ] Identify the smallest Enhanced interface boundary and preserve the existing workflow-run UI
+  - [ ] Define workflow ownership, fencing, readiness replay, fairness, and drain contracts in external failing tests
+  - [ ] Persist renewable workflow reconciliation leases and transfer history
+  - [ ] Reconcile exclusively from SQL facts with conditional node-attempt creation
+  - [ ] Partition nonterminal-run scanning fairly across projects
+  - [ ] Add bounded drain/release behavior and value-free run/cluster diagnostics
+  - [ ] Verify concurrent reconcilers, node death, duplicate/lost events, API permissions, minimal UI, browser transfer coherence, and full gates
 
 ## Completed Slice Detail
 
@@ -168,8 +184,8 @@ Last updated: 2026-08-29
 - [x] 037 — Workflow reconciliation
 - [x] 040 — HA cluster dashboard
 - [x] 041 — Cross-node coordination
-- [>] 042 — HA task recovery
-- [ ] 043 — HA workflow progression
+- [x] 042 — HA task recovery
+- [>] 043 — HA workflow progression
 - [ ] 044 — HA resilience verification
 - [ ] 045 — Custom project roles
 - [ ] 046 — Global and template roles
