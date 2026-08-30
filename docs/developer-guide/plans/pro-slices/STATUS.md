@@ -1,11 +1,11 @@
 # Current Slice
 
-- [>] 047 — LDAP group mapping
-  - [ ] Inventory LDAP group client, login lifecycle, role assignment ownership, and existing reconciliation seams
-  - [ ] Define normalized immutable group-to-global/project-role mappings and bounded nested-group lookup
-  - [ ] Build dry-run, stale-preview, protected-admin, and managed-assignment reconciliation contracts
-  - [ ] Add transactional API, login-time and scheduled reconciliation, audit history, and unresolved-item handling
-  - [ ] Verify disposable LDAP and SQL integration, API/UI contracts, multi-user browser flow, and full release gates
+- [>] 048 — OIDC group mapping
+  - [>] Inventory the existing OIDC login flow, claim handling, role ownership, and edition boundaries
+  - [ ] Define bounded allow-listed claim parsing, normalization, and missing-claim policy
+  - [ ] Add explicit global/project role mappings, ownership-aware reconciliation, stale-revision protection, and redacted audit history
+  - [ ] Add mapping CRUD/preview/history APIs and the minimal existing-panel UI
+  - [ ] Verify signed OIDC fixtures, SQL ownership isolation, API/UI contracts, browser login flow, Terra security review, and full release gates
 
 # All Slices
 
@@ -44,8 +44,8 @@
 - [x] 044 — HA resilience verification
 - [x] 045 — Custom project roles
 - [x] 046 — Global and template roles
-- [>] 047 — LDAP group mapping
-- [ ] 048 — OIDC group mapping
+- [x] 047 — LDAP group mapping
+- [>] 048 — OIDC group mapping
 - [ ] 050 — Docker executor
 - [ ] 051 — Docker executor hardening
 - [ ] 052 — Kubernetes executor

@@ -181,9 +181,22 @@ After creating and configuring a project role, assign it to the required team me
 
 Assign global roles from the existing global **Users** dialog. Global assignments are separate from project membership.
 
+### Assign roles from LDAP groups
+
+Enhanced administrators can map an LDAP group to an explicit global role or project role from the existing LDAP panel in **System Information**.
+Configure the provider's group search base, static user and group filters, immutable group identity attribute, membership attribute, and maximum nested depth before adding mappings.
+
+Select **Preview** to read the directory without changing access.
+Review additions, removals, unresolved users or groups, collisions, and protected-administrator blockers before selecting **Apply**.
+If the directory or mapping configuration changes after preview, Semaphore rejects the stale apply and requires a new preview.
+
+LDAP reconciliation owns only the assignments it creates.
+It does not remove a matching role assigned manually, and a directory outage retains the last known managed grants while recording stale reconciliation history.
+Nested groups are supported to the configured depth, including cyclic directory graphs.
+
 ### Not currently supported {#not-currently-supported}
 
-- **LDAP / OIDC group mapping.** Custom roles are assigned per user. Mapping external directory groups to custom roles is not supported.
+- **OIDC group mapping.** LDAP group mapping is available, but mapping OIDC claims to roles is not currently supported.
 - **Granular permissions for non-template resources.** Only templates can be governed by custom roles at the individual-resource level today.
 
 ---

@@ -9,6 +9,8 @@ The design keeps LDAP protocol handling behind an outbound client, stores provid
 - [Provider configuration](#provider-configuration)
 - [Lifecycle and readiness](#lifecycle-and-readiness)
 - [Identity and collision policy](#identity-and-collision-policy)
+- [Group-to-role mapping](#group-to-role-mapping)
+- [Reconciliation safety](#reconciliation-safety)
 - [Runtime security and recovery](#runtime-security-and-recovery)
 - [HTTP contract](#http-contract)
 - [Persistence and edition boundary](#persistence-and-edition-boundary)
@@ -88,6 +90,43 @@ After a link exists, the immutable external ID remains authoritative and directo
 Disabling a provider stops new LDAP login but does not delete the external user or `user__external_identity` row.
 This preserves auditability and allows a later re-enable without rebinding the account to a different directory object.
 
+## Group-to-role mapping
+
+Enhanced administrators can map one immutable LDAP group identity to one explicit global role or project role ID.
+The group identity uses the same allowlist as user identities: `entryUUID`, `objectGUID`, `nsUniqueId`, or `ipaUniqueID` followed by its normalized UUID value.
+Mappings never use a group DN or display name, so renaming or moving a directory group does not change its Semaphore identity.
+
+Group discovery has its own fixed search base, static user filter, static group filter, immutable group identity attribute, membership attribute, and maximum nested depth.
+The static filters do not accept template markers.
+LDAP searches remain TLS-protected, reject referrals, request pages of 100 entries, stop above 10,000 entries, and traverse nested groups to a configured maximum depth between 1 and 16.
+Canonical DN parsing and a visited set make cyclic group graphs deterministic and finite.
+
+A dry-run returns a deterministic token and these result classes:
+
+- additions and removals addressed by mapping ID, internal user ID, and role target;
+- directory users that do not yet have a linked Semaphore identity;
+- configured immutable groups that no longer exist;
+- project-membership or manual-assignment collisions;
+- removals that would violate the last global or project administrator invariant.
+
+The administrative UI is part of the existing LDAP capability panel.
+It edits mappings, displays dry-run counts and blockers, requires the exact preview token for apply, exposes reconciliation history, and leaves unresolved items visible for remediation.
+
+## Reconciliation safety
+
+Semaphore stores ownership only for assignments created by an LDAP mapping.
+Reconciliation removes an assignment only when its ownership record names the same provider and mapping; an equivalent manually assigned role is reported as a collision and remains untouched.
+Project membership remains singular, so a mapping cannot overwrite a different existing project role.
+
+Apply performs a fresh directory read and recomputes the preview token.
+If directory content or mapping revision changed after preview, apply returns `LDAP_GROUP_PREVIEW_STALE` without changing assignments.
+All removals and additions then run in one SQL transaction with the existing global and project administrator invariants.
+
+Successful LDAP login reconciles only the authenticated linked user.
+Manual and scheduled reconciliation use the same idempotent preview and apply path.
+The scheduler runs every five minutes for enabled providers with mappings.
+If the directory is unavailable, reconciliation records a stale history item and retains the last known grants.
+
 ## Runtime security and recovery
 
 Five invalid credential attempts within five minutes block that provider and normalized username for five minutes.
@@ -111,16 +150,24 @@ An LDAP outage produces an explicit provider-unavailable message and does not pr
 | `POST /api/capabilities/ldap/test` | Prove directory access and local recovery | Verified administrator session plus both submitted credentials |
 | `PUT /api/capabilities/ldap/state` | Apply lifecycle state and selected linked users | Verified administrator session |
 | `GET /api/capabilities/ldap/transitions?provider_id={id}` | Read lifecycle history | Verified administrator session |
+| `GET /api/capabilities/ldap/group-mappings?provider_id={id}` | List normalized group-to-role mappings | Verified administrator session |
+| `PUT /api/capabilities/ldap/group-mappings/{mapping_id}` | Create or update one mapping with revision control | Verified administrator session |
+| `DELETE /api/capabilities/ldap/group-mappings/{mapping_id}` | Delete one mapping with revision control | Verified administrator session |
+| `POST /api/capabilities/ldap/group-mappings/preview` | Read the directory and return a dry-run token | Verified administrator session |
+| `POST /api/capabilities/ldap/group-mappings/apply` | Re-read the directory and atomically apply an exact preview | Verified administrator session |
+| `POST /api/capabilities/ldap/group-mappings/reconcile` | Run immediate idempotent reconciliation | Verified administrator session |
+| `GET /api/capabilities/ldap/group-mappings/history?provider_id={id}` | Read reconciliation and blocker history | Verified administrator session |
 | `POST /api/user/identities/ldap` | Explicitly link the current local account | Verified self session plus LDAP credentials |
 | `GET /api/auth/login` | Read exposed LDAP providers and local-recovery metadata | Public |
 | `POST /api/auth/login` | Authenticate with `method: "ldap"` and a provider ID | Public |
 
-Stable LDAP errors include `LDAP_INVALID_CREDENTIALS`, `LDAP_PROVIDER_UNAVAILABLE`, `LDAP_THROTTLED`, `LDAP_IDENTITY_COLLISION`, `LDAP_RECONFIGURATION_REQUIRES_INACTIVE`, `LDAP_ADMIN_RECOVERY_NOT_READY`, `LDAP_DISABLED`, `LDAP_FORBIDDEN`, and `LDAP_PROVIDER_NOT_FOUND`.
+Stable LDAP errors include `LDAP_INVALID_CREDENTIALS`, `LDAP_PROVIDER_UNAVAILABLE`, `LDAP_THROTTLED`, `LDAP_IDENTITY_COLLISION`, `LDAP_RECONFIGURATION_REQUIRES_INACTIVE`, `LDAP_ADMIN_RECOVERY_NOT_READY`, `LDAP_DISABLED`, `LDAP_FORBIDDEN`, `LDAP_PROVIDER_NOT_FOUND`, `LDAP_GROUP_PREVIEW_STALE`, `LDAP_GROUP_MAPPING_COLLISION`, `LDAP_GROUP_PROTECTED_ADMINISTRATOR`, and `LDAP_GROUP_UNRESOLVED`.
 
 ## Persistence and edition boundary
 
-SQL is authoritative for provider configuration, encrypted bind credentials, readiness, recovery-admin designation, selected users, authentication throttles, lifecycle transitions, users, and external identities.
+SQL is authoritative for provider configuration, encrypted bind credentials, readiness, recovery-admin designation, selected users, authentication throttles, lifecycle transitions, users, external identities, group mappings, assignment ownership, and reconciliation history.
 Migration `v2.20.13` creates `ldap_provider`, `ldap_provider_selected_user`, `ldap_auth_attempt`, and `ldap_capability_transition` on SQLite, MySQL, MariaDB, and PostgreSQL.
+Migration `v2.20.31` adds the group-discovery configuration and creates `ldap_group_mapping_state`, `ldap_group_mapping`, `ldap_group_managed_assignment`, and `ldap_group_reconciliation`.
 
 The contract is exported from `pro_interfaces/ldap.go` and versioned with `pro_interfaces.CoreContractVersion`.
 Enhanced provides the lifecycle implementation through the existing module seam.
