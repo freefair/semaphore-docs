@@ -1,15 +1,17 @@
 # Current Slice
 
-- [>] 050 — Docker executor
-  - [>] Inventory the existing executor, runner capability, placement, task bundle, logging, and cancellation boundaries
-    - [ ] Confirm there is no duplicate Docker execution path outside the existing runner task interfaces
-    - [ ] Trace the current runner-to-task lifecycle and identify the narrow edition interface seam
-    - [ ] Compare the plan requirements with the existing Docker-related fixtures and contracts
-  - [ ] Define the typed Docker executor configuration and outbound client interface
-  - [ ] Implement task-scoped bundle creation, labeled container lifecycle, log streaming, result mapping, and bounded cancellation
-  - [ ] Expose only the required executor metadata through existing task API and UI surfaces
-  - [ ] Document daemon prerequisites and direct Docker socket limitations
-  - [ ] Verify disposable Docker execution, cleanup, API/UI contracts, browser flows, Terra security review, and full release gates
+- [>] 051 — Docker executor hardening
+  - [>] Inventory existing Docker policy, image provenance, reconciliation, metrics, and diagnostics seams
+    - [ ] Map current configuration ownership and all task-controlled Docker inputs
+    - [ ] Trace image pull/inspect, cancellation, cleanup, and runner restart behavior
+    - [ ] Identify the narrowest upstream-compatible API and UI extension points
+  - [ ] Define administrator-owned policy and pre-create validation contracts
+    - [ ] Cover registry/image allow-lists, digest pinning, identity, privilege, mounts, devices, resources, and network
+    - [ ] Define safe defaults, denial diagnostics, provenance, and quarantine semantics
+  - [ ] Implement policy enforcement, bounded image resolution, reconciliation, and observability
+  - [ ] Expose only required policy, provenance, denial, and remediation data through existing surfaces
+  - [ ] Document the effective policy, daemon trust boundary, and recovery operations
+  - [ ] Verify the complete policy matrix, real Docker behavior, API/UI contracts, browser flows, Terra security review, and release gates
 
 # All Slices
 
@@ -50,8 +52,8 @@
 - [x] 046 — Global and template roles
 - [x] 047 — LDAP group mapping
 - [x] 048 — OIDC group mapping
-- [>] 050 — Docker executor
-- [ ] 051 — Docker executor hardening
+- [x] 050 — Docker executor
+- [>] 051 — Docker executor hardening
 - [ ] 052 — Kubernetes executor
 - [ ] 053 — Kubernetes executor hardening
 - [ ] 054 — Workflow RBAC and role approvals

@@ -74,7 +74,7 @@ Full list of available configuration options:
 | <br />`runner.executor.docker.tls_verify` <hr /> `SEMAPHORE_RUNNER_DOCKER_TLS_VERIFY` <br /><br /> | Enable TLS certificate verification for `tcp://` connections. |
 | <br />`runner.executor.docker.cert_path` <hr /> `SEMAPHORE_RUNNER_DOCKER_CERT_PATH` <br /><br /> | Directory holding ca.pem, cert.pem and key.pem for mutual TLS. |
 | <br />`runner.executor.docker.image` <hr /> `SEMAPHORE_RUNNER_DOCKER_IMAGE` <br /><br /> | Default image for the build container. Default: semaphoreui/job:latest |
-| <br />`runner.executor.docker.helper_image` <hr /> `SEMAPHORE_RUNNER_DOCKER_HELPER_IMAGE` <br /><br /> | Image used for the transient git-clone container. Default: semaphoreui/helper:latest |
+| <br />`runner.executor.docker.helper_image` <hr /> `SEMAPHORE_RUNNER_DOCKER_HELPER_IMAGE` <br /><br /> | Image used by the network-disabled transient bundle-population container. Default: semaphoreui/helper:latest |
 | <br />`runner.executor.docker.network` <hr /> `SEMAPHORE_RUNNER_DOCKER_NETWORK` <br /><br /> | Docker network the build container joins. Default: bridge |
 | <br />`runner.executor.docker.pull_policy` <hr /> `SEMAPHORE_RUNNER_DOCKER_PULL_POLICY` <br /><br /> | Image pull policy: `always`, `if-not-present` (default) or `never`. |
 | <br />`runner.executor.docker.cpu_limit` <hr /> `SEMAPHORE_RUNNER_DOCKER_CPU_LIMIT` <br /><br /> | When > 0, caps the build container CPU (passed as `--cpus`). |
