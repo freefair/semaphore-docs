@@ -62,14 +62,17 @@ Full list of available configuration options:
 | <br />`runner.connection.skip_tls_verify` <hr /> `SEMAPHORE_RUNNER_SKIP_TLS_VERIFY` <br /><br /> | Disable server certificate verification entirely. Insecure (vulnerable to MITM) — use only for testing. |
 | <br />`runner.executor` <hr /> `SEMAPHORE_RUNNER_EXECUTOR` <br /><br /> | JSON object with the full runner executor configuration (`type` plus nested `docker` or `k8s` settings). Use when you want to set the entire executor block from a single environment variable. |
 | <br />`runner.executor.type` <hr /> &mdash; <br /><br /> | Strategy the runner uses to execute each task: `local` (default), `k8s` or `docker`. |
-| <br />`runner.executor.k8s.kubeconfig` <hr /> `SEMAPHORE_RUNNER_K8S_KUBECONFIG` <br /><br /> | Path to a kubeconfig file. Empty = in-cluster configuration. |
-| <br />`runner.executor.k8s.namespace` <hr /> `SEMAPHORE_RUNNER_K8S_NAMESPACE` <br /><br /> | Namespace where ephemeral task Pods are created. Default: semaphore |
-| <br />`runner.executor.k8s.image` <hr /> `SEMAPHORE_RUNNER_K8S_IMAGE` <br /><br /> | Default container image for the build container. Default: semaphoreui/job:latest |
-| <br />`runner.executor.k8s.helper_image` <hr /> `SEMAPHORE_RUNNER_K8S_HELPER_IMAGE` <br /><br /> | Image used for the git-clone init container. Default: semaphoreui/helper:latest |
-| <br />`runner.executor.k8s.service_account` <hr /> `SEMAPHORE_RUNNER_K8S_SERVICE_ACCOUNT` <br /><br /> | Service account that task Pods run under. Default: default |
+| <br />`runner.executor.k8s.kubeconfig` <hr /> `SEMAPHORE_RUNNER_K8S_KUBECONFIG` <br /><br /> | Absolute path to a runner-owned kubeconfig file. Empty selects explicit in-cluster authentication. |
+| <br />`runner.executor.k8s.context` <hr /> `SEMAPHORE_RUNNER_K8S_CONTEXT` <br /><br /> | Exact kubeconfig context. Required when `kubeconfig` is set; `current-context` is never used. |
+| <br />`runner.executor.k8s.cluster_alias` <hr /> `SEMAPHORE_RUNNER_K8S_CLUSTER_ALIAS` <br /><br /> | Required non-secret cluster label shown in task diagnostics. |
+| <br />`runner.executor.k8s.namespace` <hr /> `SEMAPHORE_RUNNER_K8S_NAMESPACE` <br /><br /> | Namespace where task Jobs are created. Default: semaphore |
+| <br />`runner.executor.k8s.image` <hr /> `SEMAPHORE_RUNNER_K8S_IMAGE` <br /><br /> | Required default task image with an immutable `@sha256:` digest. |
+| <br />`runner.executor.k8s.helper_image` <hr /> `SEMAPHORE_RUNNER_K8S_HELPER_IMAGE` <br /><br /> | Required bundle init-container image with an immutable `@sha256:` digest. |
+| <br />`runner.executor.k8s.service_account` <hr /> `SEMAPHORE_RUNNER_K8S_SERVICE_ACCOUNT` <br /><br /> | Required dedicated workload service account. The namespace `default` account is rejected and token mounting is disabled. |
 | <br />`runner.executor.k8s.pull_secrets` <hr /> `SEMAPHORE_RUNNER_K8S_PULL_SECRETS` <br /><br /> | Comma-separated list of imagePullSecrets attached to each Pod. |
 | <br />`runner.executor.k8s.poll_interval_seconds` <hr /> `SEMAPHORE_RUNNER_K8S_POLL_INTERVAL_SECONDS` <br /><br /> | How often the executor polls Pod status, in seconds. Default: 3 |
 | <br />`runner.executor.k8s.cleanup_grace_seconds` <hr /> `SEMAPHORE_RUNNER_K8S_CLEANUP_GRACE_SECONDS` <br /><br /> | Grace period when deleting Pods, in seconds. Default: 30 |
+| <br />`runner.executor.k8s.active_deadline_seconds` <hr /> `SEMAPHORE_RUNNER_K8S_ACTIVE_DEADLINE_SECONDS` <br /><br /> | Maximum complete Job lifetime in seconds. Default: 3600; maximum: 86400. |
 | <br />`runner.executor.docker.host` <hr /> `SEMAPHORE_RUNNER_DOCKER_HOST` <br /><br /> | Docker daemon URL (`unix://`, `tcp://` or `npipe://`). Empty = standard environment (`DOCKER_HOST`) and platform default socket. |
 | <br />`runner.executor.docker.tls_verify` <hr /> `SEMAPHORE_RUNNER_DOCKER_TLS_VERIFY` <br /><br /> | Enable TLS certificate verification for `tcp://` connections. |
 | <br />`runner.executor.docker.cert_path` <hr /> `SEMAPHORE_RUNNER_DOCKER_CERT_PATH` <br /><br /> | Directory holding ca.pem, cert.pem and key.pem for mutual TLS. |

@@ -1,21 +1,19 @@
 # Current Slice
 
-- [>] 052 — Kubernetes executor
-  - [>] Inventory executor, placement, task lifecycle, log streaming, and cancellation extension points
-    - [ ] Trace the executor interface and runner capability advertisement
-    - [ ] Map task bundles, status transitions, logs, and cancellation semantics
-    - [ ] Identify the smallest existing task-detail UI extension
-  - [ ] Define typed Kubernetes configuration and outbound client contracts
-    - [ ] Select context, namespace, service account, and immutable image inputs explicitly
-    - [ ] Define attributable Job/Pod labels without secret metadata
-    - [ ] Define bounded deadlines, reconnect offsets, terminal mapping, and cleanup lifecycle
-  - [ ] Implement Job execution, observation, cancellation, and temporary-object cleanup
-    - [ ] Create one labeled Job per task with bounded execution semantics
-    - [ ] Stream bounded logs across reconnects and map Pod termination details
-    - [ ] Confirm foreground deletion and Pod termination before reporting cancellation
-  - [ ] Expose only required executor identity and lifecycle data through existing task surfaces
-  - [ ] Document Kubernetes RBAC verbs and namespace prerequisites
-  - [ ] Verify unit, integration, API, UI, browser, security, and release gates
+- [>] 053 — Kubernetes executor hardening
+  - [>] Inventory current Slice 052 workload generation, trust boundaries, provenance, and cleanup ownership
+    - [ ] Map every administrator- and project-controlled Kubernetes input
+    - [ ] Trace Job/Pod/Secret lifecycle across runner restart and ambiguous execution
+    - [ ] Identify existing policy, diagnostics, metrics, and remediation seams
+  - [ ] Define administrator-owned Kubernetes execution policy and manifest validation
+    - [ ] Cover clusters, namespaces, digest allow-lists, service accounts, runtime classes, volumes, and network profiles
+    - [ ] Define restricted Pod security and bounded resource defaults
+    - [ ] Define denial diagnostics, policy acknowledgement, provenance, quarantine, and retention contracts
+  - [ ] Implement pre-admission enforcement, NetworkPolicy profiles, restart reconciliation, and ownership-safe GC
+  - [ ] Export bounded latency, reconnect, denial, cleanup, and orphan telemetry
+  - [ ] Expose only required policy, provenance, denial, and remediation data through existing surfaces
+  - [ ] Document effective policy, cluster prerequisites, trust boundaries, and recovery operations
+  - [ ] Verify policy matrix, disposable-cluster behavior, API/UI/browser contracts, Terra review, and release gates
 
 # All Slices
 
@@ -58,8 +56,8 @@
 - [x] 048 — OIDC group mapping
 - [x] 050 — Docker executor
 - [x] 051 — Docker executor hardening
-- [>] 052 — Kubernetes executor
-- [ ] 053 — Kubernetes executor hardening
+- [x] 052 — Kubernetes executor
+- [>] 053 — Kubernetes executor hardening
 - [ ] 054 — Workflow RBAC and role approvals
 - [ ] 055 — Workflow versions and cross-project references
 - [ ] 056 — Notification governance
