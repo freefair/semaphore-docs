@@ -65,11 +65,15 @@ Global assignments are independent of project membership.
 Role, assignment, and template-override mutations use compare-and-swap revisions.
 Stale mutations return a conflict instead of overwriting the winning change.
 A global role cannot be deleted while it is assigned.
+A global role also cannot be deleted while a project membership resolves through it.
+Reducing `project.members.manage` on a reusable global role is rejected unless every affected project retains an independent effective administrator.
 
 The migration preserves the legacy project and template permission columns for upstream compatibility.
 It removes the legacy `role_slug` foreign key from template overrides because built-in roles intentionally have no row in the custom-role table; custom role references remain validated through the immutable role ID.
 Existing template permissions are converted to the typed allow mask.
 Fresh install, rollback to the Community baseline, re-upgrade, and restart persistence are verified on SQLite, MySQL, and PostgreSQL.
+Rollback stops before changing schema when an explicit template deny cannot be represented by the legacy positive-only permission mask or when the resulting legacy state would have no built-in administrator.
+It never silently converts a deny into inherited access or promotes a delegated administrator.
 
 ## Last Administrator and Break-glass Recovery
 
@@ -82,7 +86,7 @@ The repository serializes global-role mutations and rejects deleting or demoting
 The stable conflict is `LAST_GLOBAL_ADMINISTRATOR`.
 
 The built-in administrator remains the break-glass authority and receives all global permissions without an Enhanced role assignment.
-Delegated user managers cannot set or clear the built-in `admin` flag.
+Delegated user managers cannot modify, delete, or reset credentials for a built-in administrator.
 
 If every delegated role assignment is unusable, recover from a trusted host with direct access to the configured Semaphore database:
 
@@ -96,6 +100,7 @@ Do not change role rows manually because that bypasses revision, audit, and last
 ## HTTP Contract
 
 Global-role routes require `global.roles.manage` and the `project_roles` capability.
+Every delegated global or template permission also requires the effective `project_roles` capability; unavailable or read-only capability states fail closed for the requested operation.
 Built-in administrators satisfy the global permission middleware through the break-glass rule.
 
 | Operation | Route |
@@ -111,6 +116,8 @@ Built-in administrators satisfy the global permission middleware through the bre
 
 Template lists omit entries the current user cannot read.
 Direct template detail, run, edit, and delete paths enforce their independent effective template permission.
+Stopping a template's tasks requires template Run, and template inventory mutations require template Edit.
+Template override reads and mutations require the caller's base `project.resources.manage` grant before template overrides are applied; template Edit alone is not ACL-administration authority.
 Template overrides accept `allowed_permissions`, `denied_permissions`, and a positive `revision`; the same bit cannot be present in both masks.
 
 ## Audit and User Interface

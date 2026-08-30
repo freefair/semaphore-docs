@@ -1,14 +1,11 @@
 # Current Slice
 
-- [>] 046 — Global and template roles
-  - [x] Inventory existing global-role, template-permission, administration, and list-filtering seams
-  - [x] Extend the typed catalog with explicit global and template scopes
-  - [x] Persist global assignments separately and protect the last effective global administrator
-  - [x] Add inheritable template allow/deny overrides with deterministic evaluation order
-  - [x] Enforce representative global and template list/read/run/edit/delete actions
-  - [x] Expose bounded effective-permission provenance through existing UI surfaces
-  - [x] Document break-glass recovery and the complete evaluation contract
-  - [>] Verify unit, integration, API, migration, multi-user browser, full-suite, documentation, and security gates
+- [>] 047 — LDAP group mapping
+  - [ ] Inventory LDAP group client, login lifecycle, role assignment ownership, and existing reconciliation seams
+  - [ ] Define normalized immutable group-to-global/project-role mappings and bounded nested-group lookup
+  - [ ] Build dry-run, stale-preview, protected-admin, and managed-assignment reconciliation contracts
+  - [ ] Add transactional API, login-time and scheduled reconciliation, audit history, and unresolved-item handling
+  - [ ] Verify disposable LDAP and SQL integration, API/UI contracts, multi-user browser flow, and full release gates
 
 # All Slices
 
@@ -46,8 +43,8 @@
 - [x] 043 — HA workflow progression
 - [x] 044 — HA resilience verification
 - [x] 045 — Custom project roles
-- [>] 046 — Global and template roles
-- [ ] 047 — LDAP group mapping
+- [x] 046 — Global and template roles
+- [>] 047 — LDAP group mapping
 - [ ] 048 — OIDC group mapping
 - [ ] 050 — Docker executor
 - [ ] 051 — Docker executor hardening
