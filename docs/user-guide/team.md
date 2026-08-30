@@ -77,7 +77,7 @@ A custom role is a named set of permissions that supplements a member's built-in
 
 Custom roles are available at two scopes:
 
-- **Global roles** are defined at the instance level and can be used in any project.
+- **Global roles** are defined at the instance level and delegate bounded system administration independently of project membership.
 - **Project roles** are defined inside a single project and are available only within that project.
 
 ### Permission levels {#permission-levels}
@@ -93,7 +93,7 @@ Choose the scope before opening the role form.
 
 #### Global role {#global-role}
 
-Global roles are created once and can be assigned to users in any project. Only an instance administrator can create a global role.
+Global roles are created once and assigned directly to users. They grant only the selected system permissions; they do not grant project membership or project access. A built-in administrator or a delegated user with global role-management permission can create them.
 
 Open the bottom-left admin menu and select **Roles**.
 
@@ -122,7 +122,7 @@ Both paths open the same role form. Configure the role to match the access your 
 | --- | --- |
 | **Name** | A human-readable label for the role. |
 | **Slug** | A unique technical identifier used to reference the role. Use lowercase letters, numbers, underscores, or hyphens, for example `release_operator`. |
-| **Permissions** | The project-wide permissions granted by the role. |
+| **Permissions** | The project-wide or global permissions granted by the role, according to its scope. |
 
 #### Project-wide permissions {#project-wide-permissions}
 
@@ -159,7 +159,7 @@ The **Permissions** tab lists the roles already added to the template.
 **Add the role and grant template permissions**
 
 1. Select **Add Role** and choose the custom role to add to this template.
-2. Select only the template permissions that the role needs, such as **Can run tasks** or **Can update the template**.
+2. Set each template action to **Inherit**, **Allow**, or **Deny**.
 
 This example uses a previously created role with no project-wide permissions. You can choose any custom role that is available in the project.
 
@@ -168,16 +168,18 @@ This example uses a previously created role with no project-wide permissions. Yo
 To grant the same role access to additional templates, repeat these steps for each template.
 
 :::note Existing project access
-Template permissions are additive. They add access without replacing or reducing access from a user's built-in role or other custom roles. If a user can already run or update all task templates, adding a template-specific role does not narrow that access.
+**Inherit** follows the project role. **Allow** adds the action for this template, while **Deny** removes it for this template even when the project role grants the corresponding broad permission.
 :::
 
 ### Assign a custom role in a project {#assign-a-custom-role-in-a-project}
 
-After creating and configuring a global or project role, assign it to the required team member:
+After creating and configuring a project role, assign it to the required team member:
 
 1. Open the project and go to **Team**.
 2. Expand **Roles** next to the required user.
 3. Select the custom role.
+
+Assign global roles from the existing global **Users** dialog. Global assignments are separate from project membership.
 
 ### Not currently supported {#not-currently-supported}
 

@@ -136,6 +136,8 @@ The Roles tab and repository navigation are hidden when the corresponding backen
 No new navigation hierarchy, settings page, or alternate role editor is introduced.
 This keeps the shared UI close to upstream while making backend enforcement authoritative.
 
+Global delegation and per-template inherit, allow, and deny evaluation are documented separately in [Global and Template Roles](global-template-roles.md).
+
 ## Verification
 
 Run the focused backend and edition contracts with:
