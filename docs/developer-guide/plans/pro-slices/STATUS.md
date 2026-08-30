@@ -1,17 +1,21 @@
 # Current Slice
 
-- [>] 051 — Docker executor hardening
-  - [>] Inventory existing Docker policy, image provenance, reconciliation, metrics, and diagnostics seams
-    - [ ] Map current configuration ownership and all task-controlled Docker inputs
-    - [ ] Trace image pull/inspect, cancellation, cleanup, and runner restart behavior
-    - [ ] Identify the narrowest upstream-compatible API and UI extension points
-  - [ ] Define administrator-owned policy and pre-create validation contracts
-    - [ ] Cover registry/image allow-lists, digest pinning, identity, privilege, mounts, devices, resources, and network
-    - [ ] Define safe defaults, denial diagnostics, provenance, and quarantine semantics
-  - [ ] Implement policy enforcement, bounded image resolution, reconciliation, and observability
-  - [ ] Expose only required policy, provenance, denial, and remediation data through existing surfaces
-  - [ ] Document the effective policy, daemon trust boundary, and recovery operations
-  - [ ] Verify the complete policy matrix, real Docker behavior, API/UI contracts, browser flows, Terra security review, and release gates
+- [>] 052 — Kubernetes executor
+  - [>] Inventory executor, placement, task lifecycle, log streaming, and cancellation extension points
+    - [ ] Trace the executor interface and runner capability advertisement
+    - [ ] Map task bundles, status transitions, logs, and cancellation semantics
+    - [ ] Identify the smallest existing task-detail UI extension
+  - [ ] Define typed Kubernetes configuration and outbound client contracts
+    - [ ] Select context, namespace, service account, and immutable image inputs explicitly
+    - [ ] Define attributable Job/Pod labels without secret metadata
+    - [ ] Define bounded deadlines, reconnect offsets, terminal mapping, and cleanup lifecycle
+  - [ ] Implement Job execution, observation, cancellation, and temporary-object cleanup
+    - [ ] Create one labeled Job per task with bounded execution semantics
+    - [ ] Stream bounded logs across reconnects and map Pod termination details
+    - [ ] Confirm foreground deletion and Pod termination before reporting cancellation
+  - [ ] Expose only required executor identity and lifecycle data through existing task surfaces
+  - [ ] Document Kubernetes RBAC verbs and namespace prerequisites
+  - [ ] Verify unit, integration, API, UI, browser, security, and release gates
 
 # All Slices
 
@@ -53,8 +57,8 @@
 - [x] 047 — LDAP group mapping
 - [x] 048 — OIDC group mapping
 - [x] 050 — Docker executor
-- [>] 051 — Docker executor hardening
-- [ ] 052 — Kubernetes executor
+- [x] 051 — Docker executor hardening
+- [>] 052 — Kubernetes executor
 - [ ] 053 — Kubernetes executor hardening
 - [ ] 054 — Workflow RBAC and role approvals
 - [ ] 055 — Workflow versions and cross-project references
