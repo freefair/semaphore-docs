@@ -194,9 +194,21 @@ LDAP reconciliation owns only the assignments it creates.
 It does not remove a matching role assigned manually, and a directory outage retains the last known managed grants while recording stale reconciliation history.
 Nested groups are supported to the configured depth, including cyclic directory graphs.
 
+### Assign roles from OIDC groups
+
+Enhanced administrators can map one configured OIDC group-claim value to an explicit global role or project role from the existing enhanced panel in **System Information**.
+The provider must define `group_claim_path`; matching remains case-sensitive unless `group_claim_case_insensitive` is enabled for that provider.
+
+Enter only the selected scalar or string-array group values in **Redacted claim preview** and choose a user.
+The preview shows additions, removals, unknown values, collisions, and protected-administrator blockers without accepting or displaying a raw ID token, access token, or unrelated claims.
+The mappings take effect when the user next completes a successful OIDC login.
+
+OIDC reconciliation replaces only assignments owned by the same provider and mapping set.
+Manual grants, LDAP-managed grants, and grants owned by another OIDC provider remain untouched.
+If the configured claim is absent, the provider's `group_claim_missing_policy` decides whether existing managed access is preserved or cleared.
+
 ### Not currently supported {#not-currently-supported}
 
-- **OIDC group mapping.** LDAP group mapping is available, but mapping OIDC claims to roles is not currently supported.
 - **Granular permissions for non-template resources.** Only templates can be governed by custom roles at the individual-resource level today.
 
 ---

@@ -1,11 +1,15 @@
 # Current Slice
 
-- [>] 048 — OIDC group mapping
-  - [>] Inventory the existing OIDC login flow, claim handling, role ownership, and edition boundaries
-  - [ ] Define bounded allow-listed claim parsing, normalization, and missing-claim policy
-  - [ ] Add explicit global/project role mappings, ownership-aware reconciliation, stale-revision protection, and redacted audit history
-  - [ ] Add mapping CRUD/preview/history APIs and the minimal existing-panel UI
-  - [ ] Verify signed OIDC fixtures, SQL ownership isolation, API/UI contracts, browser login flow, Terra security review, and full release gates
+- [>] 050 — Docker executor
+  - [>] Inventory the existing executor, runner capability, placement, task bundle, logging, and cancellation boundaries
+    - [ ] Confirm there is no duplicate Docker execution path outside the existing runner task interfaces
+    - [ ] Trace the current runner-to-task lifecycle and identify the narrow edition interface seam
+    - [ ] Compare the plan requirements with the existing Docker-related fixtures and contracts
+  - [ ] Define the typed Docker executor configuration and outbound client interface
+  - [ ] Implement task-scoped bundle creation, labeled container lifecycle, log streaming, result mapping, and bounded cancellation
+  - [ ] Expose only the required executor metadata through existing task API and UI surfaces
+  - [ ] Document daemon prerequisites and direct Docker socket limitations
+  - [ ] Verify disposable Docker execution, cleanup, API/UI contracts, browser flows, Terra security review, and full release gates
 
 # All Slices
 
@@ -45,8 +49,8 @@
 - [x] 045 — Custom project roles
 - [x] 046 — Global and template roles
 - [x] 047 — LDAP group mapping
-- [>] 048 — OIDC group mapping
-- [ ] 050 — Docker executor
+- [x] 048 — OIDC group mapping
+- [>] 050 — Docker executor
 - [ ] 051 — Docker executor hardening
 - [ ] 052 — Kubernetes executor
 - [ ] 053 — Kubernetes executor hardening

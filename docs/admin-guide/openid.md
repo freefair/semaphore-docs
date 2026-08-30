@@ -66,6 +66,9 @@ All SSO provider options:
 | `username_claim`      | Username claim expression[\*](#claim-expression).                               |
 | `email_claim`         | Email claim expression[\*](#claim-expression).                                  |
 | `name_claim`          | Profile Name claim expression[\*](#claim-expression).                           |
+| `group_claim_path`    | Allow-listed dotted path to a scalar or string-array group claim used by enhanced role mapping. |
+| `group_claim_case_insensitive` | Lowercase group values before matching. Default `false`; matching is case-sensitive unless explicitly enabled. |
+| `group_claim_missing_policy` | `preserve` keeps the provider's existing managed grants when the claim is absent; `clear` removes only grants owned by that provider. Default `preserve`. |
 | `order`               | Position of the provider button on the Sign in screen.                                                      |
 | `allow_idp_initiated` | Enable [IdP-initiated login](#idp-initiated-login) for this provider. Default `false`.                       |
 | `return_via_state`    | Pass the post-login return path via the OAuth `state` parameter instead of the redirect URL. Default `true`. |
@@ -89,6 +92,31 @@ Semaphore is attempting to claim the email field first. If it is empty, the expr
 <div class="warning">
   The expression <code>"username_claim": "|"</code> generates a random <code>username</code> for each user who logs in through the provider.
 </div>
+
+## Group-to-role mapping
+
+Enhanced administrators can map values from one configured OIDC group claim to explicit global or project role IDs. Configure a bounded claim path on the provider first:
+
+```json
+{
+  "oidc_providers": {
+    "mysso": {
+      "provider_url": "https://mysso-provider.com",
+      "client_id": "***",
+      "client_secret": "***",
+      "group_claim_path": "realm.groups",
+      "group_claim_case_insensitive": false,
+      "group_claim_missing_policy": "preserve"
+    }
+  }
+}
+```
+
+The selected claim may be one string or an array of strings. Semaphore rejects objects, mixed arrays, overlong values, excessive nesting, and excessive group counts. It does not inspect or retain unrelated claims for role mapping.
+
+Use the OIDC group mapping panel in **System Information** to create mappings and preview a redacted list of group values for a user. Preview reports additions, removals, unknown values, assignment collisions, and protected-administrator violations. Role changes are applied only after that user completes a successful, verified OIDC login.
+
+OIDC reconciliation owns only assignments created by the same provider and mapping. It never removes manual, LDAP-owned, or another OIDC provider's grants. `preserve` is the safe default for providers that may omit groups from some token or user-info responses; choose `clear` only when claim absence authoritatively means no groups.
 
 ## IdP-initiated login {#idp-initiated-login}
 
