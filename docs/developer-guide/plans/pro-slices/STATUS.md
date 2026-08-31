@@ -1,18 +1,18 @@
 # Current Slice
 
-- [>] 058 — Opsgenie delivery
-  - [>] Verify the official Alert API v2 contract and current provider-adapter seam
-    - [ ] Confirm US/EU base URLs, authentication, field bounds, alias behavior, asynchronous request status, close semantics, and rate limits from official Opsgenie documentation
-    - [ ] Inventory the PagerDuty adapter, immutable configuration-generation fence, destination validation, test-send, retry, and safe-history extension points
-    - [ ] Define accepted/pending/succeeded/failed provider-state transitions and bounded polling with Terra
-  - [ ] Implement the Opsgenie client and provider adapter
-    - [ ] Map the logical incident key to a stable alert alias and recovery to idempotent close-by-alias
-    - [ ] Bound message, description, responders, tags, details, entity, priority, request-status responses, and retry timing
-    - [ ] Keep the API integration key write-only and persist only safe asynchronous result metadata
+- [>] 059 — ServiceNow delivery
+  - [>] Verify the official Table API contract and current provider-adapter seam
+    - [ ] Confirm versioned incident create/read/update endpoints, OAuth 2.0 flow, response identity, Location behavior, rate limits, and error semantics from official ServiceNow documentation
+    - [ ] Inventory provider configuration, immutable generation, exact record identity, test-send, retry, and safe-history extension points
+    - [ ] Define the validated instance-origin boundary, authentication preference, and create/update state transitions with Terra
+  - [ ] Implement the restricted ServiceNow incident client and provider adapter
+    - [ ] Create only in the `incident` table, persist exact `sys_id`, and update only that recorded identity
+    - [ ] Map bounded Semaphore fields through an administrator-defined approved incident-field allow-list
+    - [ ] Keep credentials write-only and persist only safe record identity/result metadata
   - [ ] Add controlled test, validation, and minimal existing-surface administration
     - [ ] Reuse the existing notification governance API, adapter registry, and audit-webhook page
-    - [ ] Show only required region, asynchronous state, alias, retry, and close history without redesigning shared UI
-  - [ ] Verify fake-provider, API, browser, async polling, retry, deduplication, close, migration, and Terra security gates
+    - [ ] Show only required instance, auth/config state, record identity/link, retry, and update history without redesigning shared UI
+  - [ ] Verify fake-provider, API, browser, create/update identity, retry, migration, and Terra security gates
 
 # All Slices
 
@@ -61,8 +61,8 @@
 - [x] 055 — Workflow versions and cross-project references
 - [x] 056 — Notification governance
 - [x] 057 — PagerDuty delivery
-- [>] 058 — Opsgenie delivery
-- [ ] 059 — ServiceNow delivery
+- [x] 058 — Opsgenie delivery
+- [>] 059 — ServiceNow delivery
 - [ ] 060 — Global credential grants
 - [ ] 061 — Credential resolution and audit
 - [ ] 062 — Server-generated SSH keys
