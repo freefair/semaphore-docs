@@ -1,20 +1,15 @@
 # Current Slice
 
-- [>] 055 — Workflow versions and cross-project references
-  - [>] Inventory definition mutation, run snapshot, resource-version, and authorization boundaries
-    - [ ] Trace current workflow revision persistence and every successful definition mutation path
-    - [ ] Inventory cross-project resource types, existing grants, and discovery/list filtering boundaries
-    - [ ] Define immutable version, structural diff, restore, and exact run-reference contracts
-  - [ ] Implement append-only workflow versions and structural diff
-    - [ ] Persist author, time, parent revision, bounded message, and content fingerprint
-    - [ ] Store runs against exact workflow and referenced resource versions
-    - [ ] Restore by creating a new version without mutating history
-  - [ ] Implement explicit cross-project grants and dual authorization
-    - [ ] Require owner grant and consumer permission during save, start, and runtime resolution
-    - [ ] Snapshot resolved grants and versions at run start
-    - [ ] Block new runs after revocation while preserving existing audit history
-  - [ ] Add minimal existing-surface version, compare, restore, grant, and reference UI
-  - [ ] Verify two-project save/start/run, concurrent edit, revocation, restore, denied discovery, and release gates
+- [>] 056 — Notification governance
+  - [>] Inventory notification sources, transactional boundaries, and authorization surfaces
+    - [ ] Trace task, workflow, approval, and system lifecycle events that may emit notifications
+    - [ ] Inventory the existing audit webhook, background worker, encryption, role, and history patterns
+    - [ ] Define the provider-neutral event, destination, routing, incident, outbox, and delivery contracts
+  - [ ] Persist notification events and outbox rows in each source transaction
+  - [ ] Implement destination and routing lifecycle with optimistic concurrency and role enforcement
+  - [ ] Implement bounded dispatch, retry, rate-limit, redaction, and terminal outcome handling
+  - [ ] Add minimal existing-surface configuration, preview, test, pause/resume, retry, and history UI
+  - [ ] Verify transactional delivery, restart, deduplication, permissions, redaction, retry, and browser flows
 
 # All Slices
 
@@ -60,8 +55,8 @@
 - [x] 052 — Kubernetes executor
 - [x] 053 — Kubernetes executor hardening
 - [x] 054 — Workflow RBAC and role approvals
-- [>] 055 — Workflow versions and cross-project references
-- [ ] 056 — Notification governance
+- [x] 055 — Workflow versions and cross-project references
+- [>] 056 — Notification governance
 - [ ] 057 — PagerDuty delivery
 - [ ] 058 — Opsgenie delivery
 - [ ] 059 — ServiceNow delivery
