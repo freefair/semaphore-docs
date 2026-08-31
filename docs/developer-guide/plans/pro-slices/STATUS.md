@@ -1,19 +1,15 @@
 # Current Slice
 
-- [>] 053 — Kubernetes executor hardening
-  - [>] Inventory current Slice 052 workload generation, trust boundaries, provenance, and cleanup ownership
-    - [ ] Map every administrator- and project-controlled Kubernetes input
-    - [ ] Trace Job/Pod/Secret lifecycle across runner restart and ambiguous execution
-    - [ ] Identify existing policy, diagnostics, metrics, and remediation seams
-  - [ ] Define administrator-owned Kubernetes execution policy and manifest validation
-    - [ ] Cover clusters, namespaces, digest allow-lists, service accounts, runtime classes, volumes, and network profiles
-    - [ ] Define restricted Pod security and bounded resource defaults
-    - [ ] Define denial diagnostics, policy acknowledgement, provenance, quarantine, and retention contracts
-  - [ ] Implement pre-admission enforcement, NetworkPolicy profiles, restart reconciliation, and ownership-safe GC
-  - [ ] Export bounded latency, reconnect, denial, cleanup, and orphan telemetry
-  - [ ] Expose only required policy, provenance, denial, and remediation data through existing surfaces
-  - [ ] Document effective policy, cluster prerequisites, trust boundaries, and recovery operations
-  - [ ] Verify policy matrix, disposable-cluster behavior, API/UI/browser contracts, Terra review, and release gates
+- [>] 054 — Workflow RBAC and role approvals
+  - [>] Inventory workflow permissions, role evaluation, approval snapshots, and every list/detail/mutation boundary
+    - [ ] Map existing typed project/global/template role permissions and directory-managed role provenance
+    - [ ] Trace workflow list, detail, edit, start, stop, log, inbox, and approval authorization paths
+    - [ ] Trace approval request snapshots, concurrent decisions, audit events, and role deletion/revocation behavior
+  - [ ] Define stable workflow permissions and per-workflow role-narrowing contracts
+  - [ ] Define any-of/all-of approval roles, distinct approver counts, and initiator separation
+  - [ ] Implement backend enforcement, immutable run snapshots, and audit provenance
+  - [ ] Expose only required effective-access and eligibility explanations in existing workflow surfaces
+  - [ ] Verify multi-user role matrix, direct-call bypass attempts, revocation, UI/browser behavior, and release gates
 
 # All Slices
 
@@ -57,8 +53,8 @@
 - [x] 050 — Docker executor
 - [x] 051 — Docker executor hardening
 - [x] 052 — Kubernetes executor
-- [>] 053 — Kubernetes executor hardening
-- [ ] 054 — Workflow RBAC and role approvals
+- [x] 053 — Kubernetes executor hardening
+- [>] 054 — Workflow RBAC and role approvals
 - [ ] 055 — Workflow versions and cross-project references
 - [ ] 056 — Notification governance
 - [ ] 057 — PagerDuty delivery

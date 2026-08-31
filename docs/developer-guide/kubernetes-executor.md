@@ -8,15 +8,31 @@ The runner selects the Kubernetes executor with `runner.executor.type: k8s`. The
 
 Every task must resolve to an OCI image with a full `@sha256:` digest. The configured task and helper images are immutable fallbacks; a template executor image may replace the task image only when it is also an immutable digest. Mutable tags are rejected before any Kubernetes object is created.
 
-The runner creates these task-scoped objects in its configured namespace:
+After the runner acknowledges the exact administrator policy revision, it creates these task-scoped objects in its configured namespace:
 
 1. An immutable Secret containing the prepared task bundle, limited to 768 KiB.
-2. One Job with `restartPolicy: Never`, `backoffLimit: 0`, and a bounded active deadline.
-3. One Pod owned by that Job.
+2. One deny-all NetworkPolicy bound to the exact task labels.
+3. One Job with `restartPolicy: Never`, `backoffLimit: 0`, and a bounded active deadline.
+4. One Pod owned by that Job.
 
 The Secret is mounted read-only into a fixed init container. The init container extracts it into a generated `emptyDir`; the task container mounts the extracted bundle read-only and gets a separate workspace `emptyDir`. Bundle bytes, environment values, credentials, JWTs, repository URLs, and command arguments never appear in labels or annotations.
 
 The workload Pod uses the configured dedicated service account with `automountServiceAccountToken: false`. It therefore has no Kubernetes API credential. This account is separate from the identity used by the runner process to call the Kubernetes API.
+
+Both containers run with the administrator-owned restricted profile: fixed non-root UID/GID, no privilege escalation, a read-only root filesystem, all Linux capabilities dropped, and `RuntimeDefault` seccomp. CPU, memory, and ephemeral-storage requests and limits are mandatory policy values. The writable bundle and workspace `emptyDir` volumes have a policy-bounded size.
+
+## Administrator Policy
+
+The server stores one policy per canonical `cluster_alias`. A Kubernetes runner remains fail-closed until it receives and acknowledges the matching revision and SHA-256 policy hash. The policy contains exact allow-lists for namespaces, immutable task/helper images, service accounts, runtime classes, the executor-owned volume types, and the selected network profile.
+
+The only built-in network profile is `deny-all`. `network_policy_enforcement` must be explicitly set to `network-policy`; the default is `unsupported`. This declaration means the administrator has verified that the cluster CNI enforces NetworkPolicy resources. Semaphore verifies object creation but does not claim to detect CNI enforcement automatically.
+
+Global administrators manage and test policies through:
+
+- `GET/PUT /api/runners/kubernetes-policies/{cluster_alias}`;
+- `POST /api/runners/kubernetes-policies/{cluster_alias}/test`.
+
+The test endpoint accepts only a bounded manifest summary, never raw Kubernetes YAML. Policy and Kubernetes API failures are reduced to stable denial identifiers before they cross the runner boundary.
 
 ## Configuration
 
@@ -48,7 +64,7 @@ The runner watches the exact generated Job and Pod identities. Success requires 
 
 Container logs use the normal Semaphore task log stream. Kubernetes timestamp watermarks provide at-least-once reconnect behavior rather than a byte-offset guarantee. Reconnect overlap may therefore repeat a line, but the runner never discards identical timestamped output. It bounds each line to 64 KiB and permits five reconnect attempts per task stream.
 
-Cancellation requests foreground Job deletion and waits for the exact Job UID and Pod UID to disappear. The task remains stopping until that evidence exists. Cleanup deletes the immutable bundle Secret only after Job and Pod deletion is confirmed. Names alone are never accepted as cleanup authority.
+Cancellation requests foreground Job deletion and wait for the exact Job UID and Pod UID to disappear. The task remains stopping until that evidence exists. Cleanup then removes the exact NetworkPolicy and immutable bundle Secret. Names alone are never accepted as cleanup authority.
 
 Interactive Terraform confirmation is not supported by this first executor slice. Kubernetes Terraform tasks must use plan-only or auto-approve mode; other supported task applications use the normal bootstrap and run stages.
 
@@ -61,9 +77,21 @@ The existing task runner-attempt panel shows only the bounded stored projection:
 - Job and Pod names and UIDs;
 - fixed main-container name;
 - immutable requested/resolved image;
-- lifecycle and bounded terminal reason.
+- acknowledged policy revision/hash, service account, runtime class, resource policy, and network enforcement;
+- exact task-object identities and terminal retention state;
+- lifecycle, bounded terminal reason, and stable denial identifier.
 
-Task logs remain in the existing log view. Kubeconfig content, Kubernetes API addresses, Secret data, labels, annotations, and raw termination messages are never exposed.
+Task logs remain in the existing log view. Kubeconfig content, Kubernetes API addresses, bundle data, labels, annotations, raw admission errors, and raw termination messages are never exposed.
+
+## Restart Reconciliation and Garbage Collection
+
+Every runner process restart opens a server-issued reconciliation session bound to the authenticated runner, cluster alias, namespace, and an opaque fence. Before accepting another Kubernetes task, the runner performs exactly four namespaced inventories: Jobs, Pods, Secrets, and NetworkPolicies carrying its bounded Semaphore labels.
+
+An active attempt is accepted only when every persisted name/UID/label tuple matches exactly and the Pod is owned by the expected Job UID. Missing, duplicate, reused-name, ownership-conflicting, or foreign labeled objects create durable quarantine diagnostics; Semaphore never starts a replacement while execution is ambiguous.
+
+Expired terminal objects can be garbage-collected only through the global runner diagnostics dialog. The server builds the allowed remediation descriptor. Immediately before deletion, the runner repeats the exact name, UID, complete label, terminal-state, and expiry checks and uses UID-preconditioned deletes. Job and Pod absence is confirmed before the NetworkPolicy and bundle Secret are removed. Candidate objects without persisted provenance are visible to administrators but are never actionable.
+
+The executor exports bounded Prometheus metrics for API latency, watch/log reconnects, stable denial categories, cleanup failures, reconciliation results, orphan/quarantine counts, and telemetry drops. Metric labels use closed enums; object names, namespaces, labels, API errors, and credentials are not stored or exported.
 
 ## Required RBAC
 
@@ -87,10 +115,13 @@ rules:
     verbs: ["get"]
   - apiGroups: [""]
     resources: ["secrets"]
-    verbs: ["create", "get", "delete"]
+    verbs: ["create", "get", "list", "delete"]
+  - apiGroups: ["networking.k8s.io"]
+    resources: ["networkpolicies"]
+    verbs: ["create", "get", "list", "delete"]
 ```
 
-Bind this Role to the runner process identity. Do not bind it to the `service_account` configured for task Pods. The executor needs no cluster-scoped permission, ConfigMap access, `pods/exec`, `pods/attach`, `pods/portforward`, Secret list/watch, RBAC mutation, or service-account token mutation.
+Bind this Role to the runner process identity. Do not bind it to the `service_account` configured for task Pods. The executor needs no cluster-scoped permission, ConfigMap access, `pods/exec`, `pods/attach`, `pods/portforward`, Secret watch, RBAC mutation, or service-account token mutation.
 
 ## Verification
 
@@ -103,4 +134,4 @@ GOWORK="$PWD/test/edition-contract/go.work" \
 go test ./db ./db/sql ./api/runners ./services/runners -count=1
 ```
 
-The real-cluster integration suite is opt-in and must target a disposable namespace. It covers success, failure, reconnecting logs, foreground cancellation, and task-object cleanup.
+The real-cluster integration suite is opt-in and must target a disposable namespace. It covers restricted security contexts, deny-all NetworkPolicy creation, RBAC and quota denials, success, failure, reconnecting logs, foreground cancellation, restart reconciliation, exact expired-object garbage collection, and foreign-object refusal.
