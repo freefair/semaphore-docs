@@ -1,19 +1,18 @@
 # Current Slice
 
-- [>] 057 — PagerDuty delivery
-  - [x] Verify the official Events API v2 contract and the Slice 056 adapter seam
-    - [x] Confirm regional Events API base URLs, authentication, deduplication, field bounds, and response semantics from official PagerDuty documentation
-    - [x] Inventory the provider-neutral adapter registry, destination validation, test-send, and safe-history extension points
-    - [x] Define retryable and terminal response classifications with Terra
-  - [x] Implement the PagerDuty client and provider adapter
-    - [x] Map trigger/update/resolve events to the stable logical incident key
-    - [x] Bound Common Event Format fields and keep the routing key write-only
-    - [x] Record only safe provider result metadata
-  - [x] Add controlled test, validation, and minimal existing-surface administration
-    - [x] Reuse the existing notification governance API and audit-webhook page
-    - [x] Show region, configured key state, incident identity, retry state, and resolution history without exposing provider payloads
-  - [x] Bind queued deliveries to an internal configuration revision so pause/resume cannot rebind credentials or provider routing
-  - [>] Verify fake-provider, API, browser, retry, deduplication, resolution, and Terra security gates
+- [>] 058 — Opsgenie delivery
+  - [>] Verify the official Alert API v2 contract and current provider-adapter seam
+    - [ ] Confirm US/EU base URLs, authentication, field bounds, alias behavior, asynchronous request status, close semantics, and rate limits from official Opsgenie documentation
+    - [ ] Inventory the PagerDuty adapter, immutable configuration-generation fence, destination validation, test-send, retry, and safe-history extension points
+    - [ ] Define accepted/pending/succeeded/failed provider-state transitions and bounded polling with Terra
+  - [ ] Implement the Opsgenie client and provider adapter
+    - [ ] Map the logical incident key to a stable alert alias and recovery to idempotent close-by-alias
+    - [ ] Bound message, description, responders, tags, details, entity, priority, request-status responses, and retry timing
+    - [ ] Keep the API integration key write-only and persist only safe asynchronous result metadata
+  - [ ] Add controlled test, validation, and minimal existing-surface administration
+    - [ ] Reuse the existing notification governance API, adapter registry, and audit-webhook page
+    - [ ] Show only required region, asynchronous state, alias, retry, and close history without redesigning shared UI
+  - [ ] Verify fake-provider, API, browser, async polling, retry, deduplication, close, migration, and Terra security gates
 
 # All Slices
 
@@ -61,8 +60,8 @@
 - [x] 054 — Workflow RBAC and role approvals
 - [x] 055 — Workflow versions and cross-project references
 - [x] 056 — Notification governance
-- [>] 057 — PagerDuty delivery
-- [ ] 058 — Opsgenie delivery
+- [x] 057 — PagerDuty delivery
+- [>] 058 — Opsgenie delivery
 - [ ] 059 — ServiceNow delivery
 - [ ] 060 — Global credential grants
 - [ ] 061 — Credential resolution and audit
