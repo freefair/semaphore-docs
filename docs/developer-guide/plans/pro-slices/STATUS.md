@@ -1,15 +1,18 @@
 # Current Slice
 
-- [>] 056 — Notification governance
-  - [>] Inventory notification sources, transactional boundaries, and authorization surfaces
-    - [ ] Trace task, workflow, approval, and system lifecycle events that may emit notifications
-    - [ ] Inventory the existing audit webhook, background worker, encryption, role, and history patterns
-    - [ ] Define the provider-neutral event, destination, routing, incident, outbox, and delivery contracts
-  - [ ] Persist notification events and outbox rows in each source transaction
-  - [ ] Implement destination and routing lifecycle with optimistic concurrency and role enforcement
-  - [ ] Implement bounded dispatch, retry, rate-limit, redaction, and terminal outcome handling
-  - [ ] Add minimal existing-surface configuration, preview, test, pause/resume, retry, and history UI
-  - [ ] Verify transactional delivery, restart, deduplication, permissions, redaction, retry, and browser flows
+- [>] 057 — PagerDuty delivery
+  - [>] Verify the official Events API v2 contract and the Slice 056 adapter seam
+    - [ ] Confirm regional Events API base URLs, authentication, deduplication, field bounds, and response semantics from official PagerDuty documentation
+    - [ ] Inventory the provider-neutral adapter registry, destination validation, test-send, and safe-history extension points
+    - [ ] Define retryable and terminal response classifications with Terra
+  - [ ] Implement the PagerDuty client and provider adapter
+    - [ ] Map trigger/update/resolve events to the stable logical incident key
+    - [ ] Bound Common Event Format fields and keep the routing key write-only
+    - [ ] Record only safe provider result metadata
+  - [ ] Add controlled test, validation, and minimal existing-surface administration
+    - [ ] Reuse the existing notification governance API and audit-webhook page
+    - [ ] Show region, configured key state, incident identity, retry state, and resolution history without exposing provider payloads
+  - [ ] Verify fake-provider, API, browser, retry, deduplication, resolution, and Terra security gates
 
 # All Slices
 
@@ -56,8 +59,8 @@
 - [x] 053 — Kubernetes executor hardening
 - [x] 054 — Workflow RBAC and role approvals
 - [x] 055 — Workflow versions and cross-project references
-- [>] 056 — Notification governance
-- [ ] 057 — PagerDuty delivery
+- [x] 056 — Notification governance
+- [>] 057 — PagerDuty delivery
 - [ ] 058 — Opsgenie delivery
 - [ ] 059 — ServiceNow delivery
 - [ ] 060 — Global credential grants

@@ -9,7 +9,7 @@ The executable contract is versioned independently from product releases.
 
 | Component | Current value | Source |
 |---|---|---|
-| Core contract | `1.14.0` | `pro_interfaces.CoreContractVersion` |
+| Core contract | `1.15.0` | `pro_interfaces.CoreContractVersion` |
 | Community implementation | `community-1` | `pro/pkg/features.ImplementationVersion` |
 | Clean-room test implementation | `clean-room-test-1` | `test/edition-contract/enhanced/pkg/features` |
 
@@ -27,6 +27,7 @@ See [Project Runner Executor Images](project-runner-executor-images.md) for capa
 
 See [Docker Executor](docker-executor.md) for runner-side Docker configuration, task bundle boundaries, lifecycle behavior, and daemon trust limitations.
 See [Audit Webhook Export](audit-webhook-export.md) for the versioned envelope, transactional outbox, delivery policy, and administration contract.
+See [Notification Governance](plans/pro-slices/056-notification-governance.md) for provider-neutral routing, source-owned outbox transactions, delivery lifecycle, permissions, and adapter boundaries.
 See [Debug Log Filtering](debug-log-filtering.md) for per-instance matching, reload, structured debug output, and diagnostics.
 See [Vault and OpenBao Runtime Secrets](runtime-secrets.md) for provider configuration, value-free references, task-boundary resolution, managed outbound synchronization, and failure policy.
 See [TOTP Capability Lifecycle](totp-capability-lifecycle.md) for rollout states, enrollment, replay protection, session revocation, and administrator recovery.
@@ -52,6 +53,7 @@ The core-owned contract types live in `pro_interfaces/`:
 | Terraform inventory | `TerraformInventoryController` |
 | Workflows | `WorkflowController`, `WorkflowService`, `WorkflowTaskEnqueuer`, `WorkflowRunLocker`, `WorkflowReconciler` |
 | Structured logging and audit | `LogWriteService`, `LogWriteServiceLifecycle`, `DebugLogService`, per-instance `DebugFilter`, versioned application/task/result/debug envelopes, diagnostics, project-scoped `AuditEvent`, `AuditWebhookServiceFacade`, `AuditWebhookService`, configuration and delivery DTOs |
+| Notification governance | Versioned provider-neutral notification event with exact source and lifecycle identities, deterministic source-transition identity, typed routing filters, severities, incident keys, and durable delivery state records. Provider transports remain outside the core contract until their owning slices. |
 | Runtime secrets | `SecretReference`, `SecretProviderConfiguration`, `SecretProviderHealth`, `ManagedSecretField`, `ManagedSecretProvider`, `VaultOpenBaoClient`, and `RuntimeSecretResolver` |
 | TOTP lifecycle | `TOTPService`, enrollment and rollout requests, status and ceremony DTOs, session requirements, and stable security errors |
 | Project roles | Typed permission catalog, immutable project-role IDs, capability prerequisites, project assignment revisions, and audit actions |
@@ -68,11 +70,23 @@ The replaceable module exports these application entry points:
 | `pro/pkg/features` | capability provider, guarded lifecycle-test service, TOTP lifecycle service, and compatibility metadata |
 | `pro/pkg/stage_parsers` | task-stage progression |
 | `pro/services/ha` | node registry, schedule deduplication, WebSocket broadcast, orphan cleanup, cluster inspection, and workflow locking |
-| `pro/services/server` | subscription, structured logging, audit webhook export, workflow, secret-storage, and external-secret serializers |
+| `pro/services/server` | subscription, structured logging, audit webhook export, notification governance and dispatch, workflow, secret-storage, and external-secret serializers |
 | `pro/services/tasks` | task-state storage plus Docker and Kubernetes executor providers |
 
 Concrete Community controllers, services, and repositories carry compile-time assertions against their core interfaces.
 The contract tests fail at compile time when either side changes without reconciliation.
+
+## Notification Governance Boundary
+
+Contract version `1.15.0` adds the provider-neutral `semaphore.notification.v1` event, governance facade, and delivery-adapter boundary. Migration `2.20.51` stores destinations, routing rules, immutable events, and delivery attempts without coupling the core module to a provider transport.
+
+- Task, workflow-run, approval, and global system sources write their notification event and routing outcome inside the same transaction as the source mutation. A monotonically increasing source revision and deterministic source-event key make a replay idempotent; a lifecycle-derived incident key remains stable across trigger, update, resolve, worker restart, and manual retry.
+- Destinations and rules are either global or project scoped. Create, update, and delete operations use optimistic revisions; deleting a destination removes its scoped rules while immutable event and delivery history remains. Global configuration and retry require `CanManageGlobalSystem`; global preview and history require `CanReadGlobalAudit`. Project configuration and retry require `CanManageProjectResources`; project preview and history require `CanViewProjectResources`. Scope comes from the route and cannot be selected in request JSON.
+- Destination credentials are write-only. Enhanced writes fail closed when option encryption is unavailable, decrypt only immediately before adapter dispatch, and never expose plaintext or ciphertext through DTOs, audit details, logs, or delivery history.
+- The adapter contract accepts only the typed allow-listed event, immutable destination metadata, and the transient credential. It returns a bounded outcome plus an optional retry delay; raw HTTP status, headers, bodies, and free-form provider errors cannot cross this boundary. PagerDuty, Opsgenie, and ServiceNow payloads and transports belong to slices 057–059.
+- The dispatcher uses random lease tokens, bounded attempts, exponential backoff with jitter, bounded rate-limit delays, restart reclamation, and fenced terminal writes. Pausing releases claimed work without consuming an attempt; resuming requeues only deliveries for that destination revision.
+- Delivery history exposes only bounded event identity, source, action, severity, destination snapshots, attempts, reason codes, and timestamps. A separate paginated event history makes both `routed` and `filtered` outcomes inspectable without selecting the typed details column.
+- The existing audit-webhook administration page contains a collapsed global governance section. Project-scoped governance remains available through the API so the core project UI and navigation stay unchanged.
 
 ## Community HTTP Contract
 
@@ -84,6 +98,7 @@ Community routes remain registered so the router shape is stable, but disabled b
 | `201` with `{}` | project runner registration-token regeneration |
 | `403` with an empty body | enhanced email-session verification |
 | `404` with no protected resource data | subscription mutations and reads; role mutations and details; Terraform state operations; project runner mutations, details, health, and history; workflow mutations and details |
+| `503` with a bounded unavailable response | global and project notification-governance configuration, preview, test, history, and retry routes |
 
 Community middleware delegates to the next handler without mutating the request or invoking a repository.
 Community capability flags are all false, collection services return empty values, log writers have no side effects, and enhanced executor constructors return an explicit unavailable error.
