@@ -12,6 +12,7 @@
   - [x] Add controlled test, validation, and minimal existing-surface administration
     - [x] Reuse the existing notification governance API and audit-webhook page
     - [x] Show region, configured key state, incident identity, retry state, and resolution history without exposing provider payloads
+  - [x] Bind queued deliveries to an internal configuration revision so pause/resume cannot rebind credentials or provider routing
   - [>] Verify fake-provider, API, browser, retry, deduplication, resolution, and Terra security gates
 
 # All Slices
