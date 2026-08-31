@@ -52,6 +52,14 @@ Secrets can be stored in an external [OpenBao](https://openbao.org) instance (an
 
 [Read more...](/user-guide/key-store/openbao)
 
+### AWS Secrets Manager
+
+![Static Badge](https://img.shields.io/badge/enterprise-yellow)
+
+Secrets can be stored in AWS Secrets Manager. Authenticate with an IAM role/instance profile or static access keys.
+
+[Read more...](/user-guide/key-store/aws-secrets-manager)
+
 ### Devolutions Server
 
 Secrets can be stored in an external Devolutions Server instance instead of the database.

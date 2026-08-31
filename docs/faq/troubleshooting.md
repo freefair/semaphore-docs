@@ -83,9 +83,40 @@ This means that you are trying to access a repository over HTTPS that requires a
 
 ---
 
+## 5. Git clone or pull fails intermittently
 
+Task logs may show messages like `Git pull failed (...), retrying in 2s` followed by either success or a final failure after several attempts.
 
-## 5. unable to read LDAP response packet: unexpected EOF
+### Why this happens
+
+The git server was temporarily unreachable or returned a transient error. Semaphore retries clone and pull operations automatically before failing the task.
+
+### How to fix this
+
+1. **Transient outages**: Usually resolve on their own. Semaphore retries up to `git_attempts` times (default 4) with exponential backoff.
+2. **Frequent failures**: Increase `git_attempts` in your configuration or set `SEMAPHORE_GIT_ATTEMPTS`.
+3. **Immediate, consistent failures**: Check repository URL, branch, access keys, and network connectivity.
+
+See [Git operations](/admin-guide/configuration/config-file#git-operations) for configuration details.
+
+---
+
+## 6. Bash script output is missing or incomplete
+
+A Bash task succeeds but the log is empty or missing the last lines from `echo` or similar commands.
+
+### Why this happens
+
+Very short scripts can exit before Semaphore finishes reading buffered stdout/stderr. Older versions were more likely to drop that trailing output.
+
+### How to fix this
+
+1. Upgrade Semaphore server and runners to a current release.
+2. Add explicit output or write diagnostics to a file and print it before the script exits.
+
+---
+
+## 7. unable to read LDAP response packet: unexpected EOF
 
 Most likely, you are trying to connect to the LDAP server using an insecure method, although it expects a secure connection (via TLS).
 
@@ -101,7 +132,7 @@ Enable TLS in your `config.json` file:
 
 ---
 
-## 6. LDAP Result Code 49 "Invalid Credentials"
+## 8. LDAP Result Code 49 "Invalid Credentials"
 
 You have the wrong password or `binddn`.
 
@@ -125,6 +156,6 @@ You also can read the following articles:
 
 ---
 
-## 7. LDAP Result Code 32 "No Such Object"
+## 9. LDAP Result Code 32 "No Such Object"
 
 Coming soon.

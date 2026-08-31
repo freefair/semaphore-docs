@@ -44,6 +44,18 @@ Notes:
 
 ---
 
+## Runner executor configuration
+
+For runner deployments, the entire executor block can be set as a single JSON environment variable instead of individual keys:
+
+```bash
+export SEMAPHORE_RUNNER_EXECUTOR='{"type":"docker","docker":{"image":"semaphoreui/job:latest"}}'
+```
+
+This is equivalent to setting `runner.executor.type` and nested `runner.executor.docker.*` fields in the configuration file. See [Configuration options](/admin-guide/configuration) for all runner executor settings.
+
+---
+
 ## Secret environment variables in Variable Groups
 
 In addition to global environment variables, you can define per-project secrets in Variable Groups. Secret keys are masked in the UI and logs. See `User Guide → Variable Groups` for usage and Terraform integration with `TF_VAR_*` variables.
