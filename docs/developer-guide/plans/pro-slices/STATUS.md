@@ -1,18 +1,18 @@
 # Current Slice
 
 - [>] 057 — PagerDuty delivery
-  - [>] Verify the official Events API v2 contract and the Slice 056 adapter seam
-    - [ ] Confirm regional Events API base URLs, authentication, deduplication, field bounds, and response semantics from official PagerDuty documentation
-    - [ ] Inventory the provider-neutral adapter registry, destination validation, test-send, and safe-history extension points
-    - [ ] Define retryable and terminal response classifications with Terra
-  - [ ] Implement the PagerDuty client and provider adapter
-    - [ ] Map trigger/update/resolve events to the stable logical incident key
-    - [ ] Bound Common Event Format fields and keep the routing key write-only
-    - [ ] Record only safe provider result metadata
-  - [ ] Add controlled test, validation, and minimal existing-surface administration
-    - [ ] Reuse the existing notification governance API and audit-webhook page
-    - [ ] Show region, configured key state, incident identity, retry state, and resolution history without exposing provider payloads
-  - [ ] Verify fake-provider, API, browser, retry, deduplication, resolution, and Terra security gates
+  - [x] Verify the official Events API v2 contract and the Slice 056 adapter seam
+    - [x] Confirm regional Events API base URLs, authentication, deduplication, field bounds, and response semantics from official PagerDuty documentation
+    - [x] Inventory the provider-neutral adapter registry, destination validation, test-send, and safe-history extension points
+    - [x] Define retryable and terminal response classifications with Terra
+  - [x] Implement the PagerDuty client and provider adapter
+    - [x] Map trigger/update/resolve events to the stable logical incident key
+    - [x] Bound Common Event Format fields and keep the routing key write-only
+    - [x] Record only safe provider result metadata
+  - [x] Add controlled test, validation, and minimal existing-surface administration
+    - [x] Reuse the existing notification governance API and audit-webhook page
+    - [x] Show region, configured key state, incident identity, retry state, and resolution history without exposing provider payloads
+  - [>] Verify fake-provider, API, browser, retry, deduplication, resolution, and Terra security gates
 
 # All Slices
 

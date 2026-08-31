@@ -11,14 +11,14 @@ A routed failure opens or updates one PagerDuty alert, and a later recovery reso
 
 ## Implementation
 
-- [ ] Implement a PagerDuty client adapter for Events API v2 using the region-aware events base URL and a write-only routing key.
-- [ ] Map trigger and resolve lifecycle actions to the same stable `dedup_key` and use the provider's Common Event Format fields.
-- [ ] Bound summary, source, component, group, class, and custom details before transport.
-- [ ] Treat successful enqueue separately from later incident handling and retain the provider response status without exposing the routing key.
-- [ ] Classify validation, authentication, rate-limit, timeout, and server responses into retryable or terminal outcomes.
-- [ ] Validate configuration with a controlled test event that is clearly labeled and can be resolved using its returned identity.
-- [ ] Show routing region, redacted key state, logical incident key, last provider result, retry state, and resolution history.
-- [ ] Verify the contract against the official [Events API v2 guidance](https://support.pagerduty.com/main/docs/services-and-integrations#events-api-v2), [deduplication behavior](https://support.pagerduty.com/main/docs/event-management#deduplicate-alerts), and [regional endpoints](https://support.pagerduty.com/main/docs/service-regions) during delivery.
+- [x] Implement a PagerDuty client adapter for Events API v2 using the region-aware events base URL and a write-only routing key.
+- [x] Map trigger and resolve lifecycle actions to the same stable `dedup_key` and use the provider's Common Event Format fields.
+- [x] Bound summary, source, component, group, class, and custom details before transport.
+- [x] Treat successful enqueue separately from later incident handling and retain the provider response status without exposing the routing key.
+- [x] Classify validation, authentication, rate-limit, timeout, and server responses into retryable or terminal outcomes.
+- [x] Validate configuration with a controlled test event that is clearly labeled and can be resolved using its returned identity.
+- [x] Show routing region, redacted key state, logical incident key, last provider result, retry state, and resolution history.
+- [x] Verify the contract against the official [Events API v2 guidance](https://support.pagerduty.com/main/docs/services-and-integrations#events-api-v2), [deduplication behavior](https://support.pagerduty.com/main/docs/event-management#deduplicate-alerts), and [regional endpoints](https://support.pagerduty.com/main/docs/service-regions) during delivery.
 
 ## Tests and Acceptance
 
@@ -29,6 +29,13 @@ A routed failure opens or updates one PagerDuty alert, and a later recovery reso
 | API | Required: PagerDuty destination CRUD/test/history, region validation, write-only key, retry, and permission contracts |
 | UI | Required: component tests plus browser evidence for setup, controlled test, failure, retry, and resolved delivery history |
 
-- [ ] Repeated failures for one source lifecycle deduplicate under one stable key.
-- [ ] Recovery uses the exact key of the open alert and records the resolve attempt.
-- [ ] The routing key is absent from API reads, logs, audit details, and browser state.
+- [x] Repeated failures for one source lifecycle deduplicate under one stable key.
+- [x] Recovery uses the exact key of the open alert and records the resolve attempt.
+- [x] The routing key is absent from API reads, logs, audit details, and browser state.
+
+## Verification Evidence
+
+- Official PagerDuty Events API v2, alert-event, PD-CEF, rate-limit, and US/EU service-region documentation defines the implemented fixed transport contract.
+- Fake-transport tests cover US/EU endpoints, trigger/update/resolve deduplication, bounded payloads, redirect refusal, malformed and oversized responses, invalid and changed credentials, timeouts, `429` retry hints, `5xx`, and terminal `4xx` responses without contacting PagerDuty.
+- Migration `2.20.52` round-trips typed destination regions and immutable delivery snapshots, including legacy deliveries whose destination was already deleted.
+- Desktop and `390x844` browser QA covers region selection, invalid-key feedback, write-only edit preservation, provider-change rejection, routing preview, safe trigger/resolve/failure history, stable incident identity, no page overflow, and an empty console. Synthetic local history rows exercise presentation without sending a test event to PagerDuty.

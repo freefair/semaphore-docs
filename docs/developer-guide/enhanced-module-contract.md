@@ -9,7 +9,7 @@ The executable contract is versioned independently from product releases.
 
 | Component | Current value | Source |
 |---|---|---|
-| Core contract | `1.15.0` | `pro_interfaces.CoreContractVersion` |
+| Core contract | `1.16.0` | `pro_interfaces.CoreContractVersion` |
 | Community implementation | `community-1` | `pro/pkg/features.ImplementationVersion` |
 | Clean-room test implementation | `clean-room-test-1` | `test/edition-contract/enhanced/pkg/features` |
 
@@ -28,6 +28,7 @@ See [Project Runner Executor Images](project-runner-executor-images.md) for capa
 See [Docker Executor](docker-executor.md) for runner-side Docker configuration, task bundle boundaries, lifecycle behavior, and daemon trust limitations.
 See [Audit Webhook Export](audit-webhook-export.md) for the versioned envelope, transactional outbox, delivery policy, and administration contract.
 See [Notification Governance](plans/pro-slices/056-notification-governance.md) for provider-neutral routing, source-owned outbox transactions, delivery lifecycle, permissions, and adapter boundaries.
+See [PagerDuty Delivery](plans/pro-slices/057-pagerduty.md) for the fixed regional Events API v2 transport, PD-CEF mapping, deduplication, and provider-result policy.
 See [Debug Log Filtering](debug-log-filtering.md) for per-instance matching, reload, structured debug output, and diagnostics.
 See [Vault and OpenBao Runtime Secrets](runtime-secrets.md) for provider configuration, value-free references, task-boundary resolution, managed outbound synchronization, and failure policy.
 See [TOTP Capability Lifecycle](totp-capability-lifecycle.md) for rollout states, enrollment, replay protection, session revocation, and administrator recovery.
@@ -87,6 +88,17 @@ Contract version `1.15.0` adds the provider-neutral `semaphore.notification.v1` 
 - The dispatcher uses random lease tokens, bounded attempts, exponential backoff with jitter, bounded rate-limit delays, restart reclamation, and fenced terminal writes. Pausing releases claimed work without consuming an attempt; resuming requeues only deliveries for that destination revision.
 - Delivery history exposes only bounded event identity, source, action, severity, destination snapshots, attempts, reason codes, and timestamps. A separate paginated event history makes both `routed` and `filtered` outcomes inspectable without selecting the typed details column.
 - The existing audit-webhook administration page contains a collapsed global governance section. Project-scoped governance remains available through the API so the core project UI and navigation stay unchanged.
+
+## PagerDuty Delivery Boundary
+
+Contract version `1.16.0` adds an allow-listed provider region to destination input, safe destination reads, dispatch requests, and immutable delivery-history snapshots. Migration `2.20.52` defaults legacy PagerDuty destinations and deliveries to the US region while leaving other providers regionless; retained deliveries remain attributable even after their destination is deleted.
+
+- PagerDuty accepts only `us` and `eu`. Production transport selects `https://events.pagerduty.com/v2/enqueue` or `https://events.eu.pagerduty.com/v2/enqueue`; no destination-controlled URL, environment proxy, or redirect can change the egress target.
+- Routing keys are write-only, encrypted destination credentials and must contain exactly 32 ASCII alphanumeric characters when supplied. A provider change requires an explicit replacement credential so encrypted material cannot cross provider boundaries.
+- Trigger and update lifecycle events map to PagerDuty `trigger`; resolve maps to `resolve`. Every action uses the provider-neutral incident key as the `dedup_key`, so retries and lifecycle transitions address the same alert through the same routing key.
+- PD-CEF summary, source, severity, timestamp, component, group, class, and custom details are built only from the typed notification event and are UTF-8 byte bounded before transport. The payload cannot include the reserved free-form message field and cannot exceed 512 KiB.
+- HTTP `202` is accepted. `429` is rate limited with a bounded `Retry-After`; `408`, `425`, `5xx`, network failures, and timeouts are transient; other responses are terminal. Provider headers, bodies, status codes, routing keys, and free-form errors never enter persisted history or browser DTOs.
+- The existing collapsed governance UI adds only a conditional US/EU selector and safe region/incident metadata inside existing cells. It does not add a provider route, navigation item, or project-level UI surface.
 
 ## Community HTTP Contract
 
