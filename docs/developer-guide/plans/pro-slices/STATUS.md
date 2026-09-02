@@ -1,19 +1,17 @@
 # Current Slice
 
-- [>] 070 — Execution preflight preview
-  - [>] Inventory the real task/workflow enqueue paths and every existing resolver they use
-    - [ ] Trace template/workflow revisions, inputs, inventory, credentials, executor image, placement, capability, and permission decisions
-    - [ ] Identify the smallest existing start-dialog integration and all side effects to exclude from preview
-  - [ ] Define a red-first, side-effect-free execution-plan contract
-    - [ ] Model selected/rejected candidates, stable reasons, command shape, redacted references, warnings, denials, and explicit bounds
-    - [ ] Fingerprint every relevant revision and decision and define a bounded stale-preview diff
-  - [ ] Use the same planner for preview and real enqueue
-    - [ ] Recompute on start and accept only a matching fingerprint
-    - [ ] Audit preview/start decisions without granting execution authority
-  - [ ] Add the smallest review step to existing task and workflow start surfaces
-    - [ ] Show effective inputs, reference provenance, runner/executor, command shape, warnings, and denials without values
-    - [ ] Recover clearly from changed input, stale plans, hidden references, and no candidates
-  - [ ] Run parity, redaction, permission, bounds, UI/browser, full release, and Terra security gates
+- [>] 071 — Deployment windows
+  - [ ] Inventory every manual, schedule, API, webhook, and workflow-node enqueue boundary
+    - [ ] Trace the schedule occurrence and duplicate-suppression contracts from slices 035 and 064
+    - [ ] Locate existing project/template/workflow permission and audit extension seams
+  - [ ] Define red-first versioned window, freeze, evaluation, and emergency-override contracts
+    - [ ] Specify IANA timezone recurrence, effective ranges, scope, precedence, project default, and next eligible instant
+    - [ ] Define a distinct override permission plus bounded reason and immutable audit provenance
+  - [ ] Implement one deterministic evaluator and enforce it immediately before every enqueue path
+    - [ ] Persist blocked schedule occurrences with explanation and duplicate-safe next eligibility
+    - [ ] Preserve Community behavior and keep shared UI changes to the smallest integration surface
+  - [ ] Add scoped rule CRUD, preview/current-status APIs, minimal governance UI, and blocked/override flows
+  - [ ] Run DST, precedence, entry-point parity, restart, permission, audit, browser, full release, and Terra security gates
 
 # All Slices
 
@@ -69,7 +67,7 @@
 - [x] 062 — Server-generated SSH keys
 - [x] 063 — Template search
 - [x] 064 — Per-schedule timezones
-- [ ] 070 — Execution preflight
+- [x] 070 — Execution preflight
 - [ ] 071 — Deployment windows
 - [ ] 072 — Policy guardrails
 - [ ] 073 — Signed webhooks
