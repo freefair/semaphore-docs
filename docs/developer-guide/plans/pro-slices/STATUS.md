@@ -1,23 +1,17 @@
 # Current Slice
 
-- [>] 062 — Server-generated SSH keys
-  - [x] Verify current access-key, encryption, SSH serialization, audit, and KeyForm seams
-    - [x] Keep imported-key CRUD unchanged and add explicit generate/rotate commands
-    - [x] Reuse protected `plain` metadata without adding a migration
-    - [x] Use Ed25519 by default and allow only explicit RSA-3072 compatibility
-  - [x] Implement generation, encrypted persistence, public-key return, and audited rotation
-    - [x] Keep private material inside the access-key encryption path and fail closed without encryption
-    - [x] Add strict command DTOs and private-field-free API responses
-    - [x] Preserve existing imported SSH-key behavior
-  - [x] Add the smallest generate/copy/fingerprint/rotation states to the existing project-key UI
-    - [x] Add a narrow create payload while preserving imported-key editing
-    - [x] Reuse the existing references view for explicit rotation impact
-    - [x] Clear generated response state after copy/review
-  - [>] Verify key correspondence, real SSH authentication, API masking, denied access, browser flows, and Terra security gates
-    - [x] Pass focused backend, real SSH fixture, UI, lint, and production-build checks
-    - [x] Rebuild the disposable 31030 instance and complete browser acceptance
-    - [>] Close final review findings and run the Terra security scan
-    - [ ] Complete docs/status and atomic commits, then remove exact QA artifacts
+- [>] 063 — Template search
+  - [>] Inventory the existing template list API, permission filtering, pagination, repository queries, and `Templates.vue`
+    - [ ] Confirm empty-query ordering and existing list actions
+    - [ ] Identify the supported SQL-engine query seams and current pagination boundary
+  - [ ] Define and test bounded case-insensitive literal matching
+    - [ ] Normalize name, description, playbook, and tags with deterministic tie-breaking
+    - [ ] Escape wildcard and control characters consistently on SQLite, MySQL/MariaDB, and PostgreSQL
+    - [ ] Apply permission filtering before matching and pagination
+  - [ ] Add the smallest search integration to the existing template list
+    - [ ] Debounce and cancel stale requests, retain the query in the URL, and reset pagination
+    - [ ] Add accessible clear, count, no-results, safe highlighting, and keyboard behavior
+  - [ ] Verify repository/API contracts, UI tests, browser behavior, full release gates, and Terra security review
 
 # All Slices
 
@@ -70,7 +64,7 @@
 - [x] 059 — ServiceNow delivery
 - [x] 060 — Global credential grants
 - [x] 061 — Credential resolution and audit
-- [ ] 062 — Server-generated SSH keys
+- [x] 062 — Server-generated SSH keys
 - [ ] 063 — Template search
 - [ ] 064 — Per-schedule timezones
 - [ ] 070 — Execution preflight
