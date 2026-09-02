@@ -2,7 +2,7 @@
 
 ## Status
 
-Proposed
+Accepted
 
 ## Date
 
@@ -23,6 +23,11 @@ Return the effective timezone and next occurrence to the UI.
 
 Use wall-clock cron semantics in the effective timezone and document behavior for nonexistent and repeated local times.
 Give every intended occurrence a stable identity so a repeated local time cannot become an accidental duplicate execution.
+
+The implementation follows the cron library's civil-time behavior.
+A nonexistent local time during a spring-forward gap is skipped.
+A repeated local time during an autumn overlap produces one occurrence at each valid UTC instant.
+The durable occurrence identity includes the schedule definition revision and the intended UTC instant, so restart or multi-node execution cannot turn either instant into an accidental duplicate.
 
 ## Consequences
 

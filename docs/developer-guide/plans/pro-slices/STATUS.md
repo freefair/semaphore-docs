@@ -1,20 +1,28 @@
 # Current Slice
 
 - [>] 064 — Per-schedule timezones
-  - [>] Inventory the schedule model, migrations, cron parser, scheduler, validation API, and existing schedule UI
-    - [ ] Confirm current global-timezone fallback and `CRON_TZ` behavior
-    - [ ] Trace create, update, validate, list, detail, and scheduler restart paths
-  - [ ] Add the additive schedule timezone contract
-    - [ ] Persist an optional IANA identifier across SQLite, MySQL/MariaDB, and PostgreSQL
-    - [ ] Validate identifiers and apply expression, schedule, then global precedence
-    - [ ] Return effective timezone and backend-authoritative next run
-  - [ ] Make DST occurrence behavior explicit and deterministic
-    - [ ] Cover fixed offsets, spring gaps, autumn overlaps, restart identity, and duplicate prevention
-    - [ ] Preserve existing schedules through migration and fallback
-  - [ ] Add the smallest selector and preview integration to existing schedule surfaces
-    - [ ] Use browser-supported IANA zones with text search and backend validation
-    - [ ] Show effective timezone and next run before save and in schedule lists
-  - [ ] Run focused/full tests, browser acceptance, Terra security review, docs, commits, and exact cleanup
+  - [x] Inventory the schedule model, migrations, cron parser, scheduler, validation API, and existing schedule UI
+    - [x] Confirm current global-timezone fallback and `CRON_TZ` behavior
+    - [x] Trace create, update, validate, list, detail, and scheduler restart paths
+  - [x] Add the additive schedule timezone contract
+    - [x] Persist an optional IANA identifier across SQLite, MySQL/MariaDB, and PostgreSQL
+    - [x] Validate identifiers and apply expression, schedule, then global precedence
+    - [x] Return effective timezone and backend-authoritative next run
+  - [x] Make DST occurrence behavior explicit and deterministic
+    - [x] Cover fixed offsets, spring gaps, autumn overlaps, restart identity, and duplicate prevention
+    - [x] Preserve existing schedules through migration and fallback
+  - [x] Add the smallest selector and preview integration to existing schedule surfaces
+    - [x] Use browser-supported IANA zones with text search and backend validation
+    - [x] Show effective timezone and next run before save and in schedule lists
+  - [>] Run focused/full tests, browser acceptance, Terra security review, docs, commits, and exact cleanup
+    - [x] Pass the external red-first contract, focused backend/API tests, UI tests, lint, and OpenAPI parsing
+    - [x] Build and exercise the disposable Enhanced instance on port 31030
+    - [x] Run full Core, Community, Enhanced, frontend, race, and vet gates
+    - [>] Complete final Terra review, docs, atomic commits, and exact cleanup
+      - [x] Finish the Terra review with zero confirmed P0–P3 findings
+      - [x] Build and commit the final documentation
+      - [ ] Commit backend, UI, API contract, and docs pointer atomically
+      - [ ] Stop QA and remove exact Slice 064 temporary artifacts
 
 # All Slices
 

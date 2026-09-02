@@ -11,14 +11,14 @@ A user can choose an IANA timezone for a schedule and see the backend-authoritat
 
 ## Implementation
 
-- [ ] Add a nullable IANA timezone identifier to schedules with the existing global scheduler timezone as the compatibility fallback.
-- [ ] Define precedence as an explicit cron expression timezone, then schedule timezone, then configured global timezone.
-- [ ] Validate identifiers with the backend's installed timezone database and reject abbreviations and unknown zones.
-- [ ] Calculate occurrences from wall-clock cron semantics in the effective zone and document skipped and repeated local times at DST boundaries.
-- [ ] Return effective timezone and backend-computed next run in create, update, validation, list, and detail responses.
-- [ ] Preserve existing schedules through additive migrations on PostgreSQL, MySQL/MariaDB, and SQLite.
-- [ ] Populate the selector from browser-supported IANA zones, allow text search, and still submit every choice to backend validation.
-- [ ] Show effective timezone and next run beside the expression before save and in schedule lists.
+- [x] Add a nullable IANA timezone identifier to schedules with the existing global scheduler timezone as the compatibility fallback.
+- [x] Define precedence as an explicit cron expression timezone, then schedule timezone, then configured global timezone.
+- [x] Validate identifiers with the backend's installed timezone database and reject abbreviations and unknown zones.
+- [x] Calculate occurrences from wall-clock cron semantics in the effective zone and document skipped and repeated local times at DST boundaries.
+- [x] Return effective timezone and backend-computed next run in create, update, validation, list, and detail responses.
+- [x] Preserve existing schedules through additive migrations on PostgreSQL, MySQL/MariaDB, and SQLite.
+- [x] Populate the selector from browser-supported IANA zones, allow text search, and still submit every choice to backend validation.
+- [x] Show effective timezone and next run beside the expression before save and in schedule lists.
 
 ## Tests and Acceptance
 
@@ -29,6 +29,15 @@ A user can choose an IANA timezone for a schedule and see the backend-authoritat
 | API | Required: create/update/validate/list/detail, fallback, explicit expression precedence, invalid zone, and permission contracts |
 | UI | Required: component tests plus browser evidence for searchable selection, preview, edit/reopen, DST case, and backend rejection |
 
-- [ ] Existing schedules keep their previous effective timezone after migration.
-- [ ] UI and scheduler use the same backend-authoritative next-run calculation.
-- [ ] A repeated wall-clock time produces only the documented occurrence set and never an accidental duplicate run.
+- [x] Existing schedules keep their previous effective timezone after migration.
+- [x] UI and scheduler use the same backend-authoritative next-run calculation.
+- [x] A repeated wall-clock time produces only the documented occurrence set and never an accidental duplicate run.
+
+## Acceptance Evidence
+
+- Unit tests cover expression, schedule, and global precedence; `UTC`, regional, and fixed-offset IANA zones; rejected abbreviations and unknown zones; spring gaps; autumn overlaps; one-time schedules; and occurrence revision identity.
+- SQLite migration and repository tests preserve legacy rows, round-trip nullable timezone values, and roll back cleanly; the additive SQL is prepared for SQLite, MySQL/MariaDB, and PostgreSQL.
+- API tests cover validation, create, update, list, detail, fallback, explicit expression precedence, invalid identifiers, and backend-computed next runs.
+- UI tests cover browser-supported choices, selected-zone validation, stale-preview suppression, and effective-zone formatting.
+- Browser acceptance on the disposable Enhanced instance verifies searchable edit/save/reopen, a DST-bound schedule, `CRON_TZ` precedence, global fallback, backend rejection, and a 390-pixel layout without horizontal document overflow.
+- Core, Community, and clean-room Enhanced suites and vet, focused race tests, production frontend and binary builds, OpenAPI parsing, documentation build, and final Terra security review pass.

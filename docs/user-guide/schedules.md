@@ -8,7 +8,36 @@ Make sure to restart the Semaphore service after making changes for them to take
 
 ## Timezone configuration {#timezone-configuration}
 
-By default, the schedule feature operates in the UTC timezone. However, this can be customized to match your local timezone or specific requirements.
+By default, schedules use the globally configured timezone.
+The default global timezone is UTC.
+Each schedule can select its own IANA timezone without changing other schedules.
+
+Timezone precedence is:
+
+1. A `CRON_TZ=<IANA timezone>` prefix in the cron expression.
+2. The timezone selected on the schedule.
+3. The globally configured schedule timezone.
+
+The Schedule form displays the effective timezone and the next run returned by the backend before you save.
+The Schedule list shows the same backend-authoritative values after saving.
+
+Timezone abbreviations such as `CET` and `PST`, local aliases, numeric offsets such as `+02:00`, and unknown names are rejected because they are ambiguous or do not contain future daylight-saving rules.
+Use an IANA identifier such as `Europe/Berlin`, `America/New_York`, or `Asia/Tokyo`.
+
+### Daylight-saving behavior
+
+Cron expressions use wall-clock time in their effective timezone.
+
+- If a local time does not exist during a spring-forward transition, that occurrence is skipped and the next matching wall-clock occurrence is used.
+- If a local time occurs twice during an autumn transition, the schedule has one occurrence at each valid UTC instant.
+- Each intended UTC instant has a durable identity, so a service restart or multiple scheduler nodes do not create an accidental duplicate.
+
+For example, `30 2 * * *` in `Europe/Berlin` skips the nonexistent 02:30 on the spring transition day.
+On the autumn transition day, it runs once at 02:30 CEST and once at 02:30 CET.
+
+### Global fallback
+
+You can change the global fallback timezone by updating the configuration file or setting an environment variable:
 
 You can change the timezone by updating the configuration file or setting an environment variable:
 
@@ -28,7 +57,8 @@ You can change the timezone by updating the configuration file or setting an env
     export SEMAPHORE_SCHEDULE_TIMEZONE="America/New_York"
     ```
 
-For a list of valid timezone values, refer to the [IANA Time Zone Database](https://www.iana.org/time-zones).
+Existing schedules without their own timezone continue to use this global fallback.
+For a list of timezone names, refer to the [IANA Time Zone Database](https://www.iana.org/time-zones).
 
 ### Accessing the schedule feature {#accessing-the-schedule-feature}
 
@@ -47,6 +77,7 @@ When creating a new schedule, you'll need to configure the following options:
 | Name | A descriptive name for the scheduled task |
 | Template | The specific Task Template to execute |
 | Timing | Either in cron format for more fexibility or using the built-in options for common intervals |
+| Schedule Timezone | Optional IANA timezone; leave empty to use the global fallback |
 
 ![](/assets/schedule02.png) ![](/assets/schedule03.png)
 
@@ -66,10 +97,12 @@ The schedule uses standard cron syntax with five fields:
 ```
 
 Examples:
+
 - `*/15 * * * *` - Run every 15 minutes
 - `0 2 * * *` - Run at 2:00 AM every day
 - `0 0 * * 0` - Run at midnight on Sundays
 - `0 9 1 * *` - Run at 9:00 AM on the first day of every month
+- `CRON_TZ=Asia/Tokyo 0 9 * * *` - Run at 9:00 AM in Tokyo regardless of the selected schedule timezone
 
 Very helpful cron expression generator: [https://crontab.guru/](https://crontab.guru/)
 
