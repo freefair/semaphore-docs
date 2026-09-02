@@ -1,24 +1,16 @@
 # Current Slice
 
-- [>] 061 — Credential resolution and audit
-  - [x] Verify task preparation, runtime-secret, dispatch, redaction, audit, and credential-history seams
-    - [x] Define the execution-time resolution request, decision, snapshot, and blocked-task contracts
-    - [x] Locate the secret-safe local/runner injection boundaries and downstream output sinks
-    - [x] Define local/external provider resolution without adding a value-returning API
-  - [x] Implement execution-time policy, just-in-time resolution, and append-only usage audit
-    - [x] Persist value-free workflow bindings and enforce actor/task/grant/operation/expiry/state/capability policy
-    - [x] Re-check revocation immediately before dispatch and persist a stable blocked reason
-    - [x] Snapshot credential, grant, version/fingerprint, runner, actor, outcome, and value-free reason
-    - [x] Add bounded history/impact APIs and the independent Vault/OpenBao provider registry
-  - [x] Integrate minimal provenance and remediation into existing task and credential views
-    - [x] Reuse the task-detail and global credential surfaces without redesigning shared UI
-    - [x] Keep Community gating intact and refresh impact previews after grant mutations
-  - [>] Verify local/external resolution, races, isolation, redaction, API, browser, docs, and Terra security gates
-    - [x] Focused Core, Community, Enhanced, CLI, API, SQL, runtime, redaction, and UI tests
-    - [x] Multi-user browser QA for granted use, v1/v2 provenance, rotation, history, and value-free audit
-    - [x] Fix and re-run the workflow-level blocked transition exposed by revoke-before-dispatch QA
-    - [x] Complete builds, docs build, race gates, and final browser confirmation
-    - [>] Complete final Terra scan, manual review, and atomic commits
+- [>] 062 — Server-generated SSH keys
+  - [>] Verify current access-key, encryption, SSH serialization, audit, and KeyForm seams
+    - [ ] Confirm existing SSH-key create/read/rotation contracts and Community compatibility
+    - [ ] Locate the server-side generation boundary and masked response DTO
+    - [ ] Define Ed25519 default and explicit RSA compatibility policy
+  - [ ] Implement generation, encrypted persistence, public-key return, and audited rotation
+    - [ ] Keep private material inside the access-key encryption path
+    - [ ] Return only public OpenSSH key and non-sensitive fingerprint
+    - [ ] Preserve existing imported SSH-key behavior
+  - [ ] Add the smallest generate/copy/fingerprint/rotation states to the existing project-key UI
+  - [ ] Verify key correspondence, real SSH authentication, API masking, denied access, browser flows, and Terra security gates
 
 # All Slices
 
@@ -70,7 +62,7 @@
 - [x] 058 — Opsgenie delivery
 - [x] 059 — ServiceNow delivery
 - [x] 060 — Global credential grants
-- [>] 061 — Credential resolution and audit
+- [x] 061 — Credential resolution and audit
 - [ ] 062 — Server-generated SSH keys
 - [ ] 063 — Template search
 - [ ] 064 — Per-schedule timezones
