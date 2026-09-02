@@ -1,15 +1,19 @@
 # Current Slice
 
-- [>] 060 — Global credential grants
-  - [>] Verify existing runtime-secret, managed-secret, role, audit, access-key, and workflow-reference seams
-    - [x] Confirm Slice 060 scope and its strict separation from Slice 061 runtime resolution and usage audit
-    - [>] Inventory reusable encrypted-local and external-reference persistence without duplicating project access-key behavior
-    - [ ] Define metadata, rotation version, grant operation/expiry, dependency, and reversible state-transition contracts with Terra
-  - [ ] Implement global credential metadata, encrypted/reference storage, explicit project grants, and permission boundaries
-    - [ ] Keep values write-only and return only bounded metadata and fingerprints
-    - [ ] Protect rotation, revoke, disable, and delete with revisions, dependency checks, and value-free audit events
-  - [ ] Add minimal global administration and project-visible granted-reference selection to existing surfaces
-  - [ ] Verify two-project isolation, concurrency, API, browser, migration, redaction, and Terra security gates
+- [>] 061 — Credential resolution and audit
+  - [>] Verify task preparation, runtime-secret, dispatch, redaction, audit, and credential-history seams
+    - [ ] Define the execution-time resolution request, decision, snapshot, and blocked-task contracts
+    - [ ] Locate the single secret-safe task injection boundary and every downstream log/summary/notification/artifact sink
+    - [ ] Define local and external provider resolution without adding a value-returning API
+  - [ ] Implement execution-time policy, just-in-time resolution, and append-only usage audit
+    - [ ] Enforce actor/task permission, project grant, operation, expiry, credential state, and capability in one resolver
+    - [ ] Re-check revocation immediately before dispatch and persist a stable blocked reason
+    - [ ] Snapshot credential, grant, version/fingerprint, runner, actor, outcome, and value-free reason
+    - [ ] Add bounded searchable usage history and transition impact previews
+  - [ ] Integrate minimal provenance and remediation into existing task and credential views
+    - [ ] Reuse the current task-detail and global credential surfaces without redesigning shared UI
+    - [ ] Keep Community and unrelated Key Store behavior unchanged
+  - [ ] Verify local/external resolution, races, isolation, redaction, API, browser, docs, and Terra security gates
 
 # All Slices
 
@@ -60,8 +64,8 @@
 - [x] 057 — PagerDuty delivery
 - [x] 058 — Opsgenie delivery
 - [x] 059 — ServiceNow delivery
-- [>] 060 — Global credential grants
-- [ ] 061 — Credential resolution and audit
+- [x] 060 — Global credential grants
+- [>] 061 — Credential resolution and audit
 - [ ] 062 — Server-generated SSH keys
 - [ ] 063 — Template search
 - [ ] 064 — Per-schedule timezones

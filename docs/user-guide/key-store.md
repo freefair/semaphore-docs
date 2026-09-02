@@ -71,3 +71,20 @@ Secrets can be stored in an external Devolutions Server instance instead of the 
 Semaphore can automatically import secrets from an external secret manager (HashiCorp Vault, OpenBao, AWS Secrets Manager, Azure Key Vault, or Devolutions Server) and keep them in sync. Sync paths let you choose which secrets to import and how to name them.
 
 [Read more...](/user-guide/key-store/secret-sync)
+
+## Granted global credentials
+
+Enhanced Edition can grant a project permission to select a credential that is administered globally.
+Open the **Granted** tab in the project's Key Store to see the value-free references available to your project role.
+
+The list shows only the display name, type, current version, effective operations, and optional expiry.
+It never shows the credential value, owner, fingerprint, or external provider path.
+
+Select a row when a workflow or resource asks for a granted credential reference.
+Selection identifies the credential by its stable ID; it does not retrieve or copy the value into the project.
+
+If the tab reports that your role cannot list granted metadata, ask a project administrator for a role containing **List granted credential metadata**.
+The separate **Consume granted credentials** permission controls runtime use and does not imply list access.
+
+A revoked, expired, or disabled grant disappears from the list immediately.
+Rotation keeps the same credential ID, so projects do not need a copied replacement value.
