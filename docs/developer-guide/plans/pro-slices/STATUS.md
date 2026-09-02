@@ -1,19 +1,24 @@
 # Current Slice
 
 - [>] 061 — Credential resolution and audit
-  - [>] Verify task preparation, runtime-secret, dispatch, redaction, audit, and credential-history seams
-    - [ ] Define the execution-time resolution request, decision, snapshot, and blocked-task contracts
-    - [ ] Locate the single secret-safe task injection boundary and every downstream log/summary/notification/artifact sink
-    - [ ] Define local and external provider resolution without adding a value-returning API
-  - [ ] Implement execution-time policy, just-in-time resolution, and append-only usage audit
-    - [ ] Enforce actor/task permission, project grant, operation, expiry, credential state, and capability in one resolver
-    - [ ] Re-check revocation immediately before dispatch and persist a stable blocked reason
-    - [ ] Snapshot credential, grant, version/fingerprint, runner, actor, outcome, and value-free reason
-    - [ ] Add bounded searchable usage history and transition impact previews
-  - [ ] Integrate minimal provenance and remediation into existing task and credential views
-    - [ ] Reuse the current task-detail and global credential surfaces without redesigning shared UI
-    - [ ] Keep Community and unrelated Key Store behavior unchanged
-  - [ ] Verify local/external resolution, races, isolation, redaction, API, browser, docs, and Terra security gates
+  - [x] Verify task preparation, runtime-secret, dispatch, redaction, audit, and credential-history seams
+    - [x] Define the execution-time resolution request, decision, snapshot, and blocked-task contracts
+    - [x] Locate the secret-safe local/runner injection boundaries and downstream output sinks
+    - [x] Define local/external provider resolution without adding a value-returning API
+  - [x] Implement execution-time policy, just-in-time resolution, and append-only usage audit
+    - [x] Persist value-free workflow bindings and enforce actor/task/grant/operation/expiry/state/capability policy
+    - [x] Re-check revocation immediately before dispatch and persist a stable blocked reason
+    - [x] Snapshot credential, grant, version/fingerprint, runner, actor, outcome, and value-free reason
+    - [x] Add bounded history/impact APIs and the independent Vault/OpenBao provider registry
+  - [x] Integrate minimal provenance and remediation into existing task and credential views
+    - [x] Reuse the task-detail and global credential surfaces without redesigning shared UI
+    - [x] Keep Community gating intact and refresh impact previews after grant mutations
+  - [>] Verify local/external resolution, races, isolation, redaction, API, browser, docs, and Terra security gates
+    - [x] Focused Core, Community, Enhanced, CLI, API, SQL, runtime, redaction, and UI tests
+    - [x] Multi-user browser QA for granted use, v1/v2 provenance, rotation, history, and value-free audit
+    - [x] Fix and re-run the workflow-level blocked transition exposed by revoke-before-dispatch QA
+    - [x] Complete builds, docs build, race gates, and final browser confirmation
+    - [>] Complete final Terra scan, manual review, and atomic commits
 
 # All Slices
 

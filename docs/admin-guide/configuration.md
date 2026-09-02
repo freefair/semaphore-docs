@@ -108,6 +108,7 @@ Full list of available configuration options:
 | **Security** ||
 | <br />`access_key_encryption` <hr /> `SEMAPHORE_ACCESS_KEY_ENCRYPTION`<br /><br /> | Base64-encoded key used for encrypting access keys stored in the database. Read more in [Database encryption reference](/admin-guide/security#database-encryption). |
 | <br />`option_encryption` <hr /> `SEMAPHORE_OPTION_ENCRYPTION`<br /><br /> | Base64-encoded key used to encrypt DB options and Enhanced TOTP provisioning secrets. Falls back to the access key when unset. TOTP enrollment and legacy migration fail closed when neither key is active. |
+| <br />`global_credential_providers` ![Static Badge](https://img.shields.io/badge/pro-red) <hr /> `SEMAPHORE_GLOBAL_CREDENTIAL_PROVIDERS` <br /><br /> | Value-free global Vault/OpenBao provider registry. Each provider's bootstrap credential is supplied only through `SEMAPHORE_GLOBAL_CREDENTIAL_PROVIDER_<NORMALIZED_ID>_CREDENTIAL`; see [Global Credential Grants](/developer-guide/global-credential-grants#global-vault-and-openbao-providers). |
 | <br />`cookie_hash`           <hr /> `SEMAPHORE_COOKIE_HASH`<br /><br /> | Base64-encoded HMAC key used to sign cookies. |
 | <br />`cookie_encryption`     <hr /> `SEMAPHORE_COOKIE_ENCRYPTION`<br /><br /> | Base64-encoded key used to encrypt cookies. |
 | <br />`web_host`       <hr /> `SEMAPHORE_WEB_ROOT`<br /><br /> | Can be useful if you want to use Semaphore by the subpath, for example: [http://yourdomain.com/semaphore](http://yourdomain.com/semaphore). Do not add a trailing `/`. |
