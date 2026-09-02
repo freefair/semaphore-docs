@@ -1,17 +1,22 @@
 # Current Slice
 
 - [>] 063 — Template search
-  - [>] Inventory the existing template list API, permission filtering, pagination, repository queries, and `Templates.vue`
-    - [ ] Confirm empty-query ordering and existing list actions
-    - [ ] Identify the supported SQL-engine query seams and current pagination boundary
-  - [ ] Define and test bounded case-insensitive literal matching
-    - [ ] Normalize name, description, playbook, and tags with deterministic tie-breaking
-    - [ ] Escape wildcard and control characters consistently on SQLite, MySQL/MariaDB, and PostgreSQL
-    - [ ] Apply permission filtering before matching and pagination
-  - [ ] Add the smallest search integration to the existing template list
-    - [ ] Debounce and cancel stale requests, retain the query in the URL, and reset pagination
-    - [ ] Add accessible clear, count, no-results, safe highlighting, and keyboard behavior
-  - [ ] Verify repository/API contracts, UI tests, browser behavior, full release gates, and Terra security review
+  - [x] Inventory the existing template list API, permission filtering, pagination, repository queries, and `Templates.vue`
+    - [x] Confirm empty-query ordering and existing list actions
+    - [x] Identify the supported SQL-engine query seams and current pagination boundary
+  - [x] Define and test bounded case-insensitive literal matching
+    - [x] Normalize name, description, playbook, and tags with deterministic tie-breaking
+    - [x] Escape wildcard and control characters consistently on SQLite, MySQL/MariaDB, and PostgreSQL
+    - [x] Apply permission filtering before matching and pagination
+  - [x] Add the smallest search integration to the existing template list
+    - [x] Debounce and cancel stale requests, retain the query in the URL, and reset pagination
+    - [x] Add accessible clear, count, no-results, safe highlighting, and keyboard behavior
+    - [x] Pass the focused component contract, lint, and production compilation
+  - [>] Verify repository/API contracts, UI tests, browser behavior, full release gates, and Terra security review
+    - [x] Pass focused repository/API tests, race detection, vet, and the external contract
+    - [x] Rebuild the disposable 31030 instance and complete browser acceptance
+    - [x] Run full Core, Community, Enhanced, frontend, OpenAPI, and docs gates
+    - [>] Complete manual review, final Terra scan, docs/status, commits, and exact cleanup
 
 # All Slices
 

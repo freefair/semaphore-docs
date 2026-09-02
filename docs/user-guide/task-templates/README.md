@@ -10,6 +10,24 @@ Templates define how to run Semaphore tasks. Currently the following task types 
 
 ---
 
+## Find a template
+
+Use **Search templates** above the existing template table to filter the
+templates you are allowed to see. Matching is case-insensitive and checks the
+template name, description, playbook, and runner tags. Characters such as `%`
+and `_` are treated as ordinary text rather than wildcards.
+
+The result count and matching field update after a short pause in typing. The
+matched text is highlighted without changing the available Run or navigation
+actions. Press `/` while focus is outside another input to focus the search,
+press Escape or use the clear action to restore the original list, and use the
+browser Back and Forward actions to revisit searches stored in the URL.
+
+Search applies the same template permissions as the ordinary list. A result
+count therefore includes only templates that the current user can read.
+
+---
+
 ## Parallel tasks {#parallel-tasks}
 
 By default, tasks from the same template execute sequentially. To allow concurrent runs of the same template, enable the "Allow parallel tasks" option in the template settings.
