@@ -7,6 +7,23 @@ The Key Store in Semaphore is used to store credentials for accessing remote Rep
 ### 1. SSH {#1-ssh}
 SSH Keys are used to access remote servers as well as remote Repositories.
 
+For a locally stored SSH credential, Semaphore can generate the key pair on the
+server. Select **Generate on server** while creating an SSH key, keep the default
+**Ed25519** algorithm unless a target explicitly requires **RSA 3072**, and copy
+the displayed OpenSSH public key to the target host or Git provider. Semaphore
+stores the private key inside the encrypted Access Key record and never returns
+it through the API or UI.
+
+Server-side generation requires Access Key encryption to be configured. It is
+not available for environment, file, external-storage, or synchronized keys.
+Imported private keys continue to use the existing create and edit flow.
+
+An authorized project member can rotate a local SSH key from the Key Store. The
+confirmation shows which project resources reference the key. Rotation replaces
+the private key immediately, clears affected Repository caches, and returns the
+new public key and SHA-256 fingerprint. Install the new public key on every
+referenced target before starting another task.
+
 If you need assistance quickly generating a key and placing it on your host, [here is a quick guide.](https://www.digitalocean.com/community/tutorials/how-to-set-up-ssh-keys-on-ubuntu-20-04)
 
 For Git Repositories that use SSH authentication, the Git Repository you are trying to clone from needs to have your public key associated to the private key.

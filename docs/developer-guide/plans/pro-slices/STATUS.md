@@ -1,16 +1,23 @@
 # Current Slice
 
 - [>] 062 — Server-generated SSH keys
-  - [>] Verify current access-key, encryption, SSH serialization, audit, and KeyForm seams
-    - [ ] Confirm existing SSH-key create/read/rotation contracts and Community compatibility
-    - [ ] Locate the server-side generation boundary and masked response DTO
-    - [ ] Define Ed25519 default and explicit RSA compatibility policy
-  - [ ] Implement generation, encrypted persistence, public-key return, and audited rotation
-    - [ ] Keep private material inside the access-key encryption path
-    - [ ] Return only public OpenSSH key and non-sensitive fingerprint
-    - [ ] Preserve existing imported SSH-key behavior
-  - [ ] Add the smallest generate/copy/fingerprint/rotation states to the existing project-key UI
-  - [ ] Verify key correspondence, real SSH authentication, API masking, denied access, browser flows, and Terra security gates
+  - [x] Verify current access-key, encryption, SSH serialization, audit, and KeyForm seams
+    - [x] Keep imported-key CRUD unchanged and add explicit generate/rotate commands
+    - [x] Reuse protected `plain` metadata without adding a migration
+    - [x] Use Ed25519 by default and allow only explicit RSA-3072 compatibility
+  - [x] Implement generation, encrypted persistence, public-key return, and audited rotation
+    - [x] Keep private material inside the access-key encryption path and fail closed without encryption
+    - [x] Add strict command DTOs and private-field-free API responses
+    - [x] Preserve existing imported SSH-key behavior
+  - [x] Add the smallest generate/copy/fingerprint/rotation states to the existing project-key UI
+    - [x] Add a narrow create payload while preserving imported-key editing
+    - [x] Reuse the existing references view for explicit rotation impact
+    - [x] Clear generated response state after copy/review
+  - [>] Verify key correspondence, real SSH authentication, API masking, denied access, browser flows, and Terra security gates
+    - [x] Pass focused backend, real SSH fixture, UI, lint, and production-build checks
+    - [x] Rebuild the disposable 31030 instance and complete browser acceptance
+    - [>] Close final review findings and run the Terra security scan
+    - [ ] Complete docs/status and atomic commits, then remove exact QA artifacts
 
 # All Slices
 
