@@ -9,7 +9,7 @@ The executable contract is versioned independently from product releases.
 
 | Component | Current value | Source |
 |---|---|---|
-| Core contract | `1.17.0` | `pro_interfaces.CoreContractVersion` |
+| Core contract | `1.18.0` | `pro_interfaces.CoreContractVersion` |
 | Community implementation | `community-1` | `pro/pkg/features.ImplementationVersion` |
 | Clean-room test implementation | `clean-room-test-1` | `test/edition-contract/enhanced/pkg/features` |
 
@@ -30,6 +30,7 @@ See [Audit Webhook Export](audit-webhook-export.md) for the versioned envelope, 
 See [Notification Governance](plans/pro-slices/056-notification-governance.md) for provider-neutral routing, source-owned outbox transactions, delivery lifecycle, permissions, and adapter boundaries.
 See [PagerDuty Delivery](plans/pro-slices/057-pagerduty.md) for the fixed regional Events API v2 transport, PD-CEF mapping, deduplication, and provider-result policy.
 See [Opsgenie Delivery](plans/pro-slices/058-opsgenie.md) for fixed regional Alert API v2 transport, typed responders, asynchronous request tracking, alias deduplication, and close semantics.
+See [ServiceNow Delivery](plans/pro-slices/059-servicenow.md) for the restricted incident Table API transport, exact record identity, lifecycle reconciliation, and field allow-list.
 See [Debug Log Filtering](debug-log-filtering.md) for per-instance matching, reload, structured debug output, and diagnostics.
 See [Vault and OpenBao Runtime Secrets](runtime-secrets.md) for provider configuration, value-free references, task-boundary resolution, managed outbound synchronization, and failure policy.
 See [TOTP Capability Lifecycle](totp-capability-lifecycle.md) for rollout states, enrollment, replay protection, session revocation, and administrator recovery.
@@ -112,6 +113,18 @@ Contract version `1.17.0` adds typed Opsgenie priority/responders, a provider-ne
 - `429` uses bounded rate-limit period or retry headers; `408`, `425`, `5xx`, network failures, and timeouts are transient; other responses are terminal. Response bodies are size bounded and never enter history, logs, or DTOs.
 - The existing collapsed governance UI conditionally adds region, priority, and line-oriented typed responder fields, plus safe provider-request identity in the existing history cell. No provider route, navigation item, or project-level surface is added.
 - Atlassian is phasing Opsgenie out and states that its REST APIs remain available until the April 5, 2027 support end. This adapter is a bounded compatibility path for existing users rather than a new architectural dependency.
+
+## ServiceNow Delivery Boundary
+
+Contract version `1.18.0` adds typed ServiceNow authentication and incident-field mapping, a provider-neutral ambiguous-create outcome, exact provider-record identity in delivery history, and an optional lifecycle-reconciliation adapter. Migration `2.20.55` stores safe provider record metadata and a lifecycle-wide create fence.
+
+- ServiceNow destinations accept only canonical HTTPS instance origins below `service-now.com` or `servicenow.com`, with no path, credentials, custom port, environment proxy, or redirect. Production DNS resolution rejects non-public, reserved, documentation, benchmark, and carrier-grade NAT addresses before connecting.
+- OAuth 2.0 client credentials are preferred; Basic authentication remains an explicit alternative. Secrets are write-only encrypted destination credentials. Client IDs, Basic usernames, optional scopes, and the administrator-defined field mapping are bounded, typed configuration; authentication modes cannot carry each other's identity fields.
+- The adapter is restricted to the versioned Table API for `incident`. It maps only `summary`, `severity`, `lifecycle_action`, and optional `status` into the approved `short_description`, `description`, `impact`, and `urgency` targets. Append-only or arbitrary table fields are not available.
+- Trigger delivery first performs an exact, two-result-bounded `correlation_id` lookup. A durable lifecycle binding is fenced immediately before the one permitted incident `POST`; a restart or ambiguous response reconciles by the exact 64-character incident key and never issues a second create. Zero matches remain bounded retry, exactly one valid match binds its `sys_id`, and multiple or malformed matches fail closed.
+- Update and resolve address only `/api/now/v1/table/incident/{sys_id}` using the persisted lowercase 32-character identity. The binding, all matching lifecycle-history metadata, and the successful owner delivery are committed atomically after create.
+- Create accepts only an unambiguous body or same-origin Location identity. `429` uses bounded `Retry-After`; `408`, `425`, `5xx`, timeouts, and network failures are transient; invalid authentication, authorization, validation, identities, and response shapes are terminal. A create conflict or missing/conflicting identity is ambiguous and enters reconciliation. Provider bodies, headers, status codes, tokens, and free-form errors never enter history, logs, audit details, or DTOs.
+- The existing collapsed governance UI conditionally adds only the instance origin, authentication fields, line-oriented field mapping, and safe record link. The controlled test uses the fixed summary `Semaphore controlled notification test`; no provider route, navigation item, or project-level surface is added.
 
 ## Community HTTP Contract
 

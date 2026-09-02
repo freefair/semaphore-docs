@@ -1,18 +1,15 @@
 # Current Slice
 
-- [>] 059 — ServiceNow delivery
-  - [>] Verify the official Table API contract and current provider-adapter seam
-    - [ ] Confirm versioned incident create/read/update endpoints, OAuth 2.0 flow, response identity, Location behavior, rate limits, and error semantics from official ServiceNow documentation
-    - [ ] Inventory provider configuration, immutable generation, exact record identity, test-send, retry, and safe-history extension points
-    - [ ] Define the validated instance-origin boundary, authentication preference, and create/update state transitions with Terra
-  - [ ] Implement the restricted ServiceNow incident client and provider adapter
-    - [ ] Create only in the `incident` table, persist exact `sys_id`, and update only that recorded identity
-    - [ ] Map bounded Semaphore fields through an administrator-defined approved incident-field allow-list
-    - [ ] Keep credentials write-only and persist only safe record identity/result metadata
-  - [ ] Add controlled test, validation, and minimal existing-surface administration
-    - [ ] Reuse the existing notification governance API, adapter registry, and audit-webhook page
-    - [ ] Show only required instance, auth/config state, record identity/link, retry, and update history without redesigning shared UI
-  - [ ] Verify fake-provider, API, browser, create/update identity, retry, migration, and Terra security gates
+- [>] 060 — Global credential grants
+  - [>] Verify existing runtime-secret, managed-secret, role, audit, access-key, and workflow-reference seams
+    - [x] Confirm Slice 060 scope and its strict separation from Slice 061 runtime resolution and usage audit
+    - [>] Inventory reusable encrypted-local and external-reference persistence without duplicating project access-key behavior
+    - [ ] Define metadata, rotation version, grant operation/expiry, dependency, and reversible state-transition contracts with Terra
+  - [ ] Implement global credential metadata, encrypted/reference storage, explicit project grants, and permission boundaries
+    - [ ] Keep values write-only and return only bounded metadata and fingerprints
+    - [ ] Protect rotation, revoke, disable, and delete with revisions, dependency checks, and value-free audit events
+  - [ ] Add minimal global administration and project-visible granted-reference selection to existing surfaces
+  - [ ] Verify two-project isolation, concurrency, API, browser, migration, redaction, and Terra security gates
 
 # All Slices
 
@@ -62,8 +59,8 @@
 - [x] 056 — Notification governance
 - [x] 057 — PagerDuty delivery
 - [x] 058 — Opsgenie delivery
-- [>] 059 — ServiceNow delivery
-- [ ] 060 — Global credential grants
+- [x] 059 — ServiceNow delivery
+- [>] 060 — Global credential grants
 - [ ] 061 — Credential resolution and audit
 - [ ] 062 — Server-generated SSH keys
 - [ ] 063 — Template search
