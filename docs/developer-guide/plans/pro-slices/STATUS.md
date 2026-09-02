@@ -1,22 +1,20 @@
 # Current Slice
 
-- [>] 063 — Template search
-  - [x] Inventory the existing template list API, permission filtering, pagination, repository queries, and `Templates.vue`
-    - [x] Confirm empty-query ordering and existing list actions
-    - [x] Identify the supported SQL-engine query seams and current pagination boundary
-  - [x] Define and test bounded case-insensitive literal matching
-    - [x] Normalize name, description, playbook, and tags with deterministic tie-breaking
-    - [x] Escape wildcard and control characters consistently on SQLite, MySQL/MariaDB, and PostgreSQL
-    - [x] Apply permission filtering before matching and pagination
-  - [x] Add the smallest search integration to the existing template list
-    - [x] Debounce and cancel stale requests, retain the query in the URL, and reset pagination
-    - [x] Add accessible clear, count, no-results, safe highlighting, and keyboard behavior
-    - [x] Pass the focused component contract, lint, and production compilation
-  - [>] Verify repository/API contracts, UI tests, browser behavior, full release gates, and Terra security review
-    - [x] Pass focused repository/API tests, race detection, vet, and the external contract
-    - [x] Rebuild the disposable 31030 instance and complete browser acceptance
-    - [x] Run full Core, Community, Enhanced, frontend, OpenAPI, and docs gates
-    - [>] Complete manual review, final Terra scan, docs/status, commits, and exact cleanup
+- [>] 064 — Per-schedule timezones
+  - [>] Inventory the schedule model, migrations, cron parser, scheduler, validation API, and existing schedule UI
+    - [ ] Confirm current global-timezone fallback and `CRON_TZ` behavior
+    - [ ] Trace create, update, validate, list, detail, and scheduler restart paths
+  - [ ] Add the additive schedule timezone contract
+    - [ ] Persist an optional IANA identifier across SQLite, MySQL/MariaDB, and PostgreSQL
+    - [ ] Validate identifiers and apply expression, schedule, then global precedence
+    - [ ] Return effective timezone and backend-authoritative next run
+  - [ ] Make DST occurrence behavior explicit and deterministic
+    - [ ] Cover fixed offsets, spring gaps, autumn overlaps, restart identity, and duplicate prevention
+    - [ ] Preserve existing schedules through migration and fallback
+  - [ ] Add the smallest selector and preview integration to existing schedule surfaces
+    - [ ] Use browser-supported IANA zones with text search and backend validation
+    - [ ] Show effective timezone and next run before save and in schedule lists
+  - [ ] Run focused/full tests, browser acceptance, Terra security review, docs, commits, and exact cleanup
 
 # All Slices
 
@@ -70,7 +68,7 @@
 - [x] 060 — Global credential grants
 - [x] 061 — Credential resolution and audit
 - [x] 062 — Server-generated SSH keys
-- [ ] 063 — Template search
+- [x] 063 — Template search
 - [ ] 064 — Per-schedule timezones
 - [ ] 070 — Execution preflight
 - [ ] 071 — Deployment windows
