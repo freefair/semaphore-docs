@@ -9,13 +9,16 @@
     - [x] Add a distinct file-artifact model so binary downloads do not alter typed JSON workflow-output behavior
     - [>] Define chunked SQL staging/finalization, hard artifact/run limits, safe download headers, and no-range policy
       - [x] Fix hard limits at 64 MiB/artifact, 256 MiB/run, 1 MiB/chunk, and 256 artifacts/run
-      - [>] Implement serialized run reservations, exact-offset append, checksum finalization, and available-only reads
-      - [ ] Reject range requests and emit safe bounded download headers at the HTTP edge
+      - [x] Implement serialized run reservations, exact-offset append, checksum finalization, and available-only reads
+      - [ ] Reject range requests, enforce the absolute write deadline, and emit safe bounded download headers at the HTTP edge
     - [x] Define current-role artifact narrowing plus immutable producer, credential, and global/project retention snapshots
     - [>] Define terminal-run garbage collection with staged-upload reconciliation and download leases
       - [x] Define tenant-bound expiry targets, bounded leases, and a built-in global retention revision 0
-      - [ ] Implement terminal-run expiry, active-lease fencing, and stale-staging reconciliation
-  - [ ] Implement SQL-backed content, upload/finalize/list/metadata/download, retention worker, and audit integration behind interfaces
+      - [x] Implement terminal-run expiry, active-lease fencing, and stale-staging reconciliation
+  - [>] Implement SQL-backed content, upload/finalize/list/metadata/download, retention worker, and audit integration behind interfaces
+    - [x] Add the Enhanced SQL repository and Community factory seam with database-authoritative retention snapshots
+    - [>] Add the service/facade boundary for current-role authorization, server-derived provenance, and bounded streaming
+    - [ ] Add the retention worker and value-free lifecycle audit events
   - [ ] Add only the required artifact provenance/download and retention controls to existing surfaces
   - [ ] Run multi-database, interrupted/concurrent IO, expiry, permission, browser, full release, and independent Terra security gates
 
