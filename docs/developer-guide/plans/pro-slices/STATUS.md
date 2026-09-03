@@ -1,17 +1,20 @@
 # Current Slice
 
-- [>] 071 — Deployment windows
-  - [ ] Inventory every manual, schedule, API, webhook, and workflow-node enqueue boundary
-    - [ ] Trace the schedule occurrence and duplicate-suppression contracts from slices 035 and 064
-    - [ ] Locate existing project/template/workflow permission and audit extension seams
-  - [ ] Define red-first versioned window, freeze, evaluation, and emergency-override contracts
-    - [ ] Specify IANA timezone recurrence, effective ranges, scope, precedence, project default, and next eligible instant
-    - [ ] Define a distinct override permission plus bounded reason and immutable audit provenance
-  - [ ] Implement one deterministic evaluator and enforce it immediately before every enqueue path
-    - [ ] Persist blocked schedule occurrences with explanation and duplicate-safe next eligibility
-    - [ ] Preserve Community behavior and keep shared UI changes to the smallest integration surface
-  - [ ] Add scoped rule CRUD, preview/current-status APIs, minimal governance UI, and blocked/override flows
-  - [ ] Run DST, precedence, entry-point parity, restart, permission, audit, browser, full release, and Terra security gates
+- [>] 072 — Policy guardrails
+  - [>] Inventory the shared execution planner, immutable preflight snapshot, deployment-window ordering, policy permissions, audit, and existing administration surfaces
+    - [ ] Trace every direct and background start from planner evaluation to final enqueue
+    - [ ] Identify bounded metadata already available without secret values, filesystem, network, or caller-controlled clock access
+    - [ ] Locate the smallest existing global/project administration UI seams without adding shared navigation
+  - [ ] Define red-first bounded YAML schema, typed predicates, deterministic ordering, and stable allow/warn/deny findings
+    - [ ] Specify global/project precedence, rule identity, limits, remediation URLs, and secret-field rejection
+    - [ ] Define immutable revision, draft, publish, diff, rollback-as-new-revision, history, and execution-provenance contracts
+  - [ ] Implement compiler, repository, evaluator, and shared-planner enforcement for every start path
+    - [ ] Keep evaluation pure and bounded; publish only fully compiled revisions
+    - [ ] Persist exact policy revisions/findings with reviewed execution snapshots and deny every bypass path
+  - [ ] Add capability/permission-gated governance API, audited rollback, and minimal existing-surface UI
+    - [ ] Cover draft, validate, fixture test, diff, publish, history, impact preview, and rollback
+    - [ ] Show warnings/denials in the existing preflight and start flows without redesigning shared UI
+  - [ ] Run predicate, ordering, concurrency, entry-point parity, browser, full release, and Terra security gates
 
 # All Slices
 
@@ -68,7 +71,7 @@
 - [x] 063 — Template search
 - [x] 064 — Per-schedule timezones
 - [x] 070 — Execution preflight
-- [ ] 071 — Deployment windows
-- [ ] 072 — Policy guardrails
+- [x] 071 — Deployment windows
+- [>] 072 — Policy guardrails
 - [ ] 073 — Signed webhooks
 - [ ] 074 — Artifact retention and provenance
