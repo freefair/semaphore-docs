@@ -1,11 +1,20 @@
 # Current Slice
 
 - [>] 074 — Artifact retention and provenance
-  - [>] Inventory the existing artifact, workflow-run, permission, audit, and administration seams
-    - [>] Trace current artifact metadata/content persistence, production, list, and download paths
-    - [ ] Trace workflow/run visibility, role permissions, credential provenance, and value-free audit boundaries
-    - [ ] Identify the smallest existing run and governance UI surfaces without adding shared navigation or redesigning layout
-  - [ ] Define immutable provenance, bounded streaming storage, atomic visibility, and retention precedence contracts
+  - [x] Inventory the existing artifact, workflow-run, permission, audit, and administration seams
+    - [x] Trace typed JSON workflow outputs, task-attempt persistence, value-free run metadata, and the existing no-download boundary
+    - [x] Trace workflow/run visibility, current project/global roles, task-scoped credential usage, and value-free audit boundaries
+    - [x] Reuse the existing Workflow Run artifact panel plus global/project governance surfaces without adding navigation or routes
+  - [>] Define immutable provenance, bounded streaming storage, atomic visibility, and retention precedence contracts
+    - [x] Add a distinct file-artifact model so binary downloads do not alter typed JSON workflow-output behavior
+    - [>] Define chunked SQL staging/finalization, hard artifact/run limits, safe download headers, and no-range policy
+      - [x] Fix hard limits at 64 MiB/artifact, 256 MiB/run, 1 MiB/chunk, and 256 artifacts/run
+      - [>] Implement serialized run reservations, exact-offset append, checksum finalization, and available-only reads
+      - [ ] Reject range requests and emit safe bounded download headers at the HTTP edge
+    - [x] Define current-role artifact narrowing plus immutable producer, credential, and global/project retention snapshots
+    - [>] Define terminal-run garbage collection with staged-upload reconciliation and download leases
+      - [x] Define tenant-bound expiry targets, bounded leases, and a built-in global retention revision 0
+      - [ ] Implement terminal-run expiry, active-lease fencing, and stale-staging reconciliation
   - [ ] Implement SQL-backed content, upload/finalize/list/metadata/download, retention worker, and audit integration behind interfaces
   - [ ] Add only the required artifact provenance/download and retention controls to existing surfaces
   - [ ] Run multi-database, interrupted/concurrent IO, expiry, permission, browser, full release, and independent Terra security gates
