@@ -9,7 +9,7 @@
     - [x] Add a distinct file-artifact model so binary downloads do not alter typed JSON workflow-output behavior
     - [x] Define chunked SQL staging/finalization, hard artifact/run limits, safe download headers, and no-range policy
       - [x] Fix hard limits at 64 MiB/artifact, 256 MiB/run, 1 MiB/chunk, and 256 artifacts/run
-      - [x] Implement serialized run reservations, exact-offset append, checksum finalization, and available-only reads
+      - [x] Implement serialized run reservations, exact-offset append, available-only content reads, and terminal metadata visibility
       - [x] Reject range requests, enforce the absolute write deadline, and emit safe bounded download headers at the HTTP edge
     - [x] Define current-role artifact narrowing plus immutable producer, credential, and global/project retention snapshots
     - [x] Define terminal-run garbage collection with staged-upload reconciliation and download leases
@@ -26,11 +26,15 @@
       - [x] Add facade and controller contracts for reading effective retention and publishing revisions
       - [x] Enforce global bounds, project-only narrowing, optimistic revision conflicts, and serialized bootstrap
       - [x] Record value-free retention-policy audit events and keep Community behavior unchanged
-  - [>] Add only the required artifact provenance/download and retention controls to existing surfaces
-    - [ ] Extend the existing Workflow Run artifact panel with file metadata, provenance, checksum copy, expiry, and download state
-    - [ ] Add compact retention controls to existing global and project administration surfaces without new navigation
-    - [ ] Cover loading, denied, expired, validation, and save-conflict states with UI tests and browser evidence
-  - [ ] Run multi-database, interrupted/concurrent IO, expiry, permission, browser, full release, and independent Terra security gates
+  - [x] Add only the required artifact provenance/download and retention controls to existing surfaces
+    - [x] Extend the existing Workflow Run artifact panel with file metadata, provenance, checksum copy, expiry, and download state
+    - [x] Add compact retention controls to existing global and project administration surfaces without new navigation
+    - [x] Cover loading, denied, expired, validation, save-conflict, desktop, and mobile states with tests and browser evidence
+  - [>] Run multi-database, interrupted/concurrent IO, expiry, permission, browser, full release, and independent Terra security gates
+    - [ ] Verify storage, retention precedence, and bootstrap serialization on SQLite, PostgreSQL, and MySQL
+    - [ ] Exercise interrupted upload, concurrent download/expiry, checksum, header, range, and live permission contracts
+    - [ ] Add OpenAPI and developer documentation, then run dual-edition builds and complete release suites
+    - [ ] Run the final independent Terra security review and resolve every P0–P3 finding
 
 # All Slices
 
