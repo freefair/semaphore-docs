@@ -1,6 +1,6 @@
 # Current Slice
 
-- [>] 074 — Artifact retention and provenance
+- [x] 074 — Artifact retention and provenance
   - [x] Inventory the existing artifact, workflow-run, permission, audit, and administration seams
     - [x] Trace typed JSON workflow outputs, task-attempt persistence, value-free run metadata, and the existing no-download boundary
     - [x] Trace workflow/run visibility, current project/global roles, task-scoped credential usage, and value-free audit boundaries
@@ -30,18 +30,22 @@
     - [x] Extend the existing Workflow Run artifact panel with file metadata, provenance, checksum copy, expiry, and download state
     - [x] Add compact retention controls to existing global and project administration surfaces without new navigation
     - [x] Cover loading, denied, expired, validation, save-conflict, desktop, and mobile states with tests and browser evidence
-  - [>] Run multi-database, interrupted/concurrent IO, expiry, permission, browser, full release, and independent Terra security gates
+  - [x] Run multi-database, interrupted/concurrent IO, expiry, permission, browser, full release, and independent Terra security gates
     - [x] Verify storage, retention precedence, and bootstrap serialization on SQLite, PostgreSQL, and MySQL
       - [x] Run real SQL chunk, checksum, lease, expiry, reconciliation, precedence, and concurrent bootstrap contracts on all three engines
       - [x] Keep the pre-existing MySQL fresh-migration and workflow-graph defects outside Slice 074 while validating its v2.20.65 schema in disposable QA
     - [x] Exercise interrupted upload, concurrent download/expiry, checksum, header, range, and live permission contracts
       - [x] Run repository, service, controller, retention-worker, permission, and audit contract suites
       - [x] Verify produced, denied, expired, desktop, and mobile states in the existing Workflow Run and settings surfaces
-    - [>] Add OpenAPI and developer documentation, then run dual-edition builds and complete release suites
+    - [x] Add OpenAPI and developer documentation, then run dual-edition builds and complete release suites
       - [x] Add and bundle the OpenAPI routes, schemas, validation limits, response headers, and range policy
       - [x] Add the developer guide and build the Docusaurus site
-      - [ ] Build and test Community and Enhanced editions from the same core tree
-    - [ ] Run the final independent Terra security review and resolve every P0–P3 finding
+      - [x] Build and test Community and Enhanced editions from the same core tree
+        - [x] Complete all Community, Enhanced-module, and Core-with-Enhanced Go suites
+        - [x] Build both backend binaries and both production frontends; retain the known three unrelated Vue baseline failures only
+    - [x] Run the final independent Terra security review and resolve every P0–P3 finding
+      - [x] Resolve the P3 deadline-setup audit gap while preserving deferred lease release
+      - [x] Re-run focused verification and confirm no remaining P0–P3 findings
 
 # All Slices
 
@@ -101,4 +105,4 @@
 - [x] 071 — Deployment windows
 - [x] 072 — Policy guardrails
 - [x] 073 — Signed webhooks
-- [>] 074 — Artifact retention and provenance
+- [x] 074 — Artifact retention and provenance
