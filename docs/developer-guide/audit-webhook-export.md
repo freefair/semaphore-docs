@@ -48,7 +48,7 @@ Every request is an HTTP `POST` with `Content-Type: application/json` and this a
 
 The event ID is 128 random bits encoded as 32 lowercase hexadecimal characters.
 Retries reuse the same ID and occurrence time so the receiver can deduplicate deliveries.
-Cryptographic signing and inbound replay protection remain out of scope until slice 073.
+Every attempt is authenticated with the shared [Signed Webhook](signed-webhooks.md) protocol; the timestamp and HMAC are fresh while the logical event stays stable.
 
 The actor ID and request metadata are omitted when unavailable.
 `source_ip` is derived from the direct network peer rather than caller-controlled forwarding headers.
@@ -61,7 +61,7 @@ Adding a field requires an explicit schema-version decision and redaction tests.
 
 The endpoint must be an absolute HTTPS URL without embedded credentials or a fragment.
 Semaphore does not follow redirects.
-An optional credential is sent as `Authorization: Bearer <credential>`.
+An optional legacy credential is sent as `Authorization: Bearer <credential>` independently from the required signing headers.
 Each request has a five-second timeout, and response bodies are read only up to 64 KiB.
 
 | Result | Delivery behavior |
@@ -87,10 +87,15 @@ Community Edition keeps the route shape but returns `404` because export is unav
 |---|---|---|
 | `GET /api/audit-webhook` | Read non-secret configuration | `200` configuration |
 | `PUT /api/audit-webhook` | Save endpoint and optionally replace or remove the credential | `200` configuration |
-| `POST /api/audit-webhook/test` | Send and persist one test delivery immediately | `201` delivery |
+| `POST /api/audit-webhook/signing-secret?revision={revision}` | Create and reveal the initial signing secret once | `201` secret and safe status |
+| `POST /api/audit-webhook/signing-secret/stage?revision={revision}` | Stage and reveal the next signing secret once | `201` secret and safe status |
+| `POST /api/audit-webhook/signing-secret/promote?revision={revision}` | Promote a staged key and retain the old key for overlap | `200` safe status |
+| `DELETE /api/audit-webhook/signing-secret/next?revision={revision}` | Revoke a staged or retired next key | `200` safe status |
+| `POST /api/audit-webhook/test?key=current\|next` | Send and persist one controlled signed delivery immediately | `201` delivery |
 | `POST /api/audit-webhook/pause` | Stop background delivery claims | `200` configuration |
 | `POST /api/audit-webhook/resume` | Resume background delivery claims | `200` configuration |
 | `GET /api/audit-webhook/deliveries?count=25&offset=0` | Read newest-first delivery history | `200` delivery array |
+| `GET /api/audit-webhook/deliveries/{delivery_id}/attempts?count=25&offset=0` | Read bounded, redacted attempt history | `200` attempt array |
 
 Configuration accepts at most one JSON object and rejects unknown fields.
 The body is limited to 8 KiB.
@@ -107,9 +112,10 @@ Sending an empty credential removes it.
 The credential is limited to 4 KiB, uses Semaphore's option-encryption key path for storage, and is never returned by the API.
 Set an option or access encryption key in deployments that require encrypted-at-rest option values; Semaphore's existing keyring compatibility behavior applies when encryption is disabled.
 
-Configuration responses contain only `endpoint`, `credential_configured`, `paused`, and `updated_at`.
+Configuration responses contain only `endpoint`, `credential_configured`, `paused`, `updated_at`, safe current/next key IDs and generations, and `signing_revision`.
 Delivery responses contain only the row ID, stable event ID, status, attempt count, scheduling timestamps, HTTP status, bounded failure reason, and delivery timestamp.
-The serialized payload and credential never cross the administration API boundary.
+Attempt responses add the selected key ID and signing time but omit the HMAC and headers.
+The serialized payload, credential, encrypted material, plaintext signing secret, and signature never cross the read API boundary.
 
 Pagination defaults to 25 rows.
 `count` must be between 1 and 100, and `offset` must be non-negative.
@@ -118,11 +124,12 @@ Invalid input returns `400`, an unconfigured pause, resume, or test operation re
 ## Administration UI
 
 Enhanced Edition administrators open `/audit-webhooks` from the administration navigation.
-The page configures the endpoint and write-only credential, sends a test, pauses or resumes delivery, and loads paginated history.
+The page configures the endpoint and write-only credential, creates and rotates signing keys, tests current or next signing, pauses or resumes delivery, and loads paginated delivery and attempt history.
 
 The credential input is cleared immediately after a successful save.
 An explicit remove control is required to clear an existing credential.
 Test delivery remains available while background delivery is paused so an administrator can validate a receiver before resuming the queue.
+Generated signing secrets require an explicit copy acknowledgement and leave component state on dismissal or reload.
 
 ## Metrics
 

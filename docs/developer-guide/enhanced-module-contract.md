@@ -9,7 +9,7 @@ The executable contract is versioned independently from product releases.
 
 | Component | Current value | Source |
 |---|---|---|
-| Core contract | `1.18.0` | `pro_interfaces.CoreContractVersion` |
+| Core contract | `1.21.0` | `pro_interfaces.CoreContractVersion` |
 | Community implementation | `community-1` | `pro/pkg/features.ImplementationVersion` |
 | Clean-room test implementation | `clean-room-test-1` | `test/edition-contract/enhanced/pkg/features` |
 
@@ -27,6 +27,7 @@ See [Project Runner Executor Images](project-runner-executor-images.md) for capa
 
 See [Docker Executor](docker-executor.md) for runner-side Docker configuration, task bundle boundaries, lifecycle behavior, and daemon trust limitations.
 See [Audit Webhook Export](audit-webhook-export.md) for the versioned envelope, transactional outbox, delivery policy, and administration contract.
+See [Signed Webhooks](signed-webhooks.md) for canonical HMAC bytes, receiver verification, durable replay identity, current/next rotation, and redacted history.
 See [Notification Governance](plans/pro-slices/056-notification-governance.md) for provider-neutral routing, source-owned outbox transactions, delivery lifecycle, permissions, and adapter boundaries.
 See [PagerDuty Delivery](plans/pro-slices/057-pagerduty.md) for the fixed regional Events API v2 transport, PD-CEF mapping, deduplication, and provider-result policy.
 See [Opsgenie Delivery](plans/pro-slices/058-opsgenie.md) for fixed regional Alert API v2 transport, typed responders, asynchronous request tracking, alias deduplication, and close semantics.
@@ -57,11 +58,12 @@ The core-owned contract types live in `pro_interfaces/`:
 | Project runners | `ProjectRunnerController`, including health and history reads |
 | Terraform inventory | `TerraformInventoryController` |
 | Workflows | `WorkflowController`, `WorkflowService`, `WorkflowTaskEnqueuer`, `WorkflowRunLocker`, `WorkflowReconciler` |
-| Structured logging and audit | `LogWriteService`, `LogWriteServiceLifecycle`, `DebugLogService`, per-instance `DebugFilter`, versioned application/task/result/debug envelopes, diagnostics, project-scoped `AuditEvent`, `AuditWebhookServiceFacade`, `AuditWebhookService`, configuration and delivery DTOs |
+| Structured logging and audit | `LogWriteService`, `LogWriteServiceLifecycle`, `DebugLogService`, per-instance `DebugFilter`, versioned application/task/result/debug envelopes, diagnostics, project-scoped `AuditEvent`, `AuditWebhookServiceFacade`, `AuditWebhookService`, signing lifecycle, configuration, delivery, and redacted attempt DTOs |
 | Notification governance | Versioned provider-neutral notification event with exact source and lifecycle identities, deterministic source-transition identity, typed routing filters, severities, incident keys, and durable delivery state records. Provider transports remain outside the core contract until their owning slices. |
 | Runtime secrets | `SecretReference`, `SecretProviderConfiguration`, `SecretProviderHealth`, `ManagedSecretField`, `ManagedSecretProvider`, `VaultOpenBaoClient`, and `RuntimeSecretResolver` |
 | TOTP lifecycle | `TOTPService`, enrollment and rollout requests, status and ceremony DTOs, session requirements, and stable security errors |
 | Project roles | Typed permission catalog, immutable project-role IDs, capability prerequisites, project assignment revisions, and audit actions |
+| Signed webhooks | Canonical request binding and HMAC verification, current/next signing metadata, one-time secret results, audit attempt metadata, signed workflow ingress, and safe replay history |
 | High availability | `NodeRegistry`, `OrphanCleaner`, `ClusterInspector`, `NodeInfo`, `RedisInfo` |
 
 The replaceable module exports these application entry points:
@@ -127,6 +129,16 @@ Contract version `1.18.0` adds typed ServiceNow authentication and incident-fiel
 - Update and resolve address only `/api/now/v1/table/incident/{sys_id}` using the persisted lowercase 32-character identity. The binding, all matching lifecycle-history metadata, and the successful owner delivery are committed atomically after create.
 - Create accepts only an unambiguous body or same-origin Location identity. `429` uses bounded `Retry-After`; `408`, `425`, `5xx`, timeouts, and network failures are transient; invalid authentication, authorization, validation, identities, and response shapes are terminal. A create conflict or missing/conflicting identity is ambiguous and enters reconciliation. Provider bodies, headers, status codes, tokens, and free-form errors never enter history, logs, audit details, or DTOs.
 - The existing collapsed governance UI conditionally adds only the instance origin, authentication fields, line-oriented field mapping, and safe record link. The controlled test uses the fixed summary `Semaphore controlled notification test`; no provider route, navigation item, or project-level surface is added.
+
+## Signed Webhook Boundary
+
+Contract version `1.21.0` adds the shared `semaphore.webhook.v1` binding and verification functions, current/next signing lifecycle DTOs, redacted audit-attempt history, signed workflow ingress, and safe replay metadata. Migration `2.20.64` stores encrypted audit and workflow signing state, audit delivery attempts, and rotation-independent workflow replay identities.
+
+- The core contract owns canonical binary framing, strict header syntax, HMAC-SHA-256 signing and constant-time verification, the inclusive five-minute freshness window, server-generated key material, and the durable trigger/event identity hash. HTTP clients, persistence, workers, and controllers remain replaceable-module responsibilities behind their existing interfaces.
+- Audit delivery keeps the immutable event ID and payload across attempts but signs each attempt with a fresh timestamp. Production selects exactly the current key; controlled tests may select current or next. Attempt DTOs expose only key identity, bounded outcome/reason, HTTP status, and timestamps.
+- Workflow webhook ingress binds the raw request target and body before JSON decoding, accepts current and next only during an explicit overlap, and commits the replay claim before workflow start. API-trigger Bearer authentication remains a separate route and cannot authenticate a webhook request.
+- Secrets cross the module boundary only in one-time mutation responses and transient signing/verification calls. Ciphertext, plaintext, HMACs, raw headers, request bodies, and internal verification reasons remain absent from read DTOs, logs, audit details, retained browser state, and backups.
+- Existing Audit Webhook and Workflow Triggers surfaces host the minimal signing controls. Community navigation, shared layout, workflow routes, and unrelated administration UI remain unchanged.
 
 ## Community HTTP Contract
 

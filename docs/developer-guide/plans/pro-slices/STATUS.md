@@ -1,16 +1,30 @@
 # Current Slice
 
 - [>] 073 — Signed webhooks
-  - [>] Inventory the existing outbound audit/notification delivery and inbound workflow-trigger seams
-    - [ ] Trace exact payload construction, retry identity, delivery persistence, and current redaction boundaries
-    - [ ] Trace inbound workflow webhook authentication, invocation claims, replay behavior, and final run persistence
-    - [ ] Identify existing global/project administration surfaces that can host the smallest capability-gated controls
-  - [ ] Define the versioned canonical HMAC-SHA-256 signing and verification contract
-    - [ ] Bind method, path, event ID, timestamp, and exact payload bytes with stable test vectors
-    - [ ] Bound timestamp skew, header syntax, constant-time comparison, rotation overlap, and durable replay identity
-  - [ ] Implement server-generated encrypted secrets, outbound signing, inbound verification, and persisted history
-  - [ ] Add minimal one-time secret/rotation/test/status/replay/history UI to existing surfaces
-  - [ ] Run fake-receiver, concurrency, browser, full release, and independent Terra security gates
+  - [x] Inventory the existing outbound audit/notification delivery and inbound workflow-trigger seams
+    - [x] Trace the immutable audit envelope, transactional outbox, aggregate retries, HTTPS client, encrypted legacy Bearer credential, and redacted history
+    - [x] Trace webhook Bearer authentication, strict 256 KiB JSON binding, generation-scoped idempotency claim, and workflow-run persistence
+    - [x] Reuse only the existing Audit Webhook page and Workflow Triggers dialog without adding navigation or routes
+  - [x] Define the versioned canonical HMAC-SHA-256 signing and verification contract
+    - [x] Bind version, method, exact request target, event ID, timestamp, key ID, and payload bytes with length-framed stable vectors
+    - [x] Bound strict header syntax, five-minute clock skew, constant-time current/next comparison, and durable rotation-independent replay identity
+    - [x] Define two-phase stage/test/promote/revoke rotation while production signs with exactly one current key
+    - [x] Preserve API-trigger Bearer compatibility and fail legacy unsigned workflow webhooks closed until a signing secret is created
+  - [x] Implement server-generated encrypted secrets, outbound signing, inbound verification, and persisted history
+    - [x] Add current/next encrypted key state, CAS rotation metadata, redacted outbound attempts, and durable inbound replay identity
+    - [x] Sign every audit delivery attempt with fresh time while preserving event ID and exact stored payload across retries
+    - [x] Verify inbound raw bytes before strict JSON mapping and atomically claim the signed event before workflow start
+  - [x] Add minimal one-time secret/rotation/test/status/replay/history UI to existing surfaces
+    - [x] Add audit signing status, one-time secret acknowledgement, rotation actions, current/next signed test, and expandable attempt history to the existing Audit Webhook page
+    - [x] Add webhook signing bootstrap/stage/promote/revoke actions and replay metadata to the existing Workflow Triggers dialog
+    - [x] Prove secrets leave transient component state on dismissal/reload and shared navigation/layout remain unchanged
+    - [x] Remove the measured desktop trigger-table overflow by placing current and next key metadata on separate lines
+  - [>] Run fake-receiver, concurrency, browser, full release, and independent Terra security gates
+    - [x] Verify signed audit attempts, current/next rotation overlap, retry history, and concurrent replay rejection
+    - [x] Exercise real HMAC workflow ingress, replay history, one-time secrets, rotation, and 390 px layouts in the local browser QA instance
+    - [x] Document the receiver contract, rotation runbook, API schemas, and Enhanced interface version
+    - [>] Run the complete Community, Enhanced, UI, race, vet, build, and docs release matrix
+    - [ ] Run the final independent Terra security review and verify every finding
 
 # All Slices
 

@@ -25,7 +25,7 @@ Names are limited to 128 bytes, each workflow may have at most 64 triggers, and 
 | `manual` | Authenticated test action | None | None |
 | `schedule` | Background UTC scheduler | None | Required five-field cron expression |
 | `api` | Public API trigger route | Required opaque bearer credential | None |
-| `webhook` | Public webhook trigger route | Required opaque bearer credential | None |
+| `webhook` | Public signed-webhook route | Required HMAC signing key | None |
 
 The resource stores its owner, enabled state, revision, input mappings, creation and update timestamps, and the last fire time and result.
 Updates use optimistic revision checks and return `409 Conflict` when the submitted revision is stale.
@@ -77,6 +77,10 @@ All management routes are project-scoped and use the existing authenticated work
 | `DELETE` | `/api/project/{project_id}/workflows/{workflow_id}/triggers/{trigger_id}` | Delete a trigger and its invocation records. |
 | `PUT` | `/api/project/{project_id}/workflows/{workflow_id}/triggers/{trigger_id}/enabled` | Enable or disable a trigger using `revision`. |
 | `POST` | `/api/project/{project_id}/workflows/{workflow_id}/triggers/{trigger_id}/rotate` | Revoke the current credential and reveal its replacement once. |
+| `POST` | `/api/project/{project_id}/workflows/{workflow_id}/triggers/{trigger_id}/webhook-signing/bootstrap` | Create and reveal a current signing secret once for a migrated webhook. |
+| `POST` | `/api/project/{project_id}/workflows/{workflow_id}/triggers/{trigger_id}/webhook-signing/stage` | Stage and reveal the next signing secret once. |
+| `POST` | `/api/project/{project_id}/workflows/{workflow_id}/triggers/{trigger_id}/webhook-signing/promote` | Promote a staged signing key and retain the old key for overlap. |
+| `POST` | `/api/project/{project_id}/workflows/{workflow_id}/triggers/{trigger_id}/webhook-signing/revoke` | Revoke the staged or retired next signing key. |
 | `POST` | `/api/project/{project_id}/workflows/{workflow_id}/triggers/{trigger_id}/test` | Start the trigger through an authenticated test action. |
 | `GET` | `/api/project/{project_id}/workflows/{workflow_id}/triggers/{trigger_id}/history` | Read paginated invocation history. |
 
@@ -85,11 +89,10 @@ History is ordered newest first and accepts the existing `count`, `before_id`, a
 
 ## External Invocation API
 
-API and webhook triggers expose separate public routes so a credential cannot be used against the wrong trigger type.
+API and webhook triggers expose separate public routes so one authentication mechanism cannot be used against the other trigger type.
 
 ```text
 POST /api/workflow-triggers/{project_id}/{workflow_id}/{trigger_id}/api
-POST /api/workflow-triggers/{project_id}/{workflow_id}/{trigger_id}/webhook
 Authorization: Bearer swt_<opaque-value>
 Idempotency-Key: <caller-controlled-key>
 Content-Type: application/json
@@ -104,14 +107,15 @@ Content-Type: application/json
 ```
 
 Only fields named by request mappings are accepted under `inputs`.
-The first successful request returns `201 Created`; a duplicate that resolves to the existing invocation and run returns `200 OK` with `duplicate: true`.
+The first successful API-trigger request returns `201 Created`; a duplicate that resolves to the existing invocation and run returns `200 OK` with `duplicate: true`.
 Missing or revoked credentials return `401 Unauthorized`, while disabled triggers and invalid mapped inputs fail before a new run is created.
 
-Webhook signatures and replay-window policy are intentionally separate from this credential boundary and are delivered by Slice 073.
+Webhook triggers instead use `POST /api/workflow-triggers/{project_id}/{workflow_id}/{trigger_id}/webhook` with the five headers, canonical bytes, clock window, and durable event-ID claim defined by [Signed Webhooks](signed-webhooks.md).
+They never accept Bearer fallback. The first valid event returns `201 Created`; every repeat of the event ID returns `409 Conflict` without a second workflow start.
 
 ## Credentials and Idempotency
 
-API and webhook credentials are opaque random values with the `swt_` prefix.
+API credentials are opaque random values with the `swt_` prefix.
 Only a domain-separated SHA-256 hash and a credential generation number are persisted.
 The plaintext is returned only by create or rotate and is absent from later trigger, history, run, backup, and API payloads.
 
@@ -122,6 +126,8 @@ Disabling a trigger leaves its credential material intact but prevents every dir
 External idempotency keys are hashed before persistence and scoped to the trigger ID and credential generation.
 The same caller key can therefore be reused safely after credential rotation or on another trigger.
 The deduplication record expires after 24 hours; while retained, concurrent or retried delivery can create at most one invocation identity and one workflow run.
+
+Webhook signing keys are independent server-generated `swhsec_` secrets stored only as encrypted material. Their non-secret `swhkid_` IDs and generations support current/next overlap without reusing API credential generations. Webhook replay identities are derived only from the trigger ID and stable event ID, survive key rotation, and do not expire through the API-trigger retention path.
 
 ## Scheduled Occurrences
 
@@ -160,7 +166,7 @@ Later trigger edits, rotation, deletion, or workflow-definition changes do not m
 ## UI and Compatibility Boundary
 
 The existing workflow view adds one capability-gated toolbar action and mounts one focused trigger dialog.
-The dialog owns trigger CRUD, credential reveal, test input, history, and its responsive table/card rendering.
+The dialog owns trigger CRUD, one-time credential or signing-secret reveal, signing rotation, test input, safe replay history, and its responsive table/card rendering.
 Project navigation, workflow routing, graph rendering, editor state, run controls, and Community host behavior remain unchanged.
 
 The backend remains authoritative for capability and permission enforcement.
