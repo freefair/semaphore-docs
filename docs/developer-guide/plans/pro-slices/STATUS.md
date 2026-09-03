@@ -15,18 +15,21 @@
     - [x] Define terminal-run garbage collection with staged-upload reconciliation and download leases
       - [x] Define tenant-bound expiry targets, bounded leases, and a built-in global retention revision 0
       - [x] Implement terminal-run expiry, active-lease fencing, and stale-staging reconciliation
-  - [>] Implement SQL-backed content, upload/finalize/list/metadata/download, retention worker, and audit integration behind interfaces
+  - [x] Implement SQL-backed content, upload/finalize/list/metadata/download, retention worker, and audit integration behind interfaces
     - [x] Add the Enhanced SQL repository and Community factory seam with database-authoritative retention snapshots
     - [x] Add the service/facade boundary for current-role authorization, server-derived provenance, and bounded streaming
     - [x] Add the retention worker and value-free lifecycle audit events
       - [x] Add idempotent bounded ticks for expiry and stale-upload reconciliation
       - [x] Record value-free download, expiry, and cleanup events with failure classification
       - [x] Wire start/stop lifecycle without adding Community background work
-    - [>] Add global/project retention governance behind existing administration permissions
-      - [ ] Add facade and controller contracts for reading effective retention and publishing revisions
-      - [ ] Enforce global bounds, project-only narrowing, and optimistic revision conflicts
-      - [ ] Record value-free retention-policy audit events and keep Community behavior unchanged
-  - [ ] Add only the required artifact provenance/download and retention controls to existing surfaces
+    - [x] Add global/project retention governance behind existing administration permissions
+      - [x] Add facade and controller contracts for reading effective retention and publishing revisions
+      - [x] Enforce global bounds, project-only narrowing, optimistic revision conflicts, and serialized bootstrap
+      - [x] Record value-free retention-policy audit events and keep Community behavior unchanged
+  - [>] Add only the required artifact provenance/download and retention controls to existing surfaces
+    - [ ] Extend the existing Workflow Run artifact panel with file metadata, provenance, checksum copy, expiry, and download state
+    - [ ] Add compact retention controls to existing global and project administration surfaces without new navigation
+    - [ ] Cover loading, denied, expired, validation, and save-conflict states with UI tests and browser evidence
   - [ ] Run multi-database, interrupted/concurrent IO, expiry, permission, browser, full release, and independent Terra security gates
 
 # All Slices
