@@ -1,20 +1,51 @@
 # Current Slice
 
 - [>] 072 — Policy guardrails
-  - [>] Inventory the shared execution planner, immutable preflight snapshot, deployment-window ordering, policy permissions, audit, and existing administration surfaces
-    - [ ] Trace every direct and background start from planner evaluation to final enqueue
-    - [ ] Identify bounded metadata already available without secret values, filesystem, network, or caller-controlled clock access
-    - [ ] Locate the smallest existing global/project administration UI seams without adding shared navigation
-  - [ ] Define red-first bounded YAML schema, typed predicates, deterministic ordering, and stable allow/warn/deny findings
-    - [ ] Specify global/project precedence, rule identity, limits, remediation URLs, and secret-field rejection
-    - [ ] Define immutable revision, draft, publish, diff, rollback-as-new-revision, history, and execution-provenance contracts
-  - [ ] Implement compiler, repository, evaluator, and shared-planner enforcement for every start path
-    - [ ] Keep evaluation pure and bounded; publish only fully compiled revisions
-    - [ ] Persist exact policy revisions/findings with reviewed execution snapshots and deny every bypass path
-  - [ ] Add capability/permission-gated governance API, audited rollback, and minimal existing-surface UI
-    - [ ] Cover draft, validate, fixture test, diff, publish, history, impact preview, and rollback
-    - [ ] Show warnings/denials in the existing preflight and start flows without redesigning shared UI
-  - [ ] Run predicate, ordering, concurrency, entry-point parity, browser, full release, and Terra security gates
+  - [x] Inventory the shared execution planner, immutable preflight snapshot, deployment-window ordering, policy permissions, audit, and existing administration surfaces
+    - [x] Trace direct task/workflow starts plus schedule, integration, autorun, workflow-trigger, and delayed workflow-node enqueue paths
+    - [x] Isolate a new allow-listed metadata DTO from private execution snapshots and all secret-bearing task/resource values
+    - [x] Reuse Project Settings and the existing global administration surface without adding shared navigation
+  - [x] Define red-first bounded YAML schema, typed predicates, deterministic ordering, and stable allow/warn/deny findings
+    - [x] Enforce global-before-project and lexical rule ordering, stable scope/rule identity, hard document/rule/value limits, HTTPS remediation URLs, and unknown/secret-field rejection
+    - [x] Define immutable revision, draft, publish, structural diff, rollback-as-new-revision, history, and execution-provenance contracts
+    - [x] Reject anchors, aliases, merge keys, non-core tags, duplicate/unknown keys, multiple documents, regex/CEL/callbacks, and mutable compiled ASTs
+  - [x] Implement compiler, repository, evaluator, and shared-planner enforcement for every start path
+    - [x] Keep compilation/evaluation pure and bounded with canonical fingerprints and all matched findings
+    - [x] Implement draft/publish/rollback CAS plus database-timed, idempotent evaluation claims and reject stale allow replays after publication
+    - [x] Bind task evaluations atomically, add value-free task metadata, and deny manual/schedule/integration/autorun bypasses independently of optional browser review headers
+    - [x] Evaluate and snapshot workflow/root-node provenance before run persistence and reuse it for delayed node dispatch
+      - [x] Persist root/node claim references and validate them atomically in one bounded batch transaction
+      - [x] Build one immutable root/node preflight context for manual, scheduled, API, and webhook workflow starts
+      - [x] Claim the complete workflow admission batch before persistence and propagate node claims to delayed task dispatch
+        - [x] Configure a fail-closed workflow admission boundary without changing legacy/Community behavior
+        - [x] Use one deterministic decision-key family and claim root plus every task node in a single batch
+        - [x] Reject any deny/mismatched claim before run persistence and attach trusted findings to the final preflight
+        - [x] Copy the persisted node claim onto delayed and HA-fenced workflow tasks without reevaluation
+      - [x] Wire the policy service into both Community and Enhanced factories without changing Community behavior
+        - [x] Add nil Community and SQL-backed Enhanced store/service factories
+        - [x] Configure TaskPool and WorkflowService from the existing process root only when Enhanced services exist
+        - [x] Prove direct, schedule, integration, autorun, workflow-trigger, and delayed workflow paths remain fail-closed
+  - [x] Add capability/permission-gated governance API, audited rollback, and minimal existing-surface UI
+    - [x] Add the policy_guardrails capability plus independent project/global manage and break-glass rollback permissions
+    - [x] Cover draft, validate, fixture test, diff, publish, history, impact preview, and rollback
+      - [x] Add one transport-only controller contract reused by global and project scopes
+      - [x] Enforce capability plus independent manage/rollback permissions and strict tenant ownership
+      - [x] Record bounded audit events for mutations, including mandatory rollback reason and revision provenance
+      - [x] Register Community-unavailable and Enhanced routes without widening unrelated administration surfaces
+    - [x] Show policy rule/revision provenance and safe remediation links inside the existing preflight component
+    - [x] Add only one compact policy panel to existing project/global administration surfaces
+      - [x] Reuse one component for both scopes and keep it out of shared navigation
+      - [x] Support draft editing, validation, fixture test, impact, diff/history, publish, and reasoned rollback
+      - [x] Reuse existing Project Settings and global administration pages with permission/capability gating
+      - [x] Verify allow/warn/deny and governance flows in the browser on the existing QA port
+        - [x] Align task preview validation with the repository's atomic database evaluation time
+        - [x] Rebuild the final UI/server bundle and rerun warning plus denial task starts
+        - [x] Recheck compact global/project layouts after the final UI refinement
+  - [>] Run predicate, ordering, concurrency, entry-point parity, browser, full release, and Terra security gates
+    - [x] Add operator-facing policy/schema/API documentation and complete the slice acceptance checklist
+    - [x] Run focused race, Community, Enhanced, UI, and complete repository verification
+    - [x] Run final independent Terra security review and resolve all in-scope findings
+    - [>] Commit documentation/status, remove exact Slice 072 QA artifacts, and advance to Slice 073
 
 # All Slices
 

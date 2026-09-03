@@ -33,6 +33,7 @@ See [Opsgenie Delivery](plans/pro-slices/058-opsgenie.md) for fixed regional Ale
 See [ServiceNow Delivery](plans/pro-slices/059-servicenow.md) for the restricted incident Table API transport, exact record identity, lifecycle reconciliation, and field allow-list.
 See [Debug Log Filtering](debug-log-filtering.md) for per-instance matching, reload, structured debug output, and diagnostics.
 See [Deployment Windows](deployment-windows.md) for deterministic project admission, durable blocked occurrences, emergency overrides, governance, and bounded audit provenance.
+See [Policy Guardrails](policy-guardrails.md) for bounded declarative execution policy, immutable global/project revisions, atomic admission, and governance.
 See [Vault and OpenBao Runtime Secrets](runtime-secrets.md) for provider configuration, value-free references, task-boundary resolution, managed outbound synchronization, and failure policy.
 See [TOTP Capability Lifecycle](totp-capability-lifecycle.md) for rollout states, enrollment, replay protection, session revocation, and administrator recovery.
 See [Custom Project Roles](project-roles.md) for the typed permission catalog, scoped role identity, assignment invariants, backend enforcement, and audit contract.
