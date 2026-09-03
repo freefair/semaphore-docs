@@ -31,9 +31,16 @@
     - [x] Add compact retention controls to existing global and project administration surfaces without new navigation
     - [x] Cover loading, denied, expired, validation, save-conflict, desktop, and mobile states with tests and browser evidence
   - [>] Run multi-database, interrupted/concurrent IO, expiry, permission, browser, full release, and independent Terra security gates
-    - [ ] Verify storage, retention precedence, and bootstrap serialization on SQLite, PostgreSQL, and MySQL
-    - [ ] Exercise interrupted upload, concurrent download/expiry, checksum, header, range, and live permission contracts
-    - [ ] Add OpenAPI and developer documentation, then run dual-edition builds and complete release suites
+    - [x] Verify storage, retention precedence, and bootstrap serialization on SQLite, PostgreSQL, and MySQL
+      - [x] Run real SQL chunk, checksum, lease, expiry, reconciliation, precedence, and concurrent bootstrap contracts on all three engines
+      - [x] Keep the pre-existing MySQL fresh-migration and workflow-graph defects outside Slice 074 while validating its v2.20.65 schema in disposable QA
+    - [x] Exercise interrupted upload, concurrent download/expiry, checksum, header, range, and live permission contracts
+      - [x] Run repository, service, controller, retention-worker, permission, and audit contract suites
+      - [x] Verify produced, denied, expired, desktop, and mobile states in the existing Workflow Run and settings surfaces
+    - [>] Add OpenAPI and developer documentation, then run dual-edition builds and complete release suites
+      - [x] Add and bundle the OpenAPI routes, schemas, validation limits, response headers, and range policy
+      - [x] Add the developer guide and build the Docusaurus site
+      - [ ] Build and test Community and Enhanced editions from the same core tree
     - [ ] Run the final independent Terra security review and resolve every P0–P3 finding
 
 # All Slices
