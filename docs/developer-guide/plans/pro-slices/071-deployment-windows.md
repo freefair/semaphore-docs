@@ -11,14 +11,14 @@ A scheduled or manual deployment starts only inside an approved project window u
 
 ## Implementation
 
-- [ ] Define versioned project windows and freezes using IANA timezone, local recurrence, effective date range, and optional template/workflow scope.
-- [ ] Specify deterministic precedence: active freeze denies, otherwise at least one applicable allow window permits, otherwise project default decides.
-- [ ] Evaluate the same policy immediately before enqueue for manual, schedule, API, webhook, and workflow node starts.
-- [ ] For a blocked schedule occurrence, persist a blocked result and next eligible instant rather than silently dropping or repeatedly duplicating it.
-- [ ] Add an emergency-override permission distinct from ordinary start permission and require a bounded reason.
-- [ ] Snapshot policy revision, evaluation instant, effective zone, matched rules, decision, and override actor in audit.
-- [ ] Add calendar/list editing, impact preview, current status, next eligible time, blocked-run history, and override confirmation UI.
-- [ ] Handle DST with the same authoritative time semantics as slice 064.
+- [x] Define versioned project windows and freezes using IANA timezone, local recurrence, effective date range, and optional template/workflow scope.
+- [x] Specify deterministic precedence: active freeze denies, otherwise at least one applicable allow window permits, otherwise project default decides.
+- [x] Evaluate the same policy immediately before enqueue for manual, schedule, API, webhook, and workflow node starts.
+- [x] For a blocked schedule occurrence, persist a blocked result and next eligible instant rather than silently dropping or repeatedly duplicating it.
+- [x] Add an emergency-override permission distinct from ordinary start permission and require a bounded reason.
+- [x] Snapshot policy revision, evaluation instant, effective zone, matched rules, decision, and override actor in audit.
+- [x] Add calendar/list editing, impact preview, current status, next eligible time, blocked-run history, and override confirmation UI.
+- [x] Handle DST with the same authoritative time semantics as slice 064.
 
 ## Tests and Acceptance
 
@@ -29,6 +29,8 @@ A scheduled or manual deployment starts only inside an approved project window u
 | API | Required: rule CRUD/preview/current status, blocked start, override, invalid zone/range, and permission contracts |
 | UI | Required: browser evidence for window/freeze creation, calendar status, blocked start, authorized override, and denied override |
 
-- [ ] Every execution entry point reaches the same final window decision.
-- [ ] An override records who, why, when, what policy was bypassed, and which execution resulted.
-- [ ] A blocked schedule occurrence is explainable and cannot create duplicate delayed runs.
+- [x] Every execution entry point reaches the same final window decision.
+- [x] An override records who, why, when, what policy was bypassed, and which execution resulted.
+- [x] A blocked schedule occurrence is explainable and cannot create duplicate delayed runs.
+
+Implementation details, response boundaries, and verification commands are recorded in [Deployment Windows](../../deployment-windows.md).
