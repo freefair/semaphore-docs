@@ -157,4 +157,4 @@ Each stored artifact is keyed by project, workflow run, workflow node, producer 
 Retry capture replaces artifacts only for the exact task attempt being handled.
 Input resolution selects only the producer task and attempt attached to the same workflow run.
 Artifacts from another project, run, node, task, or attempt cannot satisfy a reference.
-Binary files, downloads, retention policies, and garbage collection remain outside this contract and are delivered separately by Slice 074.
+Binary files, downloads, retention policies, and garbage collection use the separate [workflow file artifact contract](workflow-file-artifacts.md).
