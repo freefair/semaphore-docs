@@ -1,30 +1,14 @@
 # Current Slice
 
-- [>] 073 — Signed webhooks
-  - [x] Inventory the existing outbound audit/notification delivery and inbound workflow-trigger seams
-    - [x] Trace the immutable audit envelope, transactional outbox, aggregate retries, HTTPS client, encrypted legacy Bearer credential, and redacted history
-    - [x] Trace webhook Bearer authentication, strict 256 KiB JSON binding, generation-scoped idempotency claim, and workflow-run persistence
-    - [x] Reuse only the existing Audit Webhook page and Workflow Triggers dialog without adding navigation or routes
-  - [x] Define the versioned canonical HMAC-SHA-256 signing and verification contract
-    - [x] Bind version, method, exact request target, event ID, timestamp, key ID, and payload bytes with length-framed stable vectors
-    - [x] Bound strict header syntax, five-minute clock skew, constant-time current/next comparison, and durable rotation-independent replay identity
-    - [x] Define two-phase stage/test/promote/revoke rotation while production signs with exactly one current key
-    - [x] Preserve API-trigger Bearer compatibility and fail legacy unsigned workflow webhooks closed until a signing secret is created
-  - [x] Implement server-generated encrypted secrets, outbound signing, inbound verification, and persisted history
-    - [x] Add current/next encrypted key state, CAS rotation metadata, redacted outbound attempts, and durable inbound replay identity
-    - [x] Sign every audit delivery attempt with fresh time while preserving event ID and exact stored payload across retries
-    - [x] Verify inbound raw bytes before strict JSON mapping and atomically claim the signed event before workflow start
-  - [x] Add minimal one-time secret/rotation/test/status/replay/history UI to existing surfaces
-    - [x] Add audit signing status, one-time secret acknowledgement, rotation actions, current/next signed test, and expandable attempt history to the existing Audit Webhook page
-    - [x] Add webhook signing bootstrap/stage/promote/revoke actions and replay metadata to the existing Workflow Triggers dialog
-    - [x] Prove secrets leave transient component state on dismissal/reload and shared navigation/layout remain unchanged
-    - [x] Remove the measured desktop trigger-table overflow by placing current and next key metadata on separate lines
-  - [>] Run fake-receiver, concurrency, browser, full release, and independent Terra security gates
-    - [x] Verify signed audit attempts, current/next rotation overlap, retry history, and concurrent replay rejection
-    - [x] Exercise real HMAC workflow ingress, replay history, one-time secrets, rotation, and 390 px layouts in the local browser QA instance
-    - [x] Document the receiver contract, rotation runbook, API schemas, and Enhanced interface version
-    - [>] Run the complete Community, Enhanced, UI, race, vet, build, and docs release matrix
-    - [ ] Run the final independent Terra security review and verify every finding
+- [>] 074 — Artifact retention and provenance
+  - [>] Inventory the existing artifact, workflow-run, permission, audit, and administration seams
+    - [>] Trace current artifact metadata/content persistence, production, list, and download paths
+    - [ ] Trace workflow/run visibility, role permissions, credential provenance, and value-free audit boundaries
+    - [ ] Identify the smallest existing run and governance UI surfaces without adding shared navigation or redesigning layout
+  - [ ] Define immutable provenance, bounded streaming storage, atomic visibility, and retention precedence contracts
+  - [ ] Implement SQL-backed content, upload/finalize/list/metadata/download, retention worker, and audit integration behind interfaces
+  - [ ] Add only the required artifact provenance/download and retention controls to existing surfaces
+  - [ ] Run multi-database, interrupted/concurrent IO, expiry, permission, browser, full release, and independent Terra security gates
 
 # All Slices
 
@@ -83,5 +67,5 @@
 - [x] 070 — Execution preflight
 - [x] 071 — Deployment windows
 - [x] 072 — Policy guardrails
-- [>] 073 — Signed webhooks
-- [ ] 074 — Artifact retention and provenance
+- [x] 073 — Signed webhooks
+- [>] 074 — Artifact retention and provenance
