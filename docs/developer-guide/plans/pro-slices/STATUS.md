@@ -1,6 +1,6 @@
 # Current Slice
 
-- [ ] Post-plan — Single full-featured product consolidation
+- [x] Post-plan — Single full-featured product consolidation
   - [x] Audit the SubscriptionService, commercial UI, edition gates, and current Enhanced wiring
   - [x] Record the single-product rule: every implemented feature is included without licensing or quotas
     - [x] Keep ordinary enabled flags for optional or noisy features independent from entitlements
@@ -12,14 +12,14 @@
     - [x] Remove upgrade, trial, billing, subscription, and Pro-user controls
     - [x] Remove edition-only rendering gates while retaining configured enablement, permission, and operational lifecycle controls
     - [x] Keep unimplemented E04 secret providers absent and Vault/OpenBao available
-  - [ ] Make the supported build and documentation single-edition
+  - [x] Make the supported build and documentation single-edition
     - [x] Build the clean-room full-feature implementation unconditionally
     - [x] Remove Community artifact and dual-edition instructions from supported workflows
     - [x] Update architecture, build, and capability documentation
-  - [ ] Run full release, browser, and independent Terra security verification
-    - [ ] Prove direct APIs cannot activate unimplemented features or bypass authorization
-    - [ ] Verify user administration and every former upgrade surface on desktop and mobile
-    - [ ] Re-run backend, frontend, build, documentation, and final security gates
+  - [x] Run full release, browser, and independent Terra security verification
+    - [x] Prove direct APIs cannot activate unimplemented features or bypass authorization
+    - [x] Verify user administration and every former upgrade surface on desktop and mobile
+    - [x] Re-run backend, frontend, build, documentation, and final security gates
 
 # All Slices
 
