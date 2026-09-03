@@ -36,10 +36,6 @@ Full list of available configuration options:
 | <br />`apps`                   <hr /> `SEMAPHORE_APPS` <br /><br /> | JSON map which contains apps configuration. |
 | <br />`use_remote_runner`      <hr /> `SEMAPHORE_USE_REMOTE_RUNNER` <br /><br /> | Enable to use remote runner. |
 | <br />`runner_registration_token` <hr /> `SEMAPHORE_RUNNER_REGISTRATION_TOKEN` <br /><br /> | Bootstrap token used by runners to register with the server. |
-| **Subscription** ||
-| <br />`subscription.key` <hr /> `SEMAPHORE_SUBSCRIPTION_KEY` <br /><br /> | Subscription key or token. Disables activation from the web UI when set. |
-| <br />`subscription.key_file` <hr /> `SEMAPHORE_SUBSCRIPTION_KEY_FILE` <br /><br /> | Path to subscription key or token file. |
-| <br />`subscription.server_url` <hr /> `SEMAPHORE_SUBSCRIPTION_SERVER_URL` <br /><br /> | Subscription / billing server URL. Default: https://portal.semaphoreui.com/billing |
 | **JWT** ||
 | <br />`jwt.enabled` <hr /> `SEMAPHORE_JWT_ENABLED` <br /><br /> | When enabled, Semaphore mints a short-lived JWT for each task run and exposes its public key via `/.well-known/jwks.json`. |
 | <br />`jwt.issuer` <hr /> `SEMAPHORE_JWT_ISSUER` <br /><br /> | Value emitted in the `iss` claim of issued JWTs. |

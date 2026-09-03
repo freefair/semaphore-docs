@@ -1,51 +1,25 @@
 # Current Slice
 
-- [x] 074 — Artifact retention and provenance
-  - [x] Inventory the existing artifact, workflow-run, permission, audit, and administration seams
-    - [x] Trace typed JSON workflow outputs, task-attempt persistence, value-free run metadata, and the existing no-download boundary
-    - [x] Trace workflow/run visibility, current project/global roles, task-scoped credential usage, and value-free audit boundaries
-    - [x] Reuse the existing Workflow Run artifact panel plus global/project governance surfaces without adding navigation or routes
-  - [x] Define immutable provenance, bounded streaming storage, atomic visibility, and retention precedence contracts
-    - [x] Add a distinct file-artifact model so binary downloads do not alter typed JSON workflow-output behavior
-    - [x] Define chunked SQL staging/finalization, hard artifact/run limits, safe download headers, and no-range policy
-      - [x] Fix hard limits at 64 MiB/artifact, 256 MiB/run, 1 MiB/chunk, and 256 artifacts/run
-      - [x] Implement serialized run reservations, exact-offset append, available-only content reads, and terminal metadata visibility
-      - [x] Reject range requests, enforce the absolute write deadline, and emit safe bounded download headers at the HTTP edge
-    - [x] Define current-role artifact narrowing plus immutable producer, credential, and global/project retention snapshots
-    - [x] Define terminal-run garbage collection with staged-upload reconciliation and download leases
-      - [x] Define tenant-bound expiry targets, bounded leases, and a built-in global retention revision 0
-      - [x] Implement terminal-run expiry, active-lease fencing, and stale-staging reconciliation
-  - [x] Implement SQL-backed content, upload/finalize/list/metadata/download, retention worker, and audit integration behind interfaces
-    - [x] Add the Enhanced SQL repository and Community factory seam with database-authoritative retention snapshots
-    - [x] Add the service/facade boundary for current-role authorization, server-derived provenance, and bounded streaming
-    - [x] Add the retention worker and value-free lifecycle audit events
-      - [x] Add idempotent bounded ticks for expiry and stale-upload reconciliation
-      - [x] Record value-free download, expiry, and cleanup events with failure classification
-      - [x] Wire start/stop lifecycle without adding Community background work
-    - [x] Add global/project retention governance behind existing administration permissions
-      - [x] Add facade and controller contracts for reading effective retention and publishing revisions
-      - [x] Enforce global bounds, project-only narrowing, optimistic revision conflicts, and serialized bootstrap
-      - [x] Record value-free retention-policy audit events and keep Community behavior unchanged
-  - [x] Add only the required artifact provenance/download and retention controls to existing surfaces
-    - [x] Extend the existing Workflow Run artifact panel with file metadata, provenance, checksum copy, expiry, and download state
-    - [x] Add compact retention controls to existing global and project administration surfaces without new navigation
-    - [x] Cover loading, denied, expired, validation, save-conflict, desktop, and mobile states with tests and browser evidence
-  - [x] Run multi-database, interrupted/concurrent IO, expiry, permission, browser, full release, and independent Terra security gates
-    - [x] Verify storage, retention precedence, and bootstrap serialization on SQLite, PostgreSQL, and MySQL
-      - [x] Run real SQL chunk, checksum, lease, expiry, reconciliation, precedence, and concurrent bootstrap contracts on all three engines
-      - [x] Keep the pre-existing MySQL fresh-migration and workflow-graph defects outside Slice 074 while validating its v2.20.65 schema in disposable QA
-    - [x] Exercise interrupted upload, concurrent download/expiry, checksum, header, range, and live permission contracts
-      - [x] Run repository, service, controller, retention-worker, permission, and audit contract suites
-      - [x] Verify produced, denied, expired, desktop, and mobile states in the existing Workflow Run and settings surfaces
-    - [x] Add OpenAPI and developer documentation, then run dual-edition builds and complete release suites
-      - [x] Add and bundle the OpenAPI routes, schemas, validation limits, response headers, and range policy
-      - [x] Add the developer guide and build the Docusaurus site
-      - [x] Build and test Community and Enhanced editions from the same core tree
-        - [x] Complete all Community, Enhanced-module, and Core-with-Enhanced Go suites
-        - [x] Build both backend binaries and both production frontends; retain the known three unrelated Vue baseline failures only
-    - [x] Run the final independent Terra security review and resolve every P0–P3 finding
-      - [x] Resolve the P3 deadline-setup audit gap while preserving deferred lease release
-      - [x] Re-run focused verification and confirm no remaining P0–P3 findings
+- [ ] Post-plan — Single full-featured product consolidation
+  - [x] Audit the SubscriptionService, commercial UI, edition gates, and current Enhanced wiring
+  - [x] Record the single-product rule: every implemented feature is included without licensing or quotas
+    - [x] Keep ordinary enabled flags for optional or noisy features independent from entitlements
+  - [x] Remove subscription, quota, and legacy Pro-user behavior from the shipped runtime
+    - [x] Replace the Enhanced alias to the Community null service with the full-feature capability path
+    - [x] Remove subscription controller routes, validation lifecycle, and plan-based feature resolution
+    - [x] Neutralize the legacy `pro` user field without weakening role or permission checks
+  - [x] Remove commercial and edition-selection UI from the shipped product
+    - [x] Remove upgrade, trial, billing, subscription, and Pro-user controls
+    - [x] Remove edition-only rendering gates while retaining configured enablement, permission, and operational lifecycle controls
+    - [x] Keep unimplemented E04 secret providers absent and Vault/OpenBao available
+  - [ ] Make the supported build and documentation single-edition
+    - [x] Build the clean-room full-feature implementation unconditionally
+    - [x] Remove Community artifact and dual-edition instructions from supported workflows
+    - [x] Update architecture, build, and capability documentation
+  - [ ] Run full release, browser, and independent Terra security verification
+    - [ ] Prove direct APIs cannot activate unimplemented features or bypass authorization
+    - [ ] Verify user administration and every former upgrade surface on desktop and mobile
+    - [ ] Re-run backend, frontend, build, documentation, and final security gates
 
 # All Slices
 

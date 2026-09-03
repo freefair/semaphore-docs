@@ -4,6 +4,9 @@ This directory is the implementation backlog for the checked items in [Enhanced 
 The selected delivery model is D02: an independent clean-room enhanced module behind the existing Go module seam.
 Unchecked capabilities, including Terraform state, SOPS, P07 OIDC gating, external cloud secret stores, quotas, and unselected backlog ideas, are outside this backlog.
 
+The completed slice documents record the historical implementation sequence.
+[ADR 0010](../../adr/0010-ship-one-full-featured-product.md) supersedes their dual-edition release assumptions: this branch ships one full-featured product, while ordinary configuration and capability lifecycle controls may still disable optional behavior.
+
 ## Table of Contents
 
 - [Delivery Rules](#delivery-rules)
@@ -17,13 +20,14 @@ Unchecked capabilities, including Terraform state, SOPS, P07 OIDC gating, extern
 
 - Implement one slice at a time in the listed order, subject to explicit dependency edges.
 - Begin each slice with a failing `/tmp/` reproduction or contract, then move the proven test into the repository.
-- Keep Community behavior unchanged and build both Community and enhanced variants.
+- Preserve the upstream module seam, but build only the repository-contained full-feature implementation.
+- Include every implemented feature without commercial entitlement checks; keep ordinary enablement, authorization, safety, and lifecycle controls.
 - Treat SQL as durable authority; Redis coordination never replaces conditional SQL transitions.
 - Enforce capabilities and permissions in the backend; UI gating is explanatory only.
 - Run every test layer marked Required in the slice document.
 - For visible behavior, retain browser evidence in addition to frontend unit tests.
 - Port intent and focused tests from old branches; never merge a stale branch wholesale.
-- Keep shared Community views structurally close to their upstream baseline. Put enhanced-only
+- Keep shared upstream views structurally close to their baseline. Put feature-specific
   rendering and API orchestration in focused components behind narrow host hooks.
 
 ## UI Compatibility Checkpoint

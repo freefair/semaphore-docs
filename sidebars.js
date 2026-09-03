@@ -115,7 +115,6 @@ const sidebars = {
         'admin-guide/logs',
         'admin-guide/metrics',
         'admin-guide/ha',
-        'admin-guide/license',
         {
           type: 'category',
           label: 'Notifications',

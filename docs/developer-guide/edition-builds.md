@@ -1,59 +1,48 @@
-# Reproducible Edition Builds
+# Reproducible Full-Product Builds
 
-Semaphore builds the Community and enhanced editions from the same core source tree.
-The enhanced edition replaces the `github.com/semaphoreui/semaphore/pro` module through a Go Workspace; application imports remain unchanged.
+Semaphore ships one full-featured product build from this repository.
+There is no Community artifact, commercial subscription provider, license activation, or product-tier selection in the supported build and release paths.
 
 ## Contents
 
-- [Pinned Inputs](#pinned-inputs)
+- [Module Selection](#module-selection)
 - [Local Build](#local-build)
 - [Artifact Contract](#artifact-contract)
-- [Reproducibility Decisions](#reproducibility-decisions)
-- [Runtime Verification](#runtime-verification)
-- [Enhanced HA Release Gate](#enhanced-ha-release-gate)
+- [Runtime Configuration](#runtime-configuration)
+- [Verification](#verification)
+- [HA Release Gate](#ha-release-gate)
 
-## Pinned Inputs
+## Module Selection
 
-An edition build is identified by these immutable inputs:
+The application keeps the replaceable Go module path `github.com/semaphoreui/semaphore/pro` to preserve the existing upstream integration boundary.
+The committed root `go.work` always resolves that path to `test/edition-contract/enhanced`, which is the clean-room full-feature implementation contained in this repository.
+The disabled module under `pro/` remains only as unwired compatibility scaffolding for contract tests; no supported build selects it.
 
-| Input | Community | Enhanced |
-|---|---|---|
-| Core revision | Required full commit SHA | Required full commit SHA |
-| Enhanced revision | Not present | Required full commit SHA |
-| Contract version | `pro_interfaces.CoreContractVersion` | `pro_interfaces.CoreContractVersion` |
-| Implementation | `community-1` | `enhanced-<revision-prefix>` |
-| Source date epoch | Core commit timestamp | Core commit timestamp |
-
-CI pins Go, Node.js, Task, and the container build images.
-The `enhanced-build` GitHub Environment supplies the full `ENHANCED_REVISION` variable and the `ENHANCED_REPOSITORY_TOKEN` secret.
-Only enhanced jobs bind that environment or reference that secret.
-Community pull-request jobs therefore cannot read the enhanced repository credential.
+Core and full-feature implementation metadata use the same source revision.
+The authenticated `GET /api/info` response retains `edition: enhanced`, `core_revision`, `enhanced_revision`, and `implementation_version` as compatibility metadata.
+These fields do not select features or authorize operations.
 
 ## Local Build
 
-Install the frontend dependencies with `npm ci` and use the pinned Task release from the workflow.
-Build Community artifacts with:
+Install dependencies and build the product with:
+
+```bash
+task deps
+task build
+```
+
+Build traceable release artifacts with:
 
 ```bash
 task build:edition \
   CORE_REVISION="$(git rev-parse HEAD)" \
+  ENHANCED_REVISION="$(git rev-parse HEAD)" \
   SOURCE_DATE_EPOCH="$(git show -s --format=%ct HEAD)" \
-  OUTPUT_DIR=dist/community
+  OUTPUT_DIR=dist/product
 ```
 
-For an enhanced build, check out the enhanced module at the required revision as `pro_impl`, create the workspace, and pass both revisions explicitly:
-
-```bash
-go work init . ./pro_impl
-task build:edition \
-  APP_BUILD_TYPE=pro_selfhosted \
-  CORE_REVISION="$(git rev-parse HEAD)" \
-  ENHANCED_REVISION="$(git -C pro_impl rev-parse HEAD)" \
-  SOURCE_DATE_EPOCH="$(git show -s --format=%ct HEAD)" \
-  OUTPUT_DIR=dist/enhanced
-```
-
-The output directory must be absent or empty. This prevents stale files from entering a manifest.
+`build:edition` keeps its historical task name for automation compatibility, but it has no edition input and always builds the full product.
+The output directory must be absent or empty so stale files cannot enter a manifest.
 
 ## Artifact Contract
 
@@ -64,55 +53,44 @@ Each output directory contains:
 | `semaphore-server` | Server executable |
 | `semaphore-runner` | Runner executable |
 | `web/` | Production frontend bundle without source maps or source-map references |
-| `debug-source-maps/` | Source maps associated with the hashed production asset names; publish only to error-reporting tooling |
-| `manifest.json` | Edition, revisions, source epoch, and SHA-256 digest of every product artifact |
-| `sbom.spdx.json` | SPDX 2.3 inventory of Go build information and exact Production npm packages from `web/package-lock.json` |
+| `debug-source-maps/` | Source maps for error-reporting tooling; never publish them with the application |
+| `manifest.json` | Compatibility metadata, source revision, source epoch, and SHA-256 digest of every product artifact |
+| `sbom.spdx.json` | SPDX 2.3 inventory of Go and production npm dependencies |
 | `provenance.json` | In-toto statement with SLSA provenance v1 predicate and artifact subjects |
 
-Release containers expose the same identity through OCI labels:
+Release containers expose the same source identity through OCI labels.
+`io.semaphore.edition` remains the constant value `enhanced` for compatibility; it is not a configurable build argument.
 
-- `io.semaphore.edition`
-- `io.semaphore.core.revision`
-- `io.semaphore.enhanced.revision`
-- `org.opencontainers.image.revision`
+## Runtime Configuration
 
-Published container builds additionally request BuildKit SBOM and maximum provenance attestations.
+Feature inclusion and feature enablement are separate concerns.
+Every implemented feature is present without an entitlement check, while ordinary configuration and capability lifecycle controls may disable optional, noisy, or external-infrastructure-dependent behavior.
+Authorization, role permissions, safety policies, and operational lifecycle states remain enforced independently of product inclusion.
 
-## Reproducibility Decisions
+The frontend does not receive a build-type or edition environment variable.
+It uses authenticated backend capability and configuration responses to decide whether an optional surface is relevant.
 
-The frontend is built once without source maps for the production directory and once with Webpack `hidden-source-map` for the debug directory.
-Webpack includes source-map metadata in hashed asset names even when the bundle contains no source-map reference, so using a single hidden-map build would make equivalent output directories differ.
-The build matches debug assets to production assets by SHA-256 digest, rewrites each map's `file` field to the production filename, and removes source maps plus their reference comments from the production tree.
-This keeps browser-delivered files deterministic while retaining complete maps for error-reporting systems, as recommended by the [Webpack production source-map guidance](https://webpack.js.org/configuration/devtool/#production).
+## Verification
 
-The SBOM parser reads the committed npm `packages` tree and excludes descriptors marked `dev` because npm defines those packages as strictly part of the development dependency tree.
-Production and optional-production dependencies remain included, duplicate name-version pairs are collapsed, and package order plus SPDX identifiers are deterministic.
-The lockfile is the input because npm documents it as the exact dependency-tree representation required for repeatable installs in the [package-lock format](https://docs.npmjs.com/cli/v7/configuring-npm/package-lock-json/#description).
+The `Full Product Build` workflow:
 
-## Runtime Verification
+1. tests the root and clean-room full-feature modules;
+2. builds the artifact directory twice and compares it byte-for-byte;
+3. loads the production bundle in Chromium and retains a screenshot;
+4. builds and starts the server and runner containers;
+5. authenticates and verifies the compatibility metadata plus feature response from `/api/info`; and
+6. uploads the product artifacts, browser evidence, SBOM, and provenance.
 
-The authenticated `GET /api/info` response is authoritative for the running server.
-It reports `edition`, `contract_version`, `implementation_version`, `core_revision`, the optional `enhanced_revision`, the legacy `features` payload, and the sanitized effective `capabilities` snapshot described in [Capability Lifecycle](capability-lifecycle.md).
-The frontend uses that server edition after startup and embeds `data-edition` in the production document for pre-startup presentation.
+Beta and release workflows use the same committed workspace and container definitions.
+They do not fetch a separate proprietary module and do not accept an edition selector.
 
-CI verifies each edition by:
+## HA Release Gate
 
-1. building the artifact directory twice and comparing it byte-for-byte;
-2. loading the production bundle in Chromium and retaining a screenshot;
-3. starting the server container with a temporary SQLite database;
-4. authenticating and asserting the edition plus capability object returned by `/api/info`; and
-5. starting the runner executable from its container image.
-
-No workflow in this stage publishes or pushes an artifact.
-
-## Enhanced HA Release Gate
-
-`Enhanced HA resilience contract` is an independent required CI job and does not read the separate enhanced-module repository or its credentials.
-It creates a `.git`-free build context, installs the repository's Clean-room Enhanced contract fixture as `pro_impl`, and supplies every revision and timestamp input explicitly.
-The job starts two compatible but visibly skewed application builds with shared PostgreSQL and Redis, an NGINX proxy, and a real runner.
+The `HA resilience contract` job builds a `.git`-free context from the same committed full-product source.
+It starts two compatible but visibly skewed application builds with shared PostgreSQL and Redis, an NGINX proxy, and a real runner.
 
 The gate injects node pause, kill, network partition, Redis restart, database loss, runner reconnect, and a drained rolling replacement.
 It fails unless the API remains available where specified, readiness fails closed on SQL loss, coordinated work degrades safely on Redis loss, every accepted write converges, audit history remains continuous, and no duplicate schedule, task, workflow-node, or approval decision exists.
 
-The machine-readable result is uploaded as `enhanced-ha-resilience-<core-sha>` from `dist/ha-resilience/report.json` and retained for 14 days.
+The machine-readable result is uploaded as `ha-resilience-<source-sha>` from `dist/ha-resilience/report.json` and retained for 14 days.
 The operator procedures and report acceptance fields are documented in [High Availability](../admin-guide/ha.md#operator-runbooks).

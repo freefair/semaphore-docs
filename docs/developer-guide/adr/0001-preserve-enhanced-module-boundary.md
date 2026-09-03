@@ -2,7 +2,7 @@
 
 ## Status
 
-Proposed
+Superseded by [ADR 0010](0010-ship-one-full-featured-product.md)
 
 ## Date
 

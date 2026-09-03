@@ -26,11 +26,11 @@ Values such as `https://registry.example.com/job`, `user:password@registry.examp
 
 ## Capability Enforcement
 
-The replaceable edition module remains the source of Docker and Kubernetes executor availability. One resolver combines the current subscription plan with the requesting user and is shared by template writes and the task pool.
+The committed full-product module is the source of Docker and Kubernetes executor availability.
+One resolver is shared by template writes and the task pool.
 
-- Community returns neither executor feature and rejects non-empty image overrides.
-- An enhanced implementation may expose Docker, Kubernetes, or both.
-- Missing, expired, or unreadable subscription data is resolved through the same edition feature function used by system information.
+- The shipped product includes both Docker and Kubernetes executor support.
+- Availability is independent of the requesting user and any subscription plan.
 - Schedules, workflows, integrations, and direct API starts all pass through the task-pool check, so they cannot bypass the UI or template API.
 
 Template create/update returns `403` when the image capability is unavailable. Task start revalidates both capability and syntax before inserting a task.

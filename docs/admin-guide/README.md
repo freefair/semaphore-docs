@@ -80,5 +80,4 @@ This guide will walk you through setting up and managing these features for your
     - [Gotify](/admin-guide/notifications/gotify)
 - Maintenance:
   - [Upgrading](/admin-guide/upgrading)
-  - [License activation](/admin-guide/license)
   - [Troubleshooting](/admin-guide/troubleshooting)

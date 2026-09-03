@@ -1,7 +1,8 @@
 # Enhanced Module Contract
 
 Semaphore keeps enhanced behavior behind the Go module path `github.com/semaphoreui/semaphore/pro`.
-The Community checkout contains a disabled implementation at `pro/`; an enhanced checkout replaces that module without changing imports in the core application.
+The committed root Go Workspace always selects the clean-room implementation at `test/edition-contract/enhanced` without changing imports in the core application.
+The disabled implementation at `pro/` remains unwired compatibility scaffolding and is not a supported product build.
 
 ## Compatibility
 
@@ -10,8 +11,8 @@ The executable contract is versioned independently from product releases.
 | Component | Current value | Source |
 |---|---|---|
 | Core contract | `1.21.0` | `pro_interfaces.CoreContractVersion` |
-| Community implementation | `community-1` | `pro/pkg/features.ImplementationVersion` |
-| Clean-room test implementation | `clean-room-test-1` | `test/edition-contract/enhanced/pkg/features` |
+| Compatibility stub | `community-1` | `pro/pkg/features.ImplementationVersion` |
+| Full-product clean-room implementation | `clean-room-test-1` | `test/edition-contract/enhanced/pkg/features` |
 
 An implementation is compatible only when its `CompatibilityVersion` equals the core `CoreContractVersion`.
 Changing an interface, constructor signature, response contract, or shared record requires a contract-version decision and synchronized contract tests in both repositories.
@@ -41,11 +42,11 @@ See [Custom Project Roles](project-roles.md) for the typed permission catalog, s
 
 ## Source Provenance
 
-- Core and Community files must come from the public Semaphore repository.
-- Enhanced source must come from its independently reviewed repository and must not be copied into Community commits, build contexts, caches, logs, or artifacts.
-- The workspace fixture is intentionally non-product code. Its `features` package is a clean-room implementation; thin adapters expose the unchanged Community packages only so a full replacement build exercises every current application import.
+- Core and compatibility files originate from the public Semaphore repository.
+- The full-product source is the independently reviewed clean-room implementation committed under `test/edition-contract/enhanced`.
+- Thin adapters expose unchanged upstream packages where the selected slices do not require a replacement.
 - Intent and focused tests may be reimplemented from historical branches after review. Stale branches are never merged wholesale.
-- A release manifest identifies the core revision, enhanced revision when applicable, contract version, implementation version, and edition.
+- A release manifest identifies the shared source revision, contract version, implementation version, and compatibility edition metadata.
 
 ## Exported Contract Inventory
 
@@ -54,7 +55,6 @@ The core-owned contract types live in `pro_interfaces/`:
 | Area | Interfaces and shared records |
 |---|---|
 | Capability presentation | `Features`, `Edition`, `Compatibility`, `CapabilityProvider`, `CapabilityServiceFacade`, typed decisions, limits, snapshots, and DTOs |
-| Subscription | `SubscriptionController`, `SubscriptionService`, `SubscriptionToken` |
 | Project runners | `ProjectRunnerController`, including health and history reads |
 | Terraform inventory | `TerraformInventoryController` |
 | Workflows | `WorkflowController`, `WorkflowService`, `WorkflowTaskEnqueuer`, `WorkflowRunLocker`, `WorkflowReconciler` |
@@ -70,17 +70,17 @@ The replaceable module exports these application entry points:
 
 | Package | Constructors and functions |
 |---|---|
-| `pro/api` | subscription, role, Terraform, and email-verification controllers |
+| `pro/api` | role, Terraform, and email-verification controllers |
 | `pro/api/projects` | project runner, Terraform inventory, and workflow controllers |
 | `pro/db/factory` | Terraform, Ansible task-summary, and workflow repositories |
 | `pro/db` | workflow validation, condition matching, and root-node selection |
 | `pro/pkg/features` | capability provider, guarded lifecycle-test service, TOTP lifecycle service, and compatibility metadata |
 | `pro/pkg/stage_parsers` | task-stage progression |
 | `pro/services/ha` | node registry, schedule deduplication, WebSocket broadcast, orphan cleanup, cluster inspection, and workflow locking |
-| `pro/services/server` | subscription, structured logging, audit webhook export, notification governance and dispatch, workflow, secret-storage, and external-secret serializers |
+| `pro/services/server` | structured logging, audit webhook export, notification governance and dispatch, workflow, secret-storage, and external-secret serializers |
 | `pro/services/tasks` | task-state storage plus Docker and Kubernetes executor providers |
 
-Concrete Community controllers, services, and repositories carry compile-time assertions against their core interfaces.
+Concrete compatibility controllers, services, and repositories carry compile-time assertions against their core interfaces.
 The contract tests fail at compile time when either side changes without reconciliation.
 
 ## Notification Governance Boundary
@@ -140,26 +140,26 @@ Contract version `1.21.0` adds the shared `semaphore.webhook.v1` binding and ver
 - Secrets cross the module boundary only in one-time mutation responses and transient signing/verification calls. Ciphertext, plaintext, HMACs, raw headers, request bodies, and internal verification reasons remain absent from read DTOs, logs, audit details, retained browser state, and backups.
 - Existing Audit Webhook and Workflow Triggers surfaces host the minimal signing controls. Community navigation, shared layout, workflow routes, and unrelated administration UI remain unchanged.
 
-## Community HTTP Contract
+## Compatibility Stub Contract
 
-Community routes remain registered so the router shape is stable, but disabled behavior is explicit:
+The unshipped compatibility module retains explicit disabled behavior for upstream contract testing:
 
 | Response | Routes |
 |---|---|
 | `200` with `[]` | role collections, project runner/tag collections, Terraform alias/state collections, workflow/run/approval collections |
 | `201` with `{}` | project runner registration-token regeneration |
 | `403` with an empty body | enhanced email-session verification |
-| `404` with no protected resource data | subscription mutations and reads; role mutations and details; Terraform state operations; project runner mutations, details, health, and history; workflow mutations and details |
+| `404` with no protected resource data | role mutations and details; Terraform state operations; project runner mutations, details, health, and history; workflow mutations and details |
 | `503` with a bounded unavailable response | global and project notification-governance configuration, preview, test, history, and retry routes |
 
-Community middleware delegates to the next handler without mutating the request or invoking a repository.
-Community capability flags are all false, collection services return empty values, log writers have no side effects, and enhanced executor constructors return an explicit unavailable error.
-Community TOTP operations return unavailable; any persisted enrollment prevents password-only session creation regardless of the legacy rollout switch and must be reset locally or opened with an Enhanced build.
+Compatibility middleware delegates to the next handler without mutating the request or invoking a repository.
+Compatibility capability flags are all false, collection services return empty values, log writers have no side effects, and enhanced executor constructors return an explicit unavailable error.
+Compatibility TOTP operations return unavailable; any persisted enrollment prevents password-only session creation rather than weakening authentication.
 
 ## Verification
 
-`pro_interfaces/contract_integration_test.go` creates a Go Workspace containing the core module and `test/edition-contract/enhanced`.
-It verifies that the enhanced directory owns the `github.com/semaphoreui/semaphore/pro` path, runs the clean-room capability consumer, and builds the full `github.com/semaphoreui/semaphore/cli` package without editing application imports.
+The committed root `go.work` contains the core module and `test/edition-contract/enhanced`.
+Contract tests verify that the clean-room directory owns the `github.com/semaphoreui/semaphore/pro` path, run the capability consumer, and build the full `github.com/semaphoreui/semaphore/cli` package without editing application imports.
 
 Run the contract layers with:
 
