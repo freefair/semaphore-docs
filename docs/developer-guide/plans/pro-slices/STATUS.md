@@ -33,6 +33,7 @@
       - [x] Hydrate SQL-authoritative runner assignments on every HA node
       - [x] Start the recovery runner only after the old assignment is revoked
       - [x] Verify partition and later dependency recovery inside each node instead of through Docker's transient host-port forwarding
+      - [x] Keep rolling-replacement drain and readiness checks independent of stale published node ports
       - [x] Verify the root-cause fix through the complete HA resilience gate
   - [ ] Push root `develop` with an exact force-with-lease and verify required GitHub pipelines
 

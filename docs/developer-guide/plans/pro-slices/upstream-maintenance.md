@@ -95,6 +95,7 @@ Cluster-node repository operations carry `context.Context`, and registry, readin
 
 The partition gate checks recovered readiness from inside the reconnected node.
 Docker's host-published port can remain temporarily unavailable after `docker network disconnect` followed by `docker network connect`, even when the service has already restored SQL and Redis readiness; peer API availability remains a separate proxy assertion.
+The later rolling-replacement gate must follow the same boundary: send the authenticated drain request through the stable proxy, but verify the targeted node's drained and recovered readiness from inside that service container.
 
 ### Project Role Mutation Locks
 
