@@ -80,6 +80,18 @@ Do not fix a missing variable by copying `.git` into the image context.
 The Dredd hooks compile against the selected workspace implementation.
 Workflow fixtures must create durable workflow-run nodes and use current atomic store methods such as `OpenWorkflowApproval`; they must not restore removed persistence shortcuts.
 Feature API calls must use the current replaceable-module signature.
+Collection and singleton `PUT` routes do not have a trailing object ID and must not be forced through item-route ID injection.
+Multi-step full-product state machines are identified by exact path families in `tools/dreddhooks`; Dredd parses their OpenAPI contracts while focused Go integration tests own their stateful execution coverage.
+
+### HA Task and Dependency Recovery
+
+SQL remains authoritative for runner assignments; each node's `TaskStateStore` is only a process-local cache.
+In HA mode every runner poll therefore loads unfinished assignments for that runner from SQL and hydrates any missing or stale local `TaskRunner` before producing `new_jobs` or `current_jobs`.
+Do not replace this recovery path with sticky routing or a durable Redis task cache.
+
+Task-control release carries the task's runner and assignment-generation identity.
+A delayed cleanup from an older generation must not release the currently tracked lease for a replacement generation.
+Cluster-node repository operations carry `context.Context`, and registry, readiness, diagnostics, and drain calls bound dependency access so a black-holed SQL connection cannot permanently stop heartbeats or HTTP readiness recovery.
 
 ### Task Logging and Credential Redaction
 
