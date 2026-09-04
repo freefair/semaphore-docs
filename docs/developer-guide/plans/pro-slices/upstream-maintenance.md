@@ -102,6 +102,12 @@ Project-role mutations serialize on the project row.
 PostgreSQL, MySQL, and MariaDB use `SELECT ... FOR UPDATE`; do not infer row existence from a no-op update's affected-row count because MySQL-compatible drivers report zero when the matched value is unchanged.
 The external migration matrix creates a real project membership so this remains covered on every supported SQL dialect.
 
+### Workflow Graph SQL Portability
+
+Workflow-node inserts provide neutral `[]` values for artifact input and output JSON before the second persistence phase writes the fully mapped declarations.
+They do not rely on defaults for `LONGTEXT` columns, which MariaDB deliberately creates without defaults.
+Workflow-edge statements quote the `condition` identifier because it is reserved by MariaDB.
+
 ### Task Logging and Credential Redaction
 
 Upstream owns command-local output finalization in `TaskRunner.LogCmd` and `runningJob.LogCmd`.
