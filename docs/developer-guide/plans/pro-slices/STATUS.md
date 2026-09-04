@@ -1,6 +1,6 @@
 # Current Slice
 
-- [ ] Maintenance — Rebase full-product fork onto upstream `develop`
+- [x] Maintenance — Rebase full-product fork onto upstream `develop`
   - [x] Diagnose and fix the pre-existing red Full Product Build and Dev pipelines
     - [x] Generate the embedded frontend before clean-checkout Go compilation
     - [x] Pass complete VCS metadata into the gitless HA image build
@@ -16,7 +16,7 @@
     - [x] Verify Vault/OpenBao and workflow editor behavior in Chromium at desktop and mobile widths
     - [x] Confirm the three remaining frontend failures reproduce on the exact upstream base
     - [x] Complete the Terra security diff scan with full changed-file coverage and no reportable findings
-  - [ ] Repair post-push pipeline regressions
+  - [x] Repair post-push pipeline regressions
     - [x] Make MySQL and MariaDB forward/rollback migrations portable
     - [x] Supply required Dredd query examples
     - [x] Fix HA approval setup and PostgreSQL integer-boolean bindings
@@ -35,7 +35,7 @@
       - [x] Verify partition and later dependency recovery inside each node instead of through Docker's transient host-port forwarding
       - [x] Keep rolling-replacement drain and readiness checks independent of stale published node ports
       - [x] Verify the root-cause fix through the complete HA resilience gate
-  - [ ] Push root `develop` with an exact force-with-lease and verify required GitHub pipelines
+  - [x] Push root `develop` with an exact force-with-lease and verify required GitHub pipelines
 
 # All Slices
 
