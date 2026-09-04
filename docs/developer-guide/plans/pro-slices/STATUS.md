@@ -23,6 +23,7 @@
     - [x] Recover concurrent idempotent workflow starts across HA nodes
     - [x] Re-run the complete local release gates
     - [x] Reproduce and repair the full-product Dredd contract fixtures locally
+    - [x] Make project-role locking portable across MySQL and MariaDB
     - [x] Diagnose and repair HA node recovery after a Docker network partition
       - [x] Confirm the failure boundary from the GitHub report artifact
       - [x] Reproduce the exact fault sequence with retained container diagnostics
@@ -30,6 +31,7 @@
       - [x] Bound cluster SQL operations so broken connections can be replaced
       - [x] Hydrate SQL-authoritative runner assignments on every HA node
       - [x] Start the recovery runner only after the old assignment is revoked
+      - [x] Verify partition recovery inside the node instead of through Docker's transient host-port forwarding
       - [x] Verify the root-cause fix through the complete HA resilience gate
   - [ ] Push root `develop` with an exact force-with-lease and verify required GitHub pipelines
 

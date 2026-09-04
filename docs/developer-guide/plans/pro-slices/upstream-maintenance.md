@@ -93,6 +93,15 @@ Task-control release carries the task's runner and assignment-generation identit
 A delayed cleanup from an older generation must not release the currently tracked lease for a replacement generation.
 Cluster-node repository operations carry `context.Context`, and registry, readiness, diagnostics, and drain calls bound dependency access so a black-holed SQL connection cannot permanently stop heartbeats or HTTP readiness recovery.
 
+The partition gate checks recovered readiness from inside the reconnected node.
+Docker's host-published port can remain temporarily unavailable after `docker network disconnect` followed by `docker network connect`, even when the service has already restored SQL and Redis readiness; peer API availability remains a separate proxy assertion.
+
+### Project Role Mutation Locks
+
+Project-role mutations serialize on the project row.
+PostgreSQL, MySQL, and MariaDB use `SELECT ... FOR UPDATE`; do not infer row existence from a no-op update's affected-row count because MySQL-compatible drivers report zero when the matched value is unchanged.
+The external migration matrix creates a real project membership so this remains covered on every supported SQL dialect.
+
 ### Task Logging and Credential Redaction
 
 Upstream owns command-local output finalization in `TaskRunner.LogCmd` and `runningJob.LogCmd`.
