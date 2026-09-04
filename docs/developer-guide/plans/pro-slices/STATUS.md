@@ -1,25 +1,18 @@
 # Current Slice
 
-- [x] Post-plan — Single full-featured product consolidation
-  - [x] Audit the SubscriptionService, commercial UI, edition gates, and current Enhanced wiring
-  - [x] Record the single-product rule: every implemented feature is included without licensing or quotas
-    - [x] Keep ordinary enabled flags for optional or noisy features independent from entitlements
-  - [x] Remove subscription, quota, and legacy Pro-user behavior from the shipped runtime
-    - [x] Replace the Enhanced alias to the Community null service with the full-feature capability path
-    - [x] Remove subscription controller routes, validation lifecycle, and plan-based feature resolution
-    - [x] Neutralize the legacy `pro` user field without weakening role or permission checks
-  - [x] Remove commercial and edition-selection UI from the shipped product
-    - [x] Remove upgrade, trial, billing, subscription, and Pro-user controls
-    - [x] Remove edition-only rendering gates while retaining configured enablement, permission, and operational lifecycle controls
-    - [x] Keep unimplemented E04 secret providers absent and Vault/OpenBao available
-  - [x] Make the supported build and documentation single-edition
-    - [x] Build the clean-room full-feature implementation unconditionally
-    - [x] Remove Community artifact and dual-edition instructions from supported workflows
-    - [x] Update architecture, build, and capability documentation
-  - [x] Run full release, browser, and independent Terra security verification
-    - [x] Prove direct APIs cannot activate unimplemented features or bypass authorization
-    - [x] Verify user administration and every former upgrade surface on desktop and mobile
-    - [x] Re-run backend, frontend, build, documentation, and final security gates
+- [ ] Maintenance — Rebase full-product fork onto upstream `develop`
+  - [x] Diagnose and fix the pre-existing red Full Product Build and Dev pipelines
+    - [x] Generate the embedded frontend before clean-checkout Go compilation
+    - [x] Pass complete VCS metadata into the gitless HA image build
+    - [x] Update Dredd workflow fixtures to current atomic interfaces
+  - [x] Register and verify the official root and documentation upstream remotes
+  - [x] Rebase the 224-commit product stack onto current `semaphoreui/semaphore`
+    - [x] Preserve upstream UI, logging, runner, IAM, and dependency updates during conflict resolution
+    - [x] Add the new fail-closed `StorageRequiresSecret` Enhanced seam and regression coverage
+  - [x] Document the feature map, conflict invariants, verification gates, and guarded push procedure
+  - [x] Create and validate the reusable `semaphore-upstream-sync` Codex skill
+  - [ ] Complete final product build, browser, and Terra security verification
+  - [ ] Push root `develop` with an exact force-with-lease and verify required GitHub pipelines
 
 # All Slices
 
