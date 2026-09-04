@@ -11,7 +11,11 @@
     - [x] Add the new fail-closed `StorageRequiresSecret` Enhanced seam and regression coverage
   - [x] Document the feature map, conflict invariants, verification gates, and guarded push procedure
   - [x] Create and validate the reusable `semaphore-upstream-sync` Codex skill
-  - [ ] Complete final product build, browser, and Terra security verification
+  - [x] Complete final product build, browser, and Terra security verification
+    - [x] Build the full product and run root plus Enhanced Go verification
+    - [x] Verify Vault/OpenBao and workflow editor behavior in Chromium at desktop and mobile widths
+    - [x] Confirm the three remaining frontend failures reproduce on the exact upstream base
+    - [x] Complete the Terra security diff scan with full changed-file coverage and no reportable findings
   - [ ] Push root `develop` with an exact force-with-lease and verify required GitHub pipelines
 
 # All Slices
