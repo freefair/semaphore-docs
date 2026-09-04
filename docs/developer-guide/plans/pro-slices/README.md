@@ -10,6 +10,7 @@ The completed slice documents record the historical implementation sequence.
 ## Table of Contents
 
 - [Delivery Rules](#delivery-rules)
+- [Upstream Maintenance](#upstream-maintenance)
 - [UI Compatibility Checkpoint](#ui-compatibility-checkpoint)
 - [Ordered Slice Index](#ordered-slice-index)
 - [Selection Interpretation](#selection-interpretation)
@@ -29,6 +30,11 @@ The completed slice documents record the historical implementation sequence.
 - Port intent and focused tests from old branches; never merge a stale branch wholesale.
 - Keep shared upstream views structurally close to their baseline. Put feature-specific
   rendering and API orchestration in focused components behind narrow host hooks.
+
+## Upstream Maintenance
+
+Use the [upstream maintenance runbook](upstream-maintenance.md) when rebasing this full-product fork onto `semaphoreui/semaphore`.
+The runbook maps every slice family to its implementation anchors, records conflict-sensitive invariants, and defines the required verification and guarded push sequence.
 
 ## UI Compatibility Checkpoint
 
