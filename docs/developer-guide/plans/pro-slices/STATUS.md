@@ -16,6 +16,12 @@
     - [x] Verify Vault/OpenBao and workflow editor behavior in Chromium at desktop and mobile widths
     - [x] Confirm the three remaining frontend failures reproduce on the exact upstream base
     - [x] Complete the Terra security diff scan with full changed-file coverage and no reportable findings
+  - [ ] Repair post-push pipeline regressions
+    - [x] Make MySQL and MariaDB forward/rollback migrations portable
+    - [x] Supply required Dredd query examples
+    - [x] Fix HA approval setup and PostgreSQL integer-boolean bindings
+    - [x] Recover concurrent idempotent workflow starts across HA nodes
+    - [x] Re-run the complete local release gates
   - [ ] Push root `develop` with an exact force-with-lease and verify required GitHub pipelines
 
 # All Slices
