@@ -86,8 +86,8 @@ Use **On failure** branches for compensating actions or notifications. Use
 ## Running and monitoring
 
 - **Run workflow** — starts a new run from the Workflows list.
-- **Run view** — full-screen graph with live status on each node (running,
-  success, failed, waiting for approval, delay countdown).
+- **Run view** — full-screen graph with live status on each node (running, success,
+  failed, approval, delay countdown).
 - **Stop** — while a run is `running` or `approval`, users with
   `run_project_tasks` can stop it. All active tasks are stopped, pending
   approvals are rejected, and the run is marked **stopped**.
