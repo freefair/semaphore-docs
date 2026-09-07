@@ -34,6 +34,8 @@ Survey variables are configured in the template settings:
    - **Name**: Variable name (used in your code)
    - **Title**: Display label shown in the form
    - **Type**: Choose the field type
+   - **Pass variable as**: Extra variable (default) or environment variable
+   - **Default value**: Optional pre-filled value shown when the task form opens
    - **Required**: Whether the field must be filled
 5. Save the template
 
@@ -41,7 +43,7 @@ When users run a task from this template, they'll see a form with your custom su
 
 ## Variable types
 
-Survey variables support four different types:
+Survey variables support six types:
 
 ### String
 
@@ -59,15 +61,35 @@ Numeric input field for integer values.
 
 **Example**: A variable named `timeout_seconds` prompts users to enter "300" or "600"
 
-### Enum (Dropdown)
+### Text
 
-Dropdown menu with predefined options.
+Multiline textarea for longer string values.
 
-**Use cases**: Multiple choice selections, environment types, deployment strategies
+**Use cases**: Commit messages, JSON snippets, free-form notes, multi-line configuration
+
+**Example**: A variable named `changelog` where users paste release notes before deployment
+
+### Enum (single-select)
+
+Dropdown menu where the user picks exactly one option from a predefined list.
+
+**Use cases**: Environment type, deployment strategy, boolean-like choices
 
 **Example**: A variable named `deployment_type` with options: "rolling", "blue-green", "canary"
 
-When creating an enum variable, define the available options as a comma-separated list.
+When creating an enum variable, add each option with a display label and value in the variable editor.
+
+### Select (multi-select)
+
+Dropdown where the user can pick one or more options from a predefined list. Selected values are passed as a JSON array (for example `["staging","production"]`), not as a single string.
+
+**Use cases**: Target regions, feature flags, multiple host groups, tag lists
+
+**Example**: A variable named `target_regions` with options `us-east-1`, `eu-west-1`, `ap-southeast-1`
+
+**Constraints**:
+- Default values must be chosen from the option list and can include multiple selections
+- In Bash, PowerShell, and Python templates, parse the JSON array from the argument or environment value (see examples below)
 
 ### Secret
 
@@ -77,9 +99,34 @@ Password input field where the value is hidden.
 
 **Example**: A variable named `api_token` where the entered value appears as dots for security
 
+## Default values
+
+You can set an optional default for most variable types. When a user opens the task run dialog, fields are pre-filled with these defaults.
+
+- **String, integer, text, secret**: a single default value
+- **Enum**: one option from the list
+- **Select**: one or more options from the list
+
+Defaults are useful for schedules and integrations where the same template runs repeatedly with predictable parameters. Users can still change the values before starting a task.
+
+## Pass variable as (target)
+
+Each survey variable can be delivered in one of two ways:
+
+| Setting | Behavior |
+|---------|----------|
+| **Extra variable** (default) | Passed the app-specific way: Ansible `--extra-vars`, Terraform `-var`, or `name=value` CLI arguments for shell apps |
+| **Environment variable** | Set as a process environment variable whose name matches the survey variable name |
+
+Use **Environment variable** when your script or tool reads from the environment instead of CLI flags. For Terraform variables that must follow the `TF_VAR_` convention, name the survey variable `TF_VAR_instance_type` and set the target to environment variable.
+
+Variables with the environment target are **not** duplicated in extra-vars, `-var`, or CLI arguments. Each value is delivered exactly once.
+
 ## How survey variables are passed to tasks
 
-Survey variables are passed differently depending on the template type:
+Survey variables are passed differently depending on the template type and the **Pass variable as** setting.
+
+**Multi-select (`select` type) values** are JSON-encoded arrays in every delivery path (extra-vars JSON, `-var`, CLI arguments, and environment variables). A selection of options `1` and `2` becomes `["1","2"]`, not a space-separated string.
 
 ### Ansible templates
 
@@ -148,6 +195,16 @@ echo "ARG1: ${args[ARG1]}"
 echo "ARG2: ${args[ARG2]}"
 ```
 
+For **multi-select** variables, the value is a JSON array string. Parse it with `jq` (ensure `jq` is available in your executor image):
+
+```bash
+regions_json='["us-east-1","eu-west-1"]'
+regions=$(echo "$regions_json" | jq -r '.[]')
+for region in $regions; do
+  echo "Deploying to $region"
+done
+```
+
 ### PowerShell templates
 
 Survey variables are passed to the running PowerShell script as command-line arguments:
@@ -177,6 +234,15 @@ write-host $parsed['env1']
 write-host $parsed.env1
 ```
 
+For **multi-select** variables, parse the JSON array from the argument value:
+
+```powershell
+$regions = $parsed['target_regions'] | ConvertFrom-Json
+foreach ($region in $regions) {
+    Write-Host "Deploying to $region"
+}
+```
+
 ### Python templates
 
 Survey variables are passed to the running Python script as command-line arguments:
@@ -200,6 +266,16 @@ for arg in sys.argv[1:]:
 print("Parsed arguments:")
 print(parsed.get("env1"))
 print(parsed["env1"] if "env1" in parsed else None)
+```
+
+For **multi-select** variables, parse the JSON array:
+
+```python
+import json
+
+regions = json.loads(parsed["target_regions"])
+for region in regions:
+    print(f"Deploying to {region}")
 ```
 
 ## Using survey variables
@@ -289,11 +365,16 @@ The title appears in the form, so make it user-friendly:
 - Variable name: `db_host`
 - Title: "Database hostname or IP address"
 
-### Use enums for known options
+### Use enum or select for known options
 
-When users should choose from a limited set of options, use enum type instead of string:
-- ✅ Enum with options: "production, staging, development"
+When users should choose from a limited set of options, use enum or select instead of string:
+- ✅ **Enum** for exactly one choice: production, staging, or development
+- ✅ **Select** when multiple choices are valid: several regions or feature flags
 - ❌ String field with a note "enter production or staging"
+
+### Use environment variable target deliberately
+
+Prefer the default extra-variable delivery unless your playbook, script, or tool explicitly reads from the process environment. Name environment-target variables exactly as the downstream tool expects (for example `TF_VAR_region`).
 
 ### Mark required fields appropriately
 

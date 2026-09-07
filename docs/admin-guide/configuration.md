@@ -15,6 +15,7 @@ Full list of available configuration options:
 | ----------------------- | --------------------------------------------------------- |
 | **Common** ||
 | <br />`git_client`      <hr /> `SEMAPHORE_GIT_CLIENT`<br /><br /> | Type of Git client. Can be `cmd_git` (default) or `go_git`. |
+| <br />`git_attempts`    <hr /> `SEMAPHORE_GIT_ATTEMPTS`<br /><br /> | How many times a git clone or pull is tried before the task fails. Uses exponential backoff (1s, then 2s, 4s, … up to 60s) between attempts. Default: `4`. Set to `1` to disable retries. |
 | <br />`ssh_config_path` <hr /> `SEMAPHORE_SSH_PATH`<br /><br /> | Path to custom SSH configuration file. Default: `~/.ssh/config`. |
 | <br />`port`           <hr /> `SEMAPHORE_PORT`<br /><br /> | TCP port on which the web interface will be available. Default: `:3000` |
 | <br />`interface`      <hr /> `SEMAPHORE_INTERFACE`<br /><br /> | Bind address (empty = all interfaces). Useful if your server has multiple network interfaces. |
@@ -58,6 +59,7 @@ Full list of available configuration options:
 | <br />`runner.project_id` <hr /> `SEMAPHORE_RUNNER_PROJECT_ID` <br /><br /> | Restrict the runner to a single project. |
 | <br />`runner.connection.server_ca_cert_file` <hr /> `SEMAPHORE_RUNNER_SERVER_CA_CERT_FILE` <br /><br /> | PEM bundle used to verify the Semaphore server certificate, in addition to the system trust store. Set when the server uses a self-signed or internal-CA certificate. |
 | <br />`runner.connection.skip_tls_verify` <hr /> `SEMAPHORE_RUNNER_SKIP_TLS_VERIFY` <br /><br /> | Disable server certificate verification entirely. Insecure (vulnerable to MITM) — use only for testing. |
+| <br />`runner.executor` <hr /> `SEMAPHORE_RUNNER_EXECUTOR` <br /><br /> | JSON object with the full runner executor configuration (`type` plus nested `docker` or `k8s` settings). Use when you want to set the entire executor block from a single environment variable. |
 | <br />`runner.executor.type` <hr /> &mdash; <br /><br /> | Strategy the runner uses to execute each task: `local` (default), `k8s` or `docker`. |
 | <br />`runner.executor.k8s.kubeconfig` <hr /> `SEMAPHORE_RUNNER_K8S_KUBECONFIG` <br /><br /> | Path to a kubeconfig file. Empty = in-cluster configuration. |
 | <br />`runner.executor.k8s.namespace` <hr /> `SEMAPHORE_RUNNER_K8S_NAMESPACE` <br /><br /> | Namespace where ephemeral task Pods are created. Default: semaphore |
