@@ -17,7 +17,7 @@ Semaphore is written in **Go** (lightweight, fast) and runs on **Windows**, **ma
 
 - **I’m using Semaphore day-to-day (teams/users)**
   - Organize work: [Projects](/user-guide/projects) and [Teams](/user-guide/team)
-  - Run automation: [Tasks](/user-guide/tasks) and [Schedules](/user-guide/schedules)
+  - Run automation: [Tasks](/user-guide/tasks), [Workflows](/user-guide/workflows) (Pro), and [Schedules](/user-guide/schedules)
   - Connect your code: [Repositories](/user-guide/repositories)
   - Targets and variables: [Inventory](/user-guide/inventory) and [Variable Groups](/user-guide/environment)
   - Credentials: [Key Store](/user-guide/key-store)
@@ -60,6 +60,7 @@ If you’re new, these terms show up everywhere in the UI:
 - **Variable Group (Environment)**: reusable variables and configuration per project — [Variable Groups](/user-guide/environment)
 - **Key Store**: encrypted credentials (SSH keys, tokens, passwords) — [Key Store](/user-guide/key-store)
 - **Task / Task template**: the definition and the run of automation — [Tasks](/user-guide/tasks)
+- **Workflow**: a directed graph of task templates with branching, approvals, and delays (Pro) — [Workflows](/user-guide/workflows)
 - **Runner**: where tasks execute (local or remote) — [Runners](/admin-guide/runners)
 
 ## Common workflows
