@@ -103,6 +103,7 @@ Semaphore clones and updates task repositories before each run. Two options cont
 | `git_client` | `SEMAPHORE_GIT_CLIENT` | Git client implementation: `cmd_git` (default, uses the system `git` binary) or `go_git` (pure Go client). |
 | `git_attempts` | `SEMAPHORE_GIT_ATTEMPTS` | Number of times clone and pull operations are tried before the task fails. Default: `4`. Set to `1` to try once with no retries. |
 
-When a clone or pull fails and retries remain, Semaphore waits with exponential backoff (starting at 1 second, doubling each attempt, capped at 60 seconds) and logs a message such as `Git pull failed (...), retrying in 2s`. Retries apply only to network operations; a failed checkout or authentication error still fails the task after all attempts are exhausted.
+When a clone or pull fails and retries remain, Semaphore waits with exponential backoff (starting at 1 second, doubling each attempt, capped at 60 seconds) and logs a message such as `Git pull failed (...), retrying in 2s`.
+Retries are intended for transient network errors; persistent checkout/authentication errors will continue to fail even if retries are enabled.
 
 If your git server is intermittently unavailable, increase `git_attempts`. If failures are immediate and persistent (wrong credentials, missing repository), fix the underlying issue — retries will not help.
