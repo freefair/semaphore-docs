@@ -55,6 +55,7 @@ Full list of available configuration options:
 | <br />`runner.name` <hr /> `SEMAPHORE_RUNNER_NAME` <br /><br /> | Runner name. |
 | <br />`runner.tags` <hr /> `SEMAPHORE_RUNNER_TAGS` <br /><br /> | JSON array of runner tags. |
 | <br />`runner.max_parallel_tasks` <hr /> `SEMAPHORE_RUNNER_MAX_PARALLEL_TASKS` <br /><br /> | Max number of parallel tasks for the runner. Default: 9999. |
+| <br />`runner.check_interval_seconds` <hr /> `SEMAPHORE_RUNNER_CHECK_INTERVAL_SECONDS` <br /><br /> | How often the runner polls the server for new jobs and reports progress, in seconds. Default: 1. Higher values reduce request volume at the cost of slightly slower job pickup. |
 | <br />`runner.project_id` <hr /> `SEMAPHORE_RUNNER_PROJECT_ID` <br /><br /> | Restrict the runner to a single project. |
 | <br />`runner.connection.server_ca_cert_file` <hr /> `SEMAPHORE_RUNNER_SERVER_CA_CERT_FILE` <br /><br /> | PEM bundle used to verify the Semaphore server certificate, in addition to the system trust store. Set when the server uses a self-signed or internal-CA certificate. |
 | <br />`runner.connection.skip_tls_verify` <hr /> `SEMAPHORE_RUNNER_SKIP_TLS_VERIFY` <br /><br /> | Disable server certificate verification entirely. Insecure (vulnerable to MITM) — use only for testing. |

@@ -87,12 +87,13 @@ As a result of running the `semaphore runner setup` command, a configuration fil
   "runner": {
     "token": "your runner's token",
     // or
-    "token_file": "path/to/the/file/where/runner/saves/token"
+    "token_file": "path/to/the/file/where/runner/saves/token",
 
-    // Here you can provide other runner-specific options, 
-    // which will be used for runner registration, for example: 
-    // max_parallel_tasks, webhook, one_off, etc.
-    // ...
+    // How often (in seconds) the runner polls the server for jobs and reports
+    // progress. Default: 1. Raise this when many runners share one server.
+    "check_interval_seconds": 1
+
+    // Other runner-specific options: max_parallel_tasks, webhook, one_off, etc.
   }
 }
 ```
@@ -110,6 +111,35 @@ semaphore runner start --config /path/to/your/config/file.json
 ```
 
 Your runner is ready to execute tasks.
+
+### Poll interval (`check_interval_seconds`)
+
+Each runner polls the Semaphore server on a fixed interval for new jobs and to
+report task progress. Configure it in the runner configuration file:
+
+```json
+{
+  "runner": {
+    "check_interval_seconds": 5
+  }
+}
+```
+
+Or with an environment variable:
+
+```bash
+SEMAPHORE_RUNNER_CHECK_INTERVAL_SECONDS=5
+```
+
+| Value | Effect |
+|-------|--------|
+| **1** (default) | Jobs are picked up within about one second; best for low-latency runs. |
+| **Higher** (e.g. 5–30) | Reduces HTTP traffic when you operate many runners against one server. Jobs may start slightly later. |
+
+The Runners page in the Semaphore UI exposes this under **Advanced options** when
+generating setup snippets (config file, Docker, and environment-variable examples).
+
+Invalid or zero values fall back to the default of 1 second.
 
 ### Runner tags (Pro)
 
@@ -131,9 +161,13 @@ semaphore runner unregister --config /path/to/your/config/file.json
 
 ## Security
 
-Data transfer security is ensured by using asymmetric encryption: the server encrypts data using a public key, the runner decrypts it using a private key.
-
-Public and private keys are generated automatically when the runner registers on the server.
+Runners authenticate to the server with an opaque bearer token
+(`X-Runner-Token`), issued at registration. Protect this token like any other
+credential — store it in a restricted configuration file or secret manager.
 
 :::warning
-  Use the HTTPS protocol for communication between the server and the runner, especially if they are not on the same private network.
+Use HTTPS for communication between the server and the runner, especially when
+they are not on the same private network. For self-signed or internal CA
+certificates, configure `runner.connection.server_ca_cert_file` on the runner.
+Do not use `runner.connection.skip_tls_verify` in production.
+:::

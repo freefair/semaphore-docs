@@ -181,6 +181,7 @@ const sidebars = {
           ],
         },
         'user-guide/tasks',
+        'user-guide/workflows',
         'user-guide/schedules',
         {
           type: 'category',

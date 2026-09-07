@@ -70,6 +70,29 @@ Templates support Ansible CLI options:
 
 These can be set in the template and overridden when creating a task. Ensure corresponding prompts are enabled if you plan to pass these values via API.
 
+### Parallelism (`--forks` / `-f`)
+
+Control how many hosts Ansible connects to in parallel by passing `--forks` or
+`-f` in the template's **Extra CLI arguments**. Arguments must be valid JSON —
+use an array of separate tokens:
+
+```json
+["--forks", "10"]
+```
+
+Short form is also supported:
+
+```json
+["-f", "10"]
+```
+
+When **Allow override arguments in task** is enabled on the template, a task can
+supply its own forks value at run time. Ansible receives both the template and
+task arguments; the last `--forks` / `-f` on the command line wins.
+
+If arguments are not valid JSON, the task fails with a descriptive validation
+error before execution starts.
+
 ### Authentication
 
 Authentication for hosts in the playbook is done using the user references from the Key Store on the inventory. The user for SSH is determined by the optional user on the Key Store element.
