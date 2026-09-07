@@ -195,7 +195,7 @@ echo "ARG1: ${args[ARG1]}"
 echo "ARG2: ${args[ARG2]}"
 ```
 
-For **multi-select** variables, the value is a JSON array string. Parse it with `jq`:
+For **multi-select** variables, the value is a JSON array string. Parse it with `jq` (ensure `jq` is available in your executor image):
 
 ```bash
 regions_json='["us-east-1","eu-west-1"]'
