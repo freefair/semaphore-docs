@@ -219,9 +219,9 @@ hr {
   height: 0.4em;
   margin-left: 0.4em;
   border: solid currentColor;
-  border-width: 0 1.5px 1.5px 0;
-  transform: translateY(-40%) rotate(45deg);
+  border-width: 0 2px 2px 0;
+  transform: translateY(-25%) rotate(45deg);
   position: relative;
   top: 0;
-  opacity: 0.85;
+  opacity: 0.5;
 }
