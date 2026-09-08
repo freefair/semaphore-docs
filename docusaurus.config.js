@@ -59,7 +59,135 @@ const config = {
           alt: 'Semaphore UI Logo',
           src: 'img/logo.svg',
         },
-        items: [],
+        items: [
+          {
+            type: 'dropdown',
+            label: 'Product',
+            position: 'left',
+            items: [
+              {
+                label: 'Pro · For teams',
+                href: 'https://semaphoreui.com/pro',
+                target: '_self',
+              },
+              {
+                label: 'Enterprise · For large-scale operations',
+                href: 'https://semaphoreui.com/enterprise',
+                target: '_self',
+              },
+              {
+                label: 'Community · For homelab',
+                href: 'https://github.com/semaphoreui/semaphore',
+                target: '_self',
+              },
+            ],
+          },
+          {
+            type: 'dropdown',
+            label: 'Explore',
+            position: 'left',
+            items: [
+              {
+                label: 'Features',
+                href: 'https://semaphoreui.com/features',
+                target: '_self',
+              },
+              {
+                label: 'Use cases',
+                href: 'https://semaphoreui.com/use-cases',
+                target: '_self',
+              },
+              {
+                label: 'Case studies',
+                href: 'https://semaphoreui.com/case-studies',
+                target: '_self',
+              },
+              {
+                label: 'Blog',
+                href: 'https://semaphoreui.com/blog/',
+                target: '_self',
+              },
+              {
+                type: 'html',
+                value: '<div class="dropdown__category">Comparison</div>',
+              },
+              {
+                label: 'Semaphore UI vs AWX',
+                href: 'https://semaphoreui.com/vs/awx',
+                target: '_self',
+              },
+              {
+                label: 'Semaphore UI vs Rundeck',
+                href: 'https://semaphoreui.com/vs/rundeck',
+                target: '_self',
+              },
+              {
+                label: 'Semaphore UI vs GitLab',
+                href: 'https://semaphoreui.com/vs/gitlab',
+                target: '_self',
+              },
+              {
+                label: 'Semaphore UI vs Jenkins',
+                href: 'https://semaphoreui.com/vs/jenkins',
+                target: '_self',
+              },
+              {
+                label: 'Semaphore UI vs Spacelift',
+                href: 'https://semaphoreui.com/vs/spacelift',
+                target: '_self',
+              },
+              {
+                label: 'Semaphore UI vs Gaia',
+                href: 'https://semaphoreui.com/vs/gaia',
+                target: '_self',
+              },
+              {
+                label: 'Semaphore UI vs Tower (AAP)',
+                href: 'https://semaphoreui.com/vs/tower',
+                target: '_self',
+              },
+            ],
+          },
+          {
+            type: 'dropdown',
+            label: 'Help',
+            position: 'left',
+            items: [
+              {
+                label: 'Installation',
+                href: 'https://semaphoreui.com/install',
+                target: '_self',
+              },
+              {
+                label: 'Docs',
+                to: '/',
+              },
+              {
+                label: 'API References (Swagger)',
+                href: 'https://semaphoreui.com/api-docs/',
+                target: '_self',
+              },
+            ],
+          },
+          {
+            label: 'Pricing',
+            href: 'https://semaphoreui.com/pricing/',
+            target: '_self',
+            position: 'left',
+          },
+          {
+            href: 'https://github.com/semaphoreui/semaphore',
+            target: '_self',
+            label: 'GitHub',
+            position: 'right',
+          },
+          {
+            href: 'https://portal.semaphoreui.com',
+            target: '_self',
+            label: 'Sign in',
+            position: 'right',
+          },
+        ],
       },
       footer: {
         style: 'dark',
