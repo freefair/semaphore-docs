@@ -210,3 +210,18 @@ hr {
 .navbar-sidebar .menu__link svg {
   display: none;
 }
+
+/* Dropdown caret: small outlined chevron instead of Infima's filled triangle */
+.navbar .dropdown > .navbar__link::after {
+  content: '';
+  display: inline-block;
+  width: 0.4em;
+  height: 0.4em;
+  margin-left: 0.4em;
+  border: solid currentColor;
+  border-width: 0 1.5px 1.5px 0;
+  transform: translateY(-40%) rotate(45deg);
+  position: relative;
+  top: 0;
+  opacity: 0.85;
+}
