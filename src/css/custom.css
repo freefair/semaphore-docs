@@ -116,18 +116,20 @@ hr {
   color: white !important;
 }
 
-/* Ensure dropdown menus and other navbar elements are also white */
+/* Dropdown menus follow the site theme: white in light mode, dark surface in dark mode */
 .navbar .dropdown__menu {
-  background-color: #008890;
+  background-color: var(--ifm-dropdown-background-color);
+  box-shadow: var(--ifm-global-shadow-md);
 }
 
 .navbar .dropdown__link {
-  color: white !important;
+  color: var(--ifm-dropdown-link-color) !important;
 }
 
-.navbar .dropdown__link:hover {
-  background-color: rgba(255, 255, 255, 0.1);
-  color: white !important;
+.navbar .dropdown__link:hover,
+.navbar .dropdown__link--active {
+  background-color: var(--ifm-dropdown-hover-background-color);
+  color: var(--ifm-color-primary) !important;
 }
 
 .navbar__title {
@@ -190,12 +192,12 @@ hr {
 .navbar .dropdown__category {
   padding: 0.5rem 0.75rem 0.25rem;
   margin-top: 0.25rem;
-  border-top: 1px solid rgba(255, 255, 255, 0.2);
+  border-top: 1px solid var(--ifm-color-emphasis-200);
   font-size: 0.75rem;
   font-weight: 600;
   letter-spacing: 0.05em;
   text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.7);
+  color: var(--ifm-color-emphasis-600);
 }
 
 .navbar .dropdown__menu {
