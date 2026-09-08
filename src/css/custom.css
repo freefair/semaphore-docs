@@ -155,6 +155,11 @@ hr {
   color: black;
 }
 
+[data-theme='dark'] .theme-doc-sidebar-item-link-level-1 > .menu__link,
+[data-theme='dark'] .theme-doc-sidebar-item-category-level-1 > .menu__list-item-collapsible > .menu__link {
+  color: white;
+}
+
 /* Home page cards */
 .home-cards .col {
   display: flex;
