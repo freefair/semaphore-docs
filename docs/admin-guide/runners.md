@@ -112,6 +112,29 @@ semaphore runner start --config /path/to/your/config/file.json
 
 Your runner is ready to execute tasks.
 
+### Running the runner in Docker
+
+The `semaphoreui/runner` image starts the runner automatically. Pass the server URL and registration token through environment variables:
+
+```bash
+docker run -d \
+  -e SEMAPHORE_WEB_ROOT=https://semaphore.example.com \
+  -e SEMAPHORE_RUNNER_REGISTRATION_TOKEN=<token> \
+  semaphoreui/runner:latest
+```
+
+If your playbooks need extra Python packages, mount a `requirements.txt` at `/etc/semaphore/requirements.txt`. The container installs it with `pip3` on every start, before the runner connects to the server:
+
+```bash
+docker run -d \
+  -e SEMAPHORE_WEB_ROOT=https://semaphore.example.com \
+  -e SEMAPHORE_RUNNER_REGISTRATION_TOKEN=<token> \
+  -v "$(pwd)/requirements.txt:/etc/semaphore/requirements.txt:ro" \
+  semaphoreui/runner:latest
+```
+
+See [Installing Additional Python Dependencies](/admin-guide/installation/docker#installing-additional-python-dependencies) for details on where packages are installed and how failures are handled.
+
 ### Poll interval (`check_interval_seconds`)
 
 Each runner polls the Semaphore server on a fixed interval for new jobs and to

@@ -36,7 +36,7 @@ Semaphore uses whichever `python3` binary is on `PATH` in the execution environm
 
 - **Binary/package install**: ensure the correct `python3` is installed on the host.
 - **Docker**: use a custom image with the required Python version.
-- **Docker (additional packages)**: mount a `requirements.txt` at `/etc/semaphore/requirements.txt`. Semaphore installs it automatically on container start. See [Docker installation](/admin-guide/installation/docker).
+- **Docker (additional packages)**: mount a `requirements.txt` at `/etc/semaphore/requirements.txt` in the server or runner container. Semaphore installs it into the bundled Python virtual environment on every container start. See [Installing Additional Python Dependencies](/admin-guide/installation/docker#installing-additional-python-dependencies).
 
 ## Notes
 

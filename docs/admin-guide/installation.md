@@ -38,6 +38,6 @@ volumes:
   - /path/to/requirements.txt:/etc/semaphore/requirements.txt
 ```
 
-The packages specified in the requirements file will be installed when the container starts up.
+The packages specified in the requirements file will be installed into the bundled Ansible virtual environment every time the container starts. The same mount works for the `semaphoreui/runner` image. See [Installing Additional Python Dependencies](/admin-guide/installation/docker#installing-additional-python-dependencies) for details and a custom-image alternative.
 
 For more information about Python requirements files, see the [Pip Requirements File Format reference](https://pip.pypa.io/en/stable/reference/requirements-file-format/)
