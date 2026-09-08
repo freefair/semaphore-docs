@@ -112,10 +112,9 @@ Each key id is reported with one of the following statuses:
 | `legacy (no id)` | Rows encrypted before key ids existed; rekey to stamp an id. |
 | `MISSING KEY (cannot decrypt)` | A referenced key id is absent from the keyset. |
 
+The last line reports which key encrypts the JWT signing key, or
+`JWT signing key: not set` if none has been generated yet.
+
 If any secret references a key id that is missing from the keyset, the command
 flags those rows and **exits with a non-zero status** — add the missing key back
 to the keyset before that data can be decrypted.
-
-#### Multiple vault passwords (Ansible)
-
-You can define multiple Ansible Vault passwords in the Key Store and attach them to an Ansible template. During execution, Semaphore will provide all configured passwords to Ansible so it can decrypt any referenced vaults.
