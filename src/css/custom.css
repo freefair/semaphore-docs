@@ -145,3 +145,39 @@ hr {
 .tabs-container > .margin-top--md {
   margin-top: 0 !important;
 }
+
+.theme-doc-sidebar-item-link-level-1 > .menu__link,
+.theme-doc-sidebar-item-category-level-1 > .menu__list-item-collapsible > .menu__link {
+  font-weight: bold;
+  font-size: 20px;
+  color: black;
+}
+
+/* Home page cards */
+.home-cards .col {
+  display: flex;
+}
+
+.home-cards .card {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.home-cards .card__body {
+  flex: 1;
+}
+
+.home-cards .card__body ul {
+  margin-bottom: 0;
+  padding-left: 1.1rem;
+}
+
+.home-cards .card__body p:last-child {
+  margin-bottom: 0.5rem;
+}
+
+.home-tools a {
+  margin-right: 0.5rem;
+  margin-bottom: 0.5rem;
+}
