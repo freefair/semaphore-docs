@@ -190,6 +190,7 @@ const sidebars = {
           items: [
             'user-guide/key-store/hashicorp-vault',
             'user-guide/key-store/openbao',
+            'user-guide/key-store/aws-secrets-manager',
             'user-guide/key-store/devolutions-server',
             'user-guide/key-store/secret-sync',
           ],

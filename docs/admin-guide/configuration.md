@@ -20,7 +20,7 @@ Full list of available configuration options:
 | <br />`port`           <hr /> `SEMAPHORE_PORT`<br /><br /> | TCP port on which the web interface will be available. Default: `:3000` |
 | <br />`interface`      <hr /> `SEMAPHORE_INTERFACE`<br /><br /> | Bind address (empty = all interfaces). Useful if your server has multiple network interfaces. |
 | <br />`tmp_path`       <hr /> `SEMAPHORE_TMP_PATH`<br /><br /> | Path to directory where cloned repositories and generated files are stored. Default: /tmp/semaphore |
-| <br />`dirs.secrets` <hr /> `SEMAPHORE_SECRETS_PATH`<br /><br /> | Path to directory where secrets are stored. Default: /tmp/semaphore |
+| <br />`dirs.secrets` <hr /> `SEMAPHORE_SECRETS_PATH`<br /><br /> | Path to directory where secrets are stored (for example Vault token files). Default: `/tmp/semaphore`. Legacy top-level `secrets_path` is still accepted when `dirs.secrets` is unset or left at the default. |
 | <br />`dirs.repos` <hr /> `SEMAPHORE_REPOS_DIR`<br /><br /> | Path to directory where repositories are stored. |
 | <br />`dirs.ssh_agent_sockets` <hr /> `SEMAPHORE_SSH_AGENT_SOCKETS_DIR`<br /><br /> | Path to directory where SSH agent sockets are stored. Default: /tmp/semaphore |
 | <br />`home_dir_mode`  <hr /> `SEMAPHORE_HOME_DIR_MODE` <br /><br /> | Controls how the HOME environment variable is set for tasks. Options: `template_dir` (default), `project_home`, `user_home`. |

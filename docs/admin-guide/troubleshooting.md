@@ -109,6 +109,30 @@ See [Git operations](/admin-guide/configuration/config-file#git-operations) for 
 
 ---
 
+## Bash script output is missing or incomplete
+
+A Bash task finishes successfully but the log shows little or no output from `echo`, `printf`, or other commands — especially when the script exits quickly.
+
+### Why this happens
+
+Semaphore captures stdout and stderr from shell commands while they run. Very short scripts can finish before all buffered output is read, so the last lines may be dropped from the task log.
+
+### How to fix this
+
+1. **Upgrade**: Recent Semaphore versions drain process output before marking a task complete. Update server and runners if you are on an older release.
+2. **Flush output in the script** when you need guaranteed delivery:
+
+```bash
+#!/bin/bash
+echo "Starting deploy"
+echo "Done" >&2
+```
+
+For critical diagnostics, write to a file inside the repository workspace and `cat` it at the end of the script.
+3. **Avoid silent early exit**: Use `set -euo pipefail` and explicit error messages so failures are visible even when output is brief.
+
+---
+
 ## unable to read LDAP response packet: unexpected EOF
 
 Most likely, you are trying to connect to the LDAP server using an insecure method, although it expects a secure connection (via TLS).
