@@ -164,14 +164,14 @@ Terraform prompts are available in the template settings:
 
 The task form displays these options when running Terraform tasks.
 
-## Shell, Bash, PowerShell, and Python Prompts
+## Bash, PowerShell, and Python Prompts
 
-For script-based templates (Shell, Bash, PowerShell, Python), prompts are minimal as most customization is handled through [Survey Variables](/survey-vars).
+For Bash, PowerShell, and Python templates, prompts are minimal as most customization is handled through [Survey Variables](/survey-vars).
 
-Available options typically include:
-- Script path or command selection
-- Execution environment settings
-- Working directory
+Available prompts are:
+
+- CLI args
+- Branch
 
 These template types benefit more from custom Survey Variables for passing parameters to scripts.
 

@@ -44,6 +44,7 @@ Semaphore uses a `config.json` configuration file with following content:
 	"dialect": "mysql",
 
 	"git_client": "go_git",
+	"git_attempts": 4,
 
 	"auth": {
 		"totp": {

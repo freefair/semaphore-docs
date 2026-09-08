@@ -101,22 +101,7 @@ See [Git operations](/admin-guide/configuration/config-file#git-operations) for 
 
 ---
 
-## 6. Bash script output is missing or incomplete
-
-A Bash task succeeds but the log is empty or missing the last lines from `echo` or similar commands.
-
-### Why this happens
-
-Very short scripts can exit before Semaphore finishes reading buffered stdout/stderr. Older versions were more likely to drop that trailing output.
-
-### How to fix this
-
-1. Upgrade Semaphore server and runners to a current release.
-2. Add explicit output or write diagnostics to a file and print it before the script exits.
-
----
-
-## 7. unable to read LDAP response packet: unexpected EOF
+## 6. unable to read LDAP response packet: unexpected EOF
 
 Most likely, you are trying to connect to the LDAP server using an insecure method, although it expects a secure connection (via TLS).
 
@@ -132,7 +117,7 @@ Enable TLS in your `config.json` file:
 
 ---
 
-## 8. LDAP Result Code 49 "Invalid Credentials"
+## 7. LDAP Result Code 49 "Invalid Credentials"
 
 You have the wrong password or `binddn`.
 
@@ -156,6 +141,6 @@ You also can read the following articles:
 
 ---
 
-## 9. LDAP Result Code 32 "No Such Object"
+## 8. LDAP Result Code 32 "No Such Object"
 
 Coming soon.

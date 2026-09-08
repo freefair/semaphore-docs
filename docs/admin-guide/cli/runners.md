@@ -49,6 +49,21 @@ nohup ./semaphore runner start --config /path/to/config.runner.json &
 You can edit the generated configuration file by hand afterward instead of
 re-running setup.
 
+### Runner configuration options
+
+Common fields in the `runner` block of the configuration file:
+
+| Field | Env variable | Description |
+|-------|--------------|-------------|
+| `token` / `token_file` | `SEMAPHORE_RUNNER_TOKEN` / `SEMAPHORE_RUNNER_TOKEN_FILE` | Runner authentication token (issued at registration). |
+| `check_interval_seconds` | `SEMAPHORE_RUNNER_CHECK_INTERVAL_SECONDS` | Poll interval in seconds. Default: 1. |
+| `max_parallel_tasks` | `SEMAPHORE_RUNNER_MAX_PARALLEL_TASKS` | Maximum concurrent tasks. Default: 9999. |
+| `tags` | `SEMAPHORE_RUNNER_TAGS` | JSON array of tags for project runner routing. |
+| `one_off` | `SEMAPHORE_RUNNER_ONE_OFF` | Exit after processing one job. |
+
+See [Runners](/admin-guide/runners) for setup details and
+[Configuration](/admin-guide/configuration) for the full option list.
+
 ## Registering a runner (`runner register`)
 
 Registers the runner on the server and stores the issued runner token in the

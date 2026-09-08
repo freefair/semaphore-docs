@@ -184,10 +184,10 @@ Survey variables are passed to the Bash script as command-line arguments:
 You can use following code inside the script to parse the arguments to array:
 
 ```bash
+declare -A args
 for arg in "$@"; do
   KEY="${arg%%=*}"
   VALUE="${arg#*=}"
-  declare -A args
   args["$KEY"]="$VALUE"
 done
  
@@ -195,7 +195,7 @@ echo "ARG1: ${args[ARG1]}"
 echo "ARG2: ${args[ARG2]}"
 ```
 
-For **multi-select** variables, the value is a JSON array string. Parse it with `jq`:
+For **multi-select** variables, the value is a JSON array string. Parse it with `jq` (ensure `jq` is available in your executor image):
 
 ```bash
 regions_json='["us-east-1","eu-west-1"]'
