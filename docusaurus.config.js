@@ -1,3 +1,14 @@
+const defaultLocale = 'en';
+const locales = ['en', 'ru', 'es', 'fr', 'de', 'it', 'ja', 'ko', 'pt', 'zh', 'sr'];
+// `docusaurus start` without --locale sets this env var to the string "undefined".
+const currentLocale = locales.includes(process.env.DOCUSAURUS_CURRENT_LOCALE)
+  ? process.env.DOCUSAURUS_CURRENT_LOCALE
+  : defaultLocale;
+
+// The main website serves English at / and other languages at /<locale>/.
+const websiteUrl = (path = '/') =>
+  `https://semaphoreui.com${currentLocale === defaultLocale ? '' : `/${currentLocale}`}${path}`;
+
 /** @type {import('@docusaurus/types').Config} */
 const config = {
   title: 'Semaphore UI',
@@ -23,8 +34,8 @@ const config = {
   // useful metadata like html lang. For example, if your site is Chinese, you
   // may want to replace "en" with "zh-Hans".
   i18n: {
-    defaultLocale: 'en',
-    locales: ['en', 'ru', 'es', 'fr', 'de', 'it', 'ja', 'ko', 'pt', 'zh', 'sr'],
+    defaultLocale,
+    locales,
     localeConfigs: {
       en: { label: 'English', htmlLang: 'en' },
       ru: { label: 'Русский', htmlLang: 'ru' },
@@ -80,12 +91,12 @@ const config = {
             items: [
               {
                 label: 'Pro · For teams',
-                href: 'https://semaphoreui.com/pro',
+                href: websiteUrl('/pro'),
                 target: '_self',
               },
               {
                 label: 'Enterprise · For large-scale operations',
-                href: 'https://semaphoreui.com/enterprise',
+                href: websiteUrl('/enterprise'),
                 target: '_self',
               },
               {
@@ -102,22 +113,22 @@ const config = {
             items: [
               {
                 label: 'Features',
-                href: 'https://semaphoreui.com/features',
+                href: websiteUrl('/features'),
                 target: '_self',
               },
               {
                 label: 'Use cases',
-                href: 'https://semaphoreui.com/use-cases',
+                href: websiteUrl('/use-cases'),
                 target: '_self',
               },
               {
                 label: 'Case studies',
-                href: 'https://semaphoreui.com/case-studies',
+                href: websiteUrl('/case-studies'),
                 target: '_self',
               },
               {
                 label: 'Blog',
-                href: 'https://semaphoreui.com/blog/',
+                href: websiteUrl('/blog/'),
                 target: '_self',
               },
               {
@@ -126,37 +137,37 @@ const config = {
               },
               {
                 label: 'Semaphore UI vs AWX',
-                href: 'https://semaphoreui.com/vs/awx',
+                href: websiteUrl('/vs/awx'),
                 target: '_self',
               },
               {
                 label: 'Semaphore UI vs Rundeck',
-                href: 'https://semaphoreui.com/vs/rundeck',
+                href: websiteUrl('/vs/rundeck'),
                 target: '_self',
               },
               {
                 label: 'Semaphore UI vs GitLab',
-                href: 'https://semaphoreui.com/vs/gitlab',
+                href: websiteUrl('/vs/gitlab'),
                 target: '_self',
               },
               {
                 label: 'Semaphore UI vs Jenkins',
-                href: 'https://semaphoreui.com/vs/jenkins',
+                href: websiteUrl('/vs/jenkins'),
                 target: '_self',
               },
               {
                 label: 'Semaphore UI vs Spacelift',
-                href: 'https://semaphoreui.com/vs/spacelift',
+                href: websiteUrl('/vs/spacelift'),
                 target: '_self',
               },
               {
                 label: 'Semaphore UI vs Gaia',
-                href: 'https://semaphoreui.com/vs/gaia',
+                href: websiteUrl('/vs/gaia'),
                 target: '_self',
               },
               {
                 label: 'Semaphore UI vs Tower (AAP)',
-                href: 'https://semaphoreui.com/vs/tower',
+                href: websiteUrl('/vs/tower'),
                 target: '_self',
               },
             ],
@@ -168,7 +179,7 @@ const config = {
             items: [
               {
                 label: 'Installation',
-                href: 'https://semaphoreui.com/install',
+                href: websiteUrl('/install'),
                 target: '_self',
               },
               {
@@ -177,14 +188,14 @@ const config = {
               },
               {
                 label: 'API References',
-                href: 'https://semaphoreui.com/api-docs/',
+                href: websiteUrl('/api-docs/'),
                 target: '_self',
               },
             ],
           },
           {
             label: 'Pricing',
-            href: 'https://semaphoreui.com/pricing/',
+            href: websiteUrl('/pricing/'),
             target: '_self',
             position: 'left',
           },
@@ -214,7 +225,7 @@ const config = {
             items: [
               {
                 html: `
-                  <a class="footer__brand" href="https://semaphoreui.com/" aria-label="Semaphore UI">
+                  <a class="footer__brand" href="${websiteUrl()}" aria-label="Semaphore UI">
                     <img class="footer__logo footer__logo--light" src="/docs/img/semaphore-light.png" alt="Semaphore UI" />
                     <img class="footer__logo footer__logo--dark" src="/docs/img/semaphore-dark.png" alt="Semaphore UI" />
                   </a>
@@ -234,27 +245,27 @@ const config = {
             title: 'Product',
             items: [
               { label: 'Community', href: 'https://github.com/semaphoreui/semaphore', target: '_self' },
-              { label: 'Pro', href: 'https://semaphoreui.com/pro', target: '_self' },
-              { label: 'Enterprise', href: 'https://semaphoreui.com/enterprise', target: '_self' },
-              { label: 'Pricing', href: 'https://semaphoreui.com/pricing/', target: '_self' },
+              { label: 'Pro', href: websiteUrl('/pro'), target: '_self' },
+              { label: 'Enterprise', href: websiteUrl('/enterprise'), target: '_self' },
+              { label: 'Pricing', href: websiteUrl('/pricing/'), target: '_self' },
             ],
           },
           {
             title: 'Explore',
             items: [
-              { label: 'Features', href: 'https://semaphoreui.com/features', target: '_self' },
-              { label: 'Use cases', href: 'https://semaphoreui.com/use-cases', target: '_self' },
-              { label: 'Case studies', href: 'https://semaphoreui.com/case-studies', target: '_self' },
-              { label: 'Roadmap', href: 'https://semaphoreui.com/roadmap', target: '_self' },
-              { label: "What's New", href: 'https://semaphoreui.com/releases/', target: '_self' },
+              { label: 'Features', href: websiteUrl('/features'), target: '_self' },
+              { label: 'Use cases', href: websiteUrl('/use-cases'), target: '_self' },
+              { label: 'Case studies', href: websiteUrl('/case-studies'), target: '_self' },
+              { label: 'Roadmap', href: websiteUrl('/roadmap'), target: '_self' },
+              { label: "What's New", href: websiteUrl('/releases/'), target: '_self' },
             ],
           },
           {
             title: 'Help',
             items: [
-              { label: 'Installation', href: 'https://semaphoreui.com/install', target: '_self' },
+              { label: 'Installation', href: websiteUrl('/install'), target: '_self' },
               { label: 'Documentation', to: '/' },
-              { label: 'API References', href: 'https://semaphoreui.com/api-docs/', target: '_self' },
+              { label: 'API References', href: websiteUrl('/api-docs/'), target: '_self' },
             ],
           },
           {
@@ -272,13 +283,13 @@ const config = {
           {
             title: 'Legal',
             items: [
-              { label: 'Terms of Service', href: 'https://semaphoreui.com/legal/terms-of-service', target: '_self' },
-              { label: 'Subscription Agreement', href: 'https://semaphoreui.com/legal/subscription-agreement', target: '_self' },
-              { label: 'Refund Policy', href: 'https://semaphoreui.com/legal/refund-policy', target: '_self' },
-              { label: 'Privacy Policy', href: 'https://semaphoreui.com/privacy/policy', target: '_self' },
-              { label: 'Cookie Policy', href: 'https://semaphoreui.com/privacy/cookies', target: '_self' },
-              { label: 'Security Whitepaper', href: 'https://semaphoreui.com/security/whitepaper', target: '_self' },
-              { label: 'Support Offering', href: 'https://semaphoreui.com/legal/support-offering', target: '_self' },
+              { label: 'Terms of Service', href: websiteUrl('/legal/terms-of-service'), target: '_self' },
+              { label: 'Subscription Agreement', href: websiteUrl('/legal/subscription-agreement'), target: '_self' },
+              { label: 'Refund Policy', href: websiteUrl('/legal/refund-policy'), target: '_self' },
+              { label: 'Privacy Policy', href: websiteUrl('/privacy/policy'), target: '_self' },
+              { label: 'Cookie Policy', href: websiteUrl('/privacy/cookies'), target: '_self' },
+              { label: 'Security Whitepaper', href: websiteUrl('/security/whitepaper'), target: '_self' },
+              { label: 'Support Offering', href: websiteUrl('/legal/support-offering'), target: '_self' },
             ],
           },
         ],
@@ -325,7 +336,22 @@ const config = {
       },
     }),
 
-  plugins: [],
+  plugins: process.env.SEMAPHORE_DOCS_DEV_PROXY === 'true' ? [
+    function localizedDevSocket(context) {
+      const socketPath = `${context.baseUrl}__webpack_hmr`;
+      return {
+        name: 'localized-dev-socket',
+        configureWebpack() {
+          return {
+            devServer: {
+              client: { webSocketURL: { pathname: socketPath } },
+              webSocketServer: { type: 'ws', options: { path: socketPath } },
+            },
+          };
+        },
+      };
+    },
+  ] : [],
 
 
   markdown: {

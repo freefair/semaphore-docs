@@ -4,8 +4,9 @@
   "private": true,
   "scripts": {
     "docusaurus": "docusaurus",
-    "start": "docusaurus start",
+    "start": "node scripts/start.mjs",
     "build": "docusaurus build",
+    "build:parallel": "bash scripts/build-parallel.sh",
     "swizzle": "docusaurus swizzle",
     "deploy": "docusaurus deploy",
     "clear": "docusaurus clear",
@@ -32,6 +33,7 @@
   },
   "devDependencies": {
     "@docusaurus/eslint-plugin": "3.6.3",
+    "http-proxy": "1.18.1",
     "typescript": "~5.2.2"
   },
   "engines": {
