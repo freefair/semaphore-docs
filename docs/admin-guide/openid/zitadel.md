@@ -19,6 +19,6 @@
 
 Tutorial on Zitadel: [OpenID Connect Endpoints in ZITADEL](https://zitadel.com/docs/apis/openidoauth/endpoints).
 
-## Known issues:
+## Known issues: {#known-issues}
 
 * to avoid error `claim 'email' missing or has bad format` add user Info inside ID Token in the Zitadel console.

@@ -1,11 +1,11 @@
 
 # Configuration file
 
-## Creating configuration file
+## Creating configuration file {#creating-configuration-file}
 
 Semaphore uses a `config.json` file for its core configuration. You can generate this file interactively using built-in tools or through a web-based configurator.
 
-### Generate via CLI
+### Generate via CLI {#generate-via-cli}
 
 Use the following commands to generate the configuration file interactively:
 
@@ -22,13 +22,13 @@ Use the following commands to generate the configuration file interactively:
     For more details about runner configuration, see the <a href="./../runners">Runners</a> section.
   :::
 
-### Generate on the website
+### Generate on the website {#generate-on-the-website}
 
 Alternatively, you can use the web-based interactive configurator:
 * [Server configurator](https://semaphoreui.com/install/binary/2_13/config)
 * [Runner configurator](https://semaphoreui.com/install/binary/2_13/runner)
 
-## Configuration file example
+## Configuration file example {#configuration-file-example}
 
 Semaphore uses a `config.json` configuration file with following content:
 
@@ -80,7 +80,7 @@ Semaphore uses a `config.json` configuration file with following content:
  }
 ```
 
-## Configuration file usage
+## Configuration file usage {#configuration-file-usage}
 
 * For Semaphore server:
 
@@ -94,7 +94,7 @@ semaphore server --config ./config.json
 semaphore runner start --config ./config.json
 ```
 
-## Secrets directory
+## Secrets directory {#secrets-directory}
 
 Semaphore stores short-lived secret files (for example HashiCorp Vault or OpenBao tokens read from disk) under a configurable directory.
 
@@ -125,7 +125,7 @@ Legacy installations may still use:
 
 Token files referenced by external secret storages must live inside this directory.
 
-## Git operations
+## Git operations {#git-operations}
 
 Semaphore clones and updates task repositories before each run. Two options control this behavior:
 

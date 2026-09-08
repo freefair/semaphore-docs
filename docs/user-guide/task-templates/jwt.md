@@ -12,7 +12,7 @@ The advantage over a long-lived secret stored in the
 that identifies the exact task run** (project, template, user id) and
 expires shortly after the task finishes.
 
-## Enabling JWTs on a template
+## Enabling JWTs on a template {#enabling-jwts-on-a-template}
 
 In the template form, scroll to the **JWT** section (it only appears when the
 administrator has [enabled JWT issuance](/admin-guide/security/jwt)) and
@@ -25,7 +25,7 @@ You can configure the following options per template:
 | Audience | One or more strings emitted in the `aud` claim. Set this to the identifier(s) your downstream system expects (for example the OpenBao server URL). Up to 32 entries are supported. |
 | TTL | Token lifetime as a duration (`30s`, `10m`, `1h`, ...). When left empty, the global `jwt.default_ttl` is used. The TTL must not exceed the global `jwt.max_ttl`. |
 
-## Token claims
+## Token claims {#token-claims}
 
 Each token carries the following claims that you can rely on when granting
 access in the downstream system:
@@ -45,7 +45,7 @@ Use these claims to **scope** access on the consuming side. For example an
 OpenBao role that only accepts tokens with `project_id = 7` and a specific
 `template_id`.
 
-## Using the token inside a task
+## Using the token inside a task {#using-the-token-inside-a-task}
 
 Semaphore exports the token as `SEMAPHORE_JWT` in the environment of the
 task process.
@@ -74,13 +74,13 @@ echo "Look at my fancy token: $SEMAPHORE_JWT"
 
 ______________________________________________________________________
 
-## Example: OpenBao
+## Example: OpenBao {#example-openbao}
 
 The following walk-through configures OpenBao to trust Semaphore's JWTs and
 exchanges them for a demo password.
 Replace `semaphore.example.com` and `bao.example.com` with your own hostnames.
 
-### 1. Configure the JWT auth method
+### 1. Configure the JWT auth method {#1-configure-the-jwt-auth-method}
 
 Enable the JWT auth method and point it at the JWKS endpoint of your
 Semaphore instance. OpenBao uses the public key it fetches there to verify
@@ -94,7 +94,7 @@ bao write auth/jwt/config \
     bound_issuer="https://semaphore.example.com"
 ```
 
-### 2. Define a policy
+### 2. Define a policy {#2-define-a-policy}
 
 Grant the permissions a task needs. The example below allows reading the
 demo credential located under `kv/data/semaphore/demo`:
@@ -107,7 +107,7 @@ path "kv/data/semaphore/demo" {
 EOF
 ```
 
-### 3. Define an OpenBao role bound to a template
+### 3. Define an OpenBao role bound to a template {#3-define-an-openbao-role-bound-to-a-template}
 
 An OpenBao role decides **which Semaphore tasks** are allowed to assume which
 policy. Use the Semaphore-specific claims (`project_id`, `template_id`, ...)
@@ -134,7 +134,7 @@ could assume the role.
 
 A full list of supported configuration parameters can be found [here](https://openbao.org/api-docs/auth/jwt/#createupdate-role)
 
-### 4. Configure the template
+### 4. Configure the template {#4-configure-the-template}
 
 On the Semaphore template that runs the deploy playbook:
 
@@ -144,7 +144,7 @@ On the Semaphore template that runs the deploy playbook:
 - Optionally set **TTL** to `15m` so the token expires shortly after the
   task finishes.
 
-### 5. Use the token in the task
+### 5. Use the token in the task {#5-use-the-token-in-the-task}
 
 ```yaml
 - hosts: localhost

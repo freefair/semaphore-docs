@@ -55,7 +55,7 @@ Semaphore will be available via the following URL [https://localhost:3000](https
 
 ----
 
-### Run as a service
+### Run as a service {#run-as-a-service}
 
 For more detailed information &mdash; look into the [extended Systemd service documentation](../installation_manually#extended-systemd-service).
 

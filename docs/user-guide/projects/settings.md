@@ -5,7 +5,7 @@ The Settings page allows you to configure various aspects of your project, inclu
 
 ![](/assets/project_settings.webp)
 
-## Runners (Pro)
+## Runners (Pro) {#runners-pro}
 
 Project runners can be attached to a project. You can also require a specific runner by tag in a template:
 

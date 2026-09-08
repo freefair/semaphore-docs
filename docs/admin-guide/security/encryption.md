@@ -24,7 +24,7 @@ If no options key is configured, options fall back to the secrets key.
 
 ---
 
-## Quick start
+## Quick start {#quick-start}
 
 The simplest setup is a single key supplied in the main config:
 
@@ -56,7 +56,7 @@ Prefer **`file:` references** or a **`keys_folder`** (see below) over inline
 
 ---
 
-## How keys are identified
+## How keys are identified {#how-keys-are-identified}
 
 Every key has a **key id** derived from the key material itself — a fingerprint,
 `base64url(sha256(key))[:8]`. The id (not the key) is stored alongside each
@@ -75,7 +75,7 @@ You never set ids by hand; Semaphore computes them.
 
 ---
 
-## The keys file
+## The keys file {#the-keys-file}
 
 `encryption.keys_file` points to a file whose content is a **registry of keys**
 plus **pointers** to the active key per purpose. It is parsed as **YAML or JSON,
@@ -84,7 +84,7 @@ regardless of file extension**.
 There are two ways to provide the registry — an inline map, a folder of files, or
 both combined.
 
-### Inline map
+### Inline map {#inline-map}
 
 ```yaml
 keys:
@@ -98,7 +98,7 @@ active:
 Each entry is a [`KeySource`](#keysource): either `value` (inline base64) **or**
 `file` (path to a file containing the base64 key) — never both.
 
-### Folder of key files
+### Folder of key files {#folder-of-key-files}
 
 Point `keys_folder` at a directory; **every regular file is one key**, labelled by
 its filename. Ideal for mounted Docker/Kubernetes secrets.
@@ -122,7 +122,7 @@ symlinks, so it works directly with the way Kubernetes mounts `Secret`/`ConfigMa
 volumes.
 :::
 
-### Combined
+### Combined {#combined}
 
 `keys` and `keys_folder` merge into one registry; `active` may point by label
 *or* by filename:
@@ -138,7 +138,7 @@ active:
 
 ---
 
-## Rotation (zero downtime)
+## Rotation (zero downtime) {#rotation-zero-downtime}
 
 The active key encrypts **new** writes; every other key in the registry can still
 **decrypt** old data. Rotation is therefore: add a key, switch the pointer,
@@ -164,7 +164,7 @@ semaphore vault check --config /etc/semaphore/config.yml
 
 No process restart is needed at any step.
 
-### Applying changes without a restart
+### Applying changes without a restart {#applying-changes-without-a-restart}
 
 Semaphore re-reads the keys file (and the key files it references) and swaps the
 in‑memory keys atomically. Two triggers:
@@ -184,9 +184,9 @@ untouched.
 
 ---
 
-## CLI commands
+## CLI commands {#cli-commands}
 
-### `vault check`
+### `vault check` {#vault-check}
 
 Read‑only. Reports, per key id, how many stored secrets it encrypts, so you can
 see what is on the active key and what is safe to remove.
@@ -205,7 +205,7 @@ JWT signing key: active:IFTi6Ipik8Q
 Statuses: `active`, `retired, rekey pending`, `retired, SAFE TO REMOVE`,
 `legacy (no id)`, and `MISSING KEY` (a referenced key is absent — exit code 1).
 
-### `vault rekey`
+### `vault rekey` {#vault-rekey}
 
 Re‑encrypts all stored secrets (and the JWT signing key) under the active key.
 
@@ -222,7 +222,7 @@ semaphore vault rekey --old-key <base64-old-key> --config ...
 
 ---
 
-## Backward compatibility
+## Backward compatibility {#backward-compatibility}
 
 Upgrading is safe and requires **no data migration**:
 
@@ -249,7 +249,7 @@ Old data decrypts via `old`; run `vault rekey` to move everything onto `new`.
 
 ---
 
-## Kubernetes & Docker
+## Kubernetes & Docker {#kubernetes--docker}
 
 Mount your keys as a `Secret` volume and point `keys_folder` at it:
 
@@ -278,7 +278,7 @@ poller applies the change within `keys_poll_interval` — no pod restart.
 
 ---
 
-## Security best practices
+## Security best practices {#security-best-practices}
 
 :::danger Protect the keys file
 - Restrict permissions: `chmod 0400`, owned by the Semaphore service user.
@@ -290,23 +290,23 @@ poller applies the change within `keys_poll_interval` — no pod restart.
 
 ---
 
-## Reference
+## Reference {#reference}
 
-### `encryption` (main config)
+### `encryption` (main config) {#encryption-main-config}
 
 | Field | Env | Default | Description |
 |-------|-----|---------|-------------|
 | `keys_file` | `SEMAPHORE_ENCRYPTION_KEYS_FILE` | — | Path to the keys file (YAML/JSON). |
 | `keys_poll_interval` | `SEMAPHORE_ENCRYPTION_KEYS_POLL_INTERVAL` | `15s` | How often the keys file is polled. `"0"` disables polling. |
 
-### Legacy flat keys (main config)
+### Legacy flat keys (main config) {#legacy-flat-keys-main-config}
 
 | Field | Env | Description |
 |-------|-----|-------------|
 | `access_key_encryption` | `SEMAPHORE_ACCESS_KEY_ENCRYPTION` | Single secrets key, no rotation. Used when `keys_file` is unset. |
 | `option_encryption` | `SEMAPHORE_OPTION_ENCRYPTION` | Single options key, no rotation. Falls back to the secrets key. |
 
-### Keys file
+### Keys file {#keys-file}
 
 | Field | Description |
 |-------|-------------|
@@ -317,7 +317,7 @@ poller applies the change within `keys_poll_interval` — no pod restart.
 | `active.secret_key_file` | Filename in `keys_folder` of the active secrets key (relative). |
 | `active.option_key_file` | Filename in `keys_folder` of the active options key (relative). |
 
-### KeySource
+### KeySource {#keysource}
 
 | Field | Description |
 |-------|-------------|
@@ -329,7 +329,7 @@ bytes** (AES‑128/192/256).
 
 ---
 
-## Troubleshooting
+## Troubleshooting {#troubleshooting}
 
 | Symptom | Cause / fix |
 |---------|-------------|

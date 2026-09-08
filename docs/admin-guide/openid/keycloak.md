@@ -15,7 +15,7 @@
 }
 ```
 
-## IdP-initiated login
+## IdP-initiated login {#idp-initiated-login}
 
 To let users launch Semaphore from the Keycloak **Account Console** application launcher, enable
 [IdP-initiated login](/admin-guide/openid#idp-initiated-login) for the provider:
@@ -42,7 +42,7 @@ When a user clicks the application in the launcher, Keycloak redirects to this U
 validates `iss` against your `provider_url` (the realm issuer) and starts a normal Authorization Code flow.
 
 
-## Related GitHub Issues
+## Related GitHub Issues {#related-github-issues}
 
 * [#2308](https://github.com/semaphoreui/semaphore/issues/2308) — How to disable certificate validation for Keycloak server  
 * [#2314](https://github.com/semaphoreui/semaphore/issues/2314) — Option to disable TLS verification  
@@ -50,7 +50,7 @@ validates `iss` against your `provider_url` (the realm issuer) and starts a norm
 
 [Explore all Keycloak-related issues →](https://github.com/semaphoreui/semaphore/issues?q=is%3Aissue%20keycloak)
 
-## Related GitHub Discussions
+## Related GitHub Discussions {#related-github-discussions}
 
 * [#1745](https://github.com/semaphoreui/semaphore/discussions/1745) — Username differs from `preferred_username` in OpenID
 * [#1030](https://github.com/semaphoreui/semaphore/discussions/1030) &mdash; SAML support?

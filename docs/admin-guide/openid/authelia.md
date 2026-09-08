@@ -1,6 +1,6 @@
 # Authelia config
 
-## Authelia configuration
+## Authelia configuration {#authelia-configuration}
 
 ```yaml title="config.yaml"
 identity_providers:
@@ -30,7 +30,7 @@ identity_providers:
         userinfo_signed_response_alg: none
 ```
 
-## Semaphore UI configuration
+## Semaphore UI configuration {#semaphore-ui-configuration}
 
 ```json title="config.json"
 "oidc_providers":  {

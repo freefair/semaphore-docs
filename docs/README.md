@@ -92,7 +92,7 @@ For production, see [Installation](/admin-guide/installation) for Docker Compose
   </div>
 </div>
 
-## Guides by tool
+## Guides by tool {#guides-by-tool}
 
 <div className="home-tools margin-bottom--lg">
   <a className="button button--outline button--primary" href="/user-guide/apps/ansible">Ansible</a>
@@ -102,7 +102,7 @@ For production, see [Installation](/admin-guide/installation) for Docker Compose
   <a className="button button--outline button--primary" href="/user-guide/apps/python">Python</a>
 </div>
 
-## Help and community
+## Help and community {#help-and-community}
 
 - **Questions:** ask on [Discord](https://discord.gg/5R6k7hNGcH).
 - **Bugs and feature requests:** open an issue on [GitHub](https://github.com/semaphoreui/semaphore/issues).

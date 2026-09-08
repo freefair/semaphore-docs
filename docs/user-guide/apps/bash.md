@@ -3,7 +3,7 @@
 
 Semaphore can run shell scripts using `/bin/bash`. To do this, create a **Bash Script** task template.
 
-## Creating a Bash template
+## Creating a Bash template {#creating-a-bash-template}
 
 1. Go to **Task Templates** section and click the **New Template** button.
 2. Select **Bash** as the app type.
@@ -19,7 +19,7 @@ Semaphore can run shell scripts using `/bin/bash`. To do this, create a **Bash S
 4. Click **Create**.
 5. Click **Run** to execute the template.
 
-## Passing variables to scripts
+## Passing variables to scripts {#passing-variables-to-scripts}
 
 Variables from the selected **Variable Groups** are injected as environment variables. Access them in the script with `$VARIABLE_NAME`:
 
@@ -28,7 +28,7 @@ Variables from the selected **Variable Groups** are injected as environment vari
 echo "Deploying to $TARGET_HOST"
 ```
 
-## Notes
+## Notes {#notes}
 
 - Make your script executable (`chmod +x`) or ensure it starts with a valid shebang (`#!/bin/bash`).
 - Scripts run non-interactively. Avoid prompts that wait for user input.

@@ -1,6 +1,6 @@
 # Upgrading
 
-### Package manager
+### Package manager {#package-manager}
 
 Download a package file from [Releases page](https://github.com/semaphoreui/semaphore/releases).
 
@@ -47,7 +47,7 @@ import TabItem from '@theme/TabItem';
 </Tabs>
 
 
-### Binary
+### Binary {#binary}
 
 <Tabs>
   <TabItem value="linux-x64" label="Linux (x64)">

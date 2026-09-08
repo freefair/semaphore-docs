@@ -100,7 +100,7 @@ docker-compose up
 
 &#x20;Semaphore will be available via the following URL [http://localhost:3000](http://localhost:3000).
 
-## Installing Additional Python Dependencies
+## Installing Additional Python Dependencies {#installing-additional-python-dependencies}
 
 Some Ansible modules, collections, and Python apps need extra Python packages that are not included in the image.
 Both the server image (`semaphoreui/semaphore`) and the runner image (`semaphoreui/runner`) can install them automatically on container start.
@@ -150,7 +150,7 @@ docker run -p 3000:3000 \
   semaphoreui/semaphore:latest
 ```
 
-### How it works
+### How it works {#how-it-works}
 
 During startup the container checks for `${SEMAPHORE_CONFIG_PATH}/requirements.txt`. If the file exists, it runs:
 
@@ -167,7 +167,7 @@ Things to keep in mind:
 - **A failed install stops the container.** If `pip3` exits with an error (a typo in a package name, a missing build dependency, or no network), the container exits before Semaphore starts. Check the container logs for the pip output.
 - **Packages that need compilation** (for example some crypto or database drivers) may fail because the image does not ship a compiler. Prefer wheels, or build a custom image for those.
 
-### Alternative: custom image
+### Alternative: custom image {#alternative-custom-image}
 
 If you have many dependencies, need system packages, or want faster and offline startups, bake the packages into your own image instead:
 

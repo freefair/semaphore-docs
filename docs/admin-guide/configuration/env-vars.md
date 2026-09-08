@@ -8,7 +8,7 @@ You can use interactive evnvironment variables generator (for Docker):
 
 ---
 
-## Application environment for apps (Ansible, Terraform, etc.)
+## Application environment for apps (Ansible, Terraform, etc.) {#application-environment-for-apps-ansible-terraform-etc}
 
 Semaphore can pass environment variables to application processes (Ansible, Terraform/OpenTofu, Python, PowerShell, etc.). There are two related options:
 
@@ -44,7 +44,7 @@ Notes:
 
 ---
 
-## Runner executor configuration
+## Runner executor configuration {#runner-executor-configuration}
 
 For runner deployments, the entire executor block can be set as a single JSON environment variable instead of individual keys:
 
@@ -56,6 +56,6 @@ This is equivalent to setting `runner.executor.type` and nested `runner.executor
 
 ---
 
-## Secret environment variables in Variable Groups
+## Secret environment variables in Variable Groups {#secret-environment-variables-in-variable-groups}
 
 In addition to global environment variables, you can define per-project secrets in Variable Groups. Secret keys are masked in the UI and logs. See `User Guide → Variable Groups` for usage and Terraform integration with `TF_VAR_*` variables.

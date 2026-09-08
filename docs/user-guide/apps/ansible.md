@@ -22,7 +22,7 @@ The template allows you to specify the following parameters:
 
 ![](/assets/ansible_2.png)
 
-## Working directory
+## Working directory {#working-directory}
 
 Use **Working directory** to run Ansible commands from a subdirectory of the template repository. Enter a path relative to the repository root. For example, if `ansible.cfg` is stored in `<repository>/automation`, enter `automation`. Absolute paths and paths outside the repository are rejected. If omitted, Semaphore uses the repository root.
 
@@ -36,7 +36,7 @@ Changing the working directory does not by itself add that directory's `roles/` 
 [ansible-role-search]: https://docs.ansible.com/ansible/latest/playbook_guide/playbooks_reuse_roles.html#storing-and-finding-roles
 [ansible-playbook-collections]: https://docs.ansible.com/ansible/latest/collections_guide/collections_installing.html#installing-collections-adjacent-to-playbooks
 
-## Template types
+## Template types {#template-types}
 
 An ansible-playbook template can be one of the following types:
 
@@ -44,13 +44,13 @@ An ansible-playbook template can be one of the following types:
 * [Build](#build)
 * [Deploy](#deploy)
 
-### Task
+### Task {#task}
 
 Just runs specified playbooks with specified parameters.
 
 If you intend to launch the template with an API call with the *limit* feature, make sure to activate the option *Ansible prompts: Limit*. Otherwise the limit set in the API call will be ignored. For the API triggered task, this will not cause any interactive prompt, the task will run unattended.
 
-### Build
+### Build {#build}
 
 This type of template should be used to create [artifacts](https://en.wikipedia.org/wiki/Artifact\_\(software\_development\)). The start version of the artifact can be specified in a template parameter. Each run increments the artifact version.
 
@@ -58,28 +58,28 @@ This type of template should be used to create [artifacts](https://en.wikipedia.
 
 Semaphore doesn't support artifacts out-of-box, it only provides task versioning. You should implement the artifact creation yourself. Read the article [CI/CD](../../admin-guide/cicd) to know how to do this.
 
-### Deploy
+### Deploy {#deploy}
 
 This type of template should be used to deploy artifacts to the destination servers. Each `deploy` template is associated with a `build` template.
 
 
 This allows you to deploy a specific version of the artifact to the servers.
 
-## Template options
+## Template options {#template-options}
 
-### Schedule
+### Schedule {#schedule}
 
 You can set up task scheduling by specifying a cron schedule in the template settings. Cron expression format you can find in [documentation](https://pkg.go.dev/github.com/robfig/cron/v3#hdr-CRON\_Expression\_Format).
 
 
-#### Run a task when a new commit is added to the repository
+#### Run a task when a new commit is added to the repository {#run-a-task-when-a-new-commit-is-added-to-the-repository}
 
 You can use cron to periodically check for new commits in the repository and trigger a task upon their arrival.
 
 For example you have source code of the app in the git repository. You can add it to **Repositories** and trigger the Build task for new commits.
 
 
-### Tags, skip-tags and limit
+### Tags, skip-tags and limit {#tags-skip-tags-and-limit}
 
 Templates support Ansible CLI options:
 
@@ -89,7 +89,7 @@ Templates support Ansible CLI options:
 
 These can be set in the template and overridden when creating a task. Ensure corresponding prompts are enabled if you plan to pass these values via API.
 
-### Parallelism (`--forks` / `-f`)
+### Parallelism (`--forks` / `-f`) {#parallelism---forks---f}
 
 Control how many hosts Ansible connects to in parallel by passing `--forks` or
 `-f` in the template's **Extra CLI arguments**. Arguments must be valid JSON —
@@ -112,14 +112,14 @@ task arguments; the last `--forks` / `-f` on the command line wins.
 If arguments are not valid JSON, the task fails with a descriptive validation
 error before execution starts.
 
-### Authentication
+### Authentication {#authentication}
 
 Authentication for hosts in the playbook is done using the user references from the Key Store on the inventory. The user for SSH is determined by the optional user on the Key Store element.
 
-### Multiple vault passwords
+### Multiple vault passwords {#multiple-vault-passwords}
 
 You can attach multiple Vault passwords from the Key Store to a template. During execution, Ansible will attempt to decrypt using the provided passwords.
 
-### Verbosity level
+### Verbosity level {#verbosity-level}
 
 You can adjust Ansible verbosity for a task (for example `-v`, `-vvv`) from the template/task form to aid troubleshooting.

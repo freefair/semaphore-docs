@@ -26,7 +26,7 @@ following subcommands:
 All subcommands accept the global `--config <path>` flag to point at the runner
 configuration file (and `--no-config` to run from environment variables only).
 
-## Interactive setup (`runner setup`)
+## Interactive setup (`runner setup`) {#interactive-setup-runner-setup}
 
 Walks through an interactive setup, writes a runner configuration file, and, if
 a registration token is available (entered during the prompts or set via
@@ -54,7 +54,7 @@ nohup ./semaphore runner start --config /path/to/config.runner.json &
 You can edit the generated configuration file by hand afterward instead of
 re-running setup.
 
-### Runner configuration options
+### Runner configuration options {#runner-configuration-options}
 
 Fields in the `runner` block of the configuration file:
 
@@ -75,7 +75,7 @@ Fields in the `runner` block of the configuration file:
 See [Runners](/admin-guide/runners) for setup details and
 [Configuration](/admin-guide/configuration) for the full option list.
 
-## Registering a runner (`runner register`)
+## Registering a runner (`runner register`) {#registering-a-runner-runner-register}
 
 Registers the runner on the server and stores the issued runner token in the
 configuration file (overwriting any existing token). The server must have a
@@ -106,7 +106,7 @@ Only the flags you actually pass are applied; `--name`, `--webhook`, `--tags`,
 and `--enabled` overwrite the corresponding values from the configuration file
 and environment only when set on the command line.
 
-### Where the registration token comes from
+### Where the registration token comes from {#where-the-registration-token-comes-from}
 
 When registering, Semaphore resolves the registration token from the first
 available source, in this order:
@@ -120,7 +120,7 @@ available source, in this order:
 A token file that exists but is empty is an error. If no source provides a
 token, registration is attempted without one and the server rejects it.
 
-## Starting a runner (`runner start`)
+## Starting a runner (`runner start`) {#starting-a-runner-runner-start}
 
 Starts the runner, connects to the server, and begins accepting tasks. This is
 the command you run to keep a registered runner online.
@@ -145,7 +145,7 @@ containers.
 `runner start` does not accept `--registration-token-file` or
 `--stdin-registration-token`; those flags belong to `runner register` only.
 
-## Unregistering a runner (`runner unregister`)
+## Unregistering a runner (`runner unregister`) {#unregistering-a-runner-runner-unregister}
 
 Removes the runner's registration from the server, using the runner token from
 the configuration file.

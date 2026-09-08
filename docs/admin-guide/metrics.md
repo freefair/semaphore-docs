@@ -15,7 +15,7 @@ Two categories of metrics are exposed:
 
 Both update in real time as tasks change state — there's no polling delay, since the counters are updated directly inside the task runner at the moment a task's status actually changes.
 
-## Enabling metrics
+## Enabling metrics {#enabling-metrics}
 
 The endpoint is disabled by default and requires HTTP Basic Auth with a static, service-level credential — not tied to any user account, since Prometheus can't do interactive login:
 
@@ -37,7 +37,7 @@ SEMAPHORE_METRICS_USERNAME=prometheus
 SEMAPHORE_METRICS_PASSWORD=changeme
 ```
 
-### Metrics options
+### Metrics options {#metrics-options}
 
 | Parameter  | Environment Variables         | Description |
 | ---------- | ------------------------------ | ------------ |
@@ -47,7 +47,7 @@ SEMAPHORE_METRICS_PASSWORD=changeme
 
 If `enabled` is left `false` (the default), or the credentials are missing or wrong, every request to `/api/metrics` returns `401 Unauthorized`.
 
-## Scraping with Prometheus
+## Scraping with Prometheus {#scraping-with-prometheus}
 
 Configure a scrape job with `basic_auth` using the credentials above:
 
@@ -62,7 +62,7 @@ scrape_configs:
       - targets: ["<semaphore-host>:3000"]
 ```
 
-## Viewing metrics in Grafana
+## Viewing metrics in Grafana {#viewing-metrics-in-grafana}
 
 Grafana's **Explore** view lets you run any PromQL query against the metrics directly and see the raw results, without building a dashboard first:
 

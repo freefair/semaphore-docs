@@ -34,7 +34,7 @@ Example of SSO provider configuration:
 }
 ```
 
-### Configure via environment variable
+### Configure via environment variable {#configure-via-environment-variable}
 
 When running in containers it may be convenient to configure providers using a single environment variable:
 
@@ -76,7 +76,7 @@ All SSO provider options:
 | `endpoint.jwks`       |                                                                                                             |
 | `endpoint.algorithms` |                                                                                                             |
 
-### \*Claim expression
+### \*Claim expression {#claim-expression}
 
 Example of claim expression:
 
@@ -90,7 +90,7 @@ Semaphore is attempting to claim the email field first. If it is empty, the expr
   The expression <code>"username_claim": "|"</code> generates a random <code>username</code> for each user who logs in through the provider.
 </div>
 
-## IdP-initiated login
+## IdP-initiated login {#idp-initiated-login}
 
 By default Semaphore only supports **SP-initiated** sign-in: the user opens Semaphore, clicks the provider button, and
 is redirected to the identity provider (IdP).
@@ -103,7 +103,7 @@ Semaphore implements this using the standard **Third-Party Initiated Login** mec
 redirects the browser to a dedicated **Initiate Login URI**, and Semaphore then starts a normal Authorization Code flow.
 The actual authentication is still a full, secure code exchange — Semaphore never accepts an unsolicited token.
 
-### Enabling it
+### Enabling it {#enabling-it}
 
 Set `allow_idp_initiated` to `true` for the provider:
 
@@ -122,7 +122,7 @@ Set `allow_idp_initiated` to `true` for the provider:
 }
 ```
 
-### Configuring the identity provider
+### Configuring the identity provider {#configuring-the-identity-provider}
 
 In your IdP, set the application's **Initiate Login URI** to:
 
@@ -144,7 +144,7 @@ Provider-specific notes:
 - **Azure AD / Entra** — *My Apps* uses an SP-initiated start URL and does not always send `iss`; point the start URL at
   `https://your-domain.com/api/auth/oidc/<provider-id>/login` instead.
 
-### Security
+### Security {#security}
 
 - IdP-initiated login is **off by default** and must be enabled per provider.
 - The `iss` parameter is validated against the configured issuer to prevent provider mix-up.
@@ -152,7 +152,7 @@ Provider-specific notes:
 - The flow goes through the full Authorization Code exchange with CSRF `state` and a `nonce`, so a captured or replayed
   token cannot be used to sign in.
 
-## Sign in screen
+## Sign in screen {#sign-in-screen}
 
 For each of the configured providers, an additional login button is added to the login page:
 

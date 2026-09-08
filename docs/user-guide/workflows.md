@@ -10,7 +10,7 @@ Workflows are a **Semaphore Pro** feature. The Workflows menu item appears only
 when your subscription includes them.
 :::
 
-## Overview
+## Overview {#overview}
 
 A workflow consists of:
 
@@ -23,7 +23,7 @@ When you start a workflow, Semaphore creates a **workflow run**. The server
 drives progression: as tasks complete, approvals are resolved, or delays expire,
 downstream nodes are launched according to the edge conditions.
 
-## Creating a workflow
+## Creating a workflow {#creating-a-workflow}
 
 1. Open your project and go to **Workflows**.
 2. Click **New Workflow**.
@@ -38,7 +38,7 @@ The editor validates the graph before saving. A valid workflow must have at leas
 one node, exactly one starting node (no incoming edges), no cycles, and complete
 configuration on every executable node.
 
-## Node kinds
+## Node kinds {#node-kinds}
 
 | Kind | Purpose |
 |------|---------|
@@ -47,12 +47,12 @@ configuration on every executable node.
 | **Delay** | Waits for a configured number of seconds before continuing to downstream nodes. Useful for cooling-off periods, maintenance windows, or spacing out dependent steps. |
 | **Note** | Free-form annotation on the canvas. Note nodes do not execute and are not connected by edges — they are for documentation only. |
 
-### Convergence
+### Convergence {#convergence}
 
 Nodes with multiple incoming edges can require **all** upstream nodes to finish
 (default) or **any** one of them. Set **Convergence** in the node property panel.
 
-### Delay nodes
+### Delay nodes {#delay-nodes}
 
 A delay node pauses the workflow run for the configured duration (minimum 1
 second). While waiting:
@@ -64,13 +64,13 @@ second). While waiting:
 If the workflow run is **stopped** while a delay is active, the delay is
 cancelled and the run ends in **stopped** status.
 
-### Approval nodes
+### Approval nodes {#approval-nodes}
 
 When the run reaches an approval node, status changes to **approval** until
 someone approves or rejects. Approve/Reject controls appear on the run view.
 Rejected approvals fail the run according to the connected edge conditions.
 
-## Edge conditions
+## Edge conditions {#edge-conditions}
 
 Each edge has a condition that determines when the downstream node becomes ready:
 
@@ -83,7 +83,7 @@ Each edge has a condition that determines when the downstream node becomes ready
 Use **On failure** branches for compensating actions or notifications. Use
 **Always** when the next step should run regardless of outcome.
 
-## Running and monitoring
+## Running and monitoring {#running-and-monitoring}
 
 - **Run workflow** — starts a new run from the Workflows list.
 - **Run view** — full-screen graph with live status on each node (running, success,
@@ -94,13 +94,13 @@ Use **On failure** branches for compensating actions or notifications. Use
 
 Run statuses: `running`, `approval`, `success`, `failed`, `stopped`.
 
-## Run versioning
+## Run versioning {#run-versioning}
 
 Set **Start version** on the workflow (for example `1.0.0`) to enable version
 labels on each run. Semaphore increments the version on successive runs, similar
 to build templates.
 
-## Workflow artifacts (set_stats)
+## Workflow artifacts (set_stats) {#workflow-artifacts-set_stats}
 
 When an Ansible task in a workflow uses `set_stats`, the variables are stored as
 **workflow artifacts** for that run. Downstream task nodes in the same run
@@ -113,7 +113,7 @@ locally on the Semaphore server. Plan artifact hand-offs accordingly or keep
 artifact-producing and -consuming steps on the same execution path.
 :::
 
-## Permissions
+## Permissions {#permissions}
 
 - Managing workflows (create, edit, delete) requires project resource management
   permissions.
@@ -121,7 +121,7 @@ artifact-producing and -consuming steps on the same execution path.
 - Resolving approvals requires appropriate project access (same users who can run
   tasks in the project).
 
-## API
+## API {#api}
 
 Workflow templates and runs are available under
 `/api/project/{project_id}/workflows`. See the

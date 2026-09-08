@@ -2,7 +2,7 @@
 
 Welcome to the Semaphore UI Administration Guide. This guide provides comprehensive information for installing, configuring, and maintaining your Semaphore instance.
 
-## What is Semaphore UI?
+## What is Semaphore UI? {#what-is-semaphore-ui}
 
 Semaphore UI is a modern, open-source web interface for running automation tasks. It is designed to be a lightweight, fast, and easy-to-use alternative to more complex automation platforms.
 
@@ -12,7 +12,7 @@ It allows you to securely manage and execute tasks for:
 *   **PowerShell** and **Shell** scripts
 *   **Python** scripts
 
-## Core Features & Philosophy
+## Core Features & Philosophy {#core-features--philosophy}
 
 Understanding Semaphore's design principles can help you get the most out of it:
 

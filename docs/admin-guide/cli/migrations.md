@@ -18,7 +18,7 @@ starting the server, or for rolling back.
 Always back up your database before applying or rolling back migrations.
 :::
 
-## Applying migrations
+## Applying migrations {#applying-migrations}
 
 Apply all pending migrations and bring the database up to date:
 
@@ -32,7 +32,7 @@ Apply migrations only up to a specific version:
 semaphore migrate --apply-to 2.15.1
 ```
 
-## Rolling back migrations
+## Rolling back migrations {#rolling-back-migrations}
 
 Undo migrations down to a previous version:
 
@@ -44,7 +44,7 @@ Use the Semaphore version you are downgrading to. The binary you run `migrate`
 with must know about every migration being undone, so run it with the **newer**
 binary before installing the older one.
 
-## Options
+## Options {#options}
 
 | Flag | Description |
 |------|-------------|
@@ -62,7 +62,7 @@ On completion the command prints the database connection it used.
 have no effect. They belonged to the BoltDB import described below.
 :::
 
-## Migration from BoltDB to SQLite/MySQL/PostgreSQL
+## Migration from BoltDB to SQLite/MySQL/PostgreSQL {#migration-from-boltdb-to-sqlitemysqlpostgresql}
 
 *Available in versions 2.17 and 2.18 only*
 
@@ -117,7 +117,7 @@ docker run --name semaphore \
   -d semaphoreui/semaphore:v2.18.2
 ```
 
-## Troubleshooting
+## Troubleshooting {#troubleshooting}
 
 - If a migration fails, check the logs for details and make sure the CLI binary
   is the same version as the Semaphore server.

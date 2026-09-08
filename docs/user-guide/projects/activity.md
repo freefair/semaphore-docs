@@ -5,7 +5,7 @@ The Activity page provides a comprehensive audit trail of all actions and events
 
 ![](/assets/project_activity.webp)
 
-## Overview
+## Overview {#overview}
 
 The Activity page displays a chronological feed of all project activities, including:
 

@@ -12,11 +12,11 @@ When the task is running, or it has finished, you can see the task status and th
 
 ![](/assets/image7.png)
 
-### Raw log view
+### Raw log view {#raw-log-view}
 
 You can open the unprocessed raw task log from the task log window via the RAW LOG action.
 
-## Tasks log retention
+## Tasks log retention {#tasks-log-retention}
 You'll notice that logs of previous runs of your tasks are available in the tasks template or in the dashboard.
 
 However, by default, log retention is infinite.

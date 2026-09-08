@@ -23,7 +23,7 @@ semaphore users --help
 | [`users totp show`](#totp-management) | Show a user's TOTP details. |
 | [`users totp disable`](#totp-management) | Disable TOTP for a user. |
 
-## Add a user
+## Add a user {#add-a-user}
 
 ```bash
 semaphore user add \
@@ -45,7 +45,7 @@ semaphore user add \
 
 On success the command prints `User <login> <email> added!`.
 
-## Change a user
+## Change a user {#change-a-user}
 
 You can find the user to change either by login or by email.
 
@@ -73,7 +73,7 @@ Only the flags you provide are applied; omitted fields are left unchanged.
 `--admin` can only grant admin rights. It cannot revoke them; use the web UI
 for that.
 
-## Show a user
+## Show a user {#show-a-user}
 
 Print a single user's details, looked up by login or email.
 
@@ -87,7 +87,7 @@ At least one of `--login` or `--email` is required. The output includes the
 user's ID, creation time, login, name, email, and admin status. If no user
 matches, the command prints a message and exits with a non-zero status.
 
-## List users
+## List users {#list-users}
 
 Print the logins of all users, one per line.
 
@@ -95,7 +95,7 @@ Print the logins of all users, one per line.
 semaphore user list
 ```
 
-## Delete a user
+## Delete a user {#delete-a-user}
 
 Remove a user, looked up by login or email.
 
@@ -107,7 +107,7 @@ semaphore user delete --email admin@example.com
 
 At least one of `--login` or `--email` is required.
 
-## API token management
+## API token management {#api-token-management}
 
 Manage a user's API tokens via the CLI:
 
@@ -115,7 +115,7 @@ Manage a user's API tokens via the CLI:
 semaphore user token --help
 ```
 
-### Create a token
+### Create a token {#create-a-token}
 
 ```bash
 # Token that never expires
@@ -141,7 +141,7 @@ TOKEN=$(semaphore user token create --login ci --name "CI token" --ttl 720h)
 An invalid `--ttl` value or an unknown login is reported and the command exits
 with a non-zero status.
 
-### List tokens
+### List tokens {#list-tokens}
 
 ```bash
 semaphore user token list --login john
@@ -151,7 +151,7 @@ semaphore user token list --login john
 `expired`), and its expiry time in RFC 3339 format (`never` if it has no
 expiry), separated by tabs. Token values are never printed.
 
-## TOTP management
+## TOTP management {#totp-management}
 
 Manage time-based one-time password (2FA) verification via the CLI:
 

@@ -5,7 +5,7 @@ The History screen in Semaphore provides a comprehensive view of all task execut
 
 ![](/assets/project_history.webp)
 
-## Overview
+## Overview {#overview}
 
 The History page displays a chronological list of all task executions, including:
 
@@ -16,15 +16,15 @@ The History page displays a chronological list of all task executions, including
 - User who initiated the task
 - Task output and logs
 
-## Viewing Task History
+## Viewing Task History {#viewing-task-history}
 
-### Accessing History
+### Accessing History {#accessing-history}
 
 1. Navigate to your project in Semaphore
 2. Click on "History" tab
 3. View the list of all task executions
 
-## Task Details
+## Task Details {#task-details}
 
 Clicking on any task in the history list opens a detailed view showing:
 
@@ -49,13 +49,13 @@ Clicking on any task in the history list opens a detailed view showing:
    - Log search functionality
    - Error highlighting
 
-### Statistics
+### Statistics {#statistics}
 
 The project provides a statistics page summarizing task outcomes over a selected time range, with filtering by user.
 
-## Task Management
+## Task Management {#task-management}
 
-### Actions Available
+### Actions Available {#actions-available}
 
 From the history view, you can:
 
@@ -63,7 +63,7 @@ From the history view, you can:
 - Download task output
 - Search within logs
 
-## Task Retention
+## Task Retention {#task-retention}
 
 Semaphore allows you to configure how long task history is retained:
 

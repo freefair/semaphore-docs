@@ -20,7 +20,7 @@ It has two subcommands:
 For how encryption keys are configured and rotated, see
 [Encryption Keys](/admin-guide/security/encryption).
 
-## Re-encrypting secrets (`vault rekey`)
+## Re-encrypting secrets (`vault rekey`) {#re-encrypting-secrets-vault-rekey}
 
 Re-encrypts all locally stored secrets — Access Key secrets and the JWT signing
 key — under the **active** encryption key, stamping that key's id into each
@@ -31,7 +31,7 @@ encrypted with the Semaphore keyring).
 semaphore vault rekey
 ```
 
-### Zero-downtime key rotation
+### Zero-downtime key rotation {#zero-downtime-key-rotation}
 
 The active key encrypts new writes; every other key in the keyset can still
 decrypt old data. Rotation is therefore: add a key, switch the active pointer,
@@ -45,7 +45,7 @@ re-encrypt in the background, then drop the old key.
 3. Run [`semaphore vault check`](#checking-key-usage-vault-check); once the old
    key shows `0 rows` it is safe to remove from the keyset.
 
-### Options
+### Options {#options}
 
 | Flag | Description |
 |------|-------------|
@@ -53,7 +53,7 @@ re-encrypt in the background, then drop the old key.
 | `--backup <file>` | Write a backup of the current Access Key ciphertexts to `<file>` before re-encrypting. |
 | `--rollback <file>` | Restore Access Key ciphertexts from a backup file instead of re-encrypting. |
 
-### Backup and rollback
+### Backup and rollback {#backup-and-rollback}
 
 Take a snapshot of the current ciphertexts before re-encrypting, and restore it
 if something goes wrong:
@@ -69,7 +69,7 @@ semaphore vault rekey --rollback /var/backups/vault.jsonl
 The backup is a JSON-lines file, one entry per Access Key (`project_id`,
 `key_id`, `secret`). A rollback writes those ciphertexts back verbatim.
 
-### Legacy single-key migration
+### Legacy single-key migration {#legacy-single-key-migration}
 
 If your data was encrypted by an older Semaphore that used the single
 `access_key_encryption` key (no rotation, no stamped key id), pass that key
@@ -82,7 +82,7 @@ semaphore vault rekey --old-key <base64-old-key>
 This is unnecessary once the old key is part of the keyset — Semaphore looks each
 value up by its stamped id and decrypts with the matching key automatically.
 
-## Checking key usage (`vault check`)
+## Checking key usage (`vault check`) {#checking-key-usage-vault-check}
 
 Read-only. Reports, per key id, how many locally stored Access Key secrets (and
 the JWT signing key) that key encrypts, plus the JWT signing key's status. Run it

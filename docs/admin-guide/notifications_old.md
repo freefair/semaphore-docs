@@ -12,7 +12,7 @@ Supported providers:
 * [DingTalk](/admin-guide/notifications/ding)
 * [Gotify](/admin-guide/notifications/gotify)
 
-## How it works
+## How it works {#how-it-works}
 
 - **Global configuration**: Enable a provider and set its connection options in `config.json` on the Semaphore server. See each provider page for the exact keys.
 - **Events**: Notifications are sent on key task lifecycle events (e.g., start, success, failure) and are posted to the configured channel/webhook.

@@ -2,13 +2,13 @@
 
 Semaphore Pro and Enterprise features are enabled with a license key. You can activate the license from the web UI, or provide the key in the server configuration for automated deployments.
 
-## Before you start
+## Before you start {#before-you-start}
 
 - You do not need to reinstall Semaphore UI or switch to a different build to activate Pro or Enterprise. Your current Semaphore UI version can be activated with a license key. Update to the latest version if you want access to the newest Pro or Enterprise features.
 - Sign in with an administrator account.
 - Have your license key ready. You can find it in the purchase email or in the [Semaphore UI Portal](https://portal.semaphoreui.com/auth/login).
 
-## Activate from the web UI
+## Activate from the web UI {#activate-from-the-web-ui}
 
 1. Sign in to Semaphore UI as an administrator.
 
@@ -30,7 +30,7 @@ After a successful activation, Semaphore UI shows your current license details i
 
 ![Subscription and Billing dialog after successful activation](/assets/subscription-activation-success.png)
 
-## Activate from configuration
+## Activate from configuration {#activate-from-configuration}
 
 For Docker, Kubernetes, systemd, or other automated deployments, provide the license key in the server configuration instead of entering it in the UI. The configuration option names use `subscription.*`.
 
@@ -68,7 +68,7 @@ export SEMAPHORE_SUBSCRIPTION_KEY_FILE=/run/secrets/semaphore-license-key
 
 When the license key is managed by configuration, Semaphore UI disables editing and activation controls in the **Subscription & Billing** dialog. This applies to both `subscription.key` and `subscription.key_file`, because the server reads the key file into the runtime license key at startup.
 
-## Manage or replace a license key
+## Manage or replace a license key {#manage-or-replace-a-license-key}
 
 To renew, replace, or review your license, open the Admin menu and select **Subscription & Billing**.
 

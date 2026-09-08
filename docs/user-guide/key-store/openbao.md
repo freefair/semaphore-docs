@@ -18,16 +18,16 @@ You can provide the following options:
 
 The storage can work in read-only mode.
 
-## How to use
+## How to use {#how-to-use}
 
 1. In your project, open **Key Store** → **Storages** and create a new **OpenBao** storage (URL, mount path, and token).
 2. When creating or editing a key in the Key Store, select your OpenBao storage as the storage type.
 3. Provide the secret path in OpenBao where the credential should be stored.
 
-## Syncing secrets
+## Syncing secrets {#syncing-secrets}
 
 Secrets stored in OpenBao can be automatically imported into the Key Store and kept in sync, the same way as with other external storages. See [Syncing secrets from remote storages](/user-guide/key-store/secret-sync).
 
-## Variable Groups
+## Variable Groups {#variable-groups}
 
 OpenBao can also be used as a storage for [Variable Groups](/user-guide/environment). When editing a variable group, select your OpenBao storage as the storage type and specify the path of the folder where secrets will be stored.

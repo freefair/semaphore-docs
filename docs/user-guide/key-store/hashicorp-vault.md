@@ -27,7 +27,7 @@ You can provide the following options:
 
 The storage can work in read-only mode.
 
-## How to use
+## How to use {#how-to-use}
 
 1. Configure the HashiCorp Vault connection in the Semaphore settings (URL, mount path, and token).
 2. When creating or editing a key in the Key Store, select **HashiCorp Vault** as the storage type.
@@ -35,7 +35,7 @@ The storage can work in read-only mode.
 
 ![](/assets/vault2.webp)
 
-## HashiCorp Vault Agent
+## HashiCorp Vault Agent {#hashicorp-vault-agent}
 
 Instead of storing the Vault token directly, you can use [HashiCorp Vault Agent](https://developer.hashicorp.com/vault/docs/agent-and-proxy/agent) to automatically handle token retrieval and renewal.
 
@@ -70,7 +70,7 @@ To set this up:
 This approach avoids long-lived static tokens and lets Vault Agent handle authentication and token renewal automatically.
 
 
-## Variable Groups
+## Variable Groups {#variable-groups}
 
 HashiCorp Vault can also be used as a storage for [Variable Groups](/user-guide/environment). When editing a variable group, select **HashiCorp Vault** as the storage type and specify the path of the folder where secrets will be stored.
 

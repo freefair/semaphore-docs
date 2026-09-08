@@ -2,14 +2,14 @@
 
 Learn how to use Semaphore day-to-day: create projects, run tasks, manage inventories, keys, variables, and more.
 
-## Start here
+## Start here {#start-here}
 
 - Organize work with projects and teams
 - Connect repositories and key store
 - Define inventories and variable groups
 - Create task templates and run tasks on schedule
 
-## Quick links
+## Quick links {#quick-links}
 
 - Projects: [Overview](/projects)
   - [History](/projects/history)

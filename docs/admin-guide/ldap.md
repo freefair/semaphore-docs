@@ -37,7 +37,7 @@ All SSO provider options:
 | `ldap_needtls`        | `SEMAPHORE_LDAP_NEEDTLS` | Connect to LDAP server by SSL. |
 
 
-### \*Claim expression
+### \*Claim expression {#claim-expression}
 
 Example of claim expression:
 
@@ -51,7 +51,7 @@ Semaphore is attempting to claim the email field first. If it is empty, the expr
   The expression <code>"username_claim": "|"</code> generates a random <code>username</code> for each user who logs in through the provider.
 </div>
 
-### Troubleshooting
+### Troubleshooting {#troubleshooting}
 
 Use `ldapwhoami` tool to check if your **BindDN** works:
 This tool is provided by the **openldap-clients** package.
@@ -71,7 +71,7 @@ It will ask interactively for the password, and should return code **0** and ech
 </div>
 
 
-## Example: Using OpenLDAP Server
+## Example: Using OpenLDAP Server {#example-using-openldap-server}
 
 Run the following command to start your own LDAP server with an admin account and an additional user:
 

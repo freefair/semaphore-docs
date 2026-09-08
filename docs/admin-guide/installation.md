@@ -29,7 +29,7 @@ See also:
 ----
 
 
-### Installing Additional Python Packages
+### Installing Additional Python Packages {#installing-additional-python-packages}
 
 Some Ansible modules and roles require additional python packages to run. To install additional python packages, create a `requirements.txt` file and mount it in the `/etc/semaphore` directory on the container. For example, you could add the following lines to your `docker-compose.yml` file:
 

@@ -10,11 +10,11 @@ Templates define how to run Semaphore tasks. Currently the following task types 
 
 ---
 
-## Parallel tasks
+## Parallel tasks {#parallel-tasks}
 
 By default, tasks from the same template execute sequentially. To allow concurrent runs of the same template, enable the "Allow parallel tasks" option in the template settings.
 
-## Executor image (Docker and Kubernetes runners)
+## Executor image (Docker and Kubernetes runners) {#executor-image-docker-and-kubernetes-runners}
 
 When a project runner uses the **Docker** (Pro) or **Kubernetes** (Enterprise) executor, each task normally runs in the default job image configured on the runner (for example `semaphoreui/job:latest`). You can override that image per template.
 

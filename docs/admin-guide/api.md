@@ -1,6 +1,6 @@
 # API
 
-## API reference
+## API reference {#api-reference}
 
 Semaphore UI provides two formats of API documentation, so you can choose the one that fits your workflow best:
 
@@ -12,7 +12,7 @@ Semaphore UI provides two formats of API documentation, so you can choose the on
 
 All options include complete documentation of available endpoints, parameters, and example responses.
 
-## Getting Started with the API
+## Getting Started with the API {#getting-started-with-the-api}
 
 To start using the Semaphore API, you need to generate an API token.
 This token must be included in the request header as:
@@ -21,19 +21,19 @@ This token must be included in the request header as:
 Authorization: Bearer YOUR_API_TOKEN
 ```
 
-### Creating an API Token
+### Creating an API Token {#creating-an-api-token}
 
 There are two ways to create an API token:
 - Through the web interface
 - Using HTTP request
 
-#### Through the web interface (since 2.14)
+#### Through the web interface (since 2.14) {#through-the-web-interface-since-214}
 
 You can create and manage your API tokens via the Semaphore web UI:
 
 ![API Tokens](https://www.semaphoreui.com/uploads/v2.14/tokens.webp)
 
-#### Using HTTP request
+#### Using HTTP request {#using-http-request}
 
 You can also authenticate and generate a session token using a direct HTTP request.
 
@@ -68,11 +68,11 @@ The command should return something similar to:
 ```
 ---
 
-## Using token to make API requests
+## Using token to make API requests {#using-token-to-make-api-requests}
 
 Once you have your API token, include it in the **Authorization** header to authenticate your requests.
 
-### Launch a task
+### Launch a task {#launch-a-task}
 
 Use this token for launching a task or anything else:
 
@@ -87,7 +87,7 @@ http://localhost:3000/api/project/1/tasks
 
 ---
 
-## Expiring an API token
+## Expiring an API token {#expiring-an-api-token}
 
 If you no longer need the token, you should expire it to keep your account secure.
 

@@ -7,7 +7,7 @@ Semaphore can be configured using several methods:
 * [Environment variables](/admin-guide/configuration/env-vars) &mdash; useful for containerized or cloud-native deployments.
 
 
-## Configuration options
+## Configuration options {#configuration-options}
 
 Full list of available configuration options:
 
@@ -198,9 +198,9 @@ Full list of available configuration options:
 | <br />`ha.redis.tls` ![Static Badge](https://img.shields.io/badge/enterprise-yellow)<hr /> `SEMAPHORE_HA_REDIS_TLS` <br /><br /> | Enable TLS for the Redis connection. |
 | <br />`ha.redis.tls_skip_verify` ![Static Badge](https://img.shields.io/badge/enterprise-yellow)<hr /> `SEMAPHORE_HA_REDIS_TLS_SKIP_VERIFY` <br /><br /> | Skip TLS certificate verification for the Redis connection. |
 
-## Frequently asked questions
+## Frequently asked questions {#frequently-asked-questions}
 
-### 1. How to configure a public URL for Semaphore UI
+### 1. How to configure a public URL for Semaphore UI {#1-how-to-configure-a-public-url-for-semaphore-ui}
 
 If you use nginx or other web server before Semaphore, you should provide configuration option `web_host`.
 

@@ -5,7 +5,7 @@ Project Runners are a powerful feature in Semaphore Pro that enables distributed
 
 ![](/assets/project_runners.webp)
 
-## Overview
+## Overview {#overview}
 
 Project runners operate on a similar principle to GitLab or GitHub Actions runners:
 
@@ -14,7 +14,7 @@ Project runners operate on a similar principle to GitLab or GitHub Actions runne
 - When tasks are created, Semaphore delegates them to available runners
 - Runners execute the tasks and report results back to Semaphore
 
-## Benefits
+## Benefits {#benefits}
 
 Using runners provides several key advantages:
 
@@ -33,9 +33,9 @@ Using runners provides several key advantages:
    - Run tasks in different network zones
    - Support for various deployment models (on-premises, cloud, hybrid)
 
-## Using Project Runners
+## Using Project Runners {#using-project-runners}
 
-### Prerequisites
+### Prerequisites {#prerequisites}
 
 To use runners, you need:
 
@@ -52,7 +52,7 @@ To use runners, you need:
 2. **Runner Setup** -->
 
 
-### Managing Runners
+### Managing Runners {#managing-runners}
 
 You can manage runners through the Semaphore UI:
 
@@ -61,13 +61,13 @@ You can manage runners through the Semaphore UI:
 3. Add or remove runners as needed
 4. Monitor runner health and performance
 
-### Security Considerations
+### Security Considerations {#security-considerations}
 
 - Always use HTTPS for communication between runners and Semaphore UI
 - Implement proper network security between runners and Semaphore UI
 - Consider using isolated environments for sensitive operations
 
-## Best Practices
+## Best Practices {#best-practices}
 
 1. **Resource Planning**
    - Size your runners appropriately for your workload

@@ -15,7 +15,7 @@
 }
 ```
 
-## IdP-initiated login
+## IdP-initiated login {#idp-initiated-login}
 
 To let users start sign-in from the Okta dashboard tile, enable
 [IdP-initiated login](/admin-guide/openid#idp-initiated-login) for the provider:
@@ -47,7 +47,7 @@ Okta sends the `iss` and `target_link_uri` parameters; Semaphore validates `iss`
 a normal Authorization Code flow.
 
 
-## Related GitHub Issues
+## Related GitHub Issues {#related-github-issues}
 
 * [#1434](https://github.com/semaphoreui/semaphore/issues/1434) — Help with OIDC Azure AD configuration/debugging
 * [#1864](https://github.com/semaphoreui/semaphore/issues/1864) — v2.9.56 breaks oidc auth with keycloak
@@ -55,7 +55,7 @@ a normal Authorization Code flow.
 
 [Explore all Okta-related issues →](https://github.com/semaphoreui/semaphore/issues?q=is%3Aissue%20okta)
 
-## Related GitHub Discussions
+## Related GitHub Discussions {#related-github-discussions}
 
 * [#2822](https://github.com/semaphoreui/semaphore/discussions/2822) — When setting up GitHub OpenID, parsing is not possible except for Email
 * [#1030](https://github.com/semaphoreui/semaphore/discussions/1030) &mdash; SAML support?

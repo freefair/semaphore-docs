@@ -8,7 +8,7 @@ In the **Enterprise** edition, built-in roles can be extended with [custom roles
 To avoid losing access to a project, it's recommended to have at least two team members with the <b>Owner</b> role.
 :::
 
-## Built-in roles
+## Built-in roles {#built-in-roles}
 
 Every team member has exactly one of these four roles:
 
@@ -19,7 +19,7 @@ Every team member has exactly one of these four roles:
 
 Below are detailed descriptions of each role and its permissions.
 
-### Owner
+### Owner {#owner}
 
 - **Full permissions**<br />
   Owners can do anything within the project, including managing roles, adding/removing members, and configuring any project settings.
@@ -33,7 +33,7 @@ Below are detailed descriptions of each role and its permissions.
 - **Managing other owners**<br />
   Owners can manage (including remove or change roles of) all team members, including other Owners.
 
-### Manager
+### Manager {#manager}
 
 - **Broad project control:** Managers have almost the same permissions as Owners, allowing them to handle most day-to-day tasks and manage the project environment.
 
@@ -43,7 +43,7 @@ Below are detailed descriptions of each role and its permissions.
 
 - **Typical use case:** Assign the Manager role to senior team members who need extensive access but don't require the authority to delete the project or manage Owners.
 
-### Task Runner
+### Task Runner {#task-runner}
 
 - **Run tasks:** Task Runners can execute any task template that exists within the project.
 
@@ -51,7 +51,7 @@ Below are detailed descriptions of each role and its permissions.
 
 - **Typical use case:** Developers or QA engineers who need to trigger and monitor tasks but do not need the ability to modify project settings or manage team membership.
 
-### Guest
+### Guest {#guest}
 
 - **Read-only access:** Guests have read-only access to all project resources (e.g., viewing logs, inventories, dashboards).
 
@@ -61,7 +61,7 @@ Below are detailed descriptions of each role and its permissions.
 
 ---
 
-## Extended RBAC (Enterprise)
+## Extended RBAC (Enterprise) {#extended-rbac-enterprise}
 
 :::info
 Extended RBAC is available in the **Semaphore Enterprise** edition, starting with [Semaphore v2.17](https://semaphoreui.com/releases/semaphore-v2_17).
@@ -71,7 +71,7 @@ Extended RBAC layers additional permissions on top of the four built-in roles. T
 
 With Extended RBAC, custom roles can grant individual project-wide permissions. You can also grant a role permissions on selected task templates. This lets you give a team member access to the templates they need without promoting them to a higher built-in role.
 
-### Custom roles
+### Custom roles {#custom-roles}
 
 A custom role is a named set of permissions that supplements a member's built-in project role. Every team member keeps their built-in role. Custom roles add permissions to it.
 
@@ -80,18 +80,18 @@ Custom roles are available at two scopes:
 - **Global roles** are defined at the instance level and can be used in any project.
 - **Project roles** are defined inside a single project and are available only within that project.
 
-### Permission levels
+### Permission levels {#permission-levels}
 
 Custom roles grant permissions at two levels:
 
 - **Project-wide permissions** extend a user's access throughout a project. You choose these when you create the role.
 - **Template permissions** control actions on one task template. You choose these on that template's **Permissions** tab after adding the role to the template.
 
-### Create a custom role
+### Create a custom role {#create-a-custom-role}
 
 Choose the scope before opening the role form.
 
-#### Global role
+#### Global role {#global-role}
 
 Global roles are created once and can be assigned to users in any project. Only an instance administrator can create a global role.
 
@@ -101,7 +101,7 @@ On the instance-wide list of roles, select **New Role**.
 
 ![Open Roles from the administrator menu, then select New Role](/assets/custom-roles-navigation-to-new-role-annotated-v4.png)
 
-#### Project role
+#### Project role {#project-role}
 
 Project roles are available only in the project where they are created. Project Owners and Managers can create them.
 
@@ -112,7 +112,7 @@ The **Roles** tab is empty until the first project role is created. It lists all
 
 ![](https://www.semaphoreui.com/uploads/v2.17/roles1.webp)
 
-### Configure a custom role
+### Configure a custom role {#configure-a-custom-role}
 
 Both paths open the same role form. Configure the role to match the access your team member needs.
 
@@ -124,7 +124,7 @@ Both paths open the same role form. Configure the role to match the access your 
 | **Slug** | A unique technical identifier used to reference the role. Use lowercase letters, numbers, underscores, or hyphens, for example `release_operator`. |
 | **Permissions** | The project-wide permissions granted by the role. |
 
-#### Project-wide permissions
+#### Project-wide permissions {#project-wide-permissions}
 
 Choose only the project-wide permissions that the role needs:
 
@@ -143,7 +143,7 @@ To create a granular role that adds access only to selected task templates, leav
 
 Select **Save** when the role configuration is ready.
 
-### Configure access to specific task templates
+### Configure access to specific task templates {#configure-access-to-specific-task-templates}
 
 Template permissions add access on selected task templates. The example below uses a custom role with no project-wide permissions. This least-privilege configuration is useful when a team member needs only selected template actions. You can also add template permissions to a role that already grants project-wide access.
 
@@ -171,7 +171,7 @@ To grant the same role access to additional templates, repeat these steps for ea
 Template permissions are additive. They add access without replacing or reducing access from a user's built-in role or other custom roles. If a user can already run or update all task templates, adding a template-specific role does not narrow that access.
 :::
 
-### Assign a custom role in a project
+### Assign a custom role in a project {#assign-a-custom-role-in-a-project}
 
 After creating and configuring a global or project role, assign it to the required team member:
 
@@ -179,14 +179,14 @@ After creating and configuring a global or project role, assign it to the requir
 2. Expand **Roles** next to the required user.
 3. Select the custom role.
 
-### Not currently supported
+### Not currently supported {#not-currently-supported}
 
 - **LDAP / OIDC group mapping.** Custom roles are assigned per user. Mapping external directory groups to custom roles is not supported.
 - **Granular permissions for non-template resources.** Only templates can be governed by custom roles at the individual-resource level today.
 
 ---
 
-## Managing team members
+## Managing team members {#managing-team-members}
 
 - **Inviting new members:** **Owners** and **Managers** can invite new users to join the team and assign them an initial role.
 
@@ -198,7 +198,7 @@ After creating and configuring a global or project role, assign it to the requir
 
 ---
 
-## Best practices
+## Best practices {#best-practices}
 
 1. **Maintain redundancy:** Assign the **Owner** role to at least two people to ensure continuous access and prevent a single point of failure.
 2. **Follow the principle of least privilege:**
@@ -214,25 +214,25 @@ After creating and configuring a global or project role, assign it to the requir
 
 ---
 
-## Frequently asked questions
+## Frequently asked questions {#frequently-asked-questions}
 
-### 1. Can an Owner remove another Owner?
+### 1. Can an Owner remove another Owner? {#1-can-an-owner-remove-another-owner}
 Yes, an Owner can remove or change the role of any other Owner, unless they are the only remaining Owner in the project.
 
-### 2. Who can delete the project?
+### 2. Who can delete the project? {#2-who-can-delete-the-project}
 Only **Owners** can delete a project.
 
-### 3. Can Managers add or remove other Managers?
+### 3. Can Managers add or remove other Managers? {#3-can-managers-add-or-remove-other-managers}
 No. Managers can only add or remove users with **Task Runner** or **Guest** roles. To manage Owners or other Managers, you must be an Owner.
 
-### 4. What happens if I remove all Owners by accident?
+### 4. What happens if I remove all Owners by accident? {#4-what-happens-if-i-remove-all-owners-by-accident}
 Semaphore UI prevents the removal of an Owner if it would leave the project with no Owners at all. There must be at least one Owner at all times.
 
-### 5. Can Guests run tasks?
+### 5. Can Guests run tasks? {#5-can-guests-run-tasks}
 No. Guests have read‐only access and cannot trigger or manage tasks. In the Enterprise edition you can grant a Guest permission to run individual templates through a [custom role](#extended-rbac-enterprise).
 
-### 6. Do custom roles replace the built-in roles?
+### 6. Do custom roles replace the built-in roles? {#6-do-custom-roles-replace-the-built-in-roles}
 No. Custom roles extend the built-in roles with additional project and template-level permissions. Every team member still has exactly one built-in role.
 
-### 7. Is Extended RBAC available in the community edition?
+### 7. Is Extended RBAC available in the community edition? {#7-is-extended-rbac-available-in-the-community-edition}
 No. Extended RBAC requires a **Semaphore Enterprise** subscription.

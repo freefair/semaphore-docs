@@ -92,6 +92,19 @@ hr {
   padding-top: 3px !important;
 }
 
+/* Keep the navbar content the same width as the footer container
+   (Infima .container: --ifm-container-width minus its horizontal padding) */
+.navbar__inner {
+  max-width: calc(var(--ifm-container-width) - 2 * var(--ifm-spacing-horizontal));
+  margin: 0 auto;
+}
+
+@media (min-width: 1440px) {
+  .navbar__inner {
+    max-width: calc(var(--ifm-container-width-xl) - 2 * var(--ifm-spacing-horizontal));
+  }
+}
+
 .navbar a {
   color: white !important;
 }

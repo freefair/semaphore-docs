@@ -17,7 +17,7 @@ It has two subcommands:
 | [`projects export`](#exporting-a-project-projects-export) | Write a project's backup to a file (or stdout). |
 | [`projects import`](#importing-projects-projects-import) | Restore one or more projects from backup files. |
 
-## Exporting a project (`projects export`)
+## Exporting a project (`projects export`) {#exporting-a-project-projects-export}
 
 Exports a single project, identified by either its numeric ID or its name.
 
@@ -38,7 +38,7 @@ semaphore project export --project-name "My Project"
 Exactly one of `--project-id` or `--project-name` is required — supplying both,
 or neither, is an error.
 
-## Importing projects (`projects import`)
+## Importing projects (`projects import`) {#importing-projects-projects-import}
 
 Imports one or more project backups. You can import a single file or every
 backup found in a directory. Each imported project is created as a **new**

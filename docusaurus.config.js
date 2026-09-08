@@ -24,7 +24,20 @@ const config = {
   // may want to replace "en" with "zh-Hans".
   i18n: {
     defaultLocale: 'en',
-    locales: ['en'],
+    locales: ['en', 'ru', 'es', 'fr', 'de', 'it', 'ja', 'ko', 'pt', 'zh', 'sr'],
+    localeConfigs: {
+      en: { label: 'English', htmlLang: 'en' },
+      ru: { label: 'Русский', htmlLang: 'ru' },
+      es: { label: 'Español', htmlLang: 'es' },
+      fr: { label: 'Français', htmlLang: 'fr' },
+      de: { label: 'Deutsch', htmlLang: 'de' },
+      it: { label: 'Italiano', htmlLang: 'it' },
+      ja: { label: '日本語', htmlLang: 'ja' },
+      ko: { label: '한국어', htmlLang: 'ko' },
+      pt: { label: 'Português', htmlLang: 'pt' },
+      zh: { label: '中文', htmlLang: 'zh-Hans' },
+      sr: { label: 'Srpski', htmlLang: 'sr' },
+    },
   },
 
   presets: [
@@ -185,6 +198,10 @@ const config = {
             href: 'https://portal.semaphoreui.com',
             target: '_self',
             label: 'Sign in',
+            position: 'right',
+          },
+          {
+            type: 'localeDropdown',
             position: 'right',
           },
         ],

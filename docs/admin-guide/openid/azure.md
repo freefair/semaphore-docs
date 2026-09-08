@@ -23,7 +23,7 @@
 }
 ```
 
-## IdP-initiated login
+## IdP-initiated login {#idp-initiated-login}
 
 Microsoft Entra ID (Azure AD) launches applications from **My Apps** using an SP-initiated start URL rather than the
 OpenID Connect [Third-Party Initiated Login](/admin-guide/openid#idp-initiated-login) mechanism, and it does not reliably

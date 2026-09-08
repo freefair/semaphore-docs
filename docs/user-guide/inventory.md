@@ -10,7 +10,7 @@ The user credential is required, and is what Ansible uses to log into hosts for 
 It is required to have a user credential that is either a username with a login, or SSH configured in the Key Store to create an Inventory.
 Information about credentials can be found in the [Key Store](key-store) section of this site.
 
-## Creating an Inventory 
+## Creating an Inventory {#creating-an-inventory}
 1. Click on the Key Store tab and confirm you have a key that is a login_password or ssh type
 2. Click on the Inventory tab and click New Inventory
 4. Name the Inventory and select the correct user credential from the dropdown. Select the correct sudo credential, if needed
@@ -19,13 +19,13 @@ Information about credentials can be found in the [Key Store](key-store) section
   * If you select static, paste in or type your Inventory into the form
 6. Click Create.
 
-## Updating an Inventory
+## Updating an Inventory {#updating-an-inventory}
 1. Click on the Inventory tab
 2. Click the Pencil Icon next to the Inventory you want to edit
 3. Make your changes
 4. Click Save
 
-## Deleting an Inventory
+## Deleting an Inventory {#deleting-an-inventory}
 Before you remove an Inventory, you must remove all resources tied to it.
 If you are not sure which resources are being used in an environment, follow steps 1 and 2 below. It will show you which resources are being used, with links to those resources.
 

@@ -14,7 +14,7 @@ configuration and consumption inside a task, see the
 
 ______________________________________________________________________
 
-## How it works
+## How it works {#how-it-works}
 
 ```mermaid
 sequenceDiagram
@@ -39,7 +39,7 @@ the JWKS endpoint.
 
 ______________________________________________________________________
 
-## Configuration
+## Configuration {#configuration}
 
 JWT issuance is **disabled by default**. Enable it in your `config.json`:
 
@@ -70,7 +70,7 @@ generated on first start and can not be re-encrypted afterwards.
 
 ______________________________________________________________________
 
-## JWKS endpoint
+## JWKS endpoint {#jwks-endpoint}
 
 When JWT issuance is enabled, Semaphore exposes its public signing key at:
 
@@ -103,7 +103,7 @@ curl https://semaphore.example.com/.well-known/jwks.json
 
 ______________________________________________________________________
 
-## Key rotation
+## Key rotation {#key-rotation}
 
 The signing key is created automatically when starting Semaphore with the JWT feature enabled.
 To rotate it, remove the `jwt_signing_key` row from the

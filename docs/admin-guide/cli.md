@@ -27,7 +27,7 @@ backup before running the CLI from a newer Semaphore version against an existing
 database.
 :::
 
-## Global options
+## Global options {#global-options}
 
 These flags are accepted by every command:
 
@@ -38,7 +38,7 @@ These flags are accepted by every command:
 | `--log-level <level>` | Log verbosity: `DEBUG`, `INFO`, `WARN`, `ERROR`, `FATAL`, or `PANIC`. Falls back to the `SEMAPHORE_LOG_LEVEL` environment variable. |
 | `--debug-filter <spec>` | Narrows `DEBUG` output to specific namespaces, e.g. `'runner,task_*'` or `'*,-db'`. Only takes effect when the log level is `DEBUG`. Falls back to `SEMAPHORE_DEBUG_FILTER`. |
 
-### How the configuration file is found
+### How the configuration file is found {#how-the-configuration-file-is-found}
 
 When `--config` is omitted, Semaphore looks for the file in this order and uses
 the first one that exists:
@@ -52,7 +52,7 @@ Environment variables are applied on top of the file, so they override file
 values. With `--no-config`, only environment variables and defaults are used. See
 [Configuration](/admin-guide/configuration) for the full option list.
 
-## Version
+## Version {#version}
 
 Print the current version.
 
@@ -60,7 +60,7 @@ Print the current version.
 semaphore version
 ```
 
-## Interactive setup
+## Interactive setup {#interactive-setup}
 
 Use this for first-time configuration. It generates secrets, walks through an
 interactive questionnaire, writes the configuration file, runs the database
@@ -83,7 +83,7 @@ On completion it prints the commands to start the server, for example:
 ./semaphore server --config /path/to/config.json
 ```
 
-## Server mode
+## Server mode {#server-mode}
 
 Start the Semaphore server (web UI and API). `service` is an alias of `server`.
 
@@ -94,7 +94,7 @@ semaphore server --config /path/to/config.json
 The server applies pending database migrations on start and prints the
 database, temporary path, interface, and port it is using.
 
-## Runner mode
+## Runner mode {#runner-mode}
 
 Run Semaphore as a task runner. See [Runners](/admin-guide/cli/runners) for the
 full set of subcommands (`setup`, `register`, `start`, `unregister`).
@@ -103,7 +103,7 @@ full set of subcommands (`setup`, `register`, `start`, `unregister`).
 semaphore runner start --config /path/to/runner-config.json
 ```
 
-## Database migration
+## Database migration {#database-migration}
 
 Bring the database schema up to date. See
 [Database Migrations](/admin-guide/cli/migrations) for applying or rolling back

@@ -2,7 +2,7 @@
 
 This page walks you from a fresh install to your first successful task. Each step links to the page with the details.
 
-## From zero to first task
+## From zero to first task {#from-zero-to-first-task}
 
 1. **Install Semaphore** with your preferred method: [Installation](/admin-guide/installation).
 2. **Log in** with the admin user you created during setup, or via the `SEMAPHORE_ADMIN_*` variables in Docker.
@@ -18,7 +18,7 @@ This page walks you from a fresh install to your first successful task. Each ste
    - Control who can do what: [Teams and custom roles](/user-guide/team).
    - Get alerted on results: [Notifications](/category/notifications).
 
-## Key concepts
+## Key concepts {#key-concepts}
 
 These terms appear everywhere in the UI.
 
@@ -34,7 +34,7 @@ These terms appear everywhere in the UI.
 | **Workflow** | A graph of templates with branching, approvals, and delays. Pro feature. [Workflows](/user-guide/workflows) |
 | **Runner** | Where tasks execute: the server itself or a remote runner. [Runners](/admin-guide/runners) |
 
-## Next steps
+## Next steps {#next-steps}
 
 - Put Semaphore behind TLS with a [reverse proxy](/category/reverse-proxy).
 - Connect your identity provider: [LDAP](/admin-guide/ldap) or [OpenID Connect](/admin-guide/openid).
