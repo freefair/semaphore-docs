@@ -86,28 +86,6 @@ const config = {
         items: [
           {
             type: 'dropdown',
-            label: 'Product',
-            position: 'left',
-            items: [
-              {
-                label: 'Pro · For teams',
-                href: websiteUrl('/pro'),
-                target: '_self',
-              },
-              {
-                label: 'Enterprise · For large-scale operations',
-                href: websiteUrl('/enterprise'),
-                target: '_self',
-              },
-              {
-                label: 'Community · For homelab',
-                href: 'https://github.com/semaphoreui/semaphore',
-                target: '_self',
-              },
-            ],
-          },
-          {
-            type: 'dropdown',
             label: 'Explore',
             position: 'left',
             items: [
@@ -194,21 +172,9 @@ const config = {
             ],
           },
           {
-            label: 'Pricing',
-            href: websiteUrl('/pricing/'),
-            target: '_self',
-            position: 'left',
-          },
-          {
             href: 'https://github.com/semaphoreui/semaphore',
             target: '_self',
             label: 'GitHub',
-            position: 'right',
-          },
-          {
-            href: 'https://portal.semaphoreui.com',
-            target: '_self',
-            label: 'Sign in',
             position: 'right',
           },
           {
@@ -232,7 +198,6 @@ const config = {
                   <p class="footer__desc">A self-hosted automation control plane for Ansible, Terraform, OpenTofu, Terragrunt, Bash, PowerShell, and Python workflows.</p>
                   <div class="footer__contact">
                     <div class="footer__contactTitle">Contact us</div>
-                    <div class="footer__contactRow"><span class="footer__contactLabel">Sales</span><a href="mailto:sales@semaphoreui.com">sales@semaphoreui.com</a></div>
                     <div class="footer__contactRow"><span class="footer__contactLabel">Support</span><a href="mailto:support@semaphoreui.com">support@semaphoreui.com</a></div>
                     <div class="footer__contactRow"><span class="footer__contactLabel">Security</span><a href="mailto:security@semaphoreui.com">security@semaphoreui.com</a></div>
                     <div class="footer__contactRow"><span class="footer__contactLabel">Legal</span><a href="mailto:legal@semaphoreui.com">legal@semaphoreui.com</a></div>
@@ -244,10 +209,7 @@ const config = {
           {
             title: 'Product',
             items: [
-              { label: 'Community', href: 'https://github.com/semaphoreui/semaphore', target: '_self' },
-              { label: 'Pro', href: websiteUrl('/pro'), target: '_self' },
-              { label: 'Enterprise', href: websiteUrl('/enterprise'), target: '_self' },
-              { label: 'Pricing', href: websiteUrl('/pricing/'), target: '_self' },
+              { label: 'Source', href: 'https://github.com/freefair/semaphore-ex', target: '_self' },
             ],
           },
           {
@@ -284,12 +246,9 @@ const config = {
             title: 'Legal',
             items: [
               { label: 'Terms of Service', href: websiteUrl('/legal/terms-of-service'), target: '_self' },
-              { label: 'Subscription Agreement', href: websiteUrl('/legal/subscription-agreement'), target: '_self' },
-              { label: 'Refund Policy', href: websiteUrl('/legal/refund-policy'), target: '_self' },
               { label: 'Privacy Policy', href: websiteUrl('/privacy/policy'), target: '_self' },
               { label: 'Cookie Policy', href: websiteUrl('/privacy/cookies'), target: '_self' },
               { label: 'Security Whitepaper', href: websiteUrl('/security/whitepaper'), target: '_self' },
-              { label: 'Support Offering', href: websiteUrl('/legal/support-offering'), target: '_self' },
             ],
           },
         ],

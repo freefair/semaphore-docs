@@ -2,7 +2,7 @@
 
 In Semaphore UI, every project is associated with a **Team**. Only team members and admins can access the project. Each member of the team is assigned one of four built-in roles, which govern their level of access and the actions they can perform.
 
-In the **Enterprise** edition, built-in roles can be extended with [custom roles](#extended-rbac-enterprise) that grant additional, fine-grained permissions on specific templates.
+Built-in roles can be extended with [custom roles](#extended-rbac-enterprise) that grant additional, fine-grained permissions on specific templates.
 
 :::tip
 To avoid losing access to a project, it's recommended to have at least two team members with the <b>Owner</b> role.
@@ -61,13 +61,13 @@ Below are detailed descriptions of each role and its permissions.
 
 ---
 
-## Extended RBAC (Enterprise) {#extended-rbac-enterprise}
+## Extended RBAC {#extended-rbac-enterprise}
 
 :::info
-Extended RBAC is available in the **Semaphore Enterprise** edition, starting with [Semaphore v2.17](https://semaphoreui.com/releases/semaphore-v2_17).
+Extended RBAC is included in this product.
 :::
 
-Extended RBAC layers additional permissions on top of the four built-in roles. The built-in roles themselves are unchanged. If you do not define custom roles, every project behaves exactly as it does in the community edition.
+Extended RBAC layers additional permissions on top of the four built-in roles. The built-in roles themselves are unchanged. If you do not define custom roles, the built-in roles continue to govern project access.
 
 With Extended RBAC, custom roles can grant individual project-wide permissions. You can also grant a role permissions on selected task templates. This lets you give a team member access to the templates they need without promoting them to a higher built-in role.
 
@@ -231,7 +231,7 @@ If the configured claim is absent, the provider's `group_claim_missing_policy` d
 2. **Follow the principle of least privilege:**
    - Give team members the minimum role necessary for their tasks.
    - Use **Task Runner** or **Guest** roles for those who only need limited permissions.
-   - On Enterprise, prefer [custom roles](#extended-rbac-enterprise) to grant access to specific templates instead of elevating a member's built-in role.
+   - Prefer [custom roles](#extended-rbac-enterprise) to grant access to specific templates instead of elevating a member's built-in role.
 3. **Review membership regularly:**
    - As team structures change, re‐evaluate roles.
    - Revoke access or downgrade roles for users who no longer need high‐level privileges.
@@ -256,10 +256,10 @@ No. Managers can only add or remove users with **Task Runner** or **Guest** role
 Semaphore UI prevents the removal of an Owner if it would leave the project with no Owners at all. There must be at least one Owner at all times.
 
 ### 5. Can Guests run tasks? {#5-can-guests-run-tasks}
-No. Guests have read‐only access and cannot trigger or manage tasks. In the Enterprise edition you can grant a Guest permission to run individual templates through a [custom role](#extended-rbac-enterprise).
+No. Guests have read‐only access and cannot trigger or manage tasks. A [custom role](#extended-rbac-enterprise) can grant a Guest permission to run individual templates.
 
 ### 6. Do custom roles replace the built-in roles? {#6-do-custom-roles-replace-the-built-in-roles}
 No. Custom roles extend the built-in roles with additional project and template-level permissions. Every team member still has exactly one built-in role.
 
-### 7. Is Extended RBAC available in the community edition? {#7-is-extended-rbac-available-in-the-community-edition}
-No. Extended RBAC requires a **Semaphore Enterprise** subscription.
+### 7. Is Extended RBAC included in this product? {#7-is-extended-rbac-available-in-the-community-edition}
+Yes. Extended RBAC is included without subscription or entitlement checks.
