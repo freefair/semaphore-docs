@@ -4,6 +4,8 @@ if [ -f ~/venv/bin/activate ]; then
     source ~/venv/bin/activate
 fi
 
-npm run build
+# npm run build
+
+# (cd scripts && ./build-parallel.sh)
 
 ./run.sh aws deploy

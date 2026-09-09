@@ -336,7 +336,10 @@ const config = {
       },
     }),
 
-  plugins: process.env.SEMAPHORE_DOCS_DEV_PROXY === 'true' ? [
+  plugins: [
+    // Non-default languages reuse the English copy of /docs/assets/* images.
+    require('./plugins/shared-locale-assets'),
+    ...(process.env.SEMAPHORE_DOCS_DEV_PROXY === 'true' ? [
     function localizedDevSocket(context) {
       const socketPath = `${context.baseUrl}__webpack_hmr`;
       return {
@@ -351,7 +354,8 @@ const config = {
         },
       };
     },
-  ] : [],
+    ] : []),
+  ],
 
 
   markdown: {

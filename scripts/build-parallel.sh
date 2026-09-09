@@ -5,7 +5,7 @@ set -euo pipefail
 
 cd "$(dirname "$0")/.."
 site_dir="$PWD"
-jobs="${JOBS:-2}"
+jobs="${JOBS:-5}"
 if ! [[ "$jobs" =~ ^[1-9][0-9]*$ ]]; then
   echo 'JOBS must be a positive integer.' >&2
   exit 1
