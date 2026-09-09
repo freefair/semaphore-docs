@@ -24,11 +24,10 @@ docker logs -f my-semaphore-container
 
 ## アクティビティログ {#activity-log}
 
-アクティビティログは、Semaphore で実行されたすべてのユーザー操作を記録します。たとえば次のような操作です。
+アクティビティログは、Semaphore で実行されたユーザー操作を記録します。たとえば次のような操作です。
 
 - リソース(テンプレート、インベントリ、リポジトリなど)の追加または削除。
 - チームメンバーの追加または削除。
-- タスクの開始または停止。
 
 ### Pro バージョン 2.10 以降 {#pro-version-210-and-later}
 
@@ -64,21 +63,21 @@ docker logs -f my-semaphore-container
 
 ```bash
 export SEMAPHORE_EVENT_LOG_ENABLED=True
-export SEMAPHORE_EVENT_LOG_LOGGER={"filename": "./events.log"}
+export SEMAPHORE_EVENT_LOGGER={"filename": "./events.log"}
 
 export SEMAPHORE_TASK_LOG_ENABLED=True
-export SEMAPHORE_EVENT_LOG_LOGGER={"filename": "./tasks.log"}
+export SEMAPHORE_TASK_LOGGER={"filename": "./tasks.log"}
 ```
 
 #### アクティビティ(イベント)ログのオプション {#activity-events-logging-options}
 
-アクティビティ(イベント)ログのオプションでは、Semaphore がユーザー操作やシステムイベントをファイルに記録する方法を設定できます。これらの設定は、有効化の有無、ログエントリの形式、ロガー固有の設定など、イベントログの動作を制御します。有効にすると、すべてのユーザー操作(テンプレートの作成、チームの管理、タスクの実行など)が、これらの設定に従って指定されたログファイルに書き込まれます。
+アクティビティ(イベント)ログのオプションでは、Semaphore がユーザー操作やシステムイベントをファイルに記録する方法を設定できます。これらの設定は、有効化の有無、ログエントリの形式、ロガー固有の設定など、イベントログの動作を制御します。有効にすると、テンプレートの作成やチームの管理などのユーザー操作が、これらの設定に従って指定されたログファイルに書き込まれます。
 
 | パラメータ             | 環境変数 | 説明           |
 | --------------------- | --------------------- | --------------------- |
 | `enabled`             | `SEMAPHORE_EVENT_LOG_ENABLED` | イベントログのファイル出力を有効にします。 |
-| `format`              | `SEMAPHORE_EVENT_LOG_FORMAT`  | ログレコードの形式。`raw` または `json` を指定できます。 |
-| `logger`              | `SEMAPHORE_EVENT_LOG_LOGGER`  | [ロガーのオプション](#logger-options)。 |
+| `format`              | `SEMAPHORE_EVENT_LOG_FORMAT`  | ログレコードの形式。raw 形式では空のままにするか、`json` を指定します。 |
+| `logger`              | `SEMAPHORE_EVENT_LOGGER`      | [ロガーのオプション](#logger-options)。 |
 
 #### タスクログのオプション {#tasks-logging-options}
 
@@ -87,8 +86,8 @@ export SEMAPHORE_EVENT_LOG_LOGGER={"filename": "./tasks.log"}
 | パラメータ             | 環境変数 | 説明           |
 | --------------------- | --------------------- | --------------------- |
 | `enabled`             | `SEMAPHORE_TASK_LOG_ENABLED` | タスクログのファイル出力を有効にします。 |
-| `format`              | `SEMAPHORE_TASK_LOG_FORMAT`  | ログレコードの形式。`raw` または `json` を指定できます。 |
-| `logger`              | `SEMAPHORE_TASK_LOG_LOGGER`  | [ロガーのオプション](#logger-options)。 |
+| `format`              | `SEMAPHORE_TASK_LOG_FORMAT`  | ログレコードの形式。raw 形式では空のままにするか、`json` を指定します。 |
+| `logger`              | `SEMAPHORE_TASK_LOGGER`      | [ロガーのオプション](#logger-options)。 |
 | `result_logger`       | `SEMAPHORE_TASK_RESULT_LOGGER`  | ロガーのオプション。 |
 
 
