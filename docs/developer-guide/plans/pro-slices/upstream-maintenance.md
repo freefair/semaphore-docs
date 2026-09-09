@@ -63,6 +63,29 @@ Calls imported as `github.com/semaphoreui/semaphore/pro/...` therefore need matc
 
 ## Conflict-Sensitive Contracts
 
+### Upstream Schema and Module Extensions
+
+Shipped fork migration identifiers are immutable. Upstream reused `2.20.2` and
+`2.20.3` for delay nodes and template working directories; the fork already uses
+those identifiers for capability configuration and runner names. The new schema
+is appended as `2.20.66` and `2.20.67`. Preserve both shipped migrations and verify
+upgrade, rollback, and re-upgrade from an existing fork database.
+
+Delay rows reference the immutable workflow-run node through the pair
+`(workflow_run_id, workflow_node_id)`. Definition edits must not delete an active
+wait. Database time controls the deadline and completion predicate; atomic SQL
+transitions and HA fencing control completion and stop. A waiting node consumes
+no task worker slot. Durations are whole seconds from 1 through 2147483647.
+
+Template-version snapshots include `working_directory`, copy its pointer value,
+and include it in the execution fingerprint. Running a pinned version preserves
+its directory even after the live template changes.
+
+Enhanced stores embed upstream null implementations. A newly added interface
+method can therefore compile while silently inheriting a placeholder. Review
+new exported methods explicitly and test their observable persistence behavior;
+interface conformance alone does not prove the Enhanced contract is implemented.
+
 ### Generated Frontend
 
 `api/router.go` embeds `api/public/*`.

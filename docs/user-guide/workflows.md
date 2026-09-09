@@ -1,4 +1,4 @@
-# Workflows (Pro)
+# Workflows
 
 Workflows let you chain multiple task templates into a directed graph (DAG) with
 branching, approvals, and timed pauses. A workflow run progresses automatically
@@ -55,7 +55,8 @@ Nodes with multiple incoming edges can require **all** upstream nodes to finish
 ### Delay nodes {#delay-nodes}
 
 A delay node pauses the workflow run for the configured duration (minimum 1
-second). While waiting:
+second, maximum 2147483647 seconds). The deadline survives server restarts and
+does not occupy a task worker slot. While waiting:
 
 - The run stays in **running** status.
 - The run view shows a live countdown on the delay node.

@@ -1,5 +1,12 @@
 # Current Slice
 
+- [x] Maintenance — Upstream delay-node and working-directory compatibility
+  - [x] Rebase application and documentation histories while preserving every fork commit
+  - [x] Preserve shipped migration IDs and append upstream schema additions
+  - [x] Publish multilingual full-product documentation and verify canonical security fallbacks
+  - [x] Verify durable delay transitions, immutable template directories, and local release gates
+  - [x] Assess [future update options](upstream-update-options.md) without changing the maintenance strategy
+
 - [x] Maintenance — Rebase full-product fork onto upstream `develop`
   - [x] Diagnose and fix the pre-existing red Full Product Build and Dev pipelines
     - [x] Generate the embedded frontend before clean-checkout Go compilation
