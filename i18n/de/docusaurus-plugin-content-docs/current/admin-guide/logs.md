@@ -24,11 +24,10 @@ Dies liefert eine Live-Ansicht (Streaming) der Protokolle.
 
 ## Aktivitätsprotokoll {#activity-log}
 
-Das Aktivitätsprotokoll erfasst alle in Semaphore ausgeführten Benutzeraktionen, darunter:
+Das Aktivitätsprotokoll erfasst Benutzeraktionen in Semaphore, darunter:
 
 - Hinzufügen oder Entfernen von Ressourcen (z. B. Vorlagen, Inventories, Repositories).
 - Hinzufügen oder Entfernen von Teammitgliedern.
-- Starten oder Stoppen von Tasks.
 
 ### Pro-Version 2.10 und neuer {#pro-version-210-and-later}
 
@@ -64,21 +63,21 @@ Alternativ können Sie dies über die folgenden Umgebungsvariablen erreichen:
 
 ```bash
 export SEMAPHORE_EVENT_LOG_ENABLED=True
-export SEMAPHORE_EVENT_LOG_LOGGER={"filename": "./events.log"}
+export SEMAPHORE_EVENT_LOGGER={"filename": "./events.log"}
 
 export SEMAPHORE_TASK_LOG_ENABLED=True
-export SEMAPHORE_EVENT_LOG_LOGGER={"filename": "./tasks.log"}
+export SEMAPHORE_TASK_LOGGER={"filename": "./tasks.log"}
 ```
 
 #### Optionen für die Aktivitäts-(Ereignis-)Protokollierung {#activity-events-logging-options}
 
-Mit den Optionen für die Aktivitäts-(Ereignis-)Protokollierung legen Sie fest, wie Semaphore Benutzeraktionen und Systemereignisse in eine Datei schreibt. Diese Einstellungen steuern das Verhalten der Ereignisprotokollierung, einschließlich der Frage, ob sie aktiviert ist, des Formats der Protokolleinträge und der spezifischen Logger-Konfiguration. Wenn sie aktiviert ist, werden alle Benutzeraktionen (wie das Erstellen von Vorlagen, das Verwalten von Teams oder das Ausführen von Tasks) gemäß diesen Einstellungen in die angegebene Protokolldatei geschrieben.
+Mit den Optionen für die Aktivitäts-(Ereignis-)Protokollierung legen Sie fest, wie Semaphore Benutzeraktionen und Systemereignisse in eine Datei schreibt. Diese Einstellungen steuern das Verhalten der Ereignisprotokollierung, einschließlich der Frage, ob sie aktiviert ist, des Formats der Protokolleinträge und der spezifischen Logger-Konfiguration. Wenn sie aktiviert ist, werden Benutzeraktionen wie das Erstellen von Vorlagen oder das Verwalten von Teams gemäß diesen Einstellungen in die angegebene Protokolldatei geschrieben.
 
 | Parameter             | Umgebungsvariablen | Beschreibung          |
 | --------------------- | --------------------- | --------------------- |
 | `enabled`             | `SEMAPHORE_EVENT_LOG_ENABLED` | Aktiviert die Ereignisprotokollierung in eine Datei. |
-| `format`              | `SEMAPHORE_EVENT_LOG_FORMAT`  | Format der Protokolleinträge. Kann `raw` oder `json` sein. |
-| `logger`              | `SEMAPHORE_EVENT_LOG_LOGGER`  | [Logger-Optionen](#logger-options). |
+| `format`              | `SEMAPHORE_EVENT_LOG_FORMAT`  | Format der Protokolleinträge. Für das Raw-Format leer lassen oder `json` festlegen. |
+| `logger`              | `SEMAPHORE_EVENT_LOGGER`      | [Logger-Optionen](#logger-options). |
 
 #### Optionen für die Task-Protokollierung {#tasks-logging-options}
 
@@ -87,8 +86,8 @@ Mit den Optionen für die Task-Protokollierung legen Sie fest, wie Semaphore Det
 | Parameter             | Umgebungsvariablen | Beschreibung          |
 | --------------------- | --------------------- | --------------------- |
 | `enabled`             | `SEMAPHORE_TASK_LOG_ENABLED` | Aktiviert die Task-Protokollierung in eine Datei. |
-| `format`              | `SEMAPHORE_TASK_LOG_FORMAT`  | Format der Protokolleinträge. Kann `raw` oder `json` sein. |
-| `logger`              | `SEMAPHORE_TASK_LOG_LOGGER`  | [Logger-Optionen](#logger-options). |
+| `format`              | `SEMAPHORE_TASK_LOG_FORMAT`  | Format der Protokolleinträge. Für das Raw-Format leer lassen oder `json` festlegen. |
+| `logger`              | `SEMAPHORE_TASK_LOGGER`      | [Logger-Optionen](#logger-options). |
 | `result_logger`       | `SEMAPHORE_TASK_RESULT_LOGGER`  | Logger-Optionen. |
 
 

@@ -24,11 +24,10 @@ Isso fornece uma visualização ao vivo (em streaming) dos logs.
 
 ## Log de atividade {#activity-log}
 
-O Log de Atividade registra todas as ações de usuários realizadas no Semaphore, incluindo:
+O Log de Atividade registra ações de usuários realizadas no Semaphore, incluindo:
 
 - Adição ou remoção de recursos (por exemplo, Templates, Inventários, Repositórios).
 - Adição ou remoção de membros da equipe.
-- Início ou interrupção de tarefas.
 
 ### Versão Pro 2.10 e posteriores {#pro-version-210-and-later}
 
@@ -64,21 +63,21 @@ Ou você pode fazer isso usando as seguintes variáveis de ambiente:
 
 ```bash
 export SEMAPHORE_EVENT_LOG_ENABLED=True
-export SEMAPHORE_EVENT_LOG_LOGGER={"filename": "./events.log"}
+export SEMAPHORE_EVENT_LOGGER={"filename": "./events.log"}
 
 export SEMAPHORE_TASK_LOG_ENABLED=True
-export SEMAPHORE_EVENT_LOG_LOGGER={"filename": "./tasks.log"}
+export SEMAPHORE_TASK_LOGGER={"filename": "./tasks.log"}
 ```
 
 #### Opções de log de atividade (eventos) {#activity-events-logging-options}
 
-As opções de log de Atividade (eventos) permitem configurar como o Semaphore registra ações de usuários e eventos do sistema em um arquivo. Essas configurações controlam o comportamento do log de eventos, incluindo se ele está habilitado, o formato dos registros de log e configurações específicas do logger. Quando habilitado, todas as ações de usuários (como criar templates, gerenciar equipes ou executar tarefas) serão gravadas no arquivo de log especificado de acordo com essas configurações.
+As opções de log de Atividade (eventos) permitem configurar como o Semaphore registra ações de usuários e eventos do sistema em um arquivo. Essas configurações controlam o comportamento do log de eventos, incluindo se ele está habilitado, o formato dos registros de log e configurações específicas do logger. Quando habilitado, ações de usuários como criar templates ou gerenciar equipes serão gravadas no arquivo de log especificado de acordo com essas configurações.
 
 | Parâmetro             | Variáveis de ambiente | Descrição             |
 | --------------------- | --------------------- | --------------------- |
 | `enabled`             | `SEMAPHORE_EVENT_LOG_ENABLED` | Habilita o log de eventos em arquivo. |
-| `format`              | `SEMAPHORE_EVENT_LOG_FORMAT`  | Formato do registro de log. Pode ser `raw` ou `json`. |
-| `logger`              | `SEMAPHORE_EVENT_LOG_LOGGER`  | [Opções do logger](#logger-options). |
+| `format`              | `SEMAPHORE_EVENT_LOG_FORMAT`  | Formato do registro de log. Deixe vazio para o formato raw ou defina como `json`. |
+| `logger`              | `SEMAPHORE_EVENT_LOGGER`      | [Opções do logger](#logger-options). |
 
 #### Opções de log de tarefas {#tasks-logging-options}
 
@@ -87,8 +86,8 @@ As opções de log de Tarefas permitem configurar como o Semaphore registra os d
 | Parâmetro             | Variáveis de ambiente | Descrição             |
 | --------------------- | --------------------- | --------------------- |
 | `enabled`             | `SEMAPHORE_TASK_LOG_ENABLED` | Habilita o log de tarefas em arquivo. |
-| `format`              | `SEMAPHORE_TASK_LOG_FORMAT`  | Formato do registro de log. Pode ser `raw` ou `json`. |
-| `logger`              | `SEMAPHORE_TASK_LOG_LOGGER`  | [Opções do logger](#logger-options). |
+| `format`              | `SEMAPHORE_TASK_LOG_FORMAT`  | Formato do registro de log. Deixe vazio para o formato raw ou defina como `json`. |
+| `logger`              | `SEMAPHORE_TASK_LOGGER`      | [Opções do logger](#logger-options). |
 | `result_logger`       | `SEMAPHORE_TASK_RESULT_LOGGER`  | Opções do logger. |
 
 

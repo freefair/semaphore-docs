@@ -24,11 +24,10 @@ docker logs -f my-semaphore-container
 
 ## Лог активности {#activity-log}
 
-Лог активности фиксирует все действия пользователей в Semaphore, включая:
+Лог активности фиксирует действия пользователей в Semaphore, включая:
 
 - Добавление или удаление ресурсов (например, шаблонов, инвентарей, репозиториев).
 - Добавление или удаление участников команды.
-- Запуск или остановку задач.
 
 ### Pro-версия 2.10 и новее {#pro-version-210-and-later}
 
@@ -64,21 +63,21 @@ docker logs -f my-semaphore-container
 
 ```bash
 export SEMAPHORE_EVENT_LOG_ENABLED=True
-export SEMAPHORE_EVENT_LOG_LOGGER={"filename": "./events.log"}
+export SEMAPHORE_EVENT_LOGGER={"filename": "./events.log"}
 
 export SEMAPHORE_TASK_LOG_ENABLED=True
-export SEMAPHORE_EVENT_LOG_LOGGER={"filename": "./tasks.log"}
+export SEMAPHORE_TASK_LOGGER={"filename": "./tasks.log"}
 ```
 
 #### Параметры логирования активности (событий) {#activity-events-logging-options}
 
-Параметры логирования активности (событий) позволяют настроить, как Semaphore записывает действия пользователей и системные события в файл. Эти настройки управляют поведением логирования событий: включено ли оно, в каком формате записываются записи и какие параметры используются логгером. Когда логирование включено, все действия пользователей (создание шаблонов, управление командами, запуск задач и т. д.) записываются в указанный лог-файл в соответствии с этими настройками.
+Параметры логирования активности (событий) позволяют настроить, как Semaphore записывает действия пользователей и системные события в файл. Эти настройки управляют поведением логирования событий: включено ли оно, в каком формате записываются записи и какие параметры используются логгером. Когда логирование включено, действия пользователей (создание шаблонов, управление командами и т. д.) записываются в указанный лог-файл в соответствии с этими настройками.
 
 | Параметр              | Переменные окружения  | Описание              |
 | --------------------- | --------------------- | --------------------- |
 | `enabled`             | `SEMAPHORE_EVENT_LOG_ENABLED` | Включить логирование событий в файл. |
-| `format`              | `SEMAPHORE_EVENT_LOG_FORMAT`  | Формат записи лога. Может быть `raw` или `json`. |
-| `logger`              | `SEMAPHORE_EVENT_LOG_LOGGER`  | [Параметры логгера](#logger-options). |
+| `format`              | `SEMAPHORE_EVENT_LOG_FORMAT`  | Формат записи лога. Оставьте пустым для raw-формата или укажите `json`. |
+| `logger`              | `SEMAPHORE_EVENT_LOGGER`      | [Параметры логгера](#logger-options). |
 
 #### Параметры логирования задач {#tasks-logging-options}
 
@@ -87,8 +86,8 @@ export SEMAPHORE_EVENT_LOG_LOGGER={"filename": "./tasks.log"}
 | Параметр              | Переменные окружения  | Описание              |
 | --------------------- | --------------------- | --------------------- |
 | `enabled`             | `SEMAPHORE_TASK_LOG_ENABLED` | Включить логирование задач в файл. |
-| `format`              | `SEMAPHORE_TASK_LOG_FORMAT`  | Формат записи лога. Может быть `raw` или `json`. |
-| `logger`              | `SEMAPHORE_TASK_LOG_LOGGER`  | [Параметры логгера](#logger-options). |
+| `format`              | `SEMAPHORE_TASK_LOG_FORMAT`  | Формат записи лога. Оставьте пустым для raw-формата или укажите `json`. |
+| `logger`              | `SEMAPHORE_TASK_LOGGER`      | [Параметры логгера](#logger-options). |
 | `result_logger`       | `SEMAPHORE_TASK_RESULT_LOGGER`  | Параметры логгера. |
 
 

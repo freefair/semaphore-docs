@@ -24,11 +24,10 @@ This provides a live (streaming) view of the logs.
 
 ## Activity log {#activity-log}
 
-The Activity Log captures all user actions performed in Semaphore, including:
+The Activity Log captures user actions performed in Semaphore, including:
 
 - Adding or removing resources (e.g., Templates, Inventories, Repositories).
 - Adding or removing team members.
-- Starting or stopping tasks.
 
 ### Pro version 2.10 and later {#pro-version-210-and-later}
 
@@ -64,21 +63,21 @@ Or you can do this using following environment variables:
 
 ```bash
 export SEMAPHORE_EVENT_LOG_ENABLED=True
-export SEMAPHORE_EVENT_LOG_LOGGER={"filename": "./events.log"}
+export SEMAPHORE_EVENT_LOGGER={"filename": "./events.log"}
 
 export SEMAPHORE_TASK_LOG_ENABLED=True
-export SEMAPHORE_EVENT_LOG_LOGGER={"filename": "./tasks.log"}
+export SEMAPHORE_TASK_LOGGER={"filename": "./tasks.log"}
 ```
 
 #### Activity (events) logging options {#activity-events-logging-options}
 
-The Activity (events) logging options allow you to configure how Semaphore records user actions and system events to a file. These settings control the behavior of event logging, including whether it's enabled, the format of log entries, and specific logger configurations. When enabled, all user actions (like creating templates, managing teams, or running tasks) will be written to the specified log file according to these settings.
+The Activity (events) logging options allow you to configure how Semaphore records user actions and system events to a file. These settings control the behavior of event logging, including whether it's enabled, the format of log entries, and specific logger configurations. When enabled, user actions like creating templates or managing teams will be written to the specified log file according to these settings.
 
 | Parameter             | Environment Variables | Description           |
 | --------------------- | --------------------- | --------------------- |
 | `enabled`             | `SEMAPHORE_EVENT_LOG_ENABLED` | Enable event logging to file. |
-| `format`              | `SEMAPHORE_EVENT_LOG_FORMAT`  | Log record format. Can be `raw` or `json`. |
-| `logger`              | `SEMAPHORE_EVENT_LOG_LOGGER`  | [Logger options](#logger-options). |
+| `format`              | `SEMAPHORE_EVENT_LOG_FORMAT`  | Log record format. Leave empty for raw format, or set to `json`. |
+| `logger`              | `SEMAPHORE_EVENT_LOGGER`      | [Logger options](#logger-options). |
 
 #### Tasks logging options {#tasks-logging-options}
 
@@ -87,8 +86,8 @@ The Tasks logging options allow you to configure how Semaphore records task exec
 | Parameter             | Environment Variables | Description           |
 | --------------------- | --------------------- | --------------------- |
 | `enabled`             | `SEMAPHORE_TASK_LOG_ENABLED` | Enable task logging to file. |
-| `format`              | `SEMAPHORE_TASK_LOG_FORMAT`  | Log record format. Can be `raw` or `json`. |
-| `logger`              | `SEMAPHORE_TASK_LOG_LOGGER`  | [Logger options](#logger-options). |
+| `format`              | `SEMAPHORE_TASK_LOG_FORMAT`  | Log record format. Leave empty for raw format, or set to `json`. |
+| `logger`              | `SEMAPHORE_TASK_LOGGER`      | [Logger options](#logger-options). |
 | `result_logger`       | `SEMAPHORE_TASK_RESULT_LOGGER`  | Logger options. |
 
 

@@ -24,11 +24,10 @@ Cela fournit une vue en direct (en flux continu) des journaux.
 
 ## Journal d'activité {#activity-log}
 
-Le journal d'activité enregistre toutes les actions effectuées par les utilisateurs dans Semaphore, notamment :
+Le journal d'activité enregistre les actions effectuées par les utilisateurs dans Semaphore, notamment :
 
 - L'ajout ou la suppression de ressources (par ex. modèles, inventaires, dépôts).
 - L'ajout ou la suppression de membres d'équipe.
-- Le démarrage ou l'arrêt de tâches.
 
 ### Version Pro 2.10 et ultérieures {#pro-version-210-and-later}
 
@@ -64,21 +63,21 @@ Ou vous pouvez le faire à l'aide des variables d'environnement suivantes :
 
 ```bash
 export SEMAPHORE_EVENT_LOG_ENABLED=True
-export SEMAPHORE_EVENT_LOG_LOGGER={"filename": "./events.log"}
+export SEMAPHORE_EVENT_LOGGER={"filename": "./events.log"}
 
 export SEMAPHORE_TASK_LOG_ENABLED=True
-export SEMAPHORE_EVENT_LOG_LOGGER={"filename": "./tasks.log"}
+export SEMAPHORE_TASK_LOGGER={"filename": "./tasks.log"}
 ```
 
 #### Options de journalisation de l'activité (événements) {#activity-events-logging-options}
 
-Les options de journalisation de l'activité (événements) vous permettent de configurer la manière dont Semaphore enregistre les actions des utilisateurs et les événements système dans un fichier. Ces paramètres contrôlent le comportement de la journalisation des événements, notamment son activation, le format des entrées de journal et la configuration spécifique du logger. Une fois activée, toutes les actions des utilisateurs (comme la création de modèles, la gestion des équipes ou l'exécution de tâches) seront écrites dans le fichier journal spécifié conformément à ces paramètres.
+Les options de journalisation de l'activité (événements) vous permettent de configurer la manière dont Semaphore enregistre les actions des utilisateurs et les événements système dans un fichier. Ces paramètres contrôlent le comportement de la journalisation des événements, notamment son activation, le format des entrées de journal et la configuration spécifique du logger. Une fois activée, les actions des utilisateurs comme la création de modèles ou la gestion des équipes seront écrites dans le fichier journal spécifié conformément à ces paramètres.
 
 | Paramètre             | Variables d'environnement | Description           |
 | --------------------- | --------------------- | --------------------- |
 | `enabled`             | `SEMAPHORE_EVENT_LOG_ENABLED` | Active la journalisation des événements dans un fichier. |
-| `format`              | `SEMAPHORE_EVENT_LOG_FORMAT`  | Format des enregistrements du journal. Peut être `raw` ou `json`. |
-| `logger`              | `SEMAPHORE_EVENT_LOG_LOGGER`  | [Options du logger](#logger-options). |
+| `format`              | `SEMAPHORE_EVENT_LOG_FORMAT`  | Format des enregistrements du journal. Laissez vide pour le format raw ou définissez `json`. |
+| `logger`              | `SEMAPHORE_EVENT_LOGGER`      | [Options du logger](#logger-options). |
 
 #### Options de journalisation des tâches {#tasks-logging-options}
 
@@ -87,8 +86,8 @@ Les options de journalisation des tâches vous permettent de configurer la mani�
 | Paramètre             | Variables d'environnement | Description           |
 | --------------------- | --------------------- | --------------------- |
 | `enabled`             | `SEMAPHORE_TASK_LOG_ENABLED` | Active la journalisation des tâches dans un fichier. |
-| `format`              | `SEMAPHORE_TASK_LOG_FORMAT`  | Format des enregistrements du journal. Peut être `raw` ou `json`. |
-| `logger`              | `SEMAPHORE_TASK_LOG_LOGGER`  | [Options du logger](#logger-options). |
+| `format`              | `SEMAPHORE_TASK_LOG_FORMAT`  | Format des enregistrements du journal. Laissez vide pour le format raw ou définissez `json`. |
+| `logger`              | `SEMAPHORE_TASK_LOGGER`      | [Options du logger](#logger-options). |
 | `result_logger`       | `SEMAPHORE_TASK_RESULT_LOGGER`  | Options du logger. |
 
 
