@@ -113,6 +113,7 @@ Full list of available configuration options:
 | <br />`tls.key_file`   <hr /> `SEMAPHORE_TLS_KEY_FILE`<br /><br /> | Path to TLS key file. |
 | <br />`tls.http_redirect_addr` <hr /> `SEMAPHORE_TLS_HTTP_REDIRECT_ADDR`<br /><br /> | Address (`host[:port]`) for the HTTP→HTTPS redirect listener. Mutually exclusive with `tls.http_redirect_port`. |
 | <br />`tls.http_redirect_port` <hr /> `SEMAPHORE_TLS_HTTP_REDIRECT_PORT`<br /><br /> | Port to redirect HTTP traffic to HTTPS. Mutually exclusive with `tls.http_redirect_addr`. |
+| <br />`auth.max_session_life_hours` ![Static Badge](https://img.shields.io/badge/v2.20.0-red) <hr /> `SEMAPHORE_AUTH_MAX_SESSION_LIFE_HOURS` ![Static Badge](https://img.shields.io/badge/v2.20.0-red) <br /><br /> | Absolute lifetime of a login session in hours, counted from login. Once exceeded the user must log in again, even if the session was recently active. `0` (default) means no absolute limit; sessions then expire only after 7 days without activity. |
 | <br />`mfa.totp.enabled`         <hr /> `SEMAPHORE_TOTP_ENABLED` <br /><br /> | Enable Two-factor authentication using TOTP. |
 | <br />`mfa.totp.app_name` ![Static Badge](https://img.shields.io/badge/v2.17.0-red) <hr /> `SEMAPHORE_TOTP_ISSUER` ![Static Badge](https://img.shields.io/badge/v2.17.0-red) <br /><br /> | Issuer label (Semaphore title) shown in TOTP authenticator apps. |
 | <br />`mfa.totp.allow_recovery`  <hr /> `SEMAPHORE_TOTP_ALLOW_RECOVERY` <br /><br /> | Allow users to reset TOTP using a recovery code. |

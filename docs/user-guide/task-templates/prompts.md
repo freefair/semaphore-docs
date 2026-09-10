@@ -89,6 +89,27 @@ Enable the `--skip-tags` prompt to skip tasks with specific tags.
 
 **Example**: Using the playbook above, enable Skip Tags and enter `install` to skip package installation and only run deployment and restart tasks.
 
+### Skip Galaxy install {#skip-galaxy-install}
+
+Enable the prompt to let the user skip the `ansible-galaxy install` step for roles and collections when running the task.
+
+**Use cases**:
+- Requirements are already installed in the runner image
+- Save time on repeated runs when nothing changed in `requirements.yml`
+
+### Force Galaxy install {#force-galaxy-install}
+
+Enable the prompt to let the user force `ansible-galaxy install --force` for every requirements file, ignoring the requirements checksum Semaphore keeps between runs.
+
+**CLI equivalent**: `ansible-galaxy role install -r requirements.yml --force`
+
+**Use cases**:
+- A requirements file references a branch rather than a fixed version and you need the latest commit
+- A previous install left roles or collections in a broken state
+- Verify that a playbook works from a clean set of dependencies
+
+See [Galaxy requirements](../apps/ansible.md#galaxy-requirements) for how the template-level defaults work.
+
 ### Enabling Ansible Prompts {#enabling-ansible-prompts}
 
 To enable Ansible prompts:
@@ -99,6 +120,9 @@ To enable Ansible prompts:
    - ☐ **Limit** - Enable `--limit` flag
    - ☐ **Tags** - Enable `--tags` flag
    - ☐ **Skip Tags** - Enable `--skip-tags` flag
+   - ☐ **Debug** - Enable verbosity (`-v`) selection
+   - ☐ **Skip Galaxy install** - Allow skipping `ansible-galaxy install`
+   - ☐ **Force Galaxy install** - Allow forcing `ansible-galaxy install --force`
 4. Save the template
 
 ![](/assets/ansible_2.png)

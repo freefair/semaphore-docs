@@ -89,6 +89,31 @@ Templates support Ansible CLI options:
 
 These can be set in the template and overridden when creating a task. Ensure corresponding prompts are enabled if you plan to pass these values via API.
 
+### Galaxy requirements {#galaxy-requirements}
+
+Before running a playbook, Semaphore installs roles and collections from `requirements.yml` files found in the playbook directory, the repository root, and their `roles/` and `collections/` subdirectories, using `ansible-galaxy install --force`.
+
+To avoid reinstalling on every run, Semaphore stores a checksum of each requirements file and only runs the install again when the file changes. Two template options in the collapsible **Galaxy install options** section (below **Ansible prompts**) control this behavior:
+
+- **Skip Galaxy install** — do not run `ansible-galaxy` at all. Use it when requirements are pre-installed in the runner image.
+- **Force Galaxy install** — always run `ansible-galaxy install --force`, ignoring the stored checksum. Use it when a requirements file points to a moving target (for example a branch instead of a tag) and you want the latest version on every run.
+
+**Skip Galaxy install** can be exposed in the task run form by enabling the checkbox of the same name under **Prompts** at the bottom of the section. When a prompt is enabled, the value chosen at run time overrides the template default.
+
+#### Extra Galaxy arguments {#galaxy-extra-args}
+
+**Role install args** and **Collection install args** (in the collapsible **Galaxy install options** section below **Ansible prompts**; collapsed by default; the counter next to it shows how many Galaxy settings are customized) append flags to `ansible-galaxy role install` and `ansible-galaxy collection install` respectively. They are configured separately because the two subcommands accept different flags: `--pre`, for example, is valid only for collections.
+
+Each entry is one argv token; a value can be given either inline (`--timeout=60`) or as the next entry (`--timeout`, `60`). Only the following flags are accepted:
+
+| Scope | Flags |
+|-------|-------|
+| Both | `-c`/`--ignore-certs`, `-f`/`--force`, `--force-with-deps`, `-i`/`--ignore-errors`, `-n`/`--no-deps`, `-s`/`--server <url>`, `--timeout <seconds>`, `-v`…`-vvvv`/`--verbose` |
+| Roles only | `-g`/`--keep-scm-meta` |
+| Collections only | `--pre`, `-U`/`--upgrade`, `--offline`, `--no-cache`, `--clear-response-cache`, `--disable-gpg-verify`, `--keyring <path>`, `--signature <url>`, `--required-valid-signature-count <n>`, `--ignore-signature-status-code(s) <code>` |
+
+Anything else is rejected when the template is saved. In particular `--token`/`--api-key` are not allowed because command-line arguments are visible in the process list — configure Galaxy credentials through environment variables (for example `ANSIBLE_GALAXY_SERVER_<NAME>_TOKEN`) in a variable group instead. The requirements file (`-r`) is set by Semaphore, and install paths (`-p`, `--roles-path`, `--collections-path`) are deliberately not accepted so a template cannot write outside the repository — set `roles_path`/`collections_path` in `ansible.cfg` or via `ANSIBLE_ROLES_PATH`/`ANSIBLE_COLLECTIONS_PATH` instead.
+
 ### Parallelism (`--forks` / `-f`) {#parallelism---forks---f}
 
 Control how many hosts Ansible connects to in parallel by passing `--forks` or
