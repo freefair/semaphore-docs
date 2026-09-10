@@ -1,5 +1,13 @@
 # Current Slice
 
+- [x] Maintenance — Repeatable upstream merges for the long-lived fork
+  - [x] Preserve shipped migration IDs with an append-only ownership ledger
+  - [x] Inventory exported seams and detect inherited placeholders with behavioral coverage
+  - [x] Retain exact-ref assessments, conflict previews, and verification evidence
+  - [x] Adopt Enhanced-module and focused-UI boundaries for future changes
+  - [x] Measure serial and bounded parallel docs builds and verify canonical security fallbacks
+  - [x] Codify regular merges, ordinary pushes, and explicit recovery-point cleanup
+
 - [x] Maintenance — Upstream delay-node and working-directory compatibility
   - [x] Rebase application and documentation histories while preserving every fork commit
   - [x] Preserve shipped migration IDs and append upstream schema additions

@@ -48,6 +48,16 @@ See [Custom Project Roles](project-roles.md) for the typed permission catalog, s
 - Intent and focused tests may be reimplemented from historical branches after review. Stale branches are never merged wholesale.
 - A release manifest identifies the shared source revision, contract version, implementation version, and compatibility edition metadata.
 
+## Executable Contract Inventory
+
+The application repository records every exported compatibility-module,
+`pro_interfaces`, and root database declaration in `maintenance/contracts.yml`.
+`go run ./tools/upstreamcheck -mode check` compares current compiler-derived
+signatures and selected implementation origins with that reviewed inventory.
+Promoted Community methods and function aliases remain visible. New or changed
+callables require behavioral test references when checked against the previous
+reviewed baseline. See [maintenance tooling](upstream-maintenance-tooling.md).
+
 ## Exported Contract Inventory
 
 The core-owned contract types live in `pro_interfaces/`:

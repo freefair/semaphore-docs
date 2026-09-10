@@ -5,9 +5,17 @@ set -euo pipefail
 
 cd "$(dirname "$0")/.."
 site_dir="$PWD"
-jobs="${JOBS:-5}"
-if ! [[ "$jobs" =~ ^[1-9][0-9]*$ ]]; then
-  echo 'JOBS must be a positive integer.' >&2
+jobs="${JOBS:-2}"
+if [[ "${1-}" == --help || "${1-}" == -h ]]; then
+  printf 'Usage: JOBS=2 bash scripts/build-parallel.sh\nBuild all configured locales with 1 or 2 workers (default: 2). Use npm run build for serial CLI builds.\n'
+  exit 0
+fi
+if [[ $# -ne 0 ]]; then
+  echo 'Use --help; this script accepts no positional arguments.' >&2
+  exit 1
+fi
+if ! [[ "$jobs" =~ ^[12]$ ]]; then
+  echo 'JOBS must be 1 or 2; benchmark memory and elapsed time before raising this bound.' >&2
   exit 1
 fi
 

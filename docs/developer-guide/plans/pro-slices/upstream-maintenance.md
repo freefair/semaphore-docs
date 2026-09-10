@@ -1,6 +1,6 @@
 # Full-Product Upstream Maintenance
 
-This runbook defines how to rebase the `freefair/semaphore-ex` full-product fork onto `semaphoreui/semaphore` without silently dropping selected feature behavior or current upstream fixes.
+This runbook defines how to merge upstream into the `freefair/semaphore-ex` full-product fork from `semaphoreui/semaphore` without silently dropping selected feature behavior or current upstream fixes.
 It is written for maintainers and coding agents that have the repository but no access to a separate commercial module.
 
 ## Table of Contents
@@ -9,9 +9,9 @@ It is written for maintainers and coding agents that have the repository but no 
 - [Product Invariants](#product-invariants)
 - [Feature and Implementation Map](#feature-and-implementation-map)
 - [Conflict-Sensitive Contracts](#conflict-sensitive-contracts)
-- [Rebase Procedure](#rebase-procedure)
+- [Merge Procedure](#merge-procedure)
 - [Verification Gates](#verification-gates)
-- [Guarded Push and Pipeline Verification](#guarded-push-and-pipeline-verification)
+- [Publication and Pipeline Verification](#publication-and-pipeline-verification)
 
 ## Source of Truth
 
@@ -157,35 +157,62 @@ For task details, keep upstream schedule/integration origin rendering while runn
 
 The root submodule URL is the writable fork `git@github.com:freefair/semaphore-docs.git`.
 Inside the submodule, `origin` is the writable fork and `upstream` is `git@github.com:semaphoreui/semaphore-docs`.
-Rebase and push documentation first, then commit the resulting submodule pointer in the root repository.
+Merge, verify, and publish documentation first, then commit the resulting submodule pointer in the root repository.
 Never point the root repository at a documentation commit that is not reachable from the configured fork.
 
-## Rebase Procedure
+## Merge Procedure
 
-1. Verify the repository and remotes instead of assuming them.
-   `origin` must identify `freefair/semaphore-ex`; `upstream` must identify `semaphoreui/semaphore`.
-2. Fetch both remotes with the required SSH identity policy.
-3. Record the exact local head, `origin/develop`, `upstream/develop`, merge base, and left/right commit counts.
-4. Stop if the expected merge base is absent or the branch ancestry is unrelated.
-5. Obtain explicit approval for the history rewrite and later guarded force-push.
-6. Create a local `codex/` safety branch at the pre-rebase head.
-7. Preserve unrelated tracked and untracked working state separately.
-   Do not stage local journals, generated knowledge mirrors, build output, or credentials.
-8. Rebase `develop` onto `upstream/develop`.
-9. For every conflict, identify the replayed commit and map each path to the slice families above.
-10. Read the relevant slice specifications, the upstream version, the replayed version, and the pre-rebase final version before editing.
-11. Preserve current upstream behavior and reapply the selected contract through its documented seam.
-12. Run a focused formatter, compiler, linter, or test before continuing each conflict.
-13. After the rebase, restore unrelated working state and compare old and new patch stacks with `git range-diff`.
-14. Implement any genuinely new upstream seam as a separate compatibility commit with a failing regression first.
+Routine updates merge upstream into the long-lived root `develop` and docs `main`
+branches. Both published histories remain intact. Rebases and force-pushes are
+exceptions requiring a separate explicit request. Older personal skill instructions
+that prescribe rebasing do not override this repository policy.
 
-Do not use `git rebase --skip` merely because a commit is difficult to replay.
-Skip only when patch equivalence proves that upstream already contains the complete behavior and its tests.
-Do not refactor conflicted code or fix unrelated defects during conflict resolution.
+1. Verify the repository, worktrees, remotes, and branch names. Preserve unrelated
+   tracked and untracked work; review unpublished commits before including them.
+2. Run the repository-owned assessment and retain its output:
+
+   ```bash
+   bash tools/upstream-sync/preflight.sh --fetch --output /tmp/semaphore-assessment .
+   ```
+
+3. Read the exact ref records, seam/schema diffs, incoming migration decisions,
+   and root/docs conflict previews. Confirm ancestry and expected origin tips.
+   If local and origin tips differ, reconcile that explicitly before the sync.
+4. Create a clearly named local recovery branch at each pre-merge head. Keep
+   recovery points until cleanup is explicitly authorized.
+5. Merge the recorded docs upstream SHA into docs `main` with
+   `git merge --no-ff --no-commit <recorded-docs-upstream-sha>`. Resolve and verify
+   the docs changes, commit, obtain publication approval, and push normally.
+6. Read the remote docs head back, then merge the recorded root upstream SHA into
+   `develop` with `git merge --no-ff --no-commit <recorded-root-upstream-sha>`.
+   Point the submodule at the verified published docs commit.
+7. Resolve each conflict against the relevant slice specs and current upstream
+   behavior. Keep permissions, configured enablement, credentials, and durable
+   lifecycle transitions authoritative.
+8. Preserve every shipped migration ID and SQL file. Append newly mapped upstream
+   migrations at the local tail and update the ownership ledger. Review corrected
+   upstream SQL as a new local corrective migration, never a historical rewrite.
+9. Inventory new/changed exported seams, implement required Enhanced behavior,
+   and add behavioral regressions before updating the reviewed contract inventory.
+10. Run focused verification for conflict resolutions and the complete retained
+    gate runner. Inspect the resulting diff against both pre-merge parents before
+    committing the merge and any separate compatibility changes.
+11. Obtain publication approval, verify the recorded origin tip again, push
+    normally, read back the exact remote SHA, and wait for the required workflows.
+
+The merge preview never chooses a semantic resolution. Avoid blanket side selection,
+automatic placeholder approval, and unrelated refactoring. Implement future feature
+behavior in the existing Enhanced module and focused UI components; shared hosts
+receive only the smallest necessary integration.
+
+See [maintenance tooling](../../upstream-maintenance-tooling.md) and the application
+repository's `maintenance/README.md` for executable checks and inventory updates.
 
 ## Verification Gates
 
-Run all gates on the final rebased head after the last compatibility change.
+Run all gates on the final merged source after the last compatibility change.
+The repository-owned runner retains command logs, exit codes, source fingerprints,
+and checksums: `bash tools/upstream-sync/verify.sh --output /tmp/semaphore-gates`.
 
 ```bash
 go test ./... -count=1
@@ -209,19 +236,26 @@ Check desktop and mobile widths, browser-console errors, permissions, disabled c
 Security-sensitive conflicts and the final tracked diff require a dedicated Terra security review.
 The primary agent integrates the evidence and runs the non-security release gates.
 
-## Guarded Push and Pipeline Verification
+## Publication and Pipeline Verification
 
-Fetch `origin` again immediately before pushing.
-Abort if `origin/develop` no longer equals the previously recorded remote head.
-Push the rewritten history with an exact lease bound to that recorded commit, never with an unqualified force:
+Fetch `origin` again immediately before pushing. Require its branch tip to match
+the assessment's recorded tip. If it advanced, incorporate the new work and repeat
+relevant verification before proceeding. Obtain publication approval for the concrete
+reviewed result. Push the merged history normally:
 
 ```bash
-git push --force-with-lease=refs/heads/develop:<recorded-origin-sha> origin develop:develop
+git push origin develop:develop
 ```
 
-Read the remote branch SHA after the push and require exact equality with the local head.
-Wait for every push-triggered required workflow to reach a terminal result.
-Inspect failed job logs and fix root causes before declaring the update complete.
-Dependabot update failures are separate work unless they break the selected build or the user explicitly includes them.
+Inside the docs submodule, use `git push origin main:main`. Use
+`GIT_SSH_COMMAND='ssh -o IdentitiesOnly=yes'` for network Git operations.
+A normal push must be a fast-forward of the current remote history; never use force
+to get around a concurrent update.
 
-Remove generated build directories, temporary binaries, caches created for the run, and the local safety branch only after remote verification succeeds.
+Read the remote branch SHA after the push and require exact equality with the local
+head. Wait for every required push-triggered workflow. Inspect failed job logs and
+fix root causes before declaring the update complete. Dependabot update failures
+are separate work unless they break the selected build or are explicitly included.
+
+Retain verification evidence. Remove only this run's generated artifacts, and delete
+recovery branches or restored stashes only with explicit cleanup authorization.

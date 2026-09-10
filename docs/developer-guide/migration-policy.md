@@ -2,6 +2,20 @@
 
 Semaphore migrations must preserve Community data across edition changes and must behave consistently on SQLite, MySQL/MariaDB, and PostgreSQL. SQL remains authoritative; an enhanced module may add schema, but Community code must remain usable when those tables exist.
 
+## Ownership and Shipped Identity
+
+The application repository's `maintenance/migrations.yml` is the reviewed ownership
+ledger. Its immutable local IDs are the versions recorded in deployed databases;
+`upstream_id` records the separate upstream identity. Upstream `2.20.2` and `2.20.3`
+map to local `2.20.66` and `2.20.67` because the original local numbers were already
+shipped. New upstream and fork migrations append after the local tail. Preserve
+shipped SQL byte-for-byte and use a new migration for later corrections.
+
+The maintenance checker validates registration state, ownership, unique upstream
+mappings, and forward/rollback/dialect checksums. CI compares against the prior
+reviewed ledger and rejects rewriting an old entry, even if its checksum changes
+alongside SQL. See [maintenance tooling](upstream-maintenance-tooling.md).
+
 ## Executable Upgrade Fixture
 
 The migration matrix captures the schema immediately before the first enhanced table as migration target `2.20.1`. This target is the current-`develop` fixture for all supported dialects. The fixture also creates a representative Community user so forward and rollback checks prove data survival rather than schema shape alone.

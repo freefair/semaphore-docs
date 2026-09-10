@@ -1,7 +1,9 @@
 # Options for Faster Upstream Updates
 
-This assessment proposes follow-up changes; the current maintenance procedure
-continues to use the approved rebase workflow.
+The regular-merge option is adopted by the [maintenance procedure](upstream-maintenance.md).
+The ownership ledger, contract checks, assessment tooling, and measured documentation
+build policy are described in [maintenance tooling](../../upstream-maintenance-tooling.md).
+The comparison below preserves the reasoning behind that choice.
 
 ## Evidence from the Patch Stack
 
@@ -26,8 +28,8 @@ release verification.
 
 The recommended follow-up is regular upstream merges for both repositories,
 with documentation published before the root pointer update. Keep the existing
-backup, contract review, browser, SQL-dialect, security, and CI gates. This changes
-the maintenance strategy and requires approval before adoption.
+backup, contract review, browser, SQL-dialect, security, and CI gates. This strategy preserves published fork history; publication and destructive cleanup
+remain explicit approval gates.
 
 [Git merge](https://git-scm.com/docs/git-merge) records both histories in the
 resulting merge commit. [Git rerere](https://git-scm.com/docs/git-rerere) can reuse
@@ -53,4 +55,6 @@ submodule references.
    build against the serial eleven-locale build, measuring memory and elapsed time.
    Retain verification of translated security pages and canonical fallbacks.
 
-These are proposals, not changes silently included in the upstream sync.
+These follow-up improvements are implemented separately from the upstream sync.
+Future feature work follows the focused integration policy rather than a broad
+refactor of existing shared files.
