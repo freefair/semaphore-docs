@@ -251,6 +251,22 @@ Check desktop and mobile widths, browser-console errors, permissions, disabled c
 Security-sensitive conflicts and the final tracked diff require a dedicated Terra security review.
 The primary agent integrates the evidence and runs the non-security release gates.
 
+## Source Separation Outside Syncs
+
+Use focused components in `web/src/components/enhanced` for fork-only rendering and
+explicit option/state spreads in `web/src/lib/enhanced`. Preserve update ordering,
+keyboard focus, disabled controls and the host's network/lifecycle responsibilities.
+Keep upstream controls visible in their original host, using slots for surrounding
+fork content. A complete fork-owned transaction can live in a same-package helper
+when its locks, error handling and caller order remain intact.
+
+The root API and embedded Swagger surface each retain their own public entry and
+fork fragment. Verify expanded contracts and the shipped Swagger resolver; these
+surfaces intentionally expose different sets of endpoints. Keep configuration
+schema references self-contained until a fork schema identity and its consumers
+are explicitly reviewed. Consult `maintenance/source-boundaries.md` in the root
+repository for the ownership table and integration rules.
+
 ## Publication and Pipeline Verification
 
 Fetch `origin` again immediately before pushing. Require its branch tip to match
