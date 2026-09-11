@@ -98,7 +98,22 @@ The HA clean-room context deliberately excludes `.git`.
 Every nested Task invocation in the Docker build must receive all revision-derived variables it might otherwise calculate with Git, including `CORE_REVISION`, `ENHANCED_REVISION`, and `SOURCE_DATE_EPOCH`.
 Do not fix a missing variable by copying `.git` into the image context.
 
+### Fork Source Boundaries
+
+Task-summary persistence lives in the selected Enhanced SQL module and its factory.
+The selected UI uses `EnhancedTaskSummary.vue`; the upstream `AnsibleStageView.vue` remains unwired compatibility source.
+Fork-only root declarations use focused same-package `_ex.go` files when moving modules would change public type identity or introduce dependency cycles.
+Keep existing authorization, SQL transaction, admission, fencing, and redaction calls at their authoritative integration points.
+Vue option additions live under `web/src/lib/enhanced`, while new rendering uses focused components and fork messages live under `web/src/lang/enhanced`.
+Shared hosts explicitly select these additions.
+Fork build tasks live in `Taskfile.ex.yml`, included with their original task names.
+
 ### Dredd Fixtures
+
+Fork-only paths and definitions live in `api-docs-ex.yml` and are referenced from `api-docs.yml`.
+Run `go run ./tools/openapibundle` before direct Dredd invocations; Task targets perform this step automatically.
+The ignored `.dredd/api-docs.bundled.yml` is the standalone contract for Dredd 13.1.2, which cannot resolve the authored external schema references.
+The bundler preserves internal references and rejects unsupported external paths and authored-source overwrites.
 
 The Dredd hooks compile against the selected workspace implementation.
 Workflow fixtures must create durable workflow-run nodes and use current atomic store methods such as `OpenWorkflowApproval`; they must not restore removed persistence shortcuts.
