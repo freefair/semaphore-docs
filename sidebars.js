@@ -189,6 +189,7 @@ const sidebars = {
           label: 'Key Store',
           link: { type: 'doc', id: 'user-guide/key-store' },
           items: [
+            'user-guide/key-store/env-and-file-sources',
             'user-guide/key-store/hashicorp-vault',
             'user-guide/key-store/openbao',
             'user-guide/key-store/aws-secrets-manager',

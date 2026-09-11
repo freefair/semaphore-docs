@@ -40,6 +40,16 @@ Semaphore UI は、シークレット用に複数のストレージをサポー�
 デフォルトでは、シークレットは暗号化された形式でデータベースに保存されます。暗号化キーは、設定オプション
 `access_key_encryption` または `SEMAPHORE_ACCESS_KEY_ENCRYPTION` で設定します (`head -c32 /dev/urandom | base64` で生成する必要があります)。
 
+### 環境変数またはファイル {#environment-variable-or-file}
+
+キーは、Semaphore サーバーの環境変数、またはサーバー上のファイル (例えば、コンテナにマウントされた SSH キー) から
+値を読み取ることができます。このモードは、キーフォームの **Env** タブおよび **File** タブで選択します。
+
+ファイルは、設定されたシークレットディレクトリ (`dirs.secrets` / `SEMAPHORE_SECRETS_PATH`、デフォルトは `/tmp/semaphore`) の内部に
+置く必要があり、SSH キーおよび「パスワードでログイン」キーは小さな JSON ドキュメントでラップする必要があります。
+
+[詳細を読む...](/user-guide/key-store/env-and-file-sources)
+
 ### HashiCorp Vault {#hashicorp-vault}
 
 シークレットは、データベースの代わりに外部の HashiCorp Vault インスタンスに保存できます。

@@ -40,6 +40,16 @@ Semaphore UI supporta diversi archivi per i segreti. È possibile scegliere l'ar
 Per impostazione predefinita, i segreti vengono archiviati nel database in forma cifrata. La chiave di cifratura viene configurata tramite l'opzione di configurazione
 `access_key_encryption` o `SEMAPHORE_ACCESS_KEY_ENCRYPTION` (deve essere generata con `head -c32 /dev/urandom | base64`).
 
+### Variabile d'ambiente o file {#environment-variable-or-file}
+
+Una chiave può leggere il proprio valore da una variabile d'ambiente del server Semaphore oppure da un file sul server
+(ad esempio una chiave SSH montata nel container). Le schede **Env** e **File** del modulo della chiave selezionano questa modalità.
+
+I file devono trovarsi all'interno della directory dei segreti configurata (`dirs.secrets` / `SEMAPHORE_SECRETS_PATH`, predefinita `/tmp/semaphore`),
+e le chiavi SSH e Accesso con password devono essere incapsulate in un piccolo documento JSON.
+
+[Per saperne di più...](/user-guide/key-store/env-and-file-sources)
+
 ### HashiCorp Vault {#hashicorp-vault}
 
 I segreti possono essere archiviati in un'istanza esterna di HashiCorp Vault anziché nel database.

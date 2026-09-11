@@ -96,7 +96,7 @@ semaphore runner start --config ./config.json
 
 ## Secrets directory {#secrets-directory}
 
-Semaphore stores short-lived secret files (for example HashiCorp Vault or OpenBao tokens read from disk) under a configurable directory.
+Semaphore reads secret files (for example [file-based Key Store entries](/user-guide/key-store/env-and-file-sources) or HashiCorp Vault and OpenBao tokens read from disk) only from a configurable directory.
 
 | Option | Environment variable | Description |
 |--------|---------------------|-------------|
@@ -123,7 +123,7 @@ Legacy installations may still use:
 }
 ```
 
-Token files referenced by external secret storages must live inside this directory.
+Key files selected in the **File** tab of the Key Store form, and token files referenced by external secret storages, must live inside this directory. Paths outside it are rejected with `file path must be inside secrets path`. See [Keys from environment variables and files](/user-guide/key-store/env-and-file-sources).
 
 ## Git operations {#git-operations}
 

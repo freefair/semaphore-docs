@@ -96,7 +96,7 @@ semaphore runner start --config ./config.json
 
 ## シークレットディレクトリ {#secrets-directory}
 
-Semaphore は、短期間のみ有効なシークレットファイル (例えば、ディスクから読み取る HashiCorp Vault や OpenBao のトークン) を、設定可能なディレクトリの下に保存します。
+Semaphore は、シークレットファイル (例えば、[ファイルベースのキーストアエントリ](/user-guide/key-store/env-and-file-sources)や、ディスクから読み取る HashiCorp Vault や OpenBao のトークン) を、設定可能なディレクトリからのみ読み取ります。
 
 | オプション | 環境変数 | 説明 |
 |--------|---------------------|-------------|
@@ -123,7 +123,7 @@ Semaphore は、短期間のみ有効なシークレットファイル (例え�
 }
 ```
 
-外部シークレットストレージから参照されるトークンファイルは、このディレクトリ内に置く必要があります。
+キーストアのフォームの **File** タブで選択したキーファイル、および外部シークレットストレージから参照されるトークンファイルは、このディレクトリ内に置く必要があります。このディレクトリの外にあるパスは `file path must be inside secrets path` というエラーで拒否されます。[環境変数およびファイルからのキー](/user-guide/key-store/env-and-file-sources)を参照してください。
 
 ## Git 操作 {#git-operations}
 
