@@ -107,6 +107,12 @@ chmod 0400 /srv/semaphore/secrets/prod_ssh.json
 그런 다음 **SSH** 유형의 키를 생성하고 **File** 탭을 열어 `/var/lib/semaphore/secrets/prod_ssh.json`
 (컨테이너 **내부**에서 보이는 경로)을 입력합니다.
 
+<div style={{maxWidth: 450}}>
+
+![](/assets/key-file-source.webp)
+
+</div>
+
 :::warning
 **File** 탭이 `~/.ssh/id_ed25519`와 같은 원시 개인 키를 가리키도록 하면 동작하지 않습니다.
 파일이 JSON으로 파싱되므로 작업이 인벤토리를 로드하지 못하고 실패합니다.

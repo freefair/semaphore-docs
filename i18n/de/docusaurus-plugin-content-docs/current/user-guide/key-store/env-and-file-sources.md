@@ -107,6 +107,12 @@ chmod 0400 /srv/semaphore/secrets/prod_ssh.json
 Erstellen Sie anschließend einen Schlüssel vom Typ **SSH**, öffnen Sie den Tab **File** und geben Sie `/var/lib/semaphore/secrets/prod_ssh.json` ein
 (den Pfad, wie er **innerhalb** des Containers sichtbar ist).
 
+<div style={{maxWidth: 450}}>
+
+![](/assets/key-file-source.webp)
+
+</div>
+
 :::warning
 Den Tab **File** auf einen rohen privaten Schlüssel wie `~/.ssh/id_ed25519` zu verweisen, funktioniert nicht.
 Die Datei wird als JSON geparst, und der Task schlägt beim Laden des Inventorys fehl.

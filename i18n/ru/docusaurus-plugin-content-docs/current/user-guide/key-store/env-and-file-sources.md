@@ -107,6 +107,12 @@ chmod 0400 /srv/semaphore/secrets/prod_ssh.json
 Затем создайте ключ типа **SSH**, откройте вкладку **File** и введите `/var/lib/semaphore/secrets/prod_ssh.json`
 (путь таким, каким он виден **внутри** контейнера).
 
+<div style={{maxWidth: 450}}>
+
+![](/assets/key-file-source.webp)
+
+</div>
+
 :::warning
 Указывать на вкладке **File** «сырой» приватный ключ, например `~/.ssh/id_ed25519`, нельзя.
 Файл разбирается как JSON, и задача не сможет загрузить инвентарь.

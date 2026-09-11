@@ -107,6 +107,12 @@ chmod 0400 /srv/semaphore/secrets/prod_ssh.json
 A continuación, cree una clave de tipo **SSH**, abra la pestaña **File** e introduzca `/var/lib/semaphore/secrets/prod_ssh.json`
 (la ruta tal como se ve **dentro** del contenedor).
 
+<div style={{maxWidth: 450}}>
+
+![](/assets/key-file-source.webp)
+
+</div>
+
 :::warning
 Apuntar la pestaña **File** a una clave privada en bruto como `~/.ssh/id_ed25519` no funciona.
 El archivo se analiza como JSON y la tarea falla al cargar el inventario.

@@ -107,6 +107,12 @@ chmod 0400 /srv/semaphore/secrets/prod_ssh.json
 次に、種類が **SSH** のキーを作成し、**File** タブを開いて `/var/lib/semaphore/secrets/prod_ssh.json`
 (コンテナの**内部**から見たパス) を入力します。
 
+<div style={{maxWidth: 450}}>
+
+![](/assets/key-file-source.webp)
+
+</div>
+
 :::warning
 **File** タブで `~/.ssh/id_ed25519` のような生の秘密鍵を指定しても動作しません。
 ファイルは JSON として解析されるため、タスクはインベントリの読み込みに失敗します。

@@ -107,6 +107,12 @@ chmod 0400 /srv/semaphore/secrets/prod_ssh.json
 Quindi creare una chiave di tipo **SSH**, aprire la scheda **File** e inserire `/var/lib/semaphore/secrets/prod_ssh.json`
 (il percorso come visto **all'interno** del container).
 
+<div style={{maxWidth: 450}}>
+
+![](/assets/key-file-source.webp)
+
+</div>
+
 :::warning
 Far puntare la scheda **File** a una chiave privata grezza come `~/.ssh/id_ed25519` non funziona.
 Il file viene interpretato come JSON e il task non riesce a caricare l'inventory.

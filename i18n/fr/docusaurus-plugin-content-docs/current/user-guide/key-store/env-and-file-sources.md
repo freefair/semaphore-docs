@@ -107,6 +107,12 @@ chmod 0400 /srv/semaphore/secrets/prod_ssh.json
 Créez ensuite une clé de type **SSH**, ouvrez l'onglet **File** et saisissez `/var/lib/semaphore/secrets/prod_ssh.json`
 (le chemin tel qu'il est vu **à l'intérieur** du conteneur).
 
+<div style={{maxWidth: 450}}>
+
+![](/assets/key-file-source.webp)
+
+</div>
+
 :::warning
 Faire pointer l'onglet **File** vers une clé privée brute telle que `~/.ssh/id_ed25519` ne fonctionne pas.
 Le fichier est analysé comme du JSON et la tâche échoue au chargement de l'inventaire.
