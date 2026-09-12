@@ -18,7 +18,7 @@ jobs:
     name: Build all locales
     runs-on: ubuntu-latest
     env:
-      DOCS_URL: https://freefair.github.io
+      DOCS_URL: https://freefair.io
       DOCS_BASE_URL: /semaphore-docs/
       DOCS_ORGANIZATION: freefair
 
