@@ -7,6 +7,7 @@ const docsRoot = path.resolve(__dirname, '..');
 const contentRoot = path.join(docsRoot, 'docs');
 const translationsRoot = path.join(docsRoot, 'i18n');
 const buildDirectory = process.env.DOCS_BUILD_DIR;
+const baseUrl = process.env.DOCS_BASE_URL || '/docs/';
 
 const runnerLocales = ['de', 'es', 'fr', 'it', 'ja', 'ko', 'ru'];
 const securityLocales = [...runnerLocales, 'pt'];
@@ -96,7 +97,7 @@ test('built localized security pages use the canonical content when DOCS_BUILD_D
       const html = fs.readFileSync(htmlPath, 'utf8');
       assert.match(html, new RegExp(`<html[^>]*\\blang="${locale}"`));
       assert.ok(html.includes(`docs-doc-id-${route}`), `${locale}/${route} has the wrong document route`);
-      assert.ok(html.includes(`/docs/${locale}/${route}`), `${locale}/${route} has the wrong localized canonical route`);
+      assert.ok(html.includes(`${baseUrl}${locale}/${route}`), `${locale}/${route} has the wrong localized canonical route`);
       assert.match(html, new RegExp(`<h1[^>]*>${heading.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}`));
       assert.ok(html.replace(/\s+/g, ' ').includes(marker), `${locale}/${route} does not contain canonical security content`);
       assert.doesNotMatch(html, commercialEntitlementAssertion, `${locale}/${route} must not assert commercial entitlement gating`);

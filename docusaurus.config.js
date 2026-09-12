@@ -6,8 +6,12 @@ const currentLocale = locales.includes(process.env.DOCUSAURUS_CURRENT_LOCALE)
   : defaultLocale;
 
 // The main website serves English at / and other languages at /<locale>/.
+// DOCS_URL / DOCS_BASE_URL override the upstream site for fork deployments (GitHub Pages).
+const siteUrl = process.env.DOCS_URL || 'https://semaphoreui.com';
+const siteBaseUrl = process.env.DOCS_BASE_URL || '/docs/';
+
 const websiteUrl = (path = '/') =>
-  `https://semaphoreui.com${currentLocale === defaultLocale ? '' : `/${currentLocale}`}${path}`;
+  `${siteUrl}${currentLocale === defaultLocale ? '' : `/${currentLocale}`}${path}`;
 
 /** @type {import('@docusaurus/types').Config} */
 const config = {
@@ -16,15 +20,15 @@ const config = {
   favicon: 'img/favicon.png',
 
   // Set the production url of your site here
-  url: 'https://semaphoreui.com',
+  url: siteUrl,
   // Set the /<baseUrl>/ pathname under which your site is served
   // For GitHub pages deployment, it is often '/<projectName>/'
-  baseUrl: '/docs/',
+  baseUrl: siteBaseUrl,
   //trailingSlash: true,
 
   // GitHub pages deployment config.
   // If you aren't using GitHub pages, you don't need these.
-  organizationName: 'semaphoreui', // Usually your GitHub org/user name.
+  organizationName: process.env.DOCS_ORGANIZATION || 'semaphoreui', // Usually your GitHub org/user name.
   projectName: 'semaphore-docs', // Usually your repo name.
 
   onBrokenLinks: 'ignore',

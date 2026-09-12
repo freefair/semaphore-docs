@@ -1,5 +1,15 @@
 # Current Slice
 
+- [x] Maintenance — First production-ready fork release
+  - [x] Build with Go 1.26.8 everywhere and clear reachable govulncheck findings
+  - [x] Point module requirements at the synced upstream revision so Dependabot stops reporting fixed advisories
+  - [x] Apply non-breaking frontend dependency updates and pin vuetify-loader to a working line
+  - [x] Tag scheme `vX.Y.Z-ex.N`, gated release workflows, ghcr.io images, `semaphore-ex` packages
+  - [x] Release notes from CHANGELOG.md, signed checksums with the committed public key
+  - [x] Fork identity: README, SECURITY.md, issue templates, package and image metadata, third-party licenses
+  - [x] Documentation published from the docs fork through GitHub Pages
+  - [x] Release procedure in `maintenance/RELEASING.md`
+
 - [x] Maintenance — Upstream session, template, and runner compatibility
   - [x] Map unique template names and error-alert suppression to local migrations 2.20.68 and 2.20.69
   - [x] Preserve error-alert suppression in immutable template versions and fingerprints
