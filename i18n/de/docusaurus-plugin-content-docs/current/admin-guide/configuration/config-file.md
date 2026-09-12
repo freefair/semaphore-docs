@@ -96,7 +96,7 @@ semaphore runner start --config ./config.json
 
 ## Verzeichnis für Geheimnisse {#secrets-directory}
 
-Semaphore speichert kurzlebige Geheimnisdateien (zum Beispiel von der Festplatte gelesene HashiCorp-Vault- oder OpenBao-Tokens) in einem konfigurierbaren Verzeichnis.
+Semaphore liest Geheimnisdateien (zum Beispiel [dateibasierte Key-Store-Einträge](/user-guide/key-store/env-and-file-sources) oder von der Festplatte gelesene HashiCorp-Vault- und OpenBao-Tokens) ausschließlich aus einem konfigurierbaren Verzeichnis.
 
 | Option | Umgebungsvariable | Beschreibung |
 |--------|-------------------|--------------|
@@ -123,7 +123,7 @@ Beispiel mit dem aktuellen Layout:
 }
 ```
 
-Token-Dateien, auf die externe Secret-Storages verweisen, müssen sich innerhalb dieses Verzeichnisses befinden.
+Schlüsseldateien, die im Tab **File** des Key-Store-Formulars ausgewählt werden, sowie Token-Dateien, auf die externe Secret-Storages verweisen, müssen sich innerhalb dieses Verzeichnisses befinden. Pfade außerhalb werden mit `file path must be inside secrets path` abgelehnt. Siehe [Schlüssel aus Umgebungsvariablen und Dateien](/user-guide/key-store/env-and-file-sources).
 
 ## Git-Operationen {#git-operations}
 

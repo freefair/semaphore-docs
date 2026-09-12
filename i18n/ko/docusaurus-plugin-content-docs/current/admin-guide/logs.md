@@ -24,11 +24,10 @@ docker logs -f my-semaphore-container
 
 ## 활동 로그 {#activity-log}
 
-활동 로그는 Semaphore에서 수행된 모든 사용자 작업을 기록합니다. 예를 들면 다음과 같습니다:
+활동 로그는 Semaphore에서 수행된 사용자 작업을 기록합니다. 예를 들면 다음과 같습니다:
 
 - 리소스 추가 또는 제거(예: 템플릿, 인벤토리, 저장소).
 - 팀 구성원 추가 또는 제거.
-- 작업 시작 또는 중지.
 
 ### Pro 버전 2.10 이상 {#pro-version-210-and-later}
 
@@ -64,21 +63,21 @@ docker logs -f my-semaphore-container
 
 ```bash
 export SEMAPHORE_EVENT_LOG_ENABLED=True
-export SEMAPHORE_EVENT_LOG_LOGGER={"filename": "./events.log"}
+export SEMAPHORE_EVENT_LOGGER={"filename": "./events.log"}
 
 export SEMAPHORE_TASK_LOG_ENABLED=True
-export SEMAPHORE_EVENT_LOG_LOGGER={"filename": "./tasks.log"}
+export SEMAPHORE_TASK_LOGGER={"filename": "./tasks.log"}
 ```
 
 #### 활동(이벤트) 로깅 옵션 {#activity-events-logging-options}
 
-활동(이벤트) 로깅 옵션을 사용하면 Semaphore가 사용자 작업과 시스템 이벤트를 파일에 기록하는 방식을 구성할 수 있습니다. 이 설정은 이벤트 로깅의 활성화 여부, 로그 항목 형식, 세부 logger 구성 등 이벤트 로깅 동작을 제어합니다. 활성화하면 모든 사용자 작업(템플릿 생성, 팀 관리, 작업 실행 등)이 이 설정에 따라 지정된 로그 파일에 기록됩니다.
+활동(이벤트) 로깅 옵션을 사용하면 Semaphore가 사용자 작업과 시스템 이벤트를 파일에 기록하는 방식을 구성할 수 있습니다. 이 설정은 이벤트 로깅의 활성화 여부, 로그 항목 형식, 세부 logger 구성 등 이벤트 로깅 동작을 제어합니다. 활성화하면 템플릿 생성, 팀 관리 등의 사용자 작업이 이 설정에 따라 지정된 로그 파일에 기록됩니다.
 
 | 매개변수             | 환경 변수 | 설명           |
 | --------------------- | --------------------- | --------------------- |
 | `enabled`             | `SEMAPHORE_EVENT_LOG_ENABLED` | 파일로의 이벤트 로깅을 활성화합니다. |
-| `format`              | `SEMAPHORE_EVENT_LOG_FORMAT`  | 로그 레코드 형식. `raw` 또는 `json`을 사용할 수 있습니다. |
-| `logger`              | `SEMAPHORE_EVENT_LOG_LOGGER`  | [Logger 옵션](#logger-options). |
+| `format`              | `SEMAPHORE_EVENT_LOG_FORMAT`  | 로그 레코드 형식. raw 형식은 비워 두고, JSON 형식은 `json`으로 설정합니다. |
+| `logger`              | `SEMAPHORE_EVENT_LOGGER`      | [Logger 옵션](#logger-options). |
 
 #### 작업 로깅 옵션 {#tasks-logging-options}
 
@@ -87,8 +86,8 @@ export SEMAPHORE_EVENT_LOG_LOGGER={"filename": "./tasks.log"}
 | 매개변수             | 환경 변수 | 설명           |
 | --------------------- | --------------------- | --------------------- |
 | `enabled`             | `SEMAPHORE_TASK_LOG_ENABLED` | 파일로의 작업 로깅을 활성화합니다. |
-| `format`              | `SEMAPHORE_TASK_LOG_FORMAT`  | 로그 레코드 형식. `raw` 또는 `json`을 사용할 수 있습니다. |
-| `logger`              | `SEMAPHORE_TASK_LOG_LOGGER`  | [Logger 옵션](#logger-options). |
+| `format`              | `SEMAPHORE_TASK_LOG_FORMAT`  | 로그 레코드 형식. raw 형식은 비워 두고, JSON 형식은 `json`으로 설정합니다. |
+| `logger`              | `SEMAPHORE_TASK_LOGGER`      | [Logger 옵션](#logger-options). |
 | `result_logger`       | `SEMAPHORE_TASK_RESULT_LOGGER`  | Logger 옵션. |
 
 

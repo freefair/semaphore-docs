@@ -96,7 +96,7 @@ semaphore runner start --config ./config.json
 
 ## Répertoire des secrets {#secrets-directory}
 
-Semaphore stocke les fichiers de secrets à courte durée de vie (par exemple les tokens HashiCorp Vault ou OpenBao lus depuis le disque) dans un répertoire configurable.
+Semaphore lit les fichiers de secrets (par exemple les [entrées du magasin de clés basées sur des fichiers](/user-guide/key-store/env-and-file-sources) ou les tokens HashiCorp Vault et OpenBao lus depuis le disque) uniquement depuis un répertoire configurable.
 
 | Option | Variable d'environnement | Description |
 |--------|--------------------------|-------------|
@@ -123,7 +123,7 @@ Les installations héritées peuvent encore utiliser :
 }
 ```
 
-Les fichiers de token référencés par les stockages de secrets externes doivent se trouver dans ce répertoire.
+Les fichiers de clés sélectionnés dans l'onglet **File** du formulaire du magasin de clés, ainsi que les fichiers de token référencés par les stockages de secrets externes, doivent se trouver dans ce répertoire. Les chemins situés en dehors sont rejetés avec l'erreur `file path must be inside secrets path`. Consultez [Clés issues de variables d'environnement et de fichiers](/user-guide/key-store/env-and-file-sources).
 
 ## Opérations Git {#git-operations}
 

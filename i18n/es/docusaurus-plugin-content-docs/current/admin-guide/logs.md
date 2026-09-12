@@ -24,11 +24,10 @@ Esto proporciona una vista en vivo (en streaming) de los registros.
 
 ## Registro de actividad {#activity-log}
 
-El Registro de actividad captura todas las acciones de usuario realizadas en Semaphore, incluidas:
+El Registro de actividad captura acciones de usuario realizadas en Semaphore, incluidas:
 
 - Añadir o eliminar recursos (p. ej., Plantillas, Inventarios, Repositorios).
 - Añadir o eliminar miembros del equipo.
-- Iniciar o detener tareas.
 
 ### Versión Pro 2.10 y posteriores {#pro-version-210-and-later}
 
@@ -64,21 +63,21 @@ O puede hacerlo mediante las siguientes variables de entorno:
 
 ```bash
 export SEMAPHORE_EVENT_LOG_ENABLED=True
-export SEMAPHORE_EVENT_LOG_LOGGER={"filename": "./events.log"}
+export SEMAPHORE_EVENT_LOGGER={"filename": "./events.log"}
 
 export SEMAPHORE_TASK_LOG_ENABLED=True
-export SEMAPHORE_EVENT_LOG_LOGGER={"filename": "./tasks.log"}
+export SEMAPHORE_TASK_LOGGER={"filename": "./tasks.log"}
 ```
 
 #### Opciones de registro de actividad (eventos) {#activity-events-logging-options}
 
-Las opciones de registro de actividad (eventos) permiten configurar cómo Semaphore registra en un archivo las acciones de usuario y los eventos del sistema. Estos ajustes controlan el comportamiento del registro de eventos, incluido si está habilitado, el formato de las entradas de registro y la configuración específica del logger. Cuando está habilitado, todas las acciones de usuario (como crear plantillas, gestionar equipos o ejecutar tareas) se escribirán en el archivo de registro especificado según estos ajustes.
+Las opciones de registro de actividad (eventos) permiten configurar cómo Semaphore registra en un archivo las acciones de usuario y los eventos del sistema. Estos ajustes controlan el comportamiento del registro de eventos, incluido si está habilitado, el formato de las entradas de registro y la configuración específica del logger. Cuando está habilitado, las acciones de usuario como crear plantillas o gestionar equipos se escribirán en el archivo de registro especificado según estos ajustes.
 
 | Parámetro             | Variables de entorno | Descripción           |
 | --------------------- | --------------------- | --------------------- |
 | `enabled`             | `SEMAPHORE_EVENT_LOG_ENABLED` | Habilita el registro de eventos en archivo. |
-| `format`              | `SEMAPHORE_EVENT_LOG_FORMAT`  | Formato de los registros. Puede ser `raw` o `json`. |
-| `logger`              | `SEMAPHORE_EVENT_LOG_LOGGER`  | [Opciones del logger](#logger-options). |
+| `format`              | `SEMAPHORE_EVENT_LOG_FORMAT`  | Formato de los registros. Déjelo vacío para formato raw o establézcalo en `json`. |
+| `logger`              | `SEMAPHORE_EVENT_LOGGER`      | [Opciones del logger](#logger-options). |
 
 #### Opciones de registro de tareas {#tasks-logging-options}
 
@@ -87,8 +86,8 @@ Las opciones de registro de tareas permiten configurar cómo Semaphore registra 
 | Parámetro             | Variables de entorno | Descripción           |
 | --------------------- | --------------------- | --------------------- |
 | `enabled`             | `SEMAPHORE_TASK_LOG_ENABLED` | Habilita el registro de tareas en archivo. |
-| `format`              | `SEMAPHORE_TASK_LOG_FORMAT`  | Formato de los registros. Puede ser `raw` o `json`. |
-| `logger`              | `SEMAPHORE_TASK_LOG_LOGGER`  | [Opciones del logger](#logger-options). |
+| `format`              | `SEMAPHORE_TASK_LOG_FORMAT`  | Formato de los registros. Déjelo vacío para formato raw o establézcalo en `json`. |
+| `logger`              | `SEMAPHORE_TASK_LOGGER`      | [Opciones del logger](#logger-options). |
 | `result_logger`       | `SEMAPHORE_TASK_RESULT_LOGGER`  | Opciones del logger. |
 
 

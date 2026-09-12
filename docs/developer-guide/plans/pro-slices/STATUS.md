@@ -1,5 +1,13 @@
 # Current Slice
 
+- [x] Maintenance — Upstream session, template, and runner compatibility
+  - [x] Map unique template names and error-alert suppression to local migrations 2.20.68 and 2.20.69
+  - [x] Preserve error-alert suppression in immutable template versions and fingerprints
+  - [x] Resolve task template names before enforcing template-specific permissions
+  - [x] Preserve HA runner assignment, finalization, and redacted diagnostics
+  - [x] Retain negative temporary workflow IDs and authored public Swagger fragments
+
+
 - [x] Maintenance — Repeatable upstream merges for the long-lived fork
   - [x] Preserve shipped migration IDs with an append-only ownership ledger
   - [x] Inventory exported seams and detect inherited placeholders with behavioral coverage

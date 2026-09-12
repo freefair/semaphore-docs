@@ -40,6 +40,16 @@ Semaphore UI는 시크릿을 위한 다양한 스토리지를 지원합니다. �
 시크릿은 기본적으로 암호화된 형태로 데이터베이스에 저장됩니다. 암호화 키는 구성 옵션
 `access_key_encryption` 또는 `SEMAPHORE_ACCESS_KEY_ENCRYPTION`을 통해 구성합니다(`head -c32 /dev/urandom | base64`를 사용하여 생성해야 합니다).
 
+### 환경 변수 또는 파일 {#environment-variable-or-file}
+
+키는 Semaphore 서버의 환경 변수 또는 서버에 있는 파일(예: 컨테이너에 마운트된 SSH 키)에서
+값을 읽어올 수 있습니다. 키 양식의 **Env** 및 **File** 탭에서 이 모드를 선택합니다.
+
+파일은 구성된 시크릿 디렉터리(`dirs.secrets` / `SEMAPHORE_SECRETS_PATH`, 기본값 `/tmp/semaphore`) 내부에 있어야 하며,
+SSH 및 비밀번호 로그인 키는 작은 JSON 문서로 감싸야 합니다.
+
+[자세히 알아보기...](/user-guide/key-store/env-and-file-sources)
+
 ### HashiCorp Vault {#hashicorp-vault}
 
 시크릿을 데이터베이스 대신 외부 HashiCorp Vault 인스턴스에 저장할 수 있습니다.

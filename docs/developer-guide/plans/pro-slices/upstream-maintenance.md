@@ -71,6 +71,14 @@ those identifiers for capability configuration and runner names. The new schema
 is appended as `2.20.66` and `2.20.67`. Preserve both shipped migrations and verify
 upgrade, rollback, and re-upgrade from an existing fork database.
 
+Upstream `2.20.4` (unique template names) and `2.20.5` (error-alert suppression)
+are appended as `2.20.68` and `2.20.69`. The unique-name pre-migration runs only
+for the mapped local ID and renames duplicates using the database collation.
+The unique index orders name before project ID so MySQL and MariaDB retain the
+separate project foreign-key index; otherwise they silently replace it and reject
+rollback. Rollback removes the unique index with dialect-appropriate syntax. Template-version
+snapshots preserve `suppress_error_alerts` and include it in the content fingerprint.
+
 Delay rows reference the immutable workflow-run node through the pair
 `(workflow_run_id, workflow_node_id)`. Definition edits must not delete an active
 wait. Database time controls the deadline and completion predicate; atomic SQL

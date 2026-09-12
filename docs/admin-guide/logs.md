@@ -24,11 +24,10 @@ This provides a live (streaming) view of the logs.
 
 ## Activity log {#activity-log}
 
-The Activity Log captures all user actions performed in Semaphore, including:
+The Activity Log captures user actions performed in Semaphore, including:
 
 - Adding or removing resources (e.g., Templates, Inventories, Repositories).
 - Adding or removing team members.
-- Starting or stopping tasks.
 
 ### Enhanced edition structured file logs {#pro-version-210-and-later}
 
@@ -89,10 +88,10 @@ export SEMAPHORE_LOG_FLUSH_INTERVAL=1s
 export SEMAPHORE_LOG_ROTATION_INTERVAL=24h
 export SEMAPHORE_EVENT_LOG_ENABLED=true
 export SEMAPHORE_EVENT_LOG_FORMAT=json
-export SEMAPHORE_EVENT_LOG_LOGGER='{"filename":"/var/log/semaphore/events.jsonl","maxsize":100,"maxage":30,"maxbackups":10,"compress":true}'
+export SEMAPHORE_EVENT_LOGGER='{"filename":"/var/log/semaphore/events.jsonl","maxsize":100,"maxage":30,"maxbackups":10,"compress":true}'
 export SEMAPHORE_TASK_LOG_ENABLED=true
 export SEMAPHORE_TASK_LOG_FORMAT=json
-export SEMAPHORE_TASK_LOG_LOGGER='{"filename":"/var/log/semaphore/tasks.jsonl","maxsize":100,"maxage":30,"maxbackups":10,"compress":true}'
+export SEMAPHORE_TASK_LOGGER='{"filename":"/var/log/semaphore/tasks.jsonl","maxsize":100,"maxage":30,"maxbackups":10,"compress":true}'
 export SEMAPHORE_TASK_RESULT_LOGGER='{"filename":"/var/log/semaphore/results.jsonl","maxsize":100,"maxage":30,"maxbackups":10,"compress":true}'
 ```
 
@@ -112,13 +111,13 @@ diagnostics, and the operational cost of broad capture.
 
 #### Activity (events) logging options {#activity-events-logging-options}
 
-The Activity (events) logging options allow you to configure how Semaphore records user actions and system events to a file. These settings control the behavior of event logging, including whether it's enabled, the format of log entries, and specific logger configurations. When enabled, all user actions (like creating templates, managing teams, or running tasks) will be written to the specified log file according to these settings.
+The Activity (events) logging options allow you to configure how Semaphore records user actions and system events to a file. These settings control the behavior of event logging, including whether it's enabled, the format of log entries, and specific logger configurations. When enabled, user actions like creating templates or managing teams will be written to the specified log file according to these settings.
 
 | Parameter             | Environment Variables | Description           |
 | --------------------- | --------------------- | --------------------- |
 | `enabled`             | `SEMAPHORE_EVENT_LOG_ENABLED` | Enable event logging to file. |
 | `format`              | `SEMAPHORE_EVENT_LOG_FORMAT`  | Log record format. Structured export requires `json`. |
-| `logger`              | `SEMAPHORE_EVENT_LOG_LOGGER`  | [Logger options](#logger-options). |
+| `logger`              | `SEMAPHORE_EVENT_LOGGER`  | [Logger options](#logger-options). |
 
 #### Tasks logging options {#tasks-logging-options}
 
@@ -128,7 +127,7 @@ The Tasks logging options allow you to configure how Semaphore records task exec
 | --------------------- | --------------------- | --------------------- |
 | `enabled`             | `SEMAPHORE_TASK_LOG_ENABLED` | Enable task logging to file. |
 | `format`              | `SEMAPHORE_TASK_LOG_FORMAT`  | Log record format. Structured export requires `json`. |
-| `logger`              | `SEMAPHORE_TASK_LOG_LOGGER`  | [Logger options](#logger-options). |
+| `logger`              | `SEMAPHORE_TASK_LOGGER`  | [Logger options](#logger-options). |
 | `result_logger`       | `SEMAPHORE_TASK_RESULT_LOGGER`  | Logger options. |
 
 
