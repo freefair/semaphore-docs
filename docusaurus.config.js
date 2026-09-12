@@ -5,13 +5,16 @@ const currentLocale = locales.includes(process.env.DOCUSAURUS_CURRENT_LOCALE)
   ? process.env.DOCUSAURUS_CURRENT_LOCALE
   : defaultLocale;
 
-// The main website serves English at / and other languages at /<locale>/.
-// DOCS_URL / DOCS_BASE_URL override the upstream site for fork deployments (GitHub Pages).
+// DOCS_URL / DOCS_BASE_URL override where this site is served for fork deployments
+// (GitHub Pages). The marketing site stays semaphoreui.com: the navbar and footer link
+// to pages that exist only there.
 const siteUrl = process.env.DOCS_URL || 'https://semaphoreui.com';
 const siteBaseUrl = process.env.DOCS_BASE_URL || '/docs/';
+const marketingUrl = 'https://semaphoreui.com';
 
+// The main website serves English at / and other languages at /<locale>/.
 const websiteUrl = (path = '/') =>
-  `${siteUrl}${currentLocale === defaultLocale ? '' : `/${currentLocale}`}${path}`;
+  `${marketingUrl}${currentLocale === defaultLocale ? '' : `/${currentLocale}`}${path}`;
 
 /** @type {import('@docusaurus/types').Config} */
 const config = {
@@ -196,8 +199,8 @@ const config = {
               {
                 html: `
                   <a class="footer__brand" href="${websiteUrl()}" aria-label="Semaphore UI">
-                    <img class="footer__logo footer__logo--light" src="/docs/img/semaphore-light.png" alt="Semaphore UI" />
-                    <img class="footer__logo footer__logo--dark" src="/docs/img/semaphore-dark.png" alt="Semaphore UI" />
+                    <img class="footer__logo footer__logo--light" src="${siteBaseUrl}img/semaphore-light.png" alt="Semaphore UI" />
+                    <img class="footer__logo footer__logo--dark" src="${siteBaseUrl}img/semaphore-dark.png" alt="Semaphore UI" />
                   </a>
                   <p class="footer__desc">A self-hosted automation control plane for Ansible, Terraform, OpenTofu, Terragrunt, Bash, PowerShell, and Python workflows.</p>
                   <div class="footer__contact">
