@@ -13,13 +13,13 @@ const runnerLocales = ['de', 'es', 'fr', 'it', 'ja', 'ko', 'ru'];
 const securityLocales = [...runnerLocales, 'pt'];
 const pages = [
   {
-    route: 'admin-guide/cli/users',
+    route: 'reference/cli/users',
     locales: runnerLocales,
     heading: 'Users',
     marker: 'CLI never prints TOTP secrets or recovery hashes.',
   },
   {
-    route: 'admin-guide/cli/runners',
+    route: 'reference/cli/runners',
     locales: runnerLocales,
     heading: 'Runners',
     marker: 'the required remediation without including the registration token, runner token,',

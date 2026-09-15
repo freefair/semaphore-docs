@@ -1,5 +1,11 @@
 # Current Slice
 
+- [ ] Maintenance — Upstream reference and navigation compatibility
+  - [x] Merge source-driven reference generation and upstream logging/lint updates
+  - [x] Preserve full-product behavior, security guidance, and canonical locale fallbacks
+  - [x] Retain upstream documentation navigation and moved-page redirects
+  - [ ] Publish verified documentation and application commits, then verify their workflows
+
 - [x] Maintenance — First production-ready fork release
   - [x] Build with Go 1.26.8 everywhere and clear reachable govulncheck findings
   - [x] Point module requirements at the synced upstream revision so Dependabot stops reporting fixed advisories

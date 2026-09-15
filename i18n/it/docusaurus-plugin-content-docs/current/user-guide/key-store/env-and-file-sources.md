@@ -23,7 +23,7 @@ Quando si crea o si modifica una chiave (**Key Store → New Key**), nella parte
 | Scheda | Da dove proviene il valore | Cosa inserire |
 |--------|----------------------------|---------------|
 | **Local** | Database di Semaphore (cifrato) | Il login, la password o la chiave privata nel modulo |
-| **Storage** ![Static Badge](https://img.shields.io/badge/pro-yellow) | Un archivio di segreti esterno come [HashiCorp Vault](/user-guide/key-store/hashicorp-vault) | L'archivio e il percorso del segreto |
+| **Storage** <Pro /> | Un archivio di segreti esterno come [HashiCorp Vault](/user-guide/key-store/hashicorp-vault) | L'archivio e il percorso del segreto |
 | **Env** | Una variabile d'ambiente del processo del server Semaphore | Il nome della variabile, ad esempio `PROD_SSH_KEY` |
 | **File** | Un file sul server Semaphore | Il percorso **assoluto** del file, ad esempio `/var/lib/semaphore/secrets/prod.json` |
 
@@ -107,7 +107,7 @@ chmod 0400 /srv/semaphore/secrets/prod_ssh.json
 Quindi creare una chiave di tipo **SSH**, aprire la scheda **File** e inserire `/var/lib/semaphore/secrets/prod_ssh.json`
 (il percorso come visto **all'interno** del container).
 
-<div style={{maxWidth: 450}}>
+<div class="DialogScreenshot DialogScreenshot--small">
 
 ![](/assets/key-file-source.webp)
 

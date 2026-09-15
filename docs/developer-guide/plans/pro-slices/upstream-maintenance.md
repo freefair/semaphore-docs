@@ -15,7 +15,7 @@ It is written for maintainers and coding agents that have the repository but no 
 
 ## Source of Truth
 
-The [ordered slice index](/docs/developer-guide/plans/pro-slices/#ordered-slice-index) is the complete selected feature inventory.
+The [ordered slice index](/developer-guide/plans/pro-slices/#ordered-slice-index) is the complete selected feature inventory.
 Each linked slice document is the canonical behavioral specification, dependency declaration, and acceptance-test contract for that feature.
 [ADR 0010](../../adr/0010-ship-one-full-featured-product.md) supersedes the older dual-edition assumptions contained in historical slices.
 [STATUS.md](STATUS.md) records whether the complete backlog and any current maintenance work are finished.
@@ -47,15 +47,15 @@ The table covers every slice in the ordered index and routes conflicts to the ri
 
 | Slice family | Specifications | Primary implementation anchors |
 |---|---|---|
-| Foundation and build | [001–005](/docs/developer-guide/plans/pro-slices/#ordered-slice-index) | `pro_interfaces/`, `go.work`, `Taskfile.yml`, `.github/workflows/product_*.yml`, `tools/buildmeta/`, `tools/frontendmaps/`, `api/capabilities.go`, `services/capabilities/`, migration-matrix tests |
-| Runners and placement | [010–016](/docs/developer-guide/plans/pro-slices/#ordered-slice-index) | `api/runners/`, `services/runners/`, `services/tasks/`, runner tables and migrations, `web/src/views/Runners.vue`, focused runner components |
-| Task diagnostics and secrets | [020–027](/docs/developer-guide/plans/pro-slices/#ordered-slice-index) | task-summary storage, structured log services, audit webhooks, debug filters, runtime-secret references, Enhanced Vault/OpenBao clients, TOTP and LDAP controllers/components |
-| Workflow execution | [030–037](/docs/developer-guide/plans/pro-slices/#ordered-slice-index) | workflow models and migrations, Enhanced workflow services/controllers, `WorkflowEditor.vue`, `WorkflowGraph.vue`, focused workflow dialogs, reconciliation tests |
-| HA and roles | [040–048](/docs/developer-guide/plans/pro-slices/#ordered-slice-index) | cluster and lease repositories, `services/ha`, HA harness, role repositories/controllers, LDAP/OIDC mapping services and panels |
-| Container executors | [050–053](/docs/developer-guide/plans/pro-slices/#ordered-slice-index) | `services/tasks/container_task_plan.go`, Enhanced Docker/Kubernetes executors, execution-policy APIs, runner diagnostics and remediation UI |
-| Workflow governance and delivery | [054–059](/docs/developer-guide/plans/pro-slices/#ordered-slice-index) | approval/RBAC snapshots, immutable versions, cross-project grants, notification outbox and provider clients, governance components |
-| Credentials and focused additions | [060–064](/docs/developer-guide/plans/pro-slices/#ordered-slice-index) | global credential grants, dispatch-time resolution and redaction, generated SSH keys, template search, schedule timezone persistence and UI |
-| Advanced policy controls | [070–074](/docs/developer-guide/plans/pro-slices/#ordered-slice-index) | execution preflight, deployment-window and guardrail admission, signed webhook lifecycle, artifact retention/provenance repositories, APIs, workers, and focused panels |
+| Foundation and build | [001–005](/developer-guide/plans/pro-slices/#ordered-slice-index) | `pro_interfaces/`, `go.work`, `Taskfile.yml`, `.github/workflows/product_*.yml`, `tools/buildmeta/`, `tools/frontendmaps/`, `api/capabilities.go`, `services/capabilities/`, migration-matrix tests |
+| Runners and placement | [010–016](/developer-guide/plans/pro-slices/#ordered-slice-index) | `api/runners/`, `services/runners/`, `services/tasks/`, runner tables and migrations, `web/src/views/Runners.vue`, focused runner components |
+| Task diagnostics and secrets | [020–027](/developer-guide/plans/pro-slices/#ordered-slice-index) | task-summary storage, structured log services, audit webhooks, debug filters, runtime-secret references, Enhanced Vault/OpenBao clients, TOTP and LDAP controllers/components |
+| Workflow execution | [030–037](/developer-guide/plans/pro-slices/#ordered-slice-index) | workflow models and migrations, Enhanced workflow services/controllers, `WorkflowEditor.vue`, `WorkflowGraph.vue`, focused workflow dialogs, reconciliation tests |
+| HA and roles | [040–048](/developer-guide/plans/pro-slices/#ordered-slice-index) | cluster and lease repositories, `services/ha`, HA harness, role repositories/controllers, LDAP/OIDC mapping services and panels |
+| Container executors | [050–053](/developer-guide/plans/pro-slices/#ordered-slice-index) | `services/tasks/container_task_plan.go`, Enhanced Docker/Kubernetes executors, execution-policy APIs, runner diagnostics and remediation UI |
+| Workflow governance and delivery | [054–059](/developer-guide/plans/pro-slices/#ordered-slice-index) | approval/RBAC snapshots, immutable versions, cross-project grants, notification outbox and provider clients, governance components |
+| Credentials and focused additions | [060–064](/developer-guide/plans/pro-slices/#ordered-slice-index) | global credential grants, dispatch-time resolution and redaction, generated SSH keys, template search, schedule timezone persistence and UI |
+| Advanced policy controls | [070–074](/developer-guide/plans/pro-slices/#ordered-slice-index) | execution preflight, deployment-window and guardrail admission, signed webhook lifecycle, artifact retention/provenance repositories, APIs, workers, and focused panels |
 
 The root `pro/` directory is the upstream-compatible null or Community-side seam.
 The selected implementation is the module at `test/edition-contract/enhanced`, selected by the committed workspace.

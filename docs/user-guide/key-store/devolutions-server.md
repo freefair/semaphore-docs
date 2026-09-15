@@ -1,16 +1,14 @@
+---
+title: Devolutions Server secret storage
+description: Devolutions Server is not implemented in Semaphore EX.
+---
+
 # Devolutions Server secret storage
 
-Semaphore UI supports Devolutions Server as a storage for secrets. 
+Devolutions Server is not implemented in Semaphore EX. The product does not expose
+a connection form, runtime resolver, or secret-sync provider for it.
 
-![](/assets/dvls1.webp)
-
-You can provide the following options:
-- **Devolutions Server URL** — address of your Devolutions server.
-- **Vault ID** — the identifier of the vault where secrets are stored.
-- **App Key** — the application key used for authentication.
-- **Token** — authentication token. The token can be:
-    - Stored in the database.
-    - Provided via an environment variable.
-    - Provided via a file.
-
-The storage can work in read-only mode.
+Use [HashiCorp Vault](/user-guide/key-store/hashicorp-vault) or
+[OpenBao](/user-guide/key-store/openbao) when a project needs an external secret
+store. Their configuration and runtime resolution remain subject to the project's
+authorization and server-side provider configuration.

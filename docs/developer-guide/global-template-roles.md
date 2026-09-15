@@ -90,7 +90,7 @@ Delegated user managers cannot modify, delete, or reset credentials for a built-
 
 If every delegated role assignment is unusable, recover from a trusted host with direct access to the configured Semaphore database:
 
-1. Use the local [`semaphore user` CLI](../admin-guide/cli/users.md) to create a local user with `--admin`, or mark an existing local user as an administrator with `change-by-login --admin`.
+1. Use the local [`semaphore user` CLI](../reference/cli/users.md) to create a local user with `--admin`, or mark an existing local user as an administrator with `change-by-login --admin`.
 2. Sign in with that local account and repair the global role or assignment.
 3. Verify that at least two independent effective global administrators remain before retiring the recovery account.
 

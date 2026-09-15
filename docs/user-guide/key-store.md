@@ -1,6 +1,15 @@
+---
+title: Key Store
+description: Key types in the Key Store, SSH, login with password, and none, plus the external secret storages you can use.
+---
+
 # Key Store
 
 The Key Store in Semaphore is used to store credentials for accessing remote Repositories, accessing remote hosts, sudo credentials, and Ansible vault passwords.
+
+![Key Store](/assets/key-store-keys.webp)
+
+The **Keys** tab lists the credentials of the project with their type. The **Storages** tab lists external secret storages configured for the project; see [Secret Storages](#secret-storages).
 
 ## Types {#types}
 
@@ -52,6 +61,10 @@ This is used as a filler for Repos that do not require authentication, like an O
 
 Semaphore UI supports different storages for secrets. You can choose the storage per-secret when creating or editing a secret.
 
+External storages are created on the **Storages** tab of the Key Store. Each storage has a name and a type; keys then reference the storage and the path of the secret inside it.
+
+![Secret storages](/assets/key-store-storages.webp)
+
 ### Database {#database}
 
 Secrets are stored in the database in encrypted form by default. The encryption key is configured via the configuration option
@@ -81,21 +94,18 @@ Secrets can be stored in an external [OpenBao](https://openbao.org) instance (an
 
 ### AWS Secrets Manager {#aws-secrets-manager}
 
-![Static Badge](https://img.shields.io/badge/enterprise-yellow)
-
-Secrets can be stored in AWS Secrets Manager. Authenticate with an IAM role/instance profile or static access keys.
-
-[Read more...](/user-guide/key-store/aws-secrets-manager)
+AWS Secrets Manager is not implemented in Semaphore EX. Use HashiCorp Vault or
+OpenBao for an external secret store.
 
 ### Devolutions Server {#devolutions-server}
 
-Secrets can be stored in an external Devolutions Server instance instead of the database.
-
-[Read more...](/user-guide/key-store/devolutions-server)
+Devolutions Server is not implemented in Semaphore EX. Use HashiCorp Vault or
+OpenBao for an external secret store.
 
 ## Syncing secrets from remote storages {#syncing-secrets-from-remote-storages}
 
-Semaphore can automatically import secrets from an external secret manager (HashiCorp Vault, OpenBao, AWS Secrets Manager, Azure Key Vault, or Devolutions Server) and keep them in sync. Sync paths let you choose which secrets to import and how to name them.
+Semaphore can automatically import secrets from HashiCorp Vault or OpenBao and keep
+them in sync. Sync paths let you choose which secrets to import and how to name them.
 
 [Read more...](/user-guide/key-store/secret-sync)
 

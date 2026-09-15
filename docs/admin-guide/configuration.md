@@ -1,15 +1,27 @@
+---
+title: Configuration
+description: Choose how to configure Semaphore, understand setting precedence, and set the public URL users connect to.
+---
+
 # Configuration
 
-Semaphore can be configured using several methods:
+Semaphore reads its settings from a configuration file and environment variables.
+The online configurator helps you prepare either format by filling in a form.
+Choose the workflow that fits how you run your server.
 
-* [Online configurator](https://semaphoreui.com/install) &mdash; web interface for generating configuration online.
-* [Configuration file](/admin-guide/configuration/config-file) &mdash; the primary and most flexible way to configure Semaphore.
-* [Environment variables](/admin-guide/configuration/env-vars) &mdash; useful for containerized or cloud-native deployments.
+## In this section {#in-this-section}
 
+| Method | Use it when |
+|---|---|
+| [Online configurator](/admin-guide/configuration/online) | You want a form that generates configuration and startup commands for a binary or Docker installation. |
+| [Configuration file](/admin-guide/configuration/config-file) | You want to keep server settings in a `config.json` file. |
+| [Environment variables](/admin-guide/configuration/env-vars) | You manage settings through Docker, a service definition, or your deployment tools. |
 
 ## Configuration options {#configuration-options}
 
-Full list of available configuration options:
+An environment variable overrides the corresponding value in the configuration
+file. The built-in default applies when neither is set. If editing the file has no
+effect, check the environment passed to the Semaphore process.
 
 | Config file option / Environment variable     | Description                        |
 | ----------------------- | --------------------------------------------------------- |
@@ -28,7 +40,7 @@ Full list of available configuration options:
 | <br />`max_task_duration_sec` <hr /> `SEMAPHORE_MAX_TASK_DURATION_SEC` <br /><br /> | Max duration of a task in seconds. |
 | <br />`max_tasks_per_template`<hr /> `SEMAPHORE_MAX_TASKS_PER_TEMPLATE` <br /><br /> | Maximum number of recent tasks stored in the database for each template. |
 | <br />`schedule.timezone`     <hr /> `SEMAPHORE_SCHEDULE_TIMEZONE` <br /><br /> | Timezone used for scheduling tasks and cron jobs. Default: UTC |
-| <br />`oidc_providers` ![Static Badge](https://img.shields.io/badge/v2.10+-red) <hr /> `SEMAPHORE_OIDC_PROVIDERS` <br /><br /> | OpenID provider settings. You can provide multiple OpenID providers. More about OpenID configuration read in [OpenID](/admin-guide/openid). |
+| <br />`oidc_providers` ![Static Badge](https://img.shields.io/badge/v2.10+-red) <hr /> `SEMAPHORE_OIDC_PROVIDERS` <br /><br /> | OpenID provider settings. You can provide multiple OpenID providers. More about OpenID configuration read in [OpenID](/admin-guide/authentication/openid). |
 | <br />`password_login_disable` <hr /> `SEMAPHORE_PASSWORD_LOGIN_DISABLED` <br /><br /> ![Static Badge](https://img.shields.io/badge/v2.10+-red)    <br /><br /> | Deny password login. |
 | <br />`non_admin_can_create_project`      <hr /> `SEMAPHORE_NON_ADMIN_CAN_CREATE_PROJECT` <br /><br /> | Allow non-admin users to create projects. |
 | <br />`env_vars`               <hr /> `SEMAPHORE_ENV_VARS` <br /><br /> | JSON map which contains environment variables exposed to task runs. |
@@ -102,7 +114,7 @@ Full list of available configuration options:
 | <br />`dialect`       <hr /> `SEMAPHORE_DB_DIALECT`<br /><br /> | Can be `sqlite` (default), `postgres` or `mysql`.   |
 | <br /> `*.options`    <hr /> `SEMAPHORE_DB_OPTIONS`<br /><br /> | JSON map which contains database connection options. |
 | **Security** ||
-| <br />`access_key_encryption` <hr /> `SEMAPHORE_ACCESS_KEY_ENCRYPTION`<br /><br /> | Base64-encoded key used for encrypting access keys stored in the database. Read more in [Database encryption reference](/admin-guide/security#database-encryption). |
+| <br />`access_key_encryption` <hr /> `SEMAPHORE_ACCESS_KEY_ENCRYPTION`<br /><br /> | Base64-encoded key used for encrypting access keys stored in the database. Read more in [Database encryption reference](/admin-guide/security#data-encryption). |
 | <br />`option_encryption` <hr /> `SEMAPHORE_OPTION_ENCRYPTION`<br /><br /> | Base64-encoded key used to encrypt DB options and Enhanced TOTP provisioning secrets. Falls back to the access key when unset. TOTP enrollment and legacy migration fail closed when neither key is active. |
 | <br />`global_credential_providers` ![Static Badge](https://img.shields.io/badge/pro-red) <hr /> `SEMAPHORE_GLOBAL_CREDENTIAL_PROVIDERS` <br /><br /> | Value-free global Vault/OpenBao provider registry. Each provider's bootstrap credential is supplied only through `SEMAPHORE_GLOBAL_CREDENTIAL_PROVIDER_<NORMALIZED_ID>_CREDENTIAL`; see [Global Credential Grants](/developer-guide/global-credential-grants#global-vault-and-openbao-providers). |
 | <br />`cookie_hash`           <hr /> `SEMAPHORE_COOKIE_HASH`<br /><br /> | Base64-encoded HMAC key used to sign cookies. |
@@ -148,8 +160,8 @@ Full list of available configuration options:
 | <br />`email_alert`    <hr /> `SEMAPHORE_EMAIL_ALERT`<br /><br /> | Flag which enables email alerts. |
 | **Messengers** ||
 | <br />`telegram_alert` <hr /> `SEMAPHORE_TELEGRAM_ALERT`<br /><br /> | Set to True to enable pushing alerts to Telegram. It should be used in combination with `telegram_chat` and `telegram_token`. |
-| <br />`telegram_chat`  <hr /> `SEMAPHORE_TELEGRAM_CHAT`<br /><br /> | Set to the Chat ID for the chat to send alerts to.  Read more in [Telegram Notifications Setup](/admin-guide/notifications#chat-id) |
-| <br />`telegram_token` <hr /> `SEMAPHORE_TELEGRAM_TOKEN`<br /><br /> | Set to the Authorization Token for the bot that will receive the alert payload.  Read more in [Telegram Notifications Setup](/admin-guide/notifications#bot-setup) |
+| <br />`telegram_chat`  <hr /> `SEMAPHORE_TELEGRAM_CHAT`<br /><br /> | Set to the Chat ID for the chat to send alerts to.  Read more in [Telegram Notifications Setup](/admin-guide/notifications/telegram#chat-id) |
+| <br />`telegram_token` <hr /> `SEMAPHORE_TELEGRAM_TOKEN`<br /><br /> | Set to the Authorization Token for the bot that will receive the alert payload.  Read more in [Telegram Notifications Setup](/admin-guide/notifications/telegram#bot-setup) |
 | <br />`slack_alert`    <hr /> `SEMAPHORE_SLACK_ALERT`<br /><br /> | Set to True to enable pushing alerts to slack. It should be used in combination with `slack_url`                          |
 | <br />`slack_url`      <hr /> `SEMAPHORE_SLACK_URL`<br /><br /> | The slack webhook url. Semaphore will used it to POST Slack formatted json alerts to the provided url.    |
 | <br />`microsoft_teams_alert` <hr /> `SEMAPHORE_MICROSOFT_TEAMS_ALERT` <br /><br /> | Flag which enables Microsoft Teams alerts. |
@@ -204,16 +216,22 @@ Full list of available configuration options:
 | <br />`ha.redis.pass` ![Static Badge](https://img.shields.io/badge/enterprise-yellow)<hr /> `SEMAPHORE_HA_REDIS_PASS` <br /><br /> | Password for the Redis server. |
 | <br />`ha.redis.user` ![Static Badge](https://img.shields.io/badge/enterprise-yellow)<hr /> `SEMAPHORE_HA_REDIS_USER` <br /><br /> | Username for the Redis server. |
 | <br />`ha.redis.tls` ![Static Badge](https://img.shields.io/badge/enterprise-yellow)<hr /> `SEMAPHORE_HA_REDIS_TLS` <br /><br /> | Enable TLS for the Redis connection. |
-| <br />`ha.redis.tls_skip_verify` ![Static Badge](https://img.shields.io/badge/enterprise-yellow)<hr /> `SEMAPHORE_HA_REDIS_TLS_SKIP_VERIFY` <br /><br /> | Skip TLS certificate verification for the Redis connection. |
 
-## Frequently asked questions {#frequently-asked-questions}
+The [Configuration options reference](/reference/configuration) lists option names,
+environment variables, types, and defaults. It is generated from the Semaphore
+source; use documentation for your release when configuring an older server.
 
-### 1. How to configure a public URL for Semaphore UI {#1-how-to-configure-a-public-url-for-semaphore-ui}
+<span id="frequently-asked-questions" />
 
-If you use nginx or other web server before Semaphore, you should provide configuration option `web_host`.
+## Public URL {#1-how-to-configure-a-public-url-for-semaphore-ui}
 
-For example you configured NGINX on the server which proxies queries to Semaphore.
+Set `web_host` (or `SEMAPHORE_WEB_ROOT`) to the address users open in their browser.
+For example, if a reverse proxy serves Semaphore at
+`https://example.com/semaphore`, use that full address, including `/semaphore`.
+This is the public address, not the internal address the proxy connects to.
 
-Server address `https://example.com` and you proxies all queries `https://example.com/semaphore` to Semaphore.
+## Where to start {#where-to-start}
 
-Your `web_host` will be `https://example.com/semaphore`.
+For a new server, open the online configurator guide above and follow the binary
+or Docker steps. For an existing server, update the file or environment variables
+used by its service, then restart Semaphore to apply the changes.

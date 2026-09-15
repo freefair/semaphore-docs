@@ -1,3 +1,8 @@
+---
+title: Security
+description: Overview of authentication, Argon2id password hashing, secret encryption, task isolation, and secure deployment.
+---
+
 # 🔐 Security
 
 ## Introduction {#introduction}
@@ -9,7 +14,7 @@ Security is a top priority in Semaphore UI. Whether you're automating critical i
 Semaphore supports secure authentication and flexible authorization mechanisms:
 
 - **Login methods:**
-  - **Username/password**<br />Default method using credentials stored in the Semaphore database. Passwords are hashed using a strong algorithm (bcrypt).
+  - **Username/password**<br />Default method using credentials stored in the Semaphore database. Passwords are never stored in plain text; they are hashed with Argon2id (see [Password hashing](#password-hashing)).
 
   - **LDAP**<br />Allows integration with enterprise directory services. Supports user/group filtering and secure connections via LDAPS.
 
@@ -25,6 +30,38 @@ Semaphore supports secure authentication and flexible authorization mechanisms:
 - **Session management**<br />Sessions are protected with secure HTTP cookies. Session expiration and logout mechanisms ensure minimal exposure.
 <!-- - **Brute-Force Protection**: Login attempts are rate-limited to prevent brute-force attacks. -->
 
+### Password hashing {#password-hashing}
+
+:::info Since v2.20
+Argon2id password hashing is available since **Semaphore 2.20**. Earlier versions use bcrypt.
+:::
+
+Local user passwords are hashed with **Argon2id**, the algorithm recommended by [OWASP](https://cheatsheetseries.owasp.org/cheatsheets/Password_Storage_Cheat_Sheet.html) for password storage. Semaphore uses the OWASP minimum-strength parameters:
+
+| Parameter | Value |
+|-----------|-------|
+| Memory | 19 MiB (`m=19456`) |
+| Iterations | 2 (`t=2`) |
+| Parallelism | 1 (`p=1`) |
+| Salt | 16 random bytes per password |
+| Hash length | 32 bytes |
+
+Hashes are stored in the standard [PHC string format](https://github.com/P-H-C/phc-string-format/blob/master/phc-sf-spec.md), for example `$argon2id$v=19$m=19456,t=2,p=1$<salt>$<hash>`, so the parameters used for each hash are recorded alongside it.
+
+This applies to every way a password can be set: the web UI, the API, and the CLI commands `semaphore user add`, `semaphore user change-by-login`, and `semaphore setup`.
+
+**Upgrading from versions before 2.20.** Releases before 2.20 hashed passwords with bcrypt. No migration step is required:
+
+- Existing bcrypt hashes are still accepted at login, so all users keep working after the upgrade.
+- On the first successful login, the password is transparently re-hashed with Argon2id and the bcrypt hash is replaced.
+- If Semaphore's Argon2id parameters are strengthened in a future release, hashes created with the older parameters are upgraded the same way on the next login.
+
+Because the re-hash happens only at login, users who never log in again keep their bcrypt hash. To force an upgrade for such accounts, reset their password with `semaphore user change-by-login --password ...` or via the admin UI.
+
+:::note
+Two-factor recovery codes are not user passwords and continue to use bcrypt.
+:::
+
 ## Secrets & credentials {#secrets--credentials}
 
 Managing secrets securely is a core feature:
@@ -34,7 +71,7 @@ Managing secrets securely is a core feature:
 - **Environment isolation**<br />Secrets are only passed to jobs at runtime and are not exposed to the container environment directly.
 
 - **SSH keys and tokens**<br />Users are responsible for uploading valid SSH keys and tokens. These are encrypted and only used when running tasks.
-- **HashiCorp Vault integration (Pro)**<br />Secrets can be stored in an external Vault instance. Choose storage per-secret when creating or editing a secret.
+- **HashiCorp Vault integration**<br />Secrets can be stored in an external Vault instance. Choose storage per-secret when creating or editing a secret.
 
 ## Data encryption {#data-encryption}
 
@@ -48,9 +85,9 @@ head -c32 /dev/urandom | base64
 
 Semaphore runs user-defined playbooks and commands, which can be risky:
 
-- **Container isolation**<br />Tasks are executed in isolated Docker containers. These containers have no access to the host system.
+- **Execution isolation**<br />By default a task is an ordinary process on the Semaphore server, with that server's file system and network access. Isolation is opt-in: give the task to a [runner](/admin-guide/runners) configured with the `docker` or `k8s` executor and each task gets a fresh container or Pod that is discarded when it finishes.
 
-- **Least privilege**<br />Containers run with minimal permissions and can be restricted further using Docker flags.
+- **Least privilege**<br />With the Docker and Kubernetes executors you choose the image, the network, and the service account, so a task is given only what it needs.
 
 - **Chroot execution**<br />Semaphore can execute tasks inside a chroot jail to further isolate the execution environment from the host system.
 

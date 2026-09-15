@@ -1,3 +1,8 @@
+---
+title: Runners
+description: How runners work, registering and configuring them, running one in Docker, the poll interval, and token security.
+---
+
 # Runners
 
 Runners enable running tasks on a separate server from Semaphore UI.
@@ -164,11 +169,11 @@ generating setup snippets (config file, Docker, and environment-variable example
 
 Invalid or zero values fall back to the default of 1 second.
 
-### Runner tags (Pro) {#runner-tags-pro}
+### Runner tags {#runner-tags-pro}
 
 You can assign one or more tags to a project runner. Templates can then require a tag so tasks run only on matching runners. Configure tags when adding a runner in the project UI, and set the required tag in the template settings.
 
-### Secure registration policy (Pro)
+### Secure registration policy
 
 Select **Secure** as the registration policy when the runner must fail closed.
 A secure runner must use a one-time registration token, HTTPS with verified

@@ -1,4 +1,11 @@
-# HashiCorp Vault secret storage
+---
+title: HashiCorp Vault secret storage
+description: Configuring HashiCorp Vault as external storage for keys and variable groups, including Vault Agent token files.
+sidebar_custom_props:
+  edition: pro
+---
+
+# HashiCorp Vault secret storage  <Pro />
 
 Semaphore UI supports HashiCorp Vault as a storage for secrets.
 

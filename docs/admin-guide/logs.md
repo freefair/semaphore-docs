@@ -1,3 +1,8 @@
+---
+title: Logs
+description: Where the server, activity and task logs go, file and syslog forwarding options, task retention, and SIEM integration.
+---
+
 # Logs
 
 Semaphore writes server logs to **stdout** and stores **Task** and **Activity** logs in a **database**, centralizing key log information and eliminating the need to back up log files separately. The only data stored on the file system is caching data.
@@ -6,7 +11,7 @@ Semaphore writes server logs to **stdout** and stores **Task** and **Activity** 
 
 ## Server log {#server-log}
 
-Semaphore does not log to files. Instead, all application logs are written to **stdout**.  
+Semaphore does not log to files. Instead, all application logs are written to **stdout**.
 If Semaphore is running as a systemd service, you can view the logs with the following command:
 
 ```bash
@@ -29,9 +34,9 @@ The Activity Log captures user actions performed in Semaphore, including:
 - Adding or removing resources (e.g., Templates, Inventories, Repositories).
 - Adding or removing team members.
 
-### Enhanced edition structured file logs {#pro-version-210-and-later}
+### Structured file logs {#pro-version-210-and-later}
 
-The enhanced edition can export application events, task lifecycle events, and normalized task
+Semaphore EX can export application events, task lifecycle events, and normalized task
 results as versioned JSON Lines. File export is disabled by default and does not replace the
 database-backed Activity Log or Task History.
 
@@ -170,11 +175,11 @@ By default, Semaphore stores all tasks in the database. If you run a large numbe
 
 You can configure how many tasks are retained per template using one of the following approaches:
 
-1. **Environment Variable**  
+1. **Environment Variable**
    ```bash
    SEMAPHORE_MAX_TASKS_PER_TEMPLATE=30
    ```
-2. **`config.json` Option**  
+2. **`config.json` Option**
    ```json
    {
      "max_tasks_per_template": 30
@@ -235,9 +240,9 @@ Every audit event includes the **action** (`create`, `update`, `delete`, `login_
 
 There are three ways to deliver audit events to your SIEM:
 
-1. **Pull:** read `/api/events` (see [API docs](/admin-guide/api)).
-2. **File collector:** enable the Activity Log file (Pro, see above) and ship `events.log` (JSON format recommended) with Filebeat, Fluentd or a Splunk Universal Forwarder.
-3. **Audit webhook (Pro):** push events in real time over HTTPS — a generic JSON endpoint or Splunk HTTP Event Collector.
+1. **Pull:** read `/api/events` (see [API docs](/reference/api)).
+2. **File collector:** enable the Activity Log file (see above) and ship `events.log` (JSON format recommended) with Filebeat, Fluentd or a Splunk Universal Forwarder.
+3. **Audit webhook:** push events in real time over HTTPS — a generic JSON endpoint or Splunk HTTP Event Collector.
 
 ### Audit webhook {#audit-webhook}
 
@@ -277,8 +282,8 @@ Delivery is asynchronous: events are queued in memory and retried up to three ti
 
 ## Summary {#summary}
 
-- **Server log:** Written to stdout; viewable via `journalctl` if running under systemd.  
-- **Activity and tasks log:** Tracks all user actions. Optionally, **Pro 2.10+** can write these to a file.  
+- **Server log:** Written to stdout; viewable via `journalctl` if running under systemd.
+- **Activity and tasks log:** Tracks all user actions. Optionally, Semaphore EX can write these to a file.
 - **Task history:** Stores real-time and historical task execution logs. Retention is configurable per template.
 
 Following these guidelines ensures you have proper visibility into Semaphore UI operations while controlling storage usage and log retention.

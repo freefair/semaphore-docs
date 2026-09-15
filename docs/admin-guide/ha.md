@@ -1,7 +1,12 @@
-# High Availability
+---
+title: High Availability
+description: Active-active HA architecture with a shared database and Redis, the ha configuration block, load balancer setup, and an FAQ.
+---
+
+# High Availability  <Enterprise />
 
 :::info
-High Availability is available in the **Semaphore Enterprise** edition.
+High Availability is included in Semaphore EX and must be configured before use.
 :::
 
 Semaphore UI supports active-active high availability (HA) deployments where multiple instances run simultaneously behind a load balancer. Every instance is fully capable of handling UI requests, API calls, scheduled jobs, and task execution. If one instance fails, the remaining nodes continue operating without interruption.
@@ -30,7 +35,7 @@ SQLite and BoltDB are not supported for HA deployments. Use PostgreSQL or MySQL.
 
 Before setting up HA you need:
 
-* **Semaphore Enterprise** subscription key.
+* High Availability enabled in the server configuration.
 * A shared **PostgreSQL** or **MySQL** database accessible from all nodes.
 * A **Redis** instance (or Redis cluster) accessible from all nodes.
 * A **load balancer** that supports HTTP and WebSocket traffic.
