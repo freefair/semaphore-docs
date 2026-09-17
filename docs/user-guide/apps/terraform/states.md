@@ -34,6 +34,14 @@ The Terraform provider can manage aliases with `semaphore_ex_project_terraform_b
 Its computed `url` is the backend address; `auth_key_id` selects the existing project login/password key.
 Use a separate bootstrap configuration to create the alias before initializing a root that stores state there.
 
+## Backend override in Semaphore tasks
+
+When a template enables the built-in backend override, Semaphore resolves a persisted alias for the task's resolved workspace inventory.
+Create at least one alias before enabling that override. Multiple aliases are accepted when they all bind the same project login/password key;
+the lexically first alias is used. Conflicting key bindings stop the task with a configuration error instead of choosing credentials arbitrarily.
+The task's temporary lifecycle alias is unrelated to these backend aliases.
+Without backend override, Terraform, OpenTofu and Terragrunt retain their externally configured backend and do not resolve backend credentials.
+
 ## Existing state and encryption keys
 
 Before using legacy plaintext state, configure the active access encryption key, run `semaphore vault rekey`,

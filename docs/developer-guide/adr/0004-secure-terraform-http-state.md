@@ -22,6 +22,11 @@ Implement protocol-correct GET, POST, DELETE, LOCK, and UNLOCK behavior with an 
 Require the matching lock ID for HTTP backend state updates, deletes, and unlocks while a lock is active. Project resource managers may recover the current state through the authenticated management route, which still refuses deletion while a backend lock is active.
 Integrate retained state versions with the shared encryption-key rotation mechanism.
 
+For template backend overrides, resolve the persisted alias using the task's resolved project and workspace inventory.
+The task lifecycle alias is not a database-backed state alias. Non-override tasks never perform backend credential lookups.
+Multiple aliases are interchangeable only when their scope and credential key agree; choose the lexical alias deterministically in that case,
+and reject ambiguous credential bindings. This reuses the existing project credential contract without introducing node-local authentication state.
+
 ## Upgrade Procedure
 
 The backend refuses legacy unprefixed state rows once state encryption is enabled. Before enabling an alias on an existing installation, add the active access encryption key, run `semaphore vault rekey`, and then run `semaphore vault check`. Rekey encrypts every retained state version and stamps the active key ID; check reports legacy or unavailable-key rows so a retired key is not removed while any historical state still references it. The procedure retains state history and never falls back to plaintext serving.
