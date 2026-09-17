@@ -1,6 +1,6 @@
 ---
 title: Terraform/OpenTofu
-description: How to run Terraform and OpenTofu code from a task template, pass TF_VAR_ variables, and use workspaces and externally configured state backends.
+description: How to run Terraform and OpenTofu code from a task template, pass TF_VAR_ variables, and use workspaces and encrypted HTTP state backends.
 ---
 
 # Terraform/OpenTofu
@@ -29,9 +29,8 @@ Semaphore supports Terraform/OpenTofu workspaces natively. See [Workspaces](./wo
 
 ## State backends {#backend-override-and-http-backend-pro}
 
-Configure a supported backend in your Terraform or OpenTofu code.
-Semaphore EX does not implement the built-in Terraform HTTP state backend or its aliases.
-See [State backend availability](./states).
+Use the [Semaphore EX HTTP state backend](./states) with encrypted version history and durable locks,
+or configure another supported backend in your Terraform or OpenTofu code.
 
 ## Destroy flag and state migration {#destroy-flag-and-state-migration}
 

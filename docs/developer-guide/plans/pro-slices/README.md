@@ -137,7 +137,7 @@ Foundation items lost their checkboxes in the edited selection but remain mandat
 - [ADR 0008: Use IANA Schedule Timezones and Backend Occurrences](../../adr/0008-use-iana-schedule-timezones.md)
 - [ADR 0009: Store Initial Bounded Artifacts in SQL](../../adr/0009-store-bounded-artifacts-in-sql.md)
 
-ADR 0004 covers the currently unchecked Terraform state feature and is not part of this selected backlog.
+[ADR 0004](../../adr/0004-secure-terraform-http-state.md) covers the Terraform state backend added with provider integration.
 
 ## Release Gates
 

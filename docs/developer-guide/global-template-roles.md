@@ -106,6 +106,7 @@ Built-in administrators satisfy the global permission middleware through the bre
 | Operation | Route |
 |---|---|
 | List global permission catalog | `GET /api/roles/permissions` |
+| List project permission catalog for global roles | `GET /api/roles/project-permissions` |
 | List or create global roles | `GET`, `POST /api/roles` |
 | Read or update a global role | `GET`, `PUT /api/roles/{role_id}` |
 | Delete a global role | `DELETE /api/roles/{role_id}?revision={revision}` |

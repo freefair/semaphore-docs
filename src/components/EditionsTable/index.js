@@ -6,7 +6,7 @@ import {features} from '@site/src/data/editions';
  * Retain upstream feature names while describing the shipped fork capability set.
  */
 export default function EditionsTable() {
-  const unsupported = new Set(['aws-secrets-manager', 'devolutions-storage', 'terraform-backend']);
+  const unsupported = new Set(['aws-secrets-manager', 'devolutions-storage']);
   const rows = [...features].sort(
     (a, b) => a.name.localeCompare(b.name),
   );

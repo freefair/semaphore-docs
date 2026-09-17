@@ -16,7 +16,8 @@ Configuration, project permissions, safety policies, and operational state still
 <EditionsTable />
 
 Vault and OpenBao are the supported managed secret-storage providers.
-AWS Secrets Manager, Devolutions Server, and the Terraform HTTP state backend are not implemented in this product.
+The [Terraform HTTP state backend](./user-guide/apps/terraform/states.md) supports encrypted versions and durable locks.
+AWS Secrets Manager and Devolutions Server are not implemented in this product.
 
 ## Feature availability {#how-editions-are-marked}
 

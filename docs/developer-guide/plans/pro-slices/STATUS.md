@@ -1,5 +1,13 @@
 # Current Slice
 
+- [x] Terraform provider integration
+  - [x] Persist environment storage bindings and accept Terragrunt inventories
+  - [x] Provide stable API-token references and revision-guarded trigger deletion
+  - [x] Expose the template permission catalog and normalize JWT audiences
+  - [x] Implement encrypted HTTP state, alias credential bindings, and durable locks
+  - [x] Document explicit legacy state rekey/check and append migration 2.20.70
+  - [x] Complete provider acceptance and final server regression gates
+
 - [x] Maintenance — Upstream reference and navigation compatibility
   - [x] Merge source-driven reference generation and upstream logging/lint updates
   - [x] Preserve full-product behavior, security guidance, and canonical locale fallbacks
