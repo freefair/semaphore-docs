@@ -42,6 +42,77 @@ Below are links to the docs for some common Git Repositories:
 * [GitLab](https://docs.gitlab.com/ee/user/ssh.html)
 * [Bitbucket](https://support.atlassian.com/bitbucket-cloud/docs/set-up-an-ssh-key/)
 
+#### SSH keys available to a task
+
+Semaphore EX offers the task template's Repository SSH key through a task-scoped SSH agent.
+The task receives its socket as `SSH_AUTH_SOCK`, including during requirements installation.
+This applies to Ansible, Terraform, OpenTofu, Terragrunt and script templates, on the server and on remote runners.
+
+Child processes can use this key for private Ansible Galaxy collections, Git-based Terraform modules, submodules and nested Git commands.
+Configure access to each dependency repository for the Repository's public key; a successful checkout of the main repository does not grant access to other repositories automatically.
+There is no need to copy the private key onto the runner host or configure a host-wide Git identity for this purpose.
+
+If the Inventory also has an SSH key, the task agent contains both identities.
+The agent offers the Inventory identity first for Ansible managed-host connections; explicit Ansible connection settings keep their normal precedence.
+Nested Git offers the Repository identity followed by the Inventory identity and retains the configured SSH host verification policy.
+An Inventory Repository's separate SSH key is not added automatically to the task agent.
+Repository keys of type **None** or **Login With Password** do not contribute an SSH identity; an Inventory SSH key remains available independently.
+When neither resource nor the additional bindings below supply an SSH key, Semaphore creates no task agent and does not set `SSH_AUTH_SOCK`.
+
+The task agent is closed and its socket removed when the task finishes, fails or is cancelled.
+Private SSH keys are not exported in environment variables or written into the task's repository workspace.
+
+#### Additional keys for dependencies
+
+Use **Additional SSH keys** to select existing SSH credentials and the exact hosts
+where each key should be used. A binding may contain several hostnames, such as
+`github.com` and `gitlab.com`. Use separate bindings for keys belonging to other
+hosts. URLs, repository paths and wildcard patterns are not hostnames.
+
+Host lists are optional when the task has fewer than five distinct SSH keys.
+Those keys can be offered through the common agent. At five or more keys, host
+mapping is required so each connection selects the relevant identity.
+Repository and Inventory keys count toward this total; repeated copies of the
+same public-key identity count once. Explicit host lists apply at every size.
+The Repository URL provides its own hostname; an Inventory key needs an explicit
+host list when the threshold is reached because its destinations may be dynamic.
+The SSH server's authentication-attempt limit remains independently configurable.
+
+This feature configures normal SSH clients. Explicit Git/Ansible SSH overrides
+take precedence, and task scripts can deliberately bypass the generated selection.
+
+Project settings provide two lists:
+
+- **Project defaults** are inherited by templates unless they define their own
+  selection.
+- **Always included** keys are added to every task in the project, including
+  tasks with a custom selection.
+
+Templates inherit project defaults, and the new-task dialog inherits the
+template selection. Clear the inheritance checkbox to customize the selection.
+Changing a run's selection requires permission to manage project resources.
+Users with only run permission inherit the configured keys. A cross-project
+run uses the template owner's selection and cannot override its SSH keys.
+Removing every entry while inheritance is off means no optional additional
+keys; it does not remove the project's always-included keys or the existing
+Repository and Inventory keys.
+
+The API uses `default_ssh_keys` and `always_ssh_keys` on projects and `ssh_keys`
+on templates and tasks. Each entry contains `access_key_id` and a `hosts` list.
+A `null` override inherits its parent; `[]` is an explicit empty override.
+Two different additional keys cannot claim the same hostname in the effective
+selection. Per-repository selection between keys on the same Git host is not
+supported by this feature.
+
+Execution snapshots retain key references and host lists, not private material.
+Keys are resolved again for execution so rotation and removal remain effective.
+Remove a key from project policies and templates before deleting it from the
+Key Store. Historical task references remain visible without blocking deletion.
+API updates that omit the new SSH fields preserve their current values; use
+`null` or `[]` explicitly to change inheritance or clear a selection.
+Container execution uses the existing protected, read-only credential bundle
+outside `/workspace` to start a separate agent inside the container.
+
 ### 2. Login With Password {#2-login-with-password}
 Login With Password is a username and password/access token combination that can be used to do the following:
 * Authenticate to remote hosts (although this is less secure than using SSH keys)

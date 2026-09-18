@@ -39,6 +39,14 @@ Click **Run** (or **Build** / **Deploy**) to put the task into the queue.
 
 Tasks of the same template run one after another unless **Allow parallel tasks** is enabled in the template. The project can also limit the total number of running tasks with **Max number of parallel tasks** in [project settings](./projects/settings). A task that has to wait stays in the `waiting` status and starts automatically when a slot is free.
 
+## SSH authentication from task commands {#ssh-authentication-from-task-commands}
+
+Tasks whose Repository uses an SSH key receive a task-scoped agent through `SSH_AUTH_SOCK`.
+Requirements installers and commands started by the task can use the same identity that authenticates Semaphore's Repository checkout.
+For example, this supports Ansible Galaxy collections and Terraform modules stored in private Git repositories.
+The Inventory SSH key, when present, is available first in the same agent for Ansible managed-host connections, with explicit Ansible connection settings preserved.
+See [SSH keys available to a task](./key-store#ssh-keys-available-to-a-task) for key selection and cleanup behavior.
+
 ## Task window {#task-window}
 
 Clicking a task anywhere in the UI opens the task window. The header shows the template, the task number, the commit message of the repository revision, the status badge, who started the task and when, and the duration. The arrows icon expands the window to full screen.
