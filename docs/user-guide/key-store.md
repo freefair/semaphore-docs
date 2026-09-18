@@ -99,6 +99,8 @@ Repository and Inventory keys.
 
 The API uses `default_ssh_keys` and `always_ssh_keys` on projects and `ssh_keys`
 on templates and tasks. Each entry contains `access_key_id` and a `hosts` list.
+Create the project and its SSH credentials before assigning project bindings;
+project creation accepts only `null` or empty lists because no keys belong to it yet.
 A `null` override inherits its parent; `[]` is an explicit empty override.
 Two different additional keys cannot claim the same hostname in the effective
 selection. Per-repository selection between keys on the same Git host is not
