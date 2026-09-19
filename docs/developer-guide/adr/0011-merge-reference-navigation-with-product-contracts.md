@@ -23,6 +23,13 @@ Keep other translated pages available.
 Generate references against the merged fork source and build the embedded frontend first using the product's pinned toolchain.
 Prepare both merges locally to verify this dependency; commit and publish documentation before the application's submodule pointer.
 
+Pin the Docusaurus package family together at 3.7.0. This includes the upstream
+[route-hash collision fix](https://github.com/facebook/docusaurus/pull/10727):
+the German documentation root and landing page can otherwise share the same
+three-character hash and overwrite the root route context. Verify all locales
+with the actual Pages URL and base path. Keep the serial build and existing
+navigation; changing page names to evade a hash collision would hide the bug.
+
 ## Alternatives
 
 Keeping upstream edition badges would make incorrect claims about licensing and unavailable providers.

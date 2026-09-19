@@ -1,10 +1,12 @@
 # Current Slice
 
 - [ ] Task-scoped Repository SSH identity
-  - [ ] Offer Repository and Inventory SSH identities through one task agent
-  - [ ] Preserve Inventory host authentication and Repository clone behavior
-  - [ ] Cover requirements, all task apps, remote runners and container execution
-  - [ ] Verify nested Git authentication and cleanup after failure or cancellation
+  - [x] Offer Repository and Inventory SSH identities through one task agent
+  - [x] Preserve Inventory host authentication and Repository clone behavior
+  - [x] Cover requirements, all task apps, remote runners and container execution
+  - [x] Verify nested Git authentication and cleanup after failure or cancellation
+  - [x] Support project defaults, always-included keys and template/run overrides
+  - [x] Route explicit hosts and require mappings from five distinct identities
   - [ ] Publish documented behavior and the next signed EX release
 
 - [x] Terraform provider integration
