@@ -1,5 +1,11 @@
 # Current Slice
 
+- [x] Maintenance — Independent release image caches
+  - [x] Keep cache metadata with each published server or runner image
+  - [x] Avoid Docker writes to the shared Actions cache quota
+  - [x] Preserve cold-cache fallback and fatal build/push errors
+  - [x] Keep manual Beta dry runs import-only
+
 - [x] Task-scoped Repository SSH identity
   - [x] Offer Repository and Inventory SSH identities through one task agent
   - [x] Preserve Inventory host authentication and Repository clone behavior
