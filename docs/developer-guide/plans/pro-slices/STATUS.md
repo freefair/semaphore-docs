@@ -1,5 +1,10 @@
 # Current Slice
 
+- [x] Maintenance — Deterministic audit retry regression
+  - [x] Separate service retry outcomes from TLS scheduling and transport timeout classification
+  - [x] Retain signed HTTPS delivery, stable event identity, authorization, and durable attempt assertions
+  - [x] Preserve production deadlines and retry behavior ([ADR 0016](../../adr/0016-separate-audit-retry-and-transport-tests.md))
+
 - [x] Maintenance — Upstream process cancellation compatibility
   - [x] Preserve synchronized cancellation, process-group cleanup, and graceful-stop finalization
   - [x] Keep SQL-authoritative task admission and task-scoped SSH cleanup
