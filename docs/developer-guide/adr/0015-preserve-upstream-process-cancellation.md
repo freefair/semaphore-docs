@@ -37,6 +37,8 @@ Keeping the placeholder deleted while accepting its restoration command would ma
 
 Run the upstream cancellation, graceful-exit, process-group, and pending-stop regressions in `db_lib`, `services/tasks`, and `util`.
 Run the fork's SSH agent lifecycle regression and targeted race-detector tests.
+Process-group regression fixtures release survival markers only after command cleanup returns.
+A fixed sleep before cancellation can record a surviving child before termination is requested when the test controller is delayed, even though cleanup subsequently succeeds.
 The complete upstream-sync gate runner verifies both Go modules, contract and migration inventories, frontend, product artifacts, Dockerfiles, and documentation.
 
 ## Consequences
