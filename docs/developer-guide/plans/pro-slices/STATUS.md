@@ -1,5 +1,10 @@
 # Current Slice
 
+- [x] Maintenance — Git SSH command construction
+  - [x] Emit one SSH executable and share host-key options across both Git command builders
+  - [x] Use the documented known-hosts fallback while preserving the configured verification mode
+  - [x] Verify command arguments and retain task-scoped identity regressions ([ADR 0017](../../adr/0017-preserve-git-ssh-host-policy.md))
+
 - [x] Maintenance — Deterministic audit retry regression
   - [x] Separate service retry outcomes from TLS scheduling and transport timeout classification
   - [x] Retain signed HTTPS delivery, stable event identity, authorization, and durable attempt assertions
