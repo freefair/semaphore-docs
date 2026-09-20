@@ -1,5 +1,11 @@
 # Current Slice
 
+- [x] Maintenance — Upstream process cancellation compatibility
+  - [x] Preserve synchronized cancellation, process-group cleanup, and graceful-stop finalization
+  - [x] Keep SQL-authoritative task admission and task-scoped SSH cleanup
+  - [x] Adapt cancellation fixtures to the fork's waiting-state and public stop contracts
+  - [x] Retain the generated frontend placeholder and translated quickstart video
+
 - [x] Maintenance — Independent release image caches
   - [x] Keep cache metadata with each published server or runner image
   - [x] Avoid Docker writes to the shared Actions cache quota

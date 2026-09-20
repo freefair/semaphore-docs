@@ -155,6 +155,16 @@ Workflow-node inserts provide neutral `[]` values for artifact input and output 
 They do not rely on defaults for `LONGTEXT` columns, which MariaDB deliberately creates without defaults.
 Workflow-edge statements quote the `condition` identifier because it is reserved by MariaDB.
 
+### Local Process Cancellation
+
+Preserve the upstream `StopCh` contract and synchronized, single-use local executor.
+Application commands own process-group termination and waiting; keep the fork's
+SQL-authoritative start claim before dispatch and its task SSH cleanup after
+execution returns. A cancelled command that exits successfully still finishes
+as stopped, and a cancelled Terraform plan must not proceed to apply.
+Fixtures that exercise dispatch must create tasks in the `waiting` state.
+See [ADR 0015](../../adr/0015-preserve-upstream-process-cancellation.md).
+
 ### Task Logging and Credential Redaction
 
 Upstream owns command-local output finalization in `TaskRunner.LogCmd` and `runningJob.LogCmd`.
