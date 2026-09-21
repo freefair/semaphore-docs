@@ -1,6 +1,6 @@
 ---
 title: OpenID Connect
-description: Configuring OIDC providers in config.json or one environment variable, all provider options, claim expressions and IdP-initiated login.
+description: Configuring OIDC providers in config.json or one environment variable, provider options, claim expressions, and role mapping.
 ---
 
 # OpenID Connect
@@ -75,8 +75,8 @@ All SSO provider options:
 | `group_claim_case_insensitive` | Lowercase group values before matching. Default `false`; matching is case-sensitive unless explicitly enabled. |
 | `group_claim_missing_policy` | `preserve` keeps the provider's existing managed grants when the claim is absent; `clear` removes only grants owned by that provider. Default `preserve`. |
 | `order`               | Position of the provider button on the Sign in screen.                                                      |
-| `allow_idp_initiated` | Enable [IdP-initiated login](#idp-initiated-login) for this provider. Default `false`.                       |
-| `return_via_state`    | Pass the post-login return path via the OAuth `state` parameter instead of the redirect URL. Default `true`. |
+| `return_via_state`    | Pass the post-login return path via OAuth `state`. Default `true`; normal startup currently replaces an explicit `false` with the default. |
+| `require_verified_email` | Require `email_verified: true` before matching an existing account by email. Default `false`: a missing claim is accepted for providers that omit it, but an explicit `false` is always rejected. |
 | `endpoint.issuer`     |                                                                                                             |
 | `endpoint.auth`       |                                                                                                             |
 | `endpoint.token`      |                                                                                                             |
@@ -125,65 +125,10 @@ OIDC reconciliation owns only assignments created by the same provider and mappi
 
 ## IdP-initiated login {#idp-initiated-login}
 
-By default Semaphore only supports **SP-initiated** sign-in: the user opens Semaphore, clicks the provider button, and
-is redirected to the identity provider (IdP).
-
-With **IdP-initiated** login the journey can start at the identity provider instead — for example by clicking the
-Semaphore tile in the Okta dashboard, Azure *My Apps*, or a Keycloak / Authentik application launcher.
-
-Semaphore implements this using the standard **Third-Party Initiated Login** mechanism
-([OpenID Connect Core 1.0 §4](https://openid.net/specs/openid-connect-core-1_0.html#ThirdPartyInitiatedLogin)). The IdP
-redirects the browser to a dedicated **Initiate Login URI**, and Semaphore then starts a normal Authorization Code flow.
-The actual authentication is still a full, secure code exchange — Semaphore never accepts an unsolicited token.
-
-### Enabling it {#enabling-it}
-
-Set `allow_idp_initiated` to `true` for the provider:
-
-```json
-{
-  "oidc_providers": {
-    "mysso": {
-      "display_name": "Sign in with MySSO",
-      "provider_url": "https://mysso-provider.com",
-      "client_id": "***",
-      "client_secret": "***",
-      "redirect_url": "https://your-domain.com/api/auth/oidc/mysso/redirect",
-      "allow_idp_initiated": true
-    }
-  }
-}
-```
-
-### Configuring the identity provider {#configuring-the-identity-provider}
-
-In your IdP, set the application's **Initiate Login URI** to:
-
-```
-https://your-domain.com/api/auth/oidc/<provider-id>/initiate
-```
-
-where `<provider-id>` is the key under `oidc_providers` (for example `mysso`).
-
-The IdP must send the `iss` (issuer) parameter to this endpoint; Semaphore rejects requests whose `iss` does not match
-the configured provider. The optional `login_hint` parameter is forwarded to the IdP, and an optional `target_link_uri`
-sets the page to open after login (it must point back to Semaphore, otherwise it is ignored).
-
-Provider-specific notes:
-
-- **Okta** — set *Login initiated by* to *Either Okta or App* (or *App Only*) and fill in the *Initiate login URI*. Okta
-  sends both `iss` and `target_link_uri`.
-- **Keycloak / Authentik / Ping / OneLogin** — set the application's launch / home URL to the Initiate Login URI.
-- **Azure AD / Entra** — *My Apps* uses an SP-initiated start URL and does not always send `iss`; point the start URL at
-  `https://your-domain.com/api/auth/oidc/<provider-id>/login` instead.
-
-### Security {#security}
-
-- IdP-initiated login is **off by default** and must be enabled per provider.
-- The `iss` parameter is validated against the configured issuer to prevent provider mix-up.
-- `target_link_uri` is accepted only when it points back to Semaphore (no open redirects).
-- The flow goes through the full Authorization Code exchange with CSRF `state` and a `nonce`, so a captured or replayed
-  token cannot be used to sign in.
+IdP-initiated login is not implemented. `allow_idp_initiated` is not a parsed
+provider setting and Semaphore has no `/api/auth/oidc/<provider>/initiate` route.
+Start the supported authorization-code flow from Semaphore's provider button or
+`/api/auth/oidc/<provider>/login` instead.
 
 ## Sign in screen {#sign-in-screen}
 

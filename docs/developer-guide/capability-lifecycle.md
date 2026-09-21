@@ -23,9 +23,15 @@ flowchart LR
 
 Controllers depend only on `CapabilityServiceFacade`. The facade maps persistence records to transport DTOs; SQL entities do not cross the controller boundary. Services enforce access again so a background path cannot bypass the HTTP middleware.
 
-A worker resolves one snapshot when it actually begins an action. Work already executing finishes against that snapshot, which prevents partial state caused by changing policy midway through one operation. Queued work that has not started resolves later and is rejected if the capability has since been disabled, expired, or made read-only.
+A lifecycle-test worker resolves one snapshot when it actually begins an action. Work already executing finishes against that snapshot, which prevents partial state caused by changing policy midway through one operation. Queued lifecycle-test work that has not started resolves later and is rejected if that capability has since been disabled, expired, or made read-only.
 
 ## Effective States
+
+This table describes the `lifecycle_test` contract fixture, not a universal permission matrix for every feature.
+Capability IDs do not have generic environment-variable enable switches.
+See [Feature controls](/admin-guide/configuration#feature-controls) for the selected product registry and the controls that govern each feature.
+For example, [runtime secrets](runtime-secrets.md) deliberately permit existing secret resolution in `read_only`; their `disabled` and `expired` states retain read access while denying writes and execution.
+TOTP and managed LDAP have their own rollout states and enforcement contracts.
 
 | State | Stable reason | Read | Write | Execute | Denied HTTP status |
 |---|---|:---:|:---:|:---:|---:|
@@ -38,7 +44,8 @@ A worker resolves one snapshot when it actually begins an action. Work already e
 
 The provider applies lifecycle reasons before user permission. An explicit administrator disable takes precedence over an expired timestamp, then expiry takes precedence over permission. This keeps the effective reason deterministic.
 
-Community builds always resolve `lifecycle_test` as `unavailable`, and Community service entry points reject operations even if a caller supplies a forged active snapshot.
+The unwired Community compatibility implementation resolves `lifecycle_test` as `unavailable` and rejects operations even if a caller supplies a forged active snapshot.
+It is compatibility test scaffolding, not a separate product edition.
 
 ## API
 

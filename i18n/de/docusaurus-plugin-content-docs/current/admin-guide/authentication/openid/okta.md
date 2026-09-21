@@ -17,35 +17,11 @@
 
 ## IdP-initiierte Anmeldung {#idp-initiated-login}
 
-Damit Benutzer die Anmeldung über die Kachel im Okta-Dashboard starten können, aktivieren Sie
-die [IdP-initiierte Anmeldung](/admin-guide/authentication/openid#idp-initiated-login) für den Anbieter:
+Semaphore unterstützt keine IdP-initiierte Anmeldung. `allow_idp_initiated` ist keine unterstützte Anbieteroption und es gibt keine `/initiate`-Route. Starten Sie den unterstützten anwendungsinitiierten Authorization-Code-Flow über die Provider-Schaltfläche von Semaphore oder einen Okta-Anwendungslink zu:
 
-```json title="config.json"
-{
-  "oidc_providers": {
-    "okta": {
-      "...": "...",
-      "allow_idp_initiated": true
-    }
-  }
-}
 ```
-
-Öffnen Sie anschließend in der Okta Admin Console die **General**-Einstellungen Ihrer Anwendung und konfigurieren Sie den Abschnitt *Login*:
-
-1. Setzen Sie **Login initiated by** auf *Either Okta or App* (oder *App Only*).
-2. Setzen Sie **Initiate login URI** auf:
-
-   ```
-   https://semaphore.example.com/api/auth/oidc/okta/initiate
-   ```
-
-3. (Optional) Aktivieren Sie unter **Application visibility** die Option *Display application icon to users*, damit die Kachel im
-   Okta-Dashboard erscheint.
-
-Okta sendet die Parameter `iss` und `target_link_uri`; Semaphore validiert `iss` gegen Ihre `provider_url` und startet
-einen normalen Authorization-Code-Flow.
-
+https://semaphore.example.com/api/auth/oidc/okta/login
+```
 
 ## Verwandte GitHub-Issues {#related-github-issues}
 

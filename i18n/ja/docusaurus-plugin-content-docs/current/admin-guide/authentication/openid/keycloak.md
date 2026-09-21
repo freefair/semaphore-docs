@@ -17,30 +17,11 @@
 
 ## IdP 起点のログイン {#idp-initiated-login}
 
-ユーザーが Keycloak の **Account Console** のアプリケーションランチャーから Semaphore を起動できるようにするには、
-プロバイダーで [IdP 起点のログイン](/admin-guide/authentication/openid#idp-initiated-login)を有効にします。
-
-```json title="config.json"
-{
-  "oidc_providers": {
-    "keycloak": {
-      "...": "...",
-      "allow_idp_initiated": true
-    }
-  }
-}
-```
-
-次に、Keycloak の管理コンソールでクライアントを開き、**Home URL**(Keycloak 19 以降。古いバージョンでは
-*Base URL* と呼ばれます)を次のように設定します。
+Semaphore は IdP 起点のログインを実装していません。`allow_idp_initiated` はサポートされるプロバイダーオプションではなく、`/initiate` ルートもありません。Semaphore のプロバイダーボタンからサポートされるアプリケーション起点の Authorization Code フローを開始するか、Keycloak クライアントの **Home URL** を次のように設定してください。
 
 ```
-https://semaphore.example.com/api/auth/oidc/keycloak/initiate
+https://semaphore.example.com/api/auth/oidc/keycloak/login
 ```
-
-ユーザーがランチャーでアプリケーションをクリックすると、Keycloak は `iss` パラメータを付けてこの URL にリダイレクトします。Semaphore は
-`iss` を `provider_url`(レルムの issuer)と照合して検証し、通常の認可コードフローを開始します。
-
 
 ## 関連する GitHub Issue {#related-github-issues}
 

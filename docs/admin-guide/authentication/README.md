@@ -60,18 +60,19 @@ for the day the identity provider is unreachable:
 4. Confirm a second identity-provider path or host recovery procedure before
    changing password-login settings.
 
-Do those in order. `password_login_disable` disables every local password login,
-including the designated administrator. Recovery then requires host access to
-re-enable the setting and restart the service, or another independently verified
-identity-provider path.
+Do those in order. `password_login_disable` disables ordinary local password login.
+When an active or selected-user managed LDAP provider has a designated recovery
+administrator, that exact local account remains available for recovery. Otherwise,
+recovery requires host access to re-enable the setting and restart the service, or
+another independently verified identity-provider path.
 
 ## In this section {#in-this-section}
 
 | Page | What it covers |
 |---|---|
-| [Local accounts](/admin-guide/authentication/local) | Passwords, TOTP, e-mail one-time codes, session lifetime, and disabling password login. |
+| [Local accounts](/admin-guide/authentication/local) | Passwords, TOTP, session lifetime, and disabling password login. |
 | [LDAP and Active Directory](/admin-guide/authentication/ldap) | Binding to a directory, search filters, attribute mappings, and TLS. |
-| [OpenID Connect](/admin-guide/authentication/openid) | Provider configuration, claim expressions, IdP-initiated login, and twelve worked provider examples. |
+| [OpenID Connect](/admin-guide/authentication/openid) | Provider configuration, claim expressions, and worked provider examples. |
 
 ## Where to start {#where-to-start}
 

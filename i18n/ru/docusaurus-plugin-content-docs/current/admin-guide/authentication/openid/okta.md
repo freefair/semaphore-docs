@@ -17,35 +17,11 @@
 
 ## Вход, инициированный IdP {#idp-initiated-login}
 
-Чтобы пользователи могли начинать вход с плитки в панели Okta, включите
-[вход, инициированный IdP](/admin-guide/authentication/openid#idp-initiated-login), для провайдера:
+Semaphore не реализует вход, инициированный IdP. `allow_idp_initiated` не является поддерживаемой опцией провайдера, и маршрута `/initiate` не существует. Запустите поддерживаемый поток Authorization Code, инициированный приложением, кнопкой провайдера в Semaphore или ссылкой приложения Okta на:
 
-```json title="config.json"
-{
-  "oidc_providers": {
-    "okta": {
-      "...": "...",
-      "allow_idp_initiated": true
-    }
-  }
-}
 ```
-
-Затем в Okta Admin Console откройте настройки **General** вашего приложения и настройте раздел *Login*:
-
-1. Установите **Login initiated by** в *Either Okta or App* (или *App Only*).
-2. Установите **Initiate login URI**:
-
-   ```
-   https://semaphore.example.com/api/auth/oidc/okta/initiate
-   ```
-
-3. (Необязательно) В разделе **Application visibility** включите *Display application icon to users*, чтобы плитка отображалась в
-   панели Okta.
-
-Okta передаёт параметры `iss` и `target_link_uri`; Semaphore проверяет `iss` на соответствие вашему `provider_url` и запускает
-обычный поток Authorization Code.
-
+https://semaphore.example.com/api/auth/oidc/okta/login
+```
 
 ## Связанные Issues на GitHub {#related-github-issues}
 

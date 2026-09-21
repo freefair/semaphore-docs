@@ -17,30 +17,11 @@
 
 ## Prijava koju pokreće IdP {#idp-initiated-login}
 
-Da biste korisnicima omogućili da pokrenu Semaphore iz pokretača aplikacija u Keycloak **Account Console**, uključite
-[prijavu koju pokreće IdP](/admin-guide/authentication/openid#idp-initiated-login) za provajdera:
-
-```json title="config.json"
-{
-  "oidc_providers": {
-    "keycloak": {
-      "...": "...",
-      "allow_idp_initiated": true
-    }
-  }
-}
-```
-
-Zatim u Keycloak Admin Console otvorite svog klijenta i postavite **Home URL** (Keycloak ≥ 19; starije verzije ga zovu
-*Base URL*) na:
+Semaphore ne implementira prijavu koju pokreće IdP. `allow_idp_initiated` nije podržana opcija provajdera i ruta `/initiate` ne postoji. Pokrenite podržani Authorization Code tok koji pokreće aplikacija preko dugmeta provajdera u Semaphore-u ili postavite **Home URL** Keycloak klijenta na:
 
 ```
-https://semaphore.example.com/api/auth/oidc/keycloak/initiate
+https://semaphore.example.com/api/auth/oidc/keycloak/login
 ```
-
-Kada korisnik klikne na aplikaciju u pokretaču, Keycloak preusmerava na ovaj URL sa parametrom `iss`. Semaphore
-proverava `iss` u odnosu na vaš `provider_url` (izdavaoca realm-a) i započinje uobičajeni Authorization Code tok.
-
 
 ## Povezani GitHub problemi {#related-github-issues}
 

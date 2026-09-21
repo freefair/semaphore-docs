@@ -17,35 +17,11 @@
 
 ## Connexion initiée par l'IdP {#idp-initiated-login}
 
-Pour permettre aux utilisateurs de démarrer la connexion depuis la tuile du tableau de bord Okta, activez
-la [connexion initiée par l'IdP](/admin-guide/authentication/openid#idp-initiated-login) pour le fournisseur :
+Semaphore ne met pas en œuvre la connexion initiée par l’IdP. `allow_idp_initiated` n’est pas une option de fournisseur prise en charge et aucune route `/initiate` n’existe. Démarrez le flux Authorization Code pris en charge, initié par l’application, via le bouton du fournisseur dans Semaphore ou un lien d’application Okta vers :
 
-```json title="config.json"
-{
-  "oidc_providers": {
-    "okta": {
-      "...": "...",
-      "allow_idp_initiated": true
-    }
-  }
-}
 ```
-
-Ensuite, dans la console d'administration Okta, ouvrez les paramètres **General** de votre application et configurez la section *Login* :
-
-1. Définissez **Login initiated by** à *Either Okta or App* (ou *App Only*).
-2. Définissez **Initiate login URI** à :
-
-   ```
-   https://semaphore.example.com/api/auth/oidc/okta/initiate
-   ```
-
-3. (Facultatif) Sous **Application visibility**, activez *Display application icon to users* afin que la tuile apparaisse sur le
-   tableau de bord Okta.
-
-Okta envoie les paramètres `iss` et `target_link_uri` ; Semaphore valide `iss` par rapport à votre `provider_url` et démarre
-un flux Authorization Code classique.
-
+https://semaphore.example.com/api/auth/oidc/okta/login
+```
 
 ## Issues GitHub associées {#related-github-issues}
 

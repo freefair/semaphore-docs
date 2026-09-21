@@ -17,35 +17,11 @@
 
 ## IdP 起点のログイン {#idp-initiated-login}
 
-ユーザーが Okta ダッシュボードのタイルからサインインを開始できるようにするには、
-プロバイダーで [IdP 起点のログイン](/admin-guide/authentication/openid#idp-initiated-login)を有効にします。
+Semaphore は IdP 起点のログインを実装していません。`allow_idp_initiated` はサポートされるプロバイダーオプションではなく、`/initiate` ルートもありません。Semaphore のプロバイダーボタンからサポートされるアプリケーション起点の Authorization Code フローを開始するか、Okta アプリケーションリンクを次の URL に設定してください。
 
-```json title="config.json"
-{
-  "oidc_providers": {
-    "okta": {
-      "...": "...",
-      "allow_idp_initiated": true
-    }
-  }
-}
 ```
-
-次に、Okta の管理コンソールでアプリケーションの **General** 設定を開き、*Login* セクションを設定します。
-
-1. **Login initiated by** を *Either Okta or App*(または *App Only*)に設定します。
-2. **Initiate login URI** を次のように設定します。
-
-   ```
-   https://semaphore.example.com/api/auth/oidc/okta/initiate
-   ```
-
-3. (任意)**Application visibility** で *Display application icon to users* を有効にすると、Okta ダッシュボードに
-   タイルが表示されます。
-
-Okta は `iss` と `target_link_uri` パラメータを送信します。Semaphore は `iss` を `provider_url` と照合して検証し、
-通常の認可コードフローを開始します。
-
+https://semaphore.example.com/api/auth/oidc/okta/login
+```
 
 ## 関連する GitHub Issue {#related-github-issues}
 

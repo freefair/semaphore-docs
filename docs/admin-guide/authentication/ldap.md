@@ -9,6 +9,10 @@ Configure LDAP from the System Information capability panel. The lifecycle is
 `disabled`, `shadow`, selected-user, and active; each transition validates directory
 connection, search, and bind readiness before it changes authentication behavior.
 
+The legacy `ldap_enable`, flat `ldap_*`, and `ldap_providers` configuration fields
+remain parser compatibility paths. They do not create or activate the selected
+database-managed LDAP providers.
+
 ## Transport and credentials {#transport-and-credentials}
 
 Use TLS with explicit trust configuration. Do not use plaintext LDAP, disable

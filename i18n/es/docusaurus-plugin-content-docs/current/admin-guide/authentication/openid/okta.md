@@ -17,35 +17,11 @@
 
 ## Inicio de sesión iniciado por el IdP {#idp-initiated-login}
 
-Para permitir que los usuarios inicien sesión desde el mosaico del panel de Okta, habilite
-el [inicio de sesión iniciado por el IdP](/admin-guide/authentication/openid#idp-initiated-login) para el proveedor:
+Semaphore no implementa el inicio de sesión iniciado por IdP. `allow_idp_initiated` no es una opción de proveedor compatible y no existe una ruta `/initiate`. Inicie el flujo Authorization Code compatible iniciado por la aplicación mediante el botón del proveedor de Semaphore o un enlace de aplicación de Okta a:
 
-```json title="config.json"
-{
-  "oidc_providers": {
-    "okta": {
-      "...": "...",
-      "allow_idp_initiated": true
-    }
-  }
-}
 ```
-
-A continuación, en la Admin Console de Okta, abra los ajustes **General** de su aplicación y configure la sección *Login*:
-
-1. Establezca **Login initiated by** en *Either Okta or App* (o *App Only*).
-2. Establezca **Initiate login URI** en:
-
-   ```
-   https://semaphore.example.com/api/auth/oidc/okta/initiate
-   ```
-
-3. (Opcional) En **Application visibility**, active *Display application icon to users* para que el mosaico aparezca en el
-   panel de Okta.
-
-Okta envía los parámetros `iss` y `target_link_uri`; Semaphore valida `iss` contra su `provider_url` e inicia
-un flujo Authorization Code normal.
-
+https://semaphore.example.com/api/auth/oidc/okta/login
+```
 
 ## Issues relacionados en GitHub {#related-github-issues}
 

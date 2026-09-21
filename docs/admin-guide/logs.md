@@ -5,13 +5,14 @@ description: Where the server, activity and task logs go, file and syslog forwar
 
 # Logs
 
-Semaphore writes server logs to **stdout** and stores **Task** and **Activity** logs in a **database**, centralizing key log information and eliminating the need to back up log files separately. The only data stored on the file system is caching data.
+Semaphore writes server logs to **stdout** and stores **Task** and **Activity** logs in a **database**.
+Optional structured file exports create additional persistent log files; include their retention and collection in your operations plan.
 
 ---
 
 ## Server log {#server-log}
 
-Semaphore does not log to files. Instead, all application logs are written to **stdout**.
+The normal server log is written to **stdout**; structured file export is configured separately below.
 If Semaphore is running as a systemd service, you can view the logs with the following command:
 
 ```bash
@@ -39,6 +40,11 @@ The Activity Log captures user actions performed in Semaphore, including:
 Semaphore EX can export application events, task lifecycle events, and normalized task
 results as versioned JSON Lines. File export is disabled by default and does not replace the
 database-backed Activity Log or Task History.
+
+Each enabled event, task, or debug destination requires `format: "json"` and a logger with a `filename`.
+Empty format does not select plain text; it is unsupported by the selected writer.
+An enabled destination with an unsupported format or missing filename produces a configuration diagnostic and cannot write records.
+Task logging may use `logger`, `result_logger`, or both, with at least one configured destination.
 
 Destinations must be absolute, normalized paths to regular files. Semaphore rejects relative
 paths, traversal, symlinks (including symlinked parent directories), directories, devices, and
@@ -241,44 +247,32 @@ Every audit event includes the **action** (`create`, `update`, `delete`, `login_
 There are three ways to deliver audit events to your SIEM:
 
 1. **Pull:** read `/api/events` (see [API docs](/reference/api)).
-2. **File collector:** enable the Activity Log file (see above) and ship `events.log` (JSON format recommended) with Filebeat, Fluentd or a Splunk Universal Forwarder.
-3. **Audit webhook:** push events in real time over HTTPS — a generic JSON endpoint or Splunk HTTP Event Collector.
+2. **File collector:** enable structured Activity Log export above and ship the JSON Lines file with your collector.
+3. **Audit webhook:** deliver the signed `semaphore.audit.v1` JSON envelope to an administrator-controlled HTTPS receiver. A SIEM requiring another format needs a receiver-side adapter.
 
 ### Audit webhook {#audit-webhook}
 
-```json
-{
-  "log": {
-    "audit_webhook": {
-      "enabled": true,
-      "url": "https://splunk.example.com:8088/services/collector/event",
-      "format": "splunk_hec",
-      "headers": {
-        "Authorization": "Splunk <your-hec-token>"
-      }
-    }
-  }
-}
-```
+Audit-webhook settings are persisted in the database and managed through **System Information → Audit webhook** by an authenticated administrator.
+They are not `log.audit_webhook` configuration fields, and there are no `SEMAPHORE_AUDIT_WEBHOOK_*` environment variables.
 
-Or using environment variables:
-
-```bash
-SEMAPHORE_AUDIT_WEBHOOK_ENABLED=true
-SEMAPHORE_AUDIT_WEBHOOK_URL=https://splunk.example.com:8088/services/collector/event
-SEMAPHORE_AUDIT_WEBHOOK_FORMAT=splunk_hec
-```
+Configure the HTTPS endpoint, create the required signing key, verify a controlled test delivery, and use the pause/resume controls to manage background delivery.
+An optional receiver credential is write-only and separate from the signing key.
+See [Audit Webhook Export](/developer-guide/audit-webhook-export#administration-api) for the complete API and [Signed Webhooks](/developer-guide/signed-webhooks) for receiver verification and key rotation.
 
 #### Audit webhook options {#audit-webhook-options}
 
-| Parameter             | Environment Variables | Description           |
-| --------------------- | --------------------- | --------------------- |
-| `enabled`             | `SEMAPHORE_AUDIT_WEBHOOK_ENABLED` | Turn audit event forwarding on or off. |
-| `url`                 | `SEMAPHORE_AUDIT_WEBHOOK_URL`  | Full receiver endpoint URL. |
-| `format`              | `SEMAPHORE_AUDIT_WEBHOOK_FORMAT`  | Payload format: empty for plain JSON or `splunk_hec` for a Splunk HEC envelope. |
-| `headers`             | `SEMAPHORE_AUDIT_WEBHOOK_HEADERS`  | Extra HTTP headers, e.g. the HEC token: `{"Authorization": "Splunk <token>"}`. |
+| Control | Administration API | Effect |
+|---|---|---|
+| Endpoint and optional receiver credential | `GET` / `PUT /api/audit-webhook` | Read safe configuration or update the endpoint and write-only credential. |
+| Signing key lifecycle | `/api/audit-webhook/signing-secret` and its stage/promote routes | Create or rotate signing material through the documented revision-guarded operations. |
+| Pause / resume | `POST /api/audit-webhook/pause` or `POST /api/audit-webhook/resume` | Stop or resume background delivery claims; does not delete delivery history. |
+| Controlled test | `POST /api/audit-webhook/test` | Test the configured receiver and signing key, including while paused. |
+| Delivery history | `GET /api/audit-webhook/deliveries` | Inspect durable delivery states and redacted attempt details. |
 
-Delivery is asynchronous: events are queued in memory and retried up to three times with backoff, so an unavailable receiver never slows down or fails user requests. If the receiver stays down, queued events are dropped with a warning in the server log.
+Delivery uses a transactional SQL outbox and leased background workers rather than an in-memory-only queue.
+Retryable failures use backoff; the eighth failed attempt becomes terminal.
+Redirects and non-retryable client errors fail earlier.
+Failed deliveries remain in history instead of disappearing after three attempts.
 
 ## Summary {#summary}
 

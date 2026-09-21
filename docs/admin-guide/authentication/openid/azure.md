@@ -1,6 +1,6 @@
 ---
 title: Azure config
-description: An oidc_providers block with Entra ID endpoints, and how to launch Semaphore from My Apps instead of IdP-initiated login.
+description: An oidc_providers block with Entra ID endpoints and a supported My Apps launch URL.
 ---
 
 # Azure config
@@ -30,10 +30,10 @@ description: An oidc_providers block with Entra ID endpoints, and how to launch 
 
 ## IdP-initiated login {#idp-initiated-login}
 
-Microsoft Entra ID (Azure AD) launches applications from **My Apps** using an SP-initiated start URL rather than the
-OpenID Connect [Third-Party Initiated Login](/admin-guide/authentication/openid#idp-initiated-login) mechanism, and it does not reliably
-send the `iss` parameter. For Entra, point the tile at Semaphore's **`/login`** endpoint instead of `/initiate` — so you
-do **not** need to set `allow_idp_initiated`.
+Semaphore does not implement IdP-initiated login. `allow_idp_initiated` is not a
+supported provider option, and there is no `/initiate` route. Microsoft Entra ID
+(Azure AD) can start the supported application-initiated authorization-code flow
+from **My Apps** through Semaphore's **`/login`** endpoint.
 
 In the Azure portal, open your **App registration → Branding & properties** and set the **Home page URL** to:
 

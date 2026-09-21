@@ -17,35 +17,11 @@
 
 ## IdP 发起的登录 {#idp-initiated-login}
 
-若要让用户从 Okta 控制面板的图块开始登录，请为该提供方启用
-[IdP 发起的登录](/admin-guide/authentication/openid#idp-initiated-login)：
+Semaphore 不实现 IdP 发起的登录。`allow_idp_initiated` 不是受支持的提供方选项，也不存在 `/initiate` 路由。请通过 Semaphore 中的提供方按钮启动受支持的应用发起的授权码流程，或将 Okta 应用链接设置为：
 
-```json title="config.json"
-{
-  "oidc_providers": {
-    "okta": {
-      "...": "...",
-      "allow_idp_initiated": true
-    }
-  }
-}
 ```
-
-然后，在 Okta Admin Console 中打开应用的 **General** 设置，并配置 *Login* 部分：
-
-1. 将 **Login initiated by** 设置为 *Either Okta or App*（或 *App Only*）。
-2. 将 **Initiate login URI** 设置为：
-
-   ```
-   https://semaphore.example.com/api/auth/oidc/okta/initiate
-   ```
-
-3. （可选）在 **Application visibility** 下启用 *Display application icon to users*，这样图块就会显示在
-   Okta 控制面板上。
-
-Okta 会发送 `iss` 和 `target_link_uri` 参数；Semaphore 会根据你的 `provider_url` 校验 `iss`，然后开始
-一次正常的授权码流程。
-
+https://semaphore.example.com/api/auth/oidc/okta/login
+```
 
 ## 相关 GitHub Issue {#related-github-issues}
 

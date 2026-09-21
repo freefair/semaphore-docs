@@ -17,35 +17,11 @@
 
 ## Accesso avviato dall'IdP {#idp-initiated-login}
 
-Per consentire agli utenti di avviare l'accesso dal riquadro nella dashboard di Okta, abilitare
-l'[accesso avviato dall'IdP](/admin-guide/authentication/openid#idp-initiated-login) per il provider:
+Semaphore non implementa l’accesso avviato dall’IdP. `allow_idp_initiated` non è un’opzione del provider supportata e non esiste alcuna route `/initiate`. Avviare il flusso Authorization Code supportato e avviato dall’applicazione tramite il pulsante del provider in Semaphore oppure un collegamento dell’applicazione Okta a:
 
-```json title="config.json"
-{
-  "oidc_providers": {
-    "okta": {
-      "...": "...",
-      "allow_idp_initiated": true
-    }
-  }
-}
 ```
-
-Quindi, nella Admin Console di Okta, aprire le impostazioni **General** della propria applicazione e configurare la sezione *Login*:
-
-1. Impostare **Login initiated by** su *Either Okta or App* (oppure *App Only*).
-2. Impostare **Initiate login URI** a:
-
-   ```
-   https://semaphore.example.com/api/auth/oidc/okta/initiate
-   ```
-
-3. (Facoltativo) In **Application visibility**, abilitare *Display application icon to users* affinché il riquadro compaia nella
-   dashboard di Okta.
-
-Okta invia i parametri `iss` e `target_link_uri`; Semaphore convalida `iss` rispetto al proprio `provider_url` e avvia
-un normale flusso Authorization Code.
-
+https://semaphore.example.com/api/auth/oidc/okta/login
+```
 
 ## Issue GitHub correlate {#related-github-issues}
 

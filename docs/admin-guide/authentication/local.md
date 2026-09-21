@@ -95,7 +95,7 @@ compliance rule requires people to re-authenticate on a schedule.
 ## Turn password sign-in off {#turn-password-sign-in-off}
 
 Once an identity provider is configured and you have verified that a real user can
-sign in through it, `password_login_disable` rejects the password method entirely:
+sign in through it, `password_login_disable` rejects ordinary password login:
 
 ```json
 {
@@ -104,14 +104,15 @@ sign in through it, `password_login_disable` rejects the password method entirel
 ```
 
 LDAP and OpenID Connect are unaffected. Existing local accounts keep their roles and
-their history, but password login is unavailable to every local account, including
-the designated recovery administrator.
+history. When an active or selected-user managed LDAP provider designates a recovery
+administrator, only that local account can still use password login. Do not rely on
+this exception until the managed provider and recovery administrator have been tested.
 
 :::danger
-This option is honoured immediately and applies to every local account, including
-yours. Confirm a second identity-provider path or the host recovery procedure — by
-performing it, not by reading the log — before you set it. Recovering from a mistake
-means editing the configuration file on the server and restarting.
+This option is honoured immediately. Confirm the managed recovery administrator, a
+second identity-provider path, or the host recovery procedure by performing it before
+you set it. Without the managed recovery exception, recovery means editing the
+configuration file on the server and restarting.
 :::
 
 ## What's next {#whats-next}

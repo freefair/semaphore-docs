@@ -1,6 +1,6 @@
 ---
 title: Keycloak config
-description: Example config.json for signing in to Semaphore with Keycloak, plus IdP-initiated login from the Account Console.
+description: Example config.json for signing in to Semaphore with Keycloak.
 ---
 
 # Keycloak config
@@ -21,29 +21,16 @@ description: Example config.json for signing in to Semaphore with Keycloak, plus
 
 ## IdP-initiated login {#idp-initiated-login}
 
-To let users launch Semaphore from the Keycloak **Account Console** application launcher, enable
-[IdP-initiated login](/admin-guide/authentication/openid#idp-initiated-login) for the provider:
-
-```json title="config.json"
-{
-  "oidc_providers": {
-    "keycloak": {
-      "...": "...",
-      "allow_idp_initiated": true
-    }
-  }
-}
-```
-
-Then, in the Keycloak Admin Console, open your client and set the **Home URL** (Keycloak ≥ 19; older versions call it
-*Base URL*) to:
+Semaphore does not implement IdP-initiated login. `allow_idp_initiated` is not a
+supported provider option, and there is no `/initiate` route. Start the supported
+application-initiated authorization-code flow from Semaphore's provider button or
+configure the Keycloak client **Home URL** (called *Base URL* in older versions) as:
 
 ```
-https://semaphore.example.com/api/auth/oidc/keycloak/initiate
+https://semaphore.example.com/api/auth/oidc/keycloak/login
 ```
 
-When a user clicks the application in the launcher, Keycloak redirects to this URL with the `iss` parameter. Semaphore
-validates `iss` against your `provider_url` (the realm issuer) and starts a normal Authorization Code flow.
+Opening this URL starts the normal Authorization Code flow from Semaphore.
 
 
 ## Related GitHub Issues {#related-github-issues}

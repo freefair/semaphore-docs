@@ -17,30 +17,11 @@
 
 ## IdP 发起的登录 {#idp-initiated-login}
 
-若要让用户从 Keycloak **Account Console** 的应用启动器打开 Semaphore，请为该提供方启用
-[IdP 发起的登录](/admin-guide/authentication/openid#idp-initiated-login)：
-
-```json title="config.json"
-{
-  "oidc_providers": {
-    "keycloak": {
-      "...": "...",
-      "allow_idp_initiated": true
-    }
-  }
-}
-```
-
-然后，在 Keycloak Admin Console 中打开你的客户端，并将 **Home URL**（Keycloak ≥ 19；旧版本称为
-*Base URL*）设置为：
+Semaphore 不实现 IdP 发起的登录。`allow_idp_initiated` 不是受支持的提供方选项，也不存在 `/initiate` 路由。请通过 Semaphore 中的提供方按钮启动受支持的应用发起的授权码流程，或将 Keycloak 客户端的 **Home URL** 设置为：
 
 ```
-https://semaphore.example.com/api/auth/oidc/keycloak/initiate
+https://semaphore.example.com/api/auth/oidc/keycloak/login
 ```
-
-当用户在启动器中点击该应用时，Keycloak 会携带 `iss` 参数重定向到该 URL。Semaphore
-会根据你的 `provider_url`（即 realm 的 issuer）校验 `iss`，然后开始一次正常的授权码流程。
-
 
 ## 相关 GitHub Issue {#related-github-issues}
 

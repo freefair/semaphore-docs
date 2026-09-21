@@ -17,30 +17,11 @@
 
 ## Connexion initiée par l'IdP {#idp-initiated-login}
 
-Pour permettre aux utilisateurs de lancer Semaphore depuis le lanceur d'applications de la **console de compte** (Account Console) de Keycloak, activez
-la [connexion initiée par l'IdP](/admin-guide/authentication/openid#idp-initiated-login) pour le fournisseur :
-
-```json title="config.json"
-{
-  "oidc_providers": {
-    "keycloak": {
-      "...": "...",
-      "allow_idp_initiated": true
-    }
-  }
-}
-```
-
-Ensuite, dans la console d'administration de Keycloak, ouvrez votre client et définissez la **Home URL** (Keycloak ≥ 19 ; les versions plus anciennes l'appellent
-*Base URL*) à :
+Semaphore ne met pas en œuvre la connexion initiée par l’IdP. `allow_idp_initiated` n’est pas une option de fournisseur prise en charge et aucune route `/initiate` n’existe. Démarrez le flux Authorization Code pris en charge, initié par l’application, via le bouton du fournisseur dans Semaphore ou définissez la **Home URL** du client Keycloak sur :
 
 ```
-https://semaphore.example.com/api/auth/oidc/keycloak/initiate
+https://semaphore.example.com/api/auth/oidc/keycloak/login
 ```
-
-Lorsqu'un utilisateur clique sur l'application dans le lanceur, Keycloak redirige vers cette URL avec le paramètre `iss`. Semaphore
-valide `iss` par rapport à votre `provider_url` (l'issuer du realm) et démarre un flux Authorization Code classique.
-
 
 ## Issues GitHub associées {#related-github-issues}
 

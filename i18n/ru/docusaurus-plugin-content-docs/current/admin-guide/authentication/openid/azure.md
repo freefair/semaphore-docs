@@ -25,10 +25,7 @@
 
 ## Вход, инициированный IdP {#idp-initiated-login}
 
-Microsoft Entra ID (Azure AD) запускает приложения из **My Apps** с помощью стартового URL, инициированного SP, а не через
-механизм OpenID Connect [Third-Party Initiated Login](/admin-guide/authentication/openid#idp-initiated-login), и не всегда надёжно
-передаёт параметр `iss`. Для Entra направьте плитку на эндпоинт Semaphore **`/login`** вместо `/initiate` — в этом случае
-устанавливать `allow_idp_initiated` **не** нужно.
+Semaphore не реализует вход, инициированный IdP. `allow_idp_initiated` не является поддерживаемой опцией провайдера, и маршрута `/initiate` не существует. Microsoft Entra ID (Azure AD) может начать поддерживаемый поток Authorization Code, инициированный приложением, из **My Apps** через эндпоинт Semaphore **`/login`**.
 
 На портале Azure откройте **App registration → Branding & properties** и укажите в **Home page URL**:
 
@@ -36,5 +33,4 @@ Microsoft Entra ID (Azure AD) запускает приложения из **My 
 https://YOUR_SEMAPHORE_HOST_AND_PORT/api/auth/oidc/azure/login
 ```
 
-Когда пользователь нажимает на плитку Semaphore в My Apps, Entra переходит по этому URL, что запускает обычный поток
-Authorization Code, инициированный SP.
+Когда пользователь нажимает на плитку Semaphore в My Apps, Entra переходит по этому URL, что запускает обычный поток Authorization Code, инициированный SP.

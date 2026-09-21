@@ -25,16 +25,12 @@
 
 ## Connexion initiée par l'IdP {#idp-initiated-login}
 
-Microsoft Entra ID (Azure AD) lance les applications depuis **My Apps** à l'aide d'une URL de démarrage initiée par le SP plutôt que via le
-mécanisme OpenID Connect [Third-Party Initiated Login](/admin-guide/authentication/openid#idp-initiated-login), et il n'envoie pas de manière fiable
-le paramètre `iss`. Pour Entra, faites pointer la tuile vers le point de terminaison **`/login`** de Semaphore plutôt que vers `/initiate` — vous
-n'avez donc **pas** besoin de définir `allow_idp_initiated`.
+Semaphore ne met pas en œuvre la connexion initiée par l’IdP. `allow_idp_initiated` n’est pas une option de fournisseur prise en charge et aucune route `/initiate` n’existe. Microsoft Entra ID (Azure AD) peut démarrer le flux Authorization Code pris en charge, initié par l’application, depuis **My Apps** via le point de terminaison **`/login`** de Semaphore.
 
-Dans le portail Azure, ouvrez votre **Inscription d'application → Personnalisation et propriétés** et définissez l'**URL de la page d'accueil** à :
+Dans le portail Azure, ouvrez votre **Inscription d’application → Personnalisation et propriétés** et définissez l’**URL de la page d’accueil** à :
 
 ```
 https://YOUR_SEMAPHORE_HOST_AND_PORT/api/auth/oidc/azure/login
 ```
 
-Lorsqu'un utilisateur clique sur la tuile Semaphore dans My Apps, Entra navigue vers cette URL, ce qui démarre un flux Authorization Code
-initié par le SP classique.
+Lorsqu’un utilisateur clique sur la tuile Semaphore dans My Apps, Entra navigue vers cette URL, ce qui démarre un flux Authorization Code initié par le SP classique.

@@ -25,10 +25,7 @@
 
 ## Prijava koju pokreće IdP {#idp-initiated-login}
 
-Microsoft Entra ID (Azure AD) pokreće aplikacije iz **My Apps** pomoću početnog URL-a koji pokreće SP, a ne pomoću
-OpenID Connect mehanizma [Third-Party Initiated Login](/admin-guide/authentication/openid#idp-initiated-login), i ne šalje pouzdano
-parametar `iss`. Za Entra usmerite pločicu na Semaphore krajnju tačku **`/login`** umesto na `/initiate` — tako da
-**ne** morate da postavljate `allow_idp_initiated`.
+Semaphore ne implementira prijavu koju pokreće IdP. `allow_idp_initiated` nije podržana opcija provajdera i ruta `/initiate` ne postoji. Microsoft Entra ID (Azure AD) može da pokrene podržani Authorization Code tok koji pokreće aplikacija iz **My Apps** preko Semaphore krajnje tačke **`/login`**.
 
 U Azure portalu otvorite **App registration → Branding & properties** i postavite **Home page URL** na:
 
@@ -36,5 +33,4 @@ U Azure portalu otvorite **App registration → Branding & properties** i postav
 https://YOUR_SEMAPHORE_HOST_AND_PORT/api/auth/oidc/azure/login
 ```
 
-Kada korisnik klikne na Semaphore pločicu u My Apps, Entra prelazi na ovaj URL, čime počinje uobičajeni Authorization Code
-tok koji pokreće SP.
+Kada korisnik klikne na Semaphore pločicu u My Apps, Entra prelazi na ovaj URL, čime počinje uobičajeni Authorization Code tok koji pokreće SP.

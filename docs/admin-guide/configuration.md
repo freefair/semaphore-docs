@@ -17,6 +17,38 @@ Choose the workflow that fits how you run your server.
 | [Configuration file](/admin-guide/configuration/config-file) | You want to keep server settings in a `config.json` file. |
 | [Environment variables](/admin-guide/configuration/env-vars) | You manage settings through Docker, a service definition, or your deployment tools. |
 
+## Feature controls {#feature-controls}
+
+The [generated reference](/reference/configuration) lists startup configuration and boolean defaults, including flags inside named app and provider objects.
+A setting accepted by the parser is not necessarily an effective feature switch: legacy compatibility fields and unsupported values are identified in their descriptions.
+Optional infrastructure, configured policies, and permissions still determine whether an included feature can be used.
+
+Startup settings such as `ha.enabled`, `metrics.enabled`, file-log `enabled` flags, and alert-channel flags control their configured subsystem.
+Their defaults are `false`; enabling one still requires its destination, infrastructure, or per-task alert selection where applicable.
+`runner.enabled` supplies the initial enabled state during registration and does not start or stop a runner process.
+`teams.invites_enabled` controls invitation UI visibility, while backend project permissions remain authoritative; `teams.members_can_leave` currently has no runtime consumer.
+
+The `/api/info` feature booleans describe which implementations are included.
+For example, HA can be included while `ha.enabled` is `false`.
+The backend capability registry below has no generic `config.json` or environment-variable binding for its IDs:
+
+| Capability ID | Initial effective state | Where behavior is controlled |
+|---|---|---|
+| `lifecycle_test` | `disabled` without a saved row | Administrator-only contract fixture, configured through `/api/capabilities/lifecycle-test`; not a product switch. See [Capability lifecycle](/developer-guide/capability-lifecycle). |
+| `runtime_secrets` | `active` without a saved row | Persisted administrator configuration through `/api/capabilities/runtime-secrets`. `active` grants read/write/execute; `read_only` grants read/execute; `disabled` and expired retain read only. See [Runtime secrets](/developer-guide/runtime-secrets). |
+| `totp` | `disabled` without a saved row | Administrator TOTP lifecycle: `disabled`, `shadow`, `optional`, `required_selected`, or `required`. Legacy TOTP booleans do not select this rollout. See [TOTP lifecycle](/developer-guide/totp-capability-lifecycle). |
+| `project_runners` | `active` | Runner registration, enabled state, project scope, and permissions. See [Runners](/admin-guide/runners). |
+| `ldap` | `active` capability; new providers are `disabled` | Each database-managed provider has `disabled`, `shadow`, `selected_users`, and `active` states. Legacy LDAP environment variables do not enable these providers. See [LDAP](/admin-guide/authentication/ldap). |
+| `workflow_triggers` | `active` | Trigger configuration, lifecycle, and project permissions. |
+| `project_roles` | `active` | Administrator/project role and membership rules. |
+| `execution_preflight` | `active` | Execution authorization and the reviewed plan. |
+| `deployment_windows` | `active` | Configured project deployment windows and policy. |
+| `policy_guardrails` | `active` | Configured rules and admission policy. |
+
+Capability access never replaces authenticated routes, role permissions, or resource ownership checks.
+State names are feature-specific: the `lifecycle_test` read-only example denies execution, whereas runtime-secret read-only mode intentionally permits existing resolution.
+Audit-webhook export is another persisted control: configure its endpoint and signing key in the administrator UI, then pause or resume delivery there. See [Audit webhook](/admin-guide/logs#audit-webhook).
+
 ## Configuration options {#configuration-options}
 
 An environment variable overrides the corresponding value in the configuration
@@ -41,15 +73,15 @@ effect, check the environment passed to the Semaphore process.
 | <br />`max_tasks_per_template`<hr /> `SEMAPHORE_MAX_TASKS_PER_TEMPLATE` <br /><br /> | Maximum number of recent tasks stored in the database for each template. |
 | <br />`schedule.timezone`     <hr /> `SEMAPHORE_SCHEDULE_TIMEZONE` <br /><br /> | Timezone used for scheduling tasks and cron jobs. Default: UTC |
 | <br />`oidc_providers` ![Static Badge](https://img.shields.io/badge/v2.10+-red) <hr /> `SEMAPHORE_OIDC_PROVIDERS` <br /><br /> | OpenID provider settings. You can provide multiple OpenID providers. More about OpenID configuration read in [OpenID](/admin-guide/authentication/openid). |
-| <br />`password_login_disable` <hr /> `SEMAPHORE_PASSWORD_LOGIN_DISABLED` <br /><br /> ![Static Badge](https://img.shields.io/badge/v2.10+-red)    <br /><br /> | Deny password login. |
+| <br />`password_login_disable` <hr /> `SEMAPHORE_PASSWORD_LOGIN_DISABLED` <br /><br /> ![Static Badge](https://img.shields.io/badge/v2.10+-red)    <br /><br /> | Disable ordinary password login. The designated local administrator may still use password recovery under the managed LDAP recovery policy; see [Local authentication](/admin-guide/authentication/local). |
 | <br />`non_admin_can_create_project`      <hr /> `SEMAPHORE_NON_ADMIN_CAN_CREATE_PROJECT` <br /><br /> | Allow non-admin users to create projects. |
 | <br />`env_vars`               <hr /> `SEMAPHORE_ENV_VARS` <br /><br /> | JSON map which contains environment variables exposed to task runs. |
 | <br />`forwarded_env_vars`     <hr /> `SEMAPHORE_FORWARDED_ENV_VARS` <br /><br /> | JSON array of host environment variables which will be forwarded into task runs. |
 | <br />`apps`                   <hr /> `SEMAPHORE_APPS` <br /><br /> | JSON map which contains apps configuration. |
-| <br />`use_remote_runner`      <hr /> `SEMAPHORE_USE_REMOTE_RUNNER` <br /><br /> | Enable to use remote runner. |
+| <br />`use_remote_runner`      <hr /> `SEMAPHORE_USE_REMOTE_RUNNER` <br /><br /> | Deprecated remote-runner fallback when `runners.default_global_runners_mode` is empty. An explicit mode takes precedence; project runner policies are separate. |
 | <br />`runner_registration_token` <hr /> `SEMAPHORE_RUNNER_REGISTRATION_TOKEN` <br /><br /> | Bootstrap token used by runners to register with the server. |
 | **JWT** ||
-| <br />`jwt.enabled` <hr /> `SEMAPHORE_JWT_ENABLED` <br /><br /> | When enabled, Semaphore mints a short-lived JWT for each task run and exposes its public key via `/.well-known/jwks.json`. |
+| <br />`jwt.enabled` <hr /> `SEMAPHORE_JWT_ENABLED` <br /><br /> | Publish the JWKS endpoint and permit task JWT issuance for templates that enable JWT parameters. Default: `false`. |
 | <br />`jwt.issuer` <hr /> `SEMAPHORE_JWT_ISSUER` <br /><br /> | Value emitted in the `iss` claim of issued JWTs. |
 | <br />`jwt.default_ttl` <hr /> `SEMAPHORE_JWT_DEFAULT_TTL` <br /><br /> | Default lifetime of an issued task JWT, as a Go duration (e.g. `30m`, `1h`). Default: 1h |
 | <br />`jwt.max_ttl` <hr /> `SEMAPHORE_JWT_MAX_TTL` <br /><br /> | Hard upper bound on per-template JWT TTL, as a Go duration. Default: 24h |
@@ -57,9 +89,9 @@ effect, check the environment passed to the Semaphore process.
 | <br />`runner.registration_token_file` <hr /> `SEMAPHORE_RUNNER_REGISTRATION_TOKEN_FILE` <br /><br /> | Path to file containing the runner registration token. |
 | <br />`runner.token` <hr /> `SEMAPHORE_RUNNER_TOKEN` <br /><br /> | Runner authentication token. Mutually exclusive with `runner.token_file`. |
 | <br />`runner.token_file` <hr /> `SEMAPHORE_RUNNER_TOKEN_FILE` <br /><br /> | Path to token file for runner registration. |
-| <br />`runner.private_key_file` <hr /> `SEMAPHORE_RUNNER_PRIVATE_KEY_FILE` <br /><br /> | Path to private key file for runner. |
+| <br />`runner.identity_private_key_file` <hr /> `SEMAPHORE_RUNNER_IDENTITY_PRIVATE_KEY_FILE` <br /><br /> | Path to the runner's Ed25519 private identity. When unset, Semaphore uses a path beside the runner configuration file and creates it with mode `0600`. |
 | <br />`runner.one_off` <hr /> `SEMAPHORE_RUNNER_ONE_OFF` <br /><br /> | Runner processes a single job and exits. Useful for dynamic runners. |
-| <br />`runner.enabled` <hr /> `SEMAPHORE_RUNNER_ENABLED` <br /><br /> | Enable the runner. |
+| <br />`runner.enabled` <hr /> `SEMAPHORE_RUNNER_ENABLED` <br /><br /> | Initial enabled value sent during runner registration; defaults to `false`. It does not start or stop the runner process or replace server-side registration state. |
 | <br />`runner.webhook` <hr /> `SEMAPHORE_RUNNER_WEBHOOK` <br /><br /> | Webhook URL for runner. |
 | <br />`runner.name` <hr /> `SEMAPHORE_RUNNER_NAME` <br /><br /> | Runner name. |
 | <br />`runner.tags` <hr /> `SEMAPHORE_RUNNER_TAGS` <br /><br /> | JSON array of runner tags. |
@@ -86,21 +118,21 @@ effect, check the environment passed to the Semaphore process.
 | <br />`runner.executor.docker.cert_path` <hr /> `SEMAPHORE_RUNNER_DOCKER_CERT_PATH` <br /><br /> | Directory holding ca.pem, cert.pem and key.pem for mutual TLS. |
 | <br />`runner.executor.docker.image` <hr /> `SEMAPHORE_RUNNER_DOCKER_IMAGE` <br /><br /> | Default image for the build container. Default: semaphoreui/job:latest |
 | <br />`runner.executor.docker.helper_image` <hr /> `SEMAPHORE_RUNNER_DOCKER_HELPER_IMAGE` <br /><br /> | Image used by the network-disabled transient bundle-population container. Default: semaphoreui/helper:latest |
-| <br />`runner.executor.docker.network` <hr /> `SEMAPHORE_RUNNER_DOCKER_NETWORK` <br /><br /> | Docker network the build container joins. Default: bridge |
+| <br />`runner.executor.docker.network` <hr /> `SEMAPHORE_RUNNER_DOCKER_NETWORK` <br /><br /> | Compatibility input; the selected Docker execution policy controls the effective task network and defaults to `none`. |
 | <br />`runner.executor.docker.pull_policy` <hr /> `SEMAPHORE_RUNNER_DOCKER_PULL_POLICY` <br /><br /> | Image pull policy: `always`, `if-not-present` (default) or `never`. |
 | <br />`runner.executor.docker.cpu_limit` <hr /> `SEMAPHORE_RUNNER_DOCKER_CPU_LIMIT` <br /><br /> | When > 0, caps the build container CPU (passed as `--cpus`). |
 | <br />`runner.executor.docker.memory_limit` <hr /> `SEMAPHORE_RUNNER_DOCKER_MEMORY_LIMIT` <br /><br /> | When non-empty, caps the build container memory (e.g. `2g`). |
 | <br />`runner.executor.docker.poll_interval_seconds` <hr /> `SEMAPHORE_RUNNER_DOCKER_POLL_INTERVAL_SECONDS` <br /><br /> | How often container status is polled, in seconds. Default: 2 |
 | <br />`runner.executor.docker.cleanup_grace_seconds` <hr /> `SEMAPHORE_RUNNER_DOCKER_CLEANUP_GRACE_SECONDS` <br /><br /> | Timeout passed to `docker stop`, in seconds. Default: 30 |
-| <br />`runner.executor.docker.privileged` <hr /> `SEMAPHORE_RUNNER_DOCKER_PRIVILEGED` <br /><br /> | Run the build container with `--privileged`. Dangerous; off by default. |
+| <br />`runner.executor.docker.privileged` <hr /> `SEMAPHORE_RUNNER_DOCKER_PRIVILEGED` <br /><br /> | Compatibility field; `true` is rejected by the selected Docker executor. Keep `false` (the default). |
 | **Runners (server-side fleet)** ||
 | <br />`runners.offline_timeout_sec` <hr /> `SEMAPHORE_RUNNERS_OFFLINE_TIMEOUT_SEC` <br /><br /> | Heartbeat staleness boundary in seconds. A runner remains online at the exact boundary and becomes offline after it. Unacknowledged `waiting`/`starting` tasks are safely reassigned, while offline cancellation converges to `stopped`. Webhook startup uses `task_fail_timeout_sec` instead. Default: 120 |
 | <br />`runners.task_fail_timeout_sec` <hr /> `SEMAPHORE_RUNNERS_TASK_FAIL_TIMEOUT_SEC` <br /><br /> | Heartbeat staleness (seconds) after which possibly executing tasks are failed rather than retried. Also bounds webhook startup and never-polled running assignments. Values below `offline_timeout_sec` are clamped to it. Default: 420 |
 | <br />`runners.reconcile_interval_sec` <hr /> `SEMAPHORE_RUNNERS_RECONCILE_INTERVAL_SEC` <br /><br /> | How often (seconds) dispatched tasks are reconciled against runner liveness. Default: 30 |
 | **Teams** ||
-| <br />`teams.invites_enabled` <hr /> `SEMAPHORE_TEAMS_INVITES_ENABLED` <br /><br /> | Allow users to invite members to teams. |
+| <br />`teams.invites_enabled` <hr /> `SEMAPHORE_TEAMS_INVITES_ENABLED` <br /><br /> | Show invitation controls in the UI. Backend project permissions remain authoritative; this is not a backend authorization switch. Default: `false`. |
 | <br />`teams.invite_type` <hr /> `SEMAPHORE_TEAMS_INVITE_TYPE` <br /><br /> | Type of invite: `username` (default), `email`, `both`. |
-| <br />`teams.members_can_leave` <hr /> `SEMAPHORE_TEAMS_MEMBERS_CAN_LEAVE` <br /><br /> | Allow members to leave teams. |
+| <br />`teams.members_can_leave` <hr /> `SEMAPHORE_TEAMS_MEMBERS_CAN_LEAVE` <br /><br /> | Compatibility field with no current runtime consumer; changing it does not add a leave-team action. Default: `false`. |
 | **Database** ||
 | <br />`sqlite.host` <hr /> `SEMAPHORE_DB_HOST`<br /><br /> | Path to the SQLite database file.   |
 | <br />`mysql.host` <hr /> `SEMAPHORE_DB_HOST`<br /><br /> | MySQL database host.                |
@@ -129,11 +161,11 @@ effect, check the environment passed to the Semaphore process.
 | <br />`mfa.totp.enabled`         <hr /> `SEMAPHORE_TOTP_ENABLED` <br /><br /> | Legacy TOTP compatibility switch. Enhanced rollout and enforcement are configured through the TOTP capability lifecycle in the administrator UI. |
 | <br />`mfa.totp.app_name` ![Static Badge](https://img.shields.io/badge/v2.17.0-red) <hr /> `SEMAPHORE_TOTP_ISSUER` ![Static Badge](https://img.shields.io/badge/v2.17.0-red) <br /><br /> | Issuer label (Semaphore title) shown in TOTP authenticator apps. |
 | <br />`mfa.totp.allow_recovery`  <hr /> `SEMAPHORE_TOTP_ALLOW_RECOVERY` <br /><br /> | Legacy recovery compatibility switch. Enhanced enrollments always issue hashed, single-use recovery codes and do not disable TOTP when a code is used. |
-| <br />`mfa.email.enabled`        <hr /> `SEMAPHORE_EMAIL_2TP_ENABLED` <br /><br /> | Enable email-based multi-factor authentication. |
-| <br />`mfa.email.allow_login_as_external_user` <hr /> `SEMAPHORE_EMAIL_2TP_ALLOW_LOGIN_AS_EXTERNAL_USER` <br /><br /> | Allow login as an external (email-only) user. |
-| <br />`mfa.email.allow_create_external_user` <hr /> `SEMAPHORE_EMAIL_2TP_ALLOW_CREATE_EXTERNAL_USER` <br /><br /> | Allow creating external users on first login. |
-| <br />`mfa.email.allowed_domains` <hr /> `SEMAPHORE_EMAIL_2TP_ALLOWED_DOMAINS` <br /><br /> | JSON array of allowed email domains. |
-| <br />`mfa.email.disable_for_oidc` <hr /> `SEMAPHORE_EMAIL_2TP_DISABLE_FOR_OIDC` <br /><br /> | Disable email MFA for users authenticated via OIDC. |
+| <br />`mfa.email.enabled`        <hr /> `SEMAPHORE_EMAIL_2TP_ENABLED` <br /><br /> | Compatibility-only setting. Email MFA is not implemented by the selected product; this flag does not add an email verification challenge. |
+| <br />`mfa.email.allow_login_as_external_user` <hr /> `SEMAPHORE_EMAIL_2TP_ALLOW_LOGIN_AS_EXTERNAL_USER` <br /><br /> | Compatibility-only setting; email-only login is not implemented by the selected product. |
+| <br />`mfa.email.allow_create_external_user` <hr /> `SEMAPHORE_EMAIL_2TP_ALLOW_CREATE_EXTERNAL_USER` <br /><br /> | Compatibility-only setting; this flag does not create accounts through email login. |
+| <br />`mfa.email.allowed_domains` <hr /> `SEMAPHORE_EMAIL_2TP_ALLOWED_DOMAINS` <br /><br /> | Compatibility-only parsed list with no active email-login enforcement. It is not a working authentication domain restriction. |
+| <br />`mfa.email.disable_for_oidc` <hr /> `SEMAPHORE_EMAIL_2TP_DISABLE_FOR_OIDC` <br /><br /> | Compatibility-only setting; the selected product does not implement email MFA for OIDC or other login paths. |
 | **Encryption** ||
 | <br />`encryption.keys_file` <hr /> `SEMAPHORE_ENCRYPTION_KEYS_FILE` <br /><br /> | Path to a separate file holding the encryption keyrings (YAML or JSON). Watched for changes — edits are applied without restarting the server. When unset, the legacy `access_key_encryption` field is used. |
 | <br />`encryption.keys_poll_interval` <hr /> `SEMAPHORE_ENCRYPTION_KEYS_POLL_INTERVAL` <br /><br /> | How often `keys_file` is polled for changes (a Go duration like `15s`). `0` disables polling (a SIGHUP still forces a reload). Default: 15s |
@@ -174,8 +206,8 @@ effect, check the environment passed to the Semaphore process.
 | <br />`gotify_url`            <hr /> `SEMAPHORE_GOTIFY_URL` <br /><br /> | Gotify server URL. |
 | <br />`gotify_token`          <hr /> `SEMAPHORE_GOTIFY_TOKEN` <br /><br /> | Gotify server token. |
 | **LDAP** ||
-| <br />`ldap_enable`           <hr /> `SEMAPHORE_LDAP_ENABLE` <br /><br /> | Flag which enables LDAP authentication. |
-| <br />`ldap_needtls`          <hr /> `SEMAPHORE_LDAP_NEEDTLS` <br /><br /> | Flag to enable or disable TLS for LDAP connections. |
+| <br />`ldap_enable`           <hr /> `SEMAPHORE_LDAP_ENABLE` <br /><br /> | Legacy LDAP compatibility switch. Configure and activate database-managed providers in the [LDAP administrator panel](/admin-guide/authentication/ldap). This flag alone does not enable managed LDAP. |
+| <br />`ldap_needtls`          <hr /> `SEMAPHORE_LDAP_NEEDTLS` <br /><br /> | TLS flag for legacy LDAP configuration; managed provider trust and TLS settings are configured separately through the LDAP administrator panel. |
 | <br />`ldap_binddn`           <hr /> `SEMAPHORE_LDAP_BIND_DN` <br /><br /> | The distinguished name (DN) used to bind to the LDAP server for authentication. |
 | <br />`ldap_bindpassword`     <hr /> `SEMAPHORE_LDAP_BIND_PASSWORD` <br /><br /> | The password used to bind to the LDAP server for authentication. |
 | <br />`ldap_server`           <hr /> `SEMAPHORE_LDAP_SERVER` <br /><br /> | The hostname and port of the LDAP server (e.g., ldap-server.com:1389). |
@@ -190,16 +222,16 @@ effect, check the environment passed to the Semaphore process.
 | <br />`log.flush_interval` ![Static Badge](https://img.shields.io/badge/pro-red) <hr /> `SEMAPHORE_LOG_FLUSH_INTERVAL` <br /><br /> | Durable flush interval as a Go duration. Default: `1s`. |
 | <br />`log.rotation_interval` ![Static Badge](https://img.shields.io/badge/pro-red) <hr /> `SEMAPHORE_LOG_ROTATION_INTERVAL` <br /><br /> | Time-based rotation interval as a Go duration. Default: `24h`. |
 | <br />`log.debug_filter` ![Static Badge](https://img.shields.io/badge/pro-red) <hr /> `SEMAPHORE_DEBUG_FILTER` <br /><br /> | Exact and terminal-prefix component filters for debug output. Empty captures all components. See [Debug Log Filtering](/developer-guide/debug-log-filtering). |
-| <br />`log.events.format`      ![Static Badge](https://img.shields.io/badge/pro-red) <hr /> `SEMAPHORE_EVENT_LOG_FORMAT` <br /><br /> | Event log format. Structured file export requires `json`. |
-| <br />`log.events.enabled`     ![Static Badge](https://img.shields.io/badge/pro-red) <hr /> `SEMAPHORE_EVENT_LOG_ENABLED` <br /><br /> | Enable or disable event logging. |
-| <br />`log.events.logger`      ![Static Badge](https://img.shields.io/badge/pro-red) <hr /> `SEMAPHORE_EVENT_LOGGER` <br /><br /> | JSON map which contains event logger configuration. |
-| <br />`log.tasks.format`       ![Static Badge](https://img.shields.io/badge/pro-red) <hr /> `SEMAPHORE_TASK_LOG_FORMAT` <br /><br /> | Task and result log format. Structured file export requires `json`. |
-| <br />`log.tasks.enabled`      ![Static Badge](https://img.shields.io/badge/pro-red) <hr /> `SEMAPHORE_TASK_LOG_ENABLED` <br /><br /> | Enable or disable task logging. |
-| <br />`log.tasks.logger`       ![Static Badge](https://img.shields.io/badge/pro-red) <hr /> `SEMAPHORE_TASK_LOGGER` <br /><br /> | JSON map which contains task logger configuration. |
-| <br />`log.tasks.result_logger`  ![Static Badge](https://img.shields.io/badge/pro-red) <hr /> `SEMAPHORE_TASK_RESULT_LOGGER` <br /><br /> | JSON map which contains task result logger configuration. |
-| <br />`log.debug.enabled` ![Static Badge](https://img.shields.io/badge/pro-red) <hr /> `SEMAPHORE_DEBUG_LOG_ENABLED` <br /><br /> | Enable or disable structured debug file logging. |
-| <br />`log.debug.format` ![Static Badge](https://img.shields.io/badge/pro-red) <hr /> `SEMAPHORE_DEBUG_LOG_FORMAT` <br /><br /> | Structured debug file format. Must be `json`. |
-| <br />`log.debug.logger` ![Static Badge](https://img.shields.io/badge/pro-red) <hr /> `SEMAPHORE_DEBUG_LOGGER` <br /><br /> | JSON map containing structured debug logger configuration. |
+| <br />`log.events.format`      ![Static Badge](https://img.shields.io/badge/pro-red) <hr /> `SEMAPHORE_EVENT_LOG_FORMAT` <br /><br /> | Structured event file export supports only `json`; an empty format is unsupported. |
+| <br />`log.events.enabled`     ![Static Badge](https://img.shields.io/badge/pro-red) <hr /> `SEMAPHORE_EVENT_LOG_ENABLED` <br /><br /> | Enable structured event file logging; requires `format=json` and `logger.filename`. Default: `false`. |
+| <br />`log.events.logger`      ![Static Badge](https://img.shields.io/badge/pro-red) <hr /> `SEMAPHORE_EVENT_LOGGER` <br /><br /> | Event destination and rotation options. An absolute, normalized `filename` is required when event export is enabled. |
+| <br />`log.tasks.format`       ![Static Badge](https://img.shields.io/badge/pro-red) <hr /> `SEMAPHORE_TASK_LOG_FORMAT` <br /><br /> | Structured task and result file export supports only `json`; an empty format is unsupported. |
+| <br />`log.tasks.enabled`      ![Static Badge](https://img.shields.io/badge/pro-red) <hr /> `SEMAPHORE_TASK_LOG_ENABLED` <br /><br /> | Enable structured task/result file logging; requires `format=json` and a filename in `logger`, `result_logger`, or both. Default: `false`. |
+| <br />`log.tasks.logger`       ![Static Badge](https://img.shields.io/badge/pro-red) <hr /> `SEMAPHORE_TASK_LOGGER` <br /><br /> | Task lifecycle destination and rotation options. Each configured destination requires an absolute, normalized `filename`. |
+| <br />`log.tasks.result_logger`  ![Static Badge](https://img.shields.io/badge/pro-red) <hr /> `SEMAPHORE_TASK_RESULT_LOGGER` <br /><br /> | Normalized task-result destination and rotation options; requires an absolute, normalized `filename` when configured. |
+| <br />`log.debug.enabled` ![Static Badge](https://img.shields.io/badge/pro-red) <hr /> `SEMAPHORE_DEBUG_LOG_ENABLED` <br /><br /> | Enable structured debug file logging; requires `format=json` and `logger.filename`, with components selected by `log.debug_filter`. Default: `false`. |
+| <br />`log.debug.format` ![Static Badge](https://img.shields.io/badge/pro-red) <hr /> `SEMAPHORE_DEBUG_LOG_FORMAT` <br /><br /> | Structured debug file export supports only `json`; an empty format is unsupported. |
+| <br />`log.debug.logger` ![Static Badge](https://img.shields.io/badge/pro-red) <hr /> `SEMAPHORE_DEBUG_LOGGER` <br /><br /> | Debug destination and rotation options. An absolute, normalized `filename` is required when debug export is enabled. |
 | <br />`syslog.enabled` ![Static Badge](https://img.shields.io/badge/pro-red) <hr /> `SEMAPHORE_SYSLOG_ENABLED` <br /><br /> | Enable or disable writing logs to the configured syslog server. |
 | <br />`syslog.network` ![Static Badge](https://img.shields.io/badge/pro-red) <hr /> `SEMAPHORE_SYSLOG_NETWORK` <br /><br /> | Protocol used to connect to the Syslog server: `udp` or `tcp`. |
 | <br />`syslog.address` ![Static Badge](https://img.shields.io/badge/pro-red) <hr /> `SEMAPHORE_SYSLOG_ADDRESS` <br /><br /> | Hostname and port of the Syslog server. Example: `localhost:514`. |

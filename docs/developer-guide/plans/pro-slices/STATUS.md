@@ -1,10 +1,15 @@
 # Current Slice
 
-- [ ] Maintenance — Upstream generated SSH key compatibility
+- [x] Maintenance — Effective feature-flag documentation
+  - [x] Distinguish parsed configuration, persisted lifecycle, and authorization controls
+  - [x] Document boolean defaults and named application/provider flags in the generated reference
+  - [x] Verify all twelve audit findings, rendered reference, and locale fallbacks
+
+- [x] Maintenance — Upstream generated SSH key compatibility
   - [x] Preserve dedicated generation and confirmed rotation, encrypted persistence, and public metadata
   - [x] Adopt image-only dependency installation while retaining product build metadata
   - [x] Complete focused, browser, Terra, and retained full-product gates
-  - [ ] Publish verified documentation and application commits after approval
+  - [x] Publish verified documentation and application commits after approval
 
 - [x] Maintenance — Git SSH command construction
   - [x] Emit one SSH executable and share host-key options across both Git command builders
