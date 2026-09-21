@@ -1,8 +1,3 @@
----
-title: Runners
-description: The semaphore runner setup, register, start, and unregister subcommands, their flags, and the runner configuration fields.
----
-
 # Runners
 
 The `semaphore runner` command runs Semaphore in **runner mode** and manages a
@@ -13,10 +8,10 @@ machine from the Semaphore server.
 semaphore runner --help
 ```
 
-:::tip
-For how runners work and how to configure the server side, see the
-[Runners](/admin-guide/runners) guide.
-:::
+> **Tip**
+>
+> For how runners work and how to configure the server side, see the
+> [Runners](../../admin-guide/runners.md) guide.
 
 Running `semaphore runner` with no subcommand just prints help. It has the
 following subcommands:
@@ -31,7 +26,9 @@ following subcommands:
 All subcommands accept the global `--config <path>` flag to point at the runner
 configuration file (and `--no-config` to run from environment variables only).
 
-## Interactive setup (`runner setup`) {#interactive-setup-runner-setup}
+<a id="interactive-setup-runner-setup"></a>
+
+## Interactive setup (`runner setup`)
 
 Walks through an interactive setup, writes a runner configuration file, and, if
 a registration token is available (entered during the prompts or set via
@@ -59,7 +56,9 @@ nohup ./semaphore runner start --config /path/to/config.runner.json &
 You can edit the generated configuration file by hand afterward instead of
 re-running setup.
 
-### Runner configuration options {#runner-configuration-options}
+<a id="runner-configuration-options"></a>
+
+### Runner configuration options
 
 Fields in the `runner` block of the configuration file:
 
@@ -77,10 +76,12 @@ Fields in the `runner` block of the configuration file:
 | `max_parallel_tasks` | `SEMAPHORE_RUNNER_MAX_PARALLEL_TASKS` | Maximum concurrent tasks. Default: 9999. |
 | `one_off` | `SEMAPHORE_RUNNER_ONE_OFF` | Exit after processing one job. Useful for runners started on demand by a webhook. |
 
-See [Runners](/admin-guide/runners) for setup details and
-[Configuration](/admin-guide/configuration) for the full option list.
+See [Runners](../../admin-guide/runners.md) for setup details and
+[Configuration](../../admin-guide/configuration.md) for the full option list.
 
-## Registering a runner (`runner register`) {#registering-a-runner-runner-register}
+<a id="registering-a-runner-runner-register"></a>
+
+## Registering a runner (`runner register`)
 
 Registers the runner on the server and stores the issued runner token in the
 configuration file (overwriting any existing token). The server must have a
@@ -111,7 +112,9 @@ Only the flags you actually pass are applied; `--name`, `--webhook`, `--tags`,
 and `--enabled` overwrite the corresponding values from the configuration file
 and environment only when set on the command line.
 
-### Where the registration token comes from {#where-the-registration-token-comes-from}
+<a id="where-the-registration-token-comes-from"></a>
+
+### Where the registration token comes from
 
 When registering, Semaphore resolves the registration token from the first
 available source, in this order:
@@ -143,7 +146,9 @@ If registration is rejected, the response identifies the failed criterion and
 the required remediation without including the registration token, runner token,
 CA contents, or identity key.
 
-## Starting a runner (`runner start`) {#starting-a-runner-runner-start}
+<a id="starting-a-runner-runner-start"></a>
+
+## Starting a runner (`runner start`)
 
 Starts the runner, connects to the server, and begins accepting tasks. This is
 the command you run to keep a registered runner online.
@@ -168,7 +173,9 @@ containers.
 `runner start` does not accept `--registration-token-file` or
 `--stdin-registration-token`; those flags belong to `runner register` only.
 
-## Unregistering a runner (`runner unregister`) {#unregistering-a-runner-runner-unregister}
+<a id="unregistering-a-runner-runner-unregister"></a>
+
+## Unregistering a runner (`runner unregister`)
 
 Removes the runner's registration from the server, using the runner token from
 the configuration file.

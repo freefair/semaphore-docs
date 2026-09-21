@@ -1,9 +1,3 @@
----
-sidebar_position: 24
-title: Policy Guardrails
-description: Versioned global and project execution policies with deterministic allow, warn, and deny findings.
----
-
 # Policy Guardrails
 
 - [Policy model](#policy-model)

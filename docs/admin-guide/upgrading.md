@@ -1,11 +1,8 @@
----
-title: Upgrading
-description: Commands to upgrade Semaphore from the deb and rpm packages or from the binary archives on Linux and Windows.
----
-
 # Upgrading
 
-### Package manager {#package-manager}
+<a id="package-manager"></a>
+
+### Package manager
 
 Download a package file from [Releases page](https://github.com/semaphoreui/semaphore/releases).
 
@@ -13,72 +10,71 @@ Download a package file from [Releases page](https://github.com/semaphoreui/sema
 
 Install it using the package manager.
 
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
+### Debian / Ubuntu (x64)
 
-<Tabs>
-  <TabItem value="debian-x64" label="Debian / Ubuntu (x64)">
-      ```bash
-      wget https://github.com/semaphoreui/semaphore/releases/\
-      download/v2.17.15/semaphore_2.17.15_linux_amd64.deb
+  ```bash
+  wget https://github.com/semaphoreui/semaphore/releases/\
+  download/v2.17.15/semaphore_2.17.15_linux_amd64.deb
 
-      sudo dpkg -i semaphore_2.17.15_linux_amd64.deb
-      ```
-  </TabItem>
-  <TabItem value="debian-arm64" label="Debian / Ubuntu (ARM64)">
-      ```bash
-      wget https://github.com/semaphoreui/semaphore/releases/\
-      download/v2.17.15/semaphore_2.17.15_linux_arm64.deb
+  sudo dpkg -i semaphore_2.17.15_linux_amd64.deb
+  ```
 
-      sudo dpkg -i semaphore_2.17.15_linux_arm64.deb
-      ```
-  </TabItem>
-  <TabItem value="centos-x64" label="CentOS (x64)">
-      ```bash
-      wget https://github.com/semaphoreui/semaphore/releases/\
-      download/v2.17.15/semaphore_2.17.15_linux_amd64.rpm
+### Debian / Ubuntu (ARM64)
 
-      sudo yum install semaphore_2.17.15_linux_amd64.rpm
-      ```
-  </TabItem>
-  <TabItem value="centos-arm64" label="CentOS (ARM64)">
-      ```bash
-      wget https://github.com/semaphoreui/semaphore/releases/\
-      download/v2.17.15/semaphore_2.17.15_linux_arm64.rpm
+  ```bash
+  wget https://github.com/semaphoreui/semaphore/releases/\
+  download/v2.17.15/semaphore_2.17.15_linux_arm64.deb
 
-      sudo yum install semaphore_2.17.15_linux_arm64.rpm
-      ```
-  </TabItem>
-</Tabs>
+  sudo dpkg -i semaphore_2.17.15_linux_arm64.deb
+  ```
 
+### CentOS (x64)
 
-### Binary {#binary}
+  ```bash
+  wget https://github.com/semaphoreui/semaphore/releases/\
+  download/v2.17.15/semaphore_2.17.15_linux_amd64.rpm
 
-<Tabs>
-  <TabItem value="linux-x64" label="Linux (x64)">
-      ```bash
-      wget https://github.com/semaphoreui/semaphore/releases/\
-      download/v2.17.15/semaphore_2.17.15_linux_amd64.tar.gz
+  sudo yum install semaphore_2.17.15_linux_amd64.rpm
+  ```
 
-      tar xf semaphore_2.17.15_linux_amd64.tar.gz
-      ```
-  </TabItem>
-  <TabItem value="linux-arm64" label="Linux (ARM64)">
-      ```bash
-      wget https://github.com/semaphoreui/semaphore/releases/\
-      download/v2.17.15/semaphore_2.17.15_linux_arm64.tar.gz
+### CentOS (ARM64)
 
-      tar xf semaphore_2.17.15_linux_arm64.tar.gz
-      ```
-  </TabItem>
-  <TabItem value="windows-x64" label="Windows (x64)">
-      ```powershell
-      Invoke-WebRequest `
-      -Uri ("https://github.com/semaphoreui/semaphore/releases/" +
-            "download/v2.17.15/semaphore_2.17.15_windows_amd64.zip") `
-      -OutFile semaphore.zip
+  ```bash
+  wget https://github.com/semaphoreui/semaphore/releases/\
+  download/v2.17.15/semaphore_2.17.15_linux_arm64.rpm
 
-      Expand-Archive -Path semaphore.zip  -DestinationPath ./
-      ```
-  </TabItem>
-</Tabs>
+  sudo yum install semaphore_2.17.15_linux_arm64.rpm
+  ```
+
+<a id="binary"></a>
+
+### Binary
+
+### Linux (x64)
+
+  ```bash
+  wget https://github.com/semaphoreui/semaphore/releases/\
+  download/v2.17.15/semaphore_2.17.15_linux_amd64.tar.gz
+
+  tar xf semaphore_2.17.15_linux_amd64.tar.gz
+  ```
+
+### Linux (ARM64)
+
+  ```bash
+  wget https://github.com/semaphoreui/semaphore/releases/\
+  download/v2.17.15/semaphore_2.17.15_linux_arm64.tar.gz
+
+  tar xf semaphore_2.17.15_linux_arm64.tar.gz
+  ```
+
+### Windows (x64)
+
+  ```powershell
+  Invoke-WebRequest `
+  -Uri ("https://github.com/semaphoreui/semaphore/releases/" +
+        "download/v2.17.15/semaphore_2.17.15_windows_amd64.zip") `
+  -OutFile semaphore.zip
+
+  Expand-Archive -Path semaphore.zip  -DestinationPath ./
+  ```

@@ -1,34 +1,16 @@
----
-title: Get Started
-description: Install Semaphore UI and run, inspect, and schedule your first Ansible task.
-sidebar_label: Get Started
----
-
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
-
 # Get Started
 
 Semaphore UI is a web interface and API for running repeatable automation with Ansible, Terraform/OpenTofu, Bash, PowerShell, and Python. It brings together automation stored in Git, credentials, variables, schedules, workflows, and execution environments, then keeps the status and log for every run.
 
 This guide uses Ansible for the first working example. Use a playbook from your own repository, or follow the reproducible example shown in the screenshots with the public [`semaphoreui/semaphore-demo`](https://github.com/semaphoreui/semaphore-demo) repository.
 
-<div className="VideoEmbed">
-  <iframe
-    src="https://www.youtube-nocookie.com/embed/LVKwud2Wno4"
-    title="Semaphore UI Quickstart: Install, Run & Schedule Ansible"
-    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-    referrerPolicy="strict-origin-when-cross-origin"
-    allowFullScreen
-  ></iframe>
-</div>
+  [Video walkthrough](https://www.youtube-nocookie.com/embed/LVKwud2Wno4)
 
 ## 1. Install Semaphore
 
-Choose the installation method that matches where Semaphore will run. The native package is selected by default.
+Choose the installation method that matches where Semaphore will run. Each method is shown below as a separate section.
 
-<Tabs groupId="installation-method">
-  <TabItem value="package" label="Native package" default className="InstallationMethod">
+### Native package
 
 For Debian or Ubuntu on `amd64`:
 
@@ -37,7 +19,7 @@ wget https://github.com/semaphoreui/semaphore/releases/download/v2.19.12/semapho
 sudo apt install ./semaphore_2.19.12_linux_amd64.deb
 ```
 
-For RHEL, Fedora, Rocky Linux, AlmaLinux, or CentOS Stream on `amd64`:
+For RHEL, Fedora, Rocky Linux, or AlmaLinux on `amd64`:
 
 ```bash
 curl -LO https://github.com/semaphoreui/semaphore/releases/download/v2.19.12/semaphore_2.19.12_linux_amd64.rpm
@@ -53,15 +35,14 @@ semaphore server --config ./config.json
 
 For a local evaluation, choose SQLite, accept or set the database and playbook paths, enter the public URL, and create the first administrator when prompted.
 
-  </TabItem>
-  <TabItem value="docker" label="Docker Compose" className="InstallationMethod">
+### Docker Compose
 
 Create `compose.yaml`:
 
 ```yaml
 services:
   semaphore:
-    image: semaphoreui/semaphore:v2.19.12
+    image: ghcr.io/freefair/semaphore-ex:latest
     restart: unless-stopped
     ports:
       - "3000:3000"
@@ -98,8 +79,7 @@ docker compose up -d
 docker compose logs -f semaphore
 ```
 
-  </TabItem>
-  <TabItem value="binary" label="Binary archive" className="InstallationMethod">
+### Binary archive
 
 Download the archive for your operating system and CPU architecture from [GitHub Releases](https://github.com/semaphoreui/semaphore/releases). Linux `amd64` example:
 
@@ -114,8 +94,7 @@ For a local evaluation, choose SQLite, accept or set the database and playbook p
 
 Choose a `darwin` archive for macOS or a `.zip` for Windows. The Ansible walkthrough later in this guide still needs a Linux, macOS, WSL, container, or Linux runner execution environment with Ansible installed.
 
-  </TabItem>
-  <TabItem value="helm" label="Kubernetes with Helm" className="InstallationMethod">
+### Kubernetes with Helm
 
 Add the official chart and inspect its defaults before installing:
 
@@ -133,21 +112,17 @@ helm upgrade --install semaphore semaphoreui/semaphore \
 
 The chart's `appVersion` identifies the Semaphore version. Configure persistent storage, the database, administrator credentials, the access-key encryption key, and ingress/TLS in `values.yaml` before production use.
 
-  </TabItem>
-</Tabs>
-
-
-For a guided setup, use the official [Semaphore Installation page](https://semaphoreui.com/install) to select the release, build the configuration, and get the matching download or run commands.
+Use the [local configuration guide](../admin-guide/configuration/config-file.md) for configuration examples and startup commands.
 
 <details>
 <summary>Not sure which installation method to choose?</summary>
 
 | Installation method | Choose it for | Detailed guide |
 | --- | --- | --- |
-| **Native package** | A supported Linux server | [Package manager installation](/admin-guide/installation/package-manager) |
-| **Docker Compose** | A quick isolated setup or container host | [Docker installation](/admin-guide/installation/docker) |
-| **Binary archive** | macOS, Windows, FreeBSD, or Linux without a suitable package | [Binary installation](/admin-guide/installation/binary-file) |
-| **Kubernetes with Helm** | An existing Kubernetes cluster | [Kubernetes installation](/admin-guide/installation/k8s) |
+| **Native package** | A supported Linux server | [Package manager installation](../admin-guide/installation/package-manager.md) |
+| **Docker Compose** | A quick isolated setup or container host | [Docker installation](../admin-guide/installation/docker.md) |
+| **Binary archive** | macOS, Windows, FreeBSD, or Linux without a suitable package | [Binary installation](../admin-guide/installation/binary-file.md) |
+| **Kubernetes with Helm** | An existing Kubernetes cluster | [Kubernetes installation](../admin-guide/installation/k8s.md) |
 
 The detailed guides cover production databases, services, secrets, storage, ingress, and upgrades.
 
@@ -155,9 +130,9 @@ The detailed guides cover production databases, services, secrets, storage, ingr
 
 For this Ansible walkthrough, `git --version` and `ansible-playbook --version` must work on the Semaphore server or runner. If either command is unavailable there, install [Git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git) and [Ansible](https://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html) before continuing.
 
-:::tip Production installation
-Before using Semaphore in production, review [Configuration](/admin-guide/configuration), [Security](/admin-guide/security), [Runners](/admin-guide/runners), [High availability](/admin-guide/ha), and [Upgrading](/admin-guide/upgrading).
-:::
+> **Production installation**
+>
+> Before using Semaphore in production, review [Configuration](../admin-guide/configuration.md), [Security](../admin-guide/security.md), [Runners](../admin-guide/runners.md), [High availability](../admin-guide/ha.md), and [Upgrading](../admin-guide/upgrading.md).
 
 ## 2. Sign in
 
@@ -165,9 +140,9 @@ Before using Semaphore in production, review [Configuration](/admin-guide/config
 2. Enter the administrator login and password created by `semaphore setup` or the Docker administrator variables.
 3. Select **Sign In**.
 
-![Semaphore sign-in screen](/assets/getting-started/sign-in.jpg)
+![Semaphore sign-in screen](../../static/assets/getting-started/sign-in.jpg)
 
-Use the administrator account for the first setup because it can create projects and users. Regular users sign in on the same page after an administrator creates their account and grants project access. See [User management](/user-guide/admin/users).
+Use the administrator account for the first setup because it can create projects and users. Regular users sign in on the same page after an administrator creates their account and grants project access. See [User management](../user-guide/admin/users.md).
 
 ## 3. Create a project
 
@@ -183,14 +158,14 @@ Select **Create**.
 
 Do not select **Create Demo Project**: it adds sample resources, while this guide builds a clean project. When you create another project later, the same option appears as a **Demo** switch in the New Project dialog.
 
-![Empty New Project form with all available fields](/assets/getting-started/new-project-empty.jpg)
+![Empty New Project form with all available fields](../../static/assets/getting-started/new-project-empty.jpg)
 
-The new project opens with sections for **Task Templates**, **Workflows**, **Schedule**, **Inventory**, **Variable Groups**, **Key Store**, and **Repositories**. See [Projects](/user-guide/projects) for project settings, team access, activity, and history.
+The new project opens with sections for **Task Templates**, **Workflows**, **Schedule**, **Inventory**, **Variable Groups**, **Key Store**, and **Repositories**. See [Projects](../user-guide/projects.md) for project settings, team access, activity, and history.
 
 <details>
 <summary>Watch this step</summary>
 
-![Creating the first project on an empty Semaphore instance](/assets/getting-started/create-first-project.gif)
+![Creating the first project on an empty Semaphore instance](../../static/assets/getting-started/create-first-project.gif)
 
 </details>
 
@@ -198,7 +173,7 @@ The new project opens with sections for **Task Templates**, **Workflows**, **Sch
 
 The new project opens on an empty Dashboard. The sidebar is the main navigation for this project:
 
-![Clean Semaphore project interface before resources and tasks are added](/assets/getting-started/after-sign-in.jpg)
+![Clean Semaphore project interface before resources and tasks are added](../../static/assets/getting-started/after-sign-in.jpg)
 
 - **Dashboard** shows run history, statistics, activity, and project settings.
 - **Task Templates**, **Workflows**, and **Schedule** define what runs and when.
@@ -207,28 +182,26 @@ The new project opens on an empty Dashboard. The sidebar is the main navigation 
 
 The diagram shows how these resources produce a run:
 
-<div class="BlockSchema">
-  ![How Semaphore resources and triggers become a task run](/assets/getting-started/core-concepts.svg)
-</div>
+  ![How Semaphore resources and triggers become a task run](../../static/assets/getting-started/core-concepts.svg)
 
 A UI action, API request, or schedule can start a **Task Template** directly or start a **Workflow** that uses task templates. Semaphore creates a task run—shown as a **Task** in the UI—and sends it to the Semaphore server or an eligible remote runner. For Ansible, that execution host runs `ansible-playbook`; the Inventory lists the systems Ansible manages.
 
 | Concept | What it does |
 | --- | --- |
-| [**Project**](/user-guide/projects) | An isolated workspace containing automation resources, permissions, and run history. |
-| [**Repository**](/user-guide/repositories) | Points to the Git branch or tag containing the automation files used by a task. |
-| [**Key Store**](/user-guide/key-store) | Stores reusable SSH keys, login credentials, tokens, and Ansible Vault passwords outside Git and task input. |
-| [**Inventory**](/user-guide/inventory) | Tells Ansible which hosts and groups to manage and which credentials to use. |
-| [**Variable Group**](/user-guide/environment) | Stores reusable Ansible variables, environment variables, and secrets for one or more templates. |
-| [**Task Template**](/user-guide/task-templates/) | Saves what to run: automation type, file, repository, inventory, variables, prompts, and execution options. |
-| [**Task (task run)**](/user-guide/tasks) | One execution, with its own inputs, status, timestamps, log, details, and result. |
+| [**Project**](../user-guide/projects.md) | An isolated workspace containing automation resources, permissions, and run history. |
+| [**Repository**](../user-guide/repositories.md) | Points to the Git branch or tag containing the automation files used by a task. |
+| [**Key Store**](../user-guide/key-store.md) | Stores reusable SSH keys, login credentials, tokens, and Ansible Vault passwords outside Git and task input. |
+| [**Inventory**](../user-guide/inventory.md) | Tells Ansible which hosts and groups to manage and which credentials to use. |
+| [**Variable Group**](../user-guide/environment.md) | Stores reusable Ansible variables, environment variables, and secrets for one or more templates. |
+| [**Task Template**](../user-guide/task-templates/README.md) | Saves what to run: automation type, file, repository, inventory, variables, prompts, and execution options. |
+| [**Task (task run)**](../user-guide/tasks.md) | One execution, with its own inputs, status, timestamps, log, details, and result. |
 | **Workflow** | Connects task templates into a multi-step path with success, failure, approval, and note branches. |
-| [**Schedule**](/user-guide/schedules) | Starts a task template or workflow once or repeatedly from a cron expression. |
-| [**Runner**](/admin-guide/runners) | Runs queued tasks outside the main Semaphore server, for example in another network or security boundary. |
+| [**Schedule**](../user-guide/schedules.md) | Starts a task template or workflow once or repeatedly from a cron expression. |
+| [**Runner**](../admin-guide/runners.md) | Runs queued tasks outside the main Semaphore server, for example in another network or security boundary. |
 
 ## 5. Connect the repository
 
-A Repository connects Semaphore to automation stored in Git; Semaphore does not store the playbook itself. Connect your own repository, or use the public demo values below to follow the example exactly. [Integrations](/user-guide/integrations) are a separate feature for starting automation from GitHub, GitLab, or another webhook source.
+A Repository connects Semaphore to automation stored in Git; Semaphore does not store the playbook itself. Connect your own repository, or use the public demo values below to follow the example exactly. [Integrations](../user-guide/integrations.md) are a separate feature for starting automation from GitHub, GitLab, or another webhook source.
 
 1. Open **Repositories** and select **New Repository**.
 2. Enter your repository name, URL, branch, and credential. If you are following the public demo, use:
@@ -242,13 +215,13 @@ A Repository connects Semaphore to automation stored in Git; Semaphore does not 
 
 3. Select **Create**.
 
-![Repository form filled with the public Semaphore demo repository](/assets/getting-started/repository-settings.jpg)
+![Repository form filled with the public Semaphore demo repository](../../static/assets/getting-started/repository-settings.jpg)
 
 Your repository should now appear in the list. Semaphore clones or updates it on the execution host when a task starts, not when you create the Repository record. The screenshot shows the demo values used in this guide.
 
-![Connected Demo repository in the project repository list](/assets/getting-started/connected-repository.jpg)
+![Connected Demo repository in the project repository list](../../static/assets/getting-started/connected-repository.jpg)
 
-For a private repository, select a suitable Key Store credential instead of `None`. See [Repositories](/user-guide/repositories) for local paths, HTTPS, SSH, branches, credentials, and requirements files.
+For a private repository, select a suitable Key Store credential instead of `None`. See [Repositories](../user-guide/repositories.md) for local paths, HTTPS, SSH, branches, credentials, and requirements files.
 
 ## 6. Add an SSH key for a remote managed host
 
@@ -263,11 +236,11 @@ The demo uses `localhost` with `ansible_connection=local`, so it does not open a
 5. Paste the complete private key, including its `BEGIN` and `END` lines, and add the passphrase when required.
 6. Select **Create**. In the next step, choose this key under **Inventory → User Credentials**.
 
-![New SSH Key form for the account used on managed hosts](/assets/getting-started/add-managed-host-ssh-key.jpg)
+![New SSH Key form for the account used on managed hosts](../../static/assets/getting-started/add-managed-host-ssh-key.jpg)
 
 The screenshot contains a placeholder, not a working secret. Never publish a private key in documentation, screenshots, task arguments, or source control.
 
-Semaphore can store secrets locally or use external secret-storage integrations such as [HashiCorp Vault](/user-guide/key-store/hashicorp-vault) and [Devolutions Server](/user-guide/key-store/devolutions-server). See [Key Store](/user-guide/key-store) for all supported credential types and storage options.
+Semaphore can store secrets locally or use external secret-storage integrations such as [HashiCorp Vault](../user-guide/key-store/hashicorp-vault.md) and [Devolutions Server](../user-guide/key-store/devolutions-server.md). See [Key Store](../user-guide/key-store.md) for all supported credential types and storage options.
 
 ## 7. Create the Ansible inventory
 
@@ -294,11 +267,11 @@ If you created `inventory.ini` in your own repository, commit and push it to the
 
 3. Leave **Runner tag**, **Sudo Credentials**, and **Repository** empty, then select **Create**.
 
-![Ansible file inventory configured with the demo repository values](/assets/getting-started/ansible-inventory-settings.jpg)
+![Ansible file inventory configured with the demo repository values](../../static/assets/getting-started/ansible-inventory-settings.jpg)
 
 Leaving **Repository** empty means Semaphore resolves this relative inventory path from the Repository selected in the Task Template. Select a Repository here only when the inventory lives elsewhere. For a remote host, use the SSH key from step 6 as **User Credentials**.
 
-See [Inventory](/user-guide/inventory) for static, file-based, and dynamic inventories.
+See [Inventory](../user-guide/inventory.md) for static, file-based, and dynamic inventories.
 
 ## 8. Add a Variable Group (optional)
 
@@ -317,9 +290,9 @@ The first task works without a Variable Group. As an example, create one that se
 
 5. Select **Save**.
 
-![Variable Group configured in the table editor](/assets/getting-started/variable-group-table.jpg)
+![Variable Group configured in the table editor](../../static/assets/getting-started/variable-group-table.jpg)
 
-See [Variable Groups](/user-guide/environment) for precedence rules and secret-storage options.
+See [Variable Groups](../user-guide/environment.md) for precedence rules and secret-storage options.
 
 ## 9. Create the Ansible task template
 
@@ -338,9 +311,9 @@ If the repository you connected already contains an Ansible playbook, use it. Ot
 
 If you are following the demo, use its [`ping.yml`](https://github.com/semaphoreui/semaphore-demo/blob/main/ping.yml) instead. It targets the demo inventory's `site` group and runs the included `ping` role.
 
-The demo downloads that role from a Git submodule and sends one ICMP request to `semaphoreui.com`, so the execution host needs GitHub access and outbound ICMP. If ICMP is blocked, use the local `get-started.yml` example instead.
+The demo downloads that role from a Git submodule and sends one ICMP request to the demo's configured public target, so the execution host needs GitHub access and outbound ICMP. If ICMP is blocked, use the local `get-started.yml` example instead.
 
-![ping.yml in the connected GitHub repository](/assets/getting-started/demo-playbook-github.jpg)
+![ping.yml in the connected GitHub repository](../../static/assets/getting-started/demo-playbook-github.jpg)
 
 The screenshot shows the playbook in the public demo repository. Keeping automation in Git makes changes reviewable and lets Semaphore record the exact commit used for each run.
 
@@ -366,12 +339,12 @@ If you created `get-started.yml` in your own repository, commit and push it to t
 6. Under **Ansible options**, enable **Skip Galaxy install** for the small playbook above or the public demo: neither needs Galaxy dependencies for this task. Leave it off when your own repository requires roles or collections from a `requirements.yml` file.
 7. Select **Create**.
 
-![Ansible task template with its repository, inventory, and Variable Group](/assets/getting-started/ansible-task-template-settings.jpg)
+![Ansible task template with its repository, inventory, and Variable Group](../../static/assets/getting-started/ansible-task-template-settings.jpg)
 
 <details>
 <summary>Watch this step</summary>
 
-![Enabling Ansible and creating the first Ansible task template](/assets/getting-started/create-ansible-template.gif)
+![Enabling Ansible and creating the first Ansible task template](../../static/assets/getting-started/create-ansible-template.gif)
 
 </details>
 
@@ -382,7 +355,7 @@ Other useful fields include:
 - **Prompts** allow a UI user, schedule, or API request to override enabled values for a specific run.
 - **Runner tag** controls where the task executes; it does not select an Ansible target.
 
-See [Ansible templates](/user-guide/apps/ansible) and [Task Templates](/user-guide/task-templates/) for all fields and execution options.
+See [Ansible templates](../user-guide/apps/ansible.md) and [Task Templates](../user-guide/task-templates/README.md) for all fields and execution options.
 
 ## 10. Run the template and inspect the task
 
@@ -390,7 +363,7 @@ See [Ansible templates](/user-guide/apps/ansible) and [Task Templates](/user-gui
 2. Add an optional message such as `First Semaphore run`.
 3. Leave **Dry Run** and **Diff** off, then select **Run**.
 
-![Clean New Task dialog for the Ansible playbook](/assets/getting-started/run-ansible-task-clean.jpg)
+![Clean New Task dialog for the Ansible playbook](../../static/assets/getting-started/run-ansible-task-clean.jpg)
 
 Semaphore queues the task, prepares the repository, applies the inventory and optional Variable Group, and runs the selected playbook. The status moves through **Waiting** and **Running** before finishing as **Success** or **Failed**.
 
@@ -398,7 +371,7 @@ Semaphore queues the task, prepares the repository, applies the inventory and op
 
 **Log** is the source of truth for command output. Read the final `PLAY RECAP`, not only the green status badge.
 
-![Successful Ansible task log with ping output and PLAY RECAP](/assets/getting-started/ansible-task-log-variable-group.jpg)
+![Successful Ansible task log with ping output and PLAY RECAP](../../static/assets/getting-started/ansible-task-log-variable-group.jpg)
 
 The exact counters depend on your playbook. A successful first run should end with `unreachable=0` and `failed=0` for `localhost`. If the demo log shows `changed=1`, it means its shell-based ping step ran and reported a change; it is not an error.
 
@@ -410,24 +383,24 @@ The exact counters depend on your playbook. A successful first run should end wi
 | **Details** | Template type, Git commit, run message, author, timestamps, and duration. |
 | **Summary** | Host-level Ansible results and errors after completion, when the task-summary feature is available. |
 
-![Task Details with template, commit, and timing information](/assets/getting-started/ansible-task-details.jpg)
+![Task Details with template, commit, and timing information](../../static/assets/getting-started/ansible-task-details.jpg)
 
-![Task Summary with OK and Not OK host counts](/assets/getting-started/ansible-task-summary.jpg)
+![Task Summary with OK and Not OK host counts](../../static/assets/getting-started/ansible-task-summary.jpg)
 
 If **Summary** is unavailable, verify the run in **Log**; `PLAY RECAP` remains the authoritative Ansible result.
 
 <details>
 <summary>Watch the run and result</summary>
 
-![Running the Ansible task and inspecting its log and details](/assets/getting-started/run-and-inspect-task.gif)
+![Running the Ansible task and inspecting its log and details](../../static/assets/getting-started/run-and-inspect-task.gif)
 
 </details>
 
 ### Find previous runs
 
-Close the task window to return to the template's **Tasks** tab. Every run has its own task number, status, user, start time, duration, and preserved log. **Dashboard → History** shows runs from every template in the project. See [Tasks](/user-guide/tasks) and [Project history](/user-guide/projects/history) for more detail.
+Close the task window to return to the template's **Tasks** tab. Every run has its own task number, status, user, start time, duration, and preserved log. **Dashboard → History** shows runs from every template in the project. See [Tasks](../user-guide/tasks.md) and [Project history](../user-guide/projects/history.md) for more detail.
 
-![Ansible template history with successful task runs](/assets/getting-started/ansible-template-history.jpg)
+![Ansible template history with successful task runs](../../static/assets/getting-started/ansible-template-history.jpg)
 
 If the task fails, use the last meaningful Log line to choose the next check:
 
@@ -446,9 +419,9 @@ After the task succeeds from the UI, you can run it automatically. For example, 
 4. Keep **Show cron format** enabled and enter a cron expression, for example `0 3 * * *`.
 5. Keep **Enabled** selected and choose **Save**.
 
-![Cron schedule configured to run the example task every day at 03:00](/assets/getting-started/create-cron-schedule.jpg)
+![Cron schedule configured to run the example task every day at 03:00](../../static/assets/getting-started/create-cron-schedule.jpg)
 
-Semaphore shows the configured timezone and calculates the next run before you save. A scheduled run uses the same repository, inventory, Variable Groups, and execution settings as the template. If the template exposes prompts, the schedule can provide values for them. See [Schedules](/user-guide/schedules) for cron syntax, timezone configuration, one-time runs, and scheduled parameters.
+Semaphore shows the configured timezone and calculates the next run before you save. A scheduled run uses the same repository, inventory, Variable Groups, and execution settings as the template. If the template exposes prompts, the schedule can provide values for them. See [Schedules](../user-guide/schedules.md) for cron syntax, timezone configuration, one-time runs, and scheduled parameters.
 
 After saving, verify that the schedule is **Enabled** and that **Next run** shows the expected time. Scheduled tasks appear in the template's **Tasks** tab and in **Dashboard → History**.
 
@@ -456,10 +429,10 @@ After saving, verify that the schedule is **Enabled** and that **Next run** show
 
 Once the first Ansible task succeeds:
 
-- Add the appropriate private credential in [Key Store](/user-guide/key-store) when your Repository requires authentication.
+- Add the appropriate private credential in [Key Store](../user-guide/key-store.md) when your Repository requires authentication.
 - Build a **Workflow** when several templates need ordered success, failure, approval, or note paths.
-- Use [Integrations](/user-guide/integrations) for authenticated webhook triggers from GitHub, GitLab, or another system.
-- Use the [API](/reference/api) to manage resources and start templates programmatically.
-- Add a [remote runner](/admin-guide/runners) when execution must happen in another network, operating system, or security boundary.
+- Use [Integrations](../user-guide/integrations.md) for authenticated webhook triggers from GitHub, GitLab, or another system.
+- Use the [API](../reference/api.md) to manage resources and start templates programmatically.
+- Add a [remote runner](../admin-guide/runners.md) when execution must happen in another network, operating system, or security boundary.
 
-For production, put Semaphore behind HTTPS, back up the database and access-key encryption secret together, configure centralized authentication, and review [Security](/admin-guide/security), [Logs](/admin-guide/logs), and [Upgrading](/admin-guide/upgrading).
+For production, put Semaphore behind HTTPS, back up the database and access-key encryption secret together, configure centralized authentication, and review [Security](../admin-guide/security.md), [Logs](../admin-guide/logs.md), and [Upgrading](../admin-guide/upgrading.md).

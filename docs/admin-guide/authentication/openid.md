@@ -1,25 +1,20 @@
----
-title: OpenID Connect
-description: Configuring OIDC providers in config.json or one environment variable, provider options, claim expressions, and role mapping.
----
-
 # OpenID Connect
 
 Semaphore supports authentication via OpenID Connect (OIDC).
 
 Links:
 
-* [GitHub config](/admin-guide/authentication/openid/github)
-* [Google config](/admin-guide/authentication/openid/google)
-* [GitLab config](/admin-guide/authentication/openid/gitlab)
-* [Authelia config](/admin-guide/authentication/openid/authelia)
-* [Authentik config](/admin-guide/authentication/openid/authentik)
-* [Keycloak config](/admin-guide/authentication/openid/keycloak)
-* [Okta config](/admin-guide/authentication/openid/okta)
-* [PingFederate config](/admin-guide/authentication/openid/pingfederate)
-* [Azure config](/admin-guide/authentication/openid/azure)
-* [Zitadel config](/admin-guide/authentication/openid/zitadel)
-* [Pocket-ID config](/admin-guide/authentication/openid/pocket-id)
+* [GitHub config](openid/github.md)
+* [Google config](openid/google.md)
+* [GitLab config](openid/gitlab.md)
+* [Authelia config](openid/authelia.md)
+* [Authentik config](openid/authentik.md)
+* [Keycloak config](openid/keycloak.md)
+* [Okta config](openid/okta.md)
+* [PingFederate config](openid/pingfederate.md)
+* [Azure config](openid/azure.md)
+* [Zitadel config](openid/zitadel.md)
+* [Pocket-ID config](openid/pocket-id.md)
 
 Example of SSO provider configuration:
 
@@ -39,7 +34,9 @@ Example of SSO provider configuration:
 }
 ```
 
-### Configure via environment variable {#configure-via-environment-variable}
+<a id="configure-via-environment-variable"></a>
+
+### Configure via environment variable
 
 When running in containers it may be convenient to configure providers using a single environment variable:
 
@@ -84,7 +81,9 @@ All SSO provider options:
 | `endpoint.jwks`       |                                                                                                             |
 | `endpoint.algorithms` |                                                                                                             |
 
-### \*Claim expression {#claim-expression}
+<a id="claim-expression"></a>
+
+### \*Claim expression
 
 Example of claim expression:
 
@@ -94,9 +93,7 @@ email | {{ .username }}@your-domain.com
 
 Semaphore is attempting to claim the email field first. If it is empty, the expression following it is executed.
 
-<div class="warning">
   The expression <code>"username_claim": "|"</code> generates a random <code>username</code> for each user who logs in through the provider.
-</div>
 
 ## Group-to-role mapping
 
@@ -123,14 +120,18 @@ Use the OIDC group mapping panel in **System Information** to create mappings an
 
 OIDC reconciliation owns only assignments created by the same provider and mapping. It never removes manual, LDAP-owned, or another OIDC provider's grants. `preserve` is the safe default for providers that may omit groups from some token or user-info responses; choose `clear` only when claim absence authoritatively means no groups.
 
-## IdP-initiated login {#idp-initiated-login}
+<a id="idp-initiated-login"></a>
+
+## IdP-initiated login
 
 IdP-initiated login is not implemented. `allow_idp_initiated` is not a parsed
 provider setting and Semaphore has no `/api/auth/oidc/<provider>/initiate` route.
 Start the supported authorization-code flow from Semaphore's provider button or
 `/api/auth/oidc/<provider>/login` instead.
 
-## Sign in screen {#sign-in-screen}
+<a id="sign-in-screen"></a>
+
+## Sign in screen
 
 For each of the configured providers, an additional login button is added to the login page:
 

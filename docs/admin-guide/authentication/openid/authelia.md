@@ -1,11 +1,8 @@
----
-title: Authelia config
-description: Matching Authelia client and claims policy settings with the Semaphore oidc_providers block for this provider.
----
-
 # Authelia config
 
-## Authelia configuration {#authelia-configuration}
+<a id="authelia-configuration"></a>
+
+## Authelia configuration
 
 ```yaml title="config.yaml"
 identity_providers:
@@ -35,7 +32,9 @@ identity_providers:
         userinfo_signed_response_alg: none
 ```
 
-## Semaphore UI configuration {#semaphore-ui-configuration}
+<a id="semaphore-ui-configuration"></a>
+
+## Semaphore UI configuration
 
 ```json title="config.json"
 "oidc_providers":  {

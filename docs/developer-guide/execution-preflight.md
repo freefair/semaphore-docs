@@ -1,9 +1,3 @@
----
-sidebar_position: 22
-title: Execution Preflight
-description: Value-free task and workflow plans reviewed before enqueue.
----
-
 # Execution Preflight
 
 Execution preflight gives an authorized Enhanced user a short-lived view of the task or workflow plan that the server will recompute immediately before enqueue. The preview explains the definition, effective input names and sources, resource and credential references, command shape, executor image, and provisional runner placement without returning input or credential values.

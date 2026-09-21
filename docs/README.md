@@ -1,115 +1,39 @@
----
-title: Semaphore UI Documentation
-description: Start page for the Semaphore UI docs - a one-command quick start plus entry points for installing, running, operating, and reference.
-sidebar_label: Home
-hide_table_of_contents: true
----
+# Semaphore EX documentation
 
-import Link from '@docusaurus/Link';
+These Markdown files are the documentation. Read them in GitHub or any local Markdown viewer.
+No documentation server, Node dependencies, compilation or website is required.
 
-# Semaphore UI Documentation
+## Quick start
 
-Semaphore UI is a self-hosted web UI and API for running **Ansible**, **Terraform/OpenTofu**, **Shell**, **PowerShell**, and **Python** automation. It gives your team one place to run playbooks and scripts, keep credentials encrypted, schedule jobs, and see who ran what and when.
+Read [Getting started](getting-started/README.md) to install Semaphore and run a first task.
+For an existing server, start with the [complete configuration reference](reference/configuration.md).
 
-It ships as a single Go binary or Docker image, runs on Linux, macOS, and Windows, and stores data in SQLite, MySQL, or PostgreSQL.
+## Guides
 
-New to Semaphore? The [Introduction](/introduction) explains what it does, how a deployment is put together, and what to prepare before installing.
+| Area | Start here |
+|---|---|
+| Introduction | [Overview](introduction/README.md), [architecture](introduction/architecture.md), [prerequisites](introduction/prerequisites.md) |
+| Administration | [Installation](admin-guide/installation.md), [configuration](admin-guide/configuration.md), [authentication](admin-guide/authentication/README.md), [security](admin-guide/security.md) |
+| Daily use | [User guide](user-guide/README.md), [projects](user-guide/projects.md), [templates](user-guide/task-templates/README.md), [tasks](user-guide/tasks.md) |
+| Operations | [Runners](admin-guide/runners.md), [HA](admin-guide/ha.md), [logs](admin-guide/logs.md), [metrics](admin-guide/metrics.md), [upgrades](admin-guide/upgrading.md) |
+| Reference | [Every configuration parameter](reference/configuration.md), [additional schemas and Docker variables](reference/configuration-schemas.md), [CLI](reference/cli/commands.md), [API](reference/api.md) |
+| Product | [Included capabilities](editions.md), [workflows](user-guide/workflows.md), [roles](user-guide/rbac.md) |
+| Troubleshooting | [FAQ](faq/troubleshooting.md) |
+| Development | [All developer guides](CONTENTS.md#developer-guide), [architecture decisions](CONTENTS.md#developer-guide) |
 
-:::tip[Quick start]
+<a id="guides-by-tool"></a>
 
-Run Semaphore with SQLite in one command, then open [http://localhost:3000](http://localhost:3000) and log in as `admin` / `changeme`.
+## Guides by tool
 
-```bash
-docker run -d -p 3000:3000 \
-  -e SEMAPHORE_DB_DIALECT=sqlite \
-  -e SEMAPHORE_ADMIN=admin \
-  -e SEMAPHORE_ADMIN_PASSWORD=changeme \
-  -e SEMAPHORE_ADMIN_NAME=Admin \
-  -e SEMAPHORE_ADMIN_EMAIL=admin@localhost \
-  -v semaphore-data:/var/lib/semaphore \
-  semaphoreui/semaphore:latest
-```
+- [Ansible](user-guide/apps/ansible.md)
+- [Terraform and OpenTofu](user-guide/apps/terraform/README.md)
+- [Terragrunt](user-guide/apps/terragrunt.md)
+- [Shell](user-guide/apps/bash.md)
+- [PowerShell](user-guide/apps/powershell.md)
+- [Python](user-guide/apps/python.md)
 
-For production, see [Installation](/admin-guide/installation) for Docker Compose, packages, Kubernetes, and binary installs. Then follow [Getting Started](/getting-started) to run your first task.
+## All pages and translations
 
-:::
-
-<div className="row home-cards">
-  <div className="col col--6 margin-bottom--lg">
-    <div className="card">
-      <div className="card__header"><h3>Install and configure</h3></div>
-      <div className="card__body">
-        <p>Get a server running and connect it to your database, identity provider, and network.</p>
-        <ul>
-          <li><Link to="/admin-guide/installation">Installation</Link></li>
-          <li><Link to="/admin-guide/configuration">Configuration</Link></li>
-          <li><Link to="/admin-guide/reverse-proxy">Reverse proxy and TLS</Link></li>
-          <li><Link to="/admin-guide/authentication/ldap">LDAP</Link> and <Link to="/admin-guide/authentication/openid">OpenID Connect</Link></li>
-          <li><Link to="/admin-guide/security">Security hardening</Link></li>
-        </ul>
-      </div>
-    </div>
-  </div>
-  <div className="col col--6 margin-bottom--lg">
-    <div className="card">
-      <div className="card__header"><h3>Run automation</h3></div>
-      <div className="card__body">
-        <p>Organize work into projects, connect repositories and credentials, and run tasks on demand or on a schedule.</p>
-        <ul>
-          <li><Link to="/getting-started">Getting started: first task in six steps</Link></li>
-          <li><Link to="/user-guide/projects">Projects</Link> and <Link to="/user-guide/team">Teams</Link></li>
-          <li><Link to="/user-guide/task-templates">Task templates</Link> and <Link to="/user-guide/tasks">Tasks</Link></li>
-          <li><Link to="/user-guide/key-store">Key Store</Link>, <Link to="/user-guide/inventory">Inventory</Link>, <Link to="/user-guide/environment">Variable Groups</Link></li>
-          <li><Link to="/user-guide/schedules">Schedules</Link> and <Link to="/user-guide/workflows">Workflows</Link></li>
-        </ul>
-      </div>
-    </div>
-  </div>
-  <div className="col col--6 margin-bottom--lg">
-    <div className="card">
-      <div className="card__header"><h3>Operate at scale</h3></div>
-      <div className="card__body">
-        <p>Distribute execution, run redundantly, and keep the service observable and up to date.</p>
-        <ul>
-          <li><Link to="/admin-guide/runners">Runners</Link></li>
-          <li><Link to="/admin-guide/ha">High availability</Link></li>
-          <li><Link to="/admin-guide/upgrading">Upgrading</Link></li>
-          <li><Link to="/admin-guide/logs">Logs</Link> and <Link to="/admin-guide/metrics">Metrics</Link></li>
-          <li><Link to="/admin-guide/notifications">Notifications</Link></li>
-        </ul>
-      </div>
-    </div>
-  </div>
-  <div className="col col--6 margin-bottom--lg">
-    <div className="card">
-      <div className="card__header"><h3>Reference</h3></div>
-      <div className="card__body">
-        <p>Exact options and endpoints when you already know what you are looking for.</p>
-        <ul>
-          <li><Link to="/admin-guide/configuration/config-file">Configuration file</Link> and <Link to="/admin-guide/configuration/env-vars">Environment variables</Link></li>
-          <li><Link to="/reference/api">REST API</Link></li>
-          <li><Link to="/reference/cli">CLI</Link></li>
-          <li><Link to="/admin-guide/cicd">CI/CD integration</Link></li>
-          <li><Link to="/faq/troubleshooting">Troubleshooting FAQ</Link></li>
-        </ul>
-      </div>
-    </div>
-  </div>
-</div>
-
-## Guides by tool {#guides-by-tool}
-
-<div className="home-tools margin-bottom--lg">
-  <Link className="button button--outline button--primary" to="/user-guide/apps/ansible">Ansible</Link>
-  <Link className="button button--outline button--primary" to="/user-guide/apps/terraform">Terraform / OpenTofu</Link>
-  <Link className="button button--outline button--primary" to="/user-guide/apps/bash">Shell</Link>
-  <Link className="button button--outline button--primary" to="/user-guide/apps/powershell">PowerShell</Link>
-  <Link className="button button--outline button--primary" to="/user-guide/apps/python">Python</Link>
-</div>
-
-## Help and community {#help-and-community}
-
-- **Questions:** ask on [Discord](https://discord.gg/5R6k7hNGcH).
-- **Bugs and feature requests:** open an issue on [GitHub](https://github.com/semaphoreui/semaphore/issues).
-- **Source code:** [github.com/semaphoreui/semaphore](https://github.com/semaphoreui/semaphore).
-- **Product capabilities:** [Included and unimplemented features](/editions).
+[Complete page index](CONTENTS.md) lists every guide, reference, design document and plan.
+[Translations](../translations/README.md) retain existing translated prose and link to canonical English pages where reviewed translations are unavailable.
+The English configuration reference describes the shipped code and is authoritative for parameter names and behavior.

@@ -1,19 +1,19 @@
----
-title: Key Store
-description: Key types in the Key Store, SSH, login with password, and none, plus the external secret storages you can use.
----
-
 # Key Store
 
 The Key Store in Semaphore is used to store credentials for accessing remote Repositories, accessing remote hosts, sudo credentials, and Ansible vault passwords.
 
-![Key Store](/assets/key-store-keys.webp)
+![Key Store](../../static/assets/key-store-keys.webp)
 
 The **Keys** tab lists the credentials of the project with their type. The **Storages** tab lists external secret storages configured for the project; see [Secret Storages](#secret-storages).
 
-## Types {#types}
+<a id="types"></a>
 
-### 1. SSH {#1-ssh}
+## Types
+
+<a id="1-ssh"></a>
+
+### 1. SSH
+
 SSH Keys are used to access remote servers as well as remote Repositories.
 
 For a locally stored SSH credential, Semaphore can generate the key pair on the
@@ -115,35 +115,46 @@ API updates that omit the new SSH fields preserve their current values; use
 Container execution uses the existing protected, read-only credential bundle
 outside `/workspace` to start a separate agent inside the container.
 
-### 2. Login With Password {#2-login-with-password}
+<a id="2-login-with-password"></a>
+
+### 2. Login With Password
+
 Login With Password is a username and password/access token combination that can be used to do the following:
 * Authenticate to remote hosts (although this is less secure than using SSH keys)
 * Sudo credentials on remote hosts
 * Authenticate to remote Git Repositories over HTTPS (although SSH is more secure)
 * Unlock Ansible vaults
 
-:::tip
-    This type of secret can be used as Personal Access Token (PAT) or secret string. Simply leave the Login field empty.
-:::
+> **Tip**
+>
+> This type of secret can be used as Personal Access Token (PAT) or secret string. Simply leave the Login field empty.
 
-### 3. None {#3-none}
+<a id="3-none"></a>
+
+### 3. None
+
 This is used as a filler for Repos that do not require authentication, like an Open-Source Repository on GitLab.
 
+<a id="secret-storages"></a>
 
-## Secret Storages {#secret-storages}
+## Secret Storages
 
 Semaphore UI supports different storages for secrets. You can choose the storage per-secret when creating or editing a secret.
 
 External storages are created on the **Storages** tab of the Key Store. Each storage has a name and a type; keys then reference the storage and the path of the secret inside it.
 
-![Secret storages](/assets/key-store-storages.webp)
+![Secret storages](../../static/assets/key-store-storages.webp)
 
-### Database {#database}
+<a id="database"></a>
+
+### Database
 
 Secrets are stored in the database in encrypted form by default. The encryption key is configured via the configuration option
 `access_key_encryption` or `SEMAPHORE_ACCESS_KEY_ENCRYPTION` (must be generated using `head -c32 /dev/urandom | base64`).
 
-### Environment variable or file {#environment-variable-or-file}
+<a id="environment-variable-or-file"></a>
+
+### Environment variable or file
 
 A key can read its value from an environment variable of the Semaphore server or from a file on the server
 (for example an SSH key mounted into the container). The **Env** and **File** tabs of the key form select this mode.
@@ -151,36 +162,46 @@ A key can read its value from an environment variable of the Semaphore server or
 Files must be inside the configured secrets directory (`dirs.secrets` / `SEMAPHORE_SECRETS_PATH`, default `/tmp/semaphore`),
 and SSH and Login With Password keys must be wrapped in a small JSON document.
 
-[Read more...](/user-guide/key-store/env-and-file-sources)
+[Read more...](key-store/env-and-file-sources.md)
 
-### HashiCorp Vault {#hashicorp-vault}
+<a id="hashicorp-vault"></a>
+
+### HashiCorp Vault
 
 Secrets can be stored in an external HashiCorp Vault instance instead of the database.
 
-[Read more...](/user-guide/key-store/hashicorp-vault)
+[Read more...](key-store/hashicorp-vault.md)
 
-### OpenBao {#openbao}
+<a id="openbao"></a>
+
+### OpenBao
 
 Secrets can be stored in an external [OpenBao](https://openbao.org) instance (an open-source, API-compatible fork of HashiCorp Vault).
 
-[Read more...](/user-guide/key-store/openbao)
+[Read more...](key-store/openbao.md)
 
-### AWS Secrets Manager {#aws-secrets-manager}
+<a id="aws-secrets-manager"></a>
+
+### AWS Secrets Manager
 
 AWS Secrets Manager is not implemented in Semaphore EX. Use HashiCorp Vault or
 OpenBao for an external secret store.
 
-### Devolutions Server {#devolutions-server}
+<a id="devolutions-server"></a>
+
+### Devolutions Server
 
 Devolutions Server is not implemented in Semaphore EX. Use HashiCorp Vault or
 OpenBao for an external secret store.
 
-## Syncing secrets from remote storages {#syncing-secrets-from-remote-storages}
+<a id="syncing-secrets-from-remote-storages"></a>
+
+## Syncing secrets from remote storages
 
 Semaphore can automatically import secrets from HashiCorp Vault or OpenBao and keep
 them in sync. Sync paths let you choose which secrets to import and how to name them.
 
-[Read more...](/user-guide/key-store/secret-sync)
+[Read more...](key-store/secret-sync.md)
 
 ## Granted global credentials
 

@@ -1,8 +1,3 @@
----
-title: LDAP and Active Directory
-description: Configure and operate LDAP or Active Directory through the Enhanced capability lifecycle without weakening transport, identity, or recovery controls.
----
-
 # LDAP and Active Directory
 
 Configure LDAP from the System Information capability panel. The lifecycle is
@@ -13,14 +8,18 @@ The legacy `ldap_enable`, flat `ldap_*`, and `ldap_providers` configuration fiel
 remain parser compatibility paths. They do not create or activate the selected
 database-managed LDAP providers.
 
-## Transport and credentials {#transport-and-credentials}
+<a id="transport-and-credentials"></a>
+
+## Transport and credentials
 
 Use TLS with explicit trust configuration. Do not use plaintext LDAP, disable
 certificate verification, or use a configuration that silently falls back to either.
 The bind credential is write-only: supply it through the designated secret field and
 do not place it in examples, shell history, task output, or version-controlled files.
 
-## Identity and directory boundaries {#identity-and-directory-boundaries}
+<a id="identity-and-directory-boundaries"></a>
+
+## Identity and directory boundaries
 
 The directory configuration uses a fixed user-search base, static user and group
 filters, an allow-listed immutable identity attribute, and bounded nested-group
@@ -30,14 +29,18 @@ directory search filter.
 LDAP identity linking never silently merges accounts by display name. Disabling LDAP
 stops new directory login without deleting linked-account history.
 
-## Verify before activation {#verify-before-activation}
+<a id="verify-before-activation"></a>
+
+## Verify before activation
 
 Use the panel's **Test** action before activation. It reports safe, redacted
 connection, search, and bind diagnostics. If LDAP is unavailable, Semaphore retains
 the designated local administrator recovery path. Keep that local recovery path
 tested before enabling or changing the provider.
 
-## Group-to-role mapping {#group-to-role-mapping}
+<a id="group-to-role-mapping"></a>
+
+## Group-to-role mapping
 
 Enhanced administrators can map an LDAP group to an explicit global or project role.
 Configure the group search base, static user and group filters, immutable group

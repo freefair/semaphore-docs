@@ -48,45 +48,16 @@ Semantic conflict decisions remain with the maintainer. A clean textual merge or
 a recorded resolution is not evidence that permissions, lifecycle behavior, or
 persistence contracts survived.
 
-## Documentation Build Concurrency
+## Documentation verification
 
-`npm run build` remains the default serial eleven-locale Docusaurus build.
-`npm run build:parallel` is an explicit alternative with `JOBS=1` or `JOBS=2`,
-defaulting to two workers. The tested bound is enforced; increase it only after
-measuring memory and elapsed time on the intended builder.
-
-The benchmark command uses an isolated copy of committed documentation, retains
-every output and log, and samples aggregate RSS of the npm process tree every 200ms:
+Documentation is published as directly readable Markdown; see [ADR 0021](adr/0021-publish-plain-markdown-documentation.md).
+From the product repository run:
 
 ```bash
-npm ci
-node scripts/benchmark-builds.cjs --output /tmp/semaphore-docs-benchmark
-DOCS_BUILD_DIR=/tmp/semaphore-docs-benchmark/serial-warm-build \
-  node --test tests/security-fallbacks.test.cjs
-DOCS_BUILD_DIR=/tmp/semaphore-docs-benchmark/parallel-2-warm-build \
-  node --test tests/security-fallbacks.test.cjs
+node docs/scripts/check-docs.mjs
+task docs:check
 ```
 
-The first-pass order warms shared dependency/compiler caches. Compare warm serial
-and warm parallel results separately; the first serial/parallel ratio does not
-isolate a concurrency benefit. RSS sums may double-count shared pages and sampling
-may miss short peaks. The benchmark is a workstation observation, not a deployment
-capacity guarantee.
-
-The reference measurements are retained in the application repository at
-`AGENTS/plans/upstream-maintenance/docs-build-measurements.yml`. On the measured
-48 GiB, 18-logical-CPU macOS host with Node 26.8.1, warm serial took 39.96 seconds
-and approximately 2.53 GiB peak sampled tree RSS; warm two-worker builds took
-54.92 seconds and approximately 2.71 GiB. The first serial build took 336.36 seconds,
-while the following two-worker build took 45.15 seconds. Cache effects dominate
-that first-pass difference. A repeat using the delivered benchmark command measured
-warm serial at 32.17 seconds / 2.16 GiB and warm two-worker builds at 27.15 seconds /
-2.78 GiB. The latter was about 16% faster with about 29% higher sampled RSS. Speed
-varied between runs while serial consistently used less memory, so serial remains
-the conservative default and two-worker builds remain an explicit option.
-
-Both modes preserve locale URL prefixes and all 45 canonical English security
-fallbacks. The source test rejects reintroduced unreviewed overrides; supplying
-`DOCS_BUILD_DIR` additionally checks generated locale routes, headings, security
-content, and absence of commercial entitlement assertions. A missing supplied
-build directory fails verification.
+The checker validates file links, anchors, page-index coverage and absence of site-only syntax or vendor-site dependencies.
+There is no locale compilation, documentation server, package installation or site deployment.
+Reference generation is an optional maintainer operation whose Markdown output remains committed.

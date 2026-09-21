@@ -73,7 +73,6 @@
   - [x] Preserve HA runner assignment, finalization, and redacted diagnostics
   - [x] Retain negative temporary workflow IDs and authored public Swagger fragments
 
-
 - [x] Maintenance — Repeatable upstream merges for the long-lived fork
   - [x] Preserve shipped migration IDs with an append-only ownership ledger
   - [x] Inventory exported seams and detect inherited placeholders with behavioral coverage

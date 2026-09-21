@@ -1,8 +1,3 @@
----
-title: Database Migrations
-description: Applying and rolling back the database schema with semaphore migrate, its flags, and the removed BoltDB import.
----
-
 # Database Migrations
 
 The `semaphore migrate` command updates or rolls back the Semaphore database
@@ -12,20 +7,22 @@ schema to match a given Semaphore version. Use it for upgrades and downgrades.
 semaphore migrate --help
 ```
 
-:::info
-You rarely need to run `migrate` by hand. `semaphore server`, `semaphore setup`,
-and every other CLI command that touches the database apply pending migrations
-automatically before they run. `migrate` is for applying migrations without
-starting the server, or for rolling back.
-:::
+> **Info**
+>
+> You rarely need to run `migrate` by hand. `semaphore server`, `semaphore setup`,
+> and every other CLI command that touches the database apply pending migrations
+> automatically before they run. `migrate` is for applying migrations without
+> starting the server, or for rolling back.
 
-:::warning
-Always back up your database before applying or rolling back migrations.
-:::
+> **Warning**
+>
+> Always back up your database before applying or rolling back migrations.
 
 Before migrating a non-ephemeral database, create a database-native, transactionally consistent backup and verify that it can be restored into a separate database. Record both the application version and the current entry in the `migrations` table. Ensure the target has enough free storage for rewritten tables and new indexes, and quiesce writes when the release notes require it.
 
-## Applying migrations {#applying-migrations}
+<a id="applying-migrations"></a>
+
+## Applying migrations
 
 Apply all pending migrations and bring the database up to date:
 
@@ -39,7 +36,9 @@ Apply migrations only up to a specific version:
 semaphore migrate --apply-to 2.15.1
 ```
 
-## Rolling back migrations {#rolling-back-migrations}
+<a id="rolling-back-migrations"></a>
+
+## Rolling back migrations
 
 Review every undo migration in the requested range before proceeding. An undo may drop tables or columns created after the target version, including data written after the upgrade. A runtime capability downgrade is not a schema rollback.
 
@@ -55,8 +54,9 @@ binary before installing the older one.
 
 If a release marks a transformation as irreversible, restore the pre-migration backup instead of using `--undo-to`. Restart the application only with a binary compatible with the restored migration version.
 
+<a id="options"></a>
 
-## Options {#options}
+## Options
 
 | Flag | Description |
 |------|-------------|
@@ -68,13 +68,15 @@ Without either flag, all pending migrations are applied.
 
 On completion the command prints the database connection it used.
 
-:::note
-`semaphore migrate` still accepts `--err-log-size`, `--skip-task-output`, and
-`--merge-existing-users` for backward compatibility, but in 2.19 and later they
-have no effect. They belonged to the BoltDB import described below.
-:::
+> **Note**
+>
+> `semaphore migrate` still accepts `--err-log-size`, `--skip-task-output`, and
+> `--merge-existing-users` for backward compatibility, but in 2.19 and later they
+> have no effect. They belonged to the BoltDB import described below.
 
-## Migration from BoltDB to SQLite/MySQL/PostgreSQL {#migration-from-boltdb-to-sqlitemysqlpostgresql}
+<a id="migration-from-boltdb-to-sqlitemysqlpostgresql"></a>
+
+## Migration from BoltDB to SQLite/MySQL/PostgreSQL
 
 *Available in versions 2.17 and 2.18 only*
 
@@ -83,11 +85,11 @@ version 2.19**. The `--from-boltdb` flag and the `SEMAPHORE_MIGRATE_FROM_BOLTDB`
 environment variable no longer exist in 2.19+, and `semaphore setup` refuses to
 configure a BoltDB database.
 
-:::warning
-If you still run on BoltDB, migrate **before** upgrading to 2.19 or later.
-Install Semaphore **2.17 or 2.18**, perform the migration below, and only then
-upgrade to a newer version.
-:::
+> **Warning**
+>
+> If you still run on BoltDB, migrate **before** upgrading to 2.19 or later.
+> Install Semaphore **2.17 or 2.18**, perform the migration below, and only then
+> upgrade to a newer version.
 
 To migrate, first install Semaphore version 2.17 or 2.18, then configure the
 target database (SQLite, MySQL, or PostgreSQL) in your `config.json`. After
@@ -126,15 +128,17 @@ docker run --name semaphore \
   -e SEMAPHORE_MIGRATE_FROM_BOLTDB=/var/lib/semaphore/database.boltdb \
   -e SEMAPHORE_ADMIN_EMAIL=admin@localhost \
   -v semaphore_data:/var/lib/semaphore \
-  -d semaphoreui/semaphore:v2.18.2
+  -d ghcr.io/freefair/semaphore-ex:latest
 ```
 
-## Troubleshooting {#troubleshooting}
+<a id="troubleshooting"></a>
+
+## Troubleshooting
 
 - Do not retry a failed migration blindly. Preserve the database and logs, identify the failed version, and determine whether its transaction committed before choosing forward recovery or backup restoration.
 - If a migration fails, check the logs for details and make sure the CLI binary
   is the same version as the Semaphore server.
 - Make sure the CLI uses the same configuration file (and therefore the same
   database) as the server. See
-  [How the configuration file is found](/reference/cli#how-the-configuration-file-is-found).
+  [How the configuration file is found](README.md#how-the-configuration-file-is-found).
 Maintainers can find the cross-dialect test contract, staged-change rules, and recovery classifications in the [Migration Policy](../../developer-guide/migration-policy.md).

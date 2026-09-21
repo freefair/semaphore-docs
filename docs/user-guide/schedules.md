@@ -1,8 +1,3 @@
----
-title: Schedules
-description: How to run templates on a cron schedule, set the scheduler timezone, and pass task parameters, with example use cases.
----
-
 # Schedules
 
 The schedule function in Semaphore allows to automate the execution of templates (e.g. playbook runs) at predefined intervals. This feature allows to implement routine automation tasks, such as regular backups, compliance checks, system updates, and more.
@@ -11,7 +6,9 @@ Make sure to restart the Semaphore service after making changes for them to take
 
 [//]: # (## Setup and configuration)
 
-## Timezone configuration {#timezone-configuration}
+<a id="timezone-configuration"></a>
+
+## Timezone configuration
 
 By default, schedules use the globally configured timezone.
 The default global timezone is UTC.
@@ -46,7 +43,7 @@ You can change the global fallback timezone by updating the configuration file o
 
 You can change the timezone by updating the configuration file or setting an environment variable:
 
-1. **Using the configuration file**:  
+1. **Using the configuration file**:
     Add or update the `timezone` field in your Semaphore configuration file:
     ```json
     {
@@ -56,7 +53,7 @@ You can change the timezone by updating the configuration file or setting an env
     }
     ```
 
-2. **Using an environment variable**:  
+2. **Using an environment variable**:
     Set the `SEMAPHORE_SCHEDULE_TIMEZONE` environment variable:
     ```bash
     export SEMAPHORE_SCHEDULE_TIMEZONE="America/New_York"
@@ -65,15 +62,19 @@ You can change the timezone by updating the configuration file or setting an env
 Existing schedules without their own timezone continue to use this global fallback.
 For a list of timezone names, refer to the [IANA Time Zone Database](https://www.iana.org/time-zones).
 
-### Accessing the schedule feature {#accessing-the-schedule-feature}
+<a id="accessing-the-schedule-feature"></a>
+
+### Accessing the schedule feature
 
 1. Log in to the Semaphore web interface
 2. Navigate to the "Schedule" tab in the main navigation menu
 3. Click the "New Schedule" button in the top right corner to create a new schedule
 
-![](/assets/schedule01.png)
+![](../../static/assets/schedule01.png)
 
-### Creating a new schedule {#creating-a-new-schedule}
+<a id="creating-a-new-schedule"></a>
+
+### Creating a new schedule
 
 When creating a new schedule, you'll need to configure the following options:
 
@@ -84,9 +85,11 @@ When creating a new schedule, you'll need to configure the following options:
 | Timing | Either in cron format for more fexibility or using the built-in options for common intervals |
 | Schedule Timezone | Optional IANA timezone; leave empty to use the global fallback |
 
-![](/assets/schedule02.png) ![](/assets/schedule03.png)
+![](../../static/assets/schedule02.png) ![](../../static/assets/schedule03.png)
 
-### Cron format syntax {#cron-format-syntax}
+<a id="cron-format-syntax"></a>
+
+### Cron format syntax
 
 The schedule uses standard cron syntax with five fields:
 
@@ -111,9 +114,13 @@ Examples:
 
 Very helpful cron expression generator: [https://crontab.guru/](https://crontab.guru/)
 
-## Use cases {#use-cases}
+<a id="use-cases"></a>
 
-### System maintenance {#system-maintenance}
+## Use cases
+
+<a id="system-maintenance"></a>
+
+### System maintenance
 
 ```yaml
 # Example playbook for system updates
@@ -136,14 +143,18 @@ Very helpful cron expression generator: [https://crontab.guru/](https://crontab.
 
 Schedule this playbook to run weekly during off-hours to ensure systems stay up-to-date.
 
-### Backup operations {#backup-operations}
+<a id="backup-operations"></a>
+
+### Backup operations
 
 Create schedules for database backups with different frequencies:
 - Daily backups that retain for one week
 - Weekly backups that retain for one month
 - Monthly backups that retain for one year
 
-### Compliance checks {#compliance-checks}
+<a id="compliance-checks"></a>
+
+### Compliance checks
 
 Schedule regular compliance scans to ensure systems meet security requirements:
 
@@ -162,11 +173,15 @@ Schedule regular compliance scans to ensure systems meet security requirements:
         flat: yes
 ```
 
-### Environment provisioning and cleanup {#environment-provisioning-and-cleanup}
+<a id="environment-provisioning-and-cleanup"></a>
+
+### Environment provisioning and cleanup
 
 For development or testing environments. Schedule cloud environment creation in the morning and teardown in the evening to optimize costs.
 
-## Best practices {#best-practices}
+<a id="best-practices"></a>
+
+## Best practices
 
 * Use descriptive names for schedules that indicate both function and timing (e.g. "Weekly-Backup-Sunday-2AM")
 * Avoid scheduling too many resource-intensive tasks concurrently
@@ -176,6 +191,8 @@ For development or testing environments. Schedule cloud environment creation in 
 
 ---
 
-## Task parameters {#task-parameters}
+<a id="task-parameters"></a>
+
+## Task parameters
 
 Schedules can pass parameters to tasks. Enable prompts for the required fields in the template, then define parameter values in the schedule configuration so each run supplies the desired overrides (for example branch, variables, flags).

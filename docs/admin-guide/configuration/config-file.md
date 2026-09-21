@@ -1,145 +1,139 @@
----
-title: Configuration file
-description: Generating config.json, an annotated example, passing it to the server and runner, and the secrets directory and git options.
----
-
-
 # Configuration file
 
-## Creating configuration file {#creating-configuration-file}
+- [Loading order](#loading-order)
+- [Server example](#server-example)
+- [Runner example](#runner-example)
+- [Nested objects and defaults](#nested-objects-and-defaults)
+- [Secrets and changes](#secrets-and-changes)
 
-Semaphore uses a `config.json` file for its core configuration. You can generate this file interactively using built-in tools or through a web-based configurator.
+Semaphore accepts YAML (`.yaml` or `.yml`) and JSON configuration files.
+Both use the exact same field names.
+Use the [complete parameter reference](../../reference/configuration.md) for every startup setting and nested provider field.
+No online configurator or documentation build is needed.
 
-### Generate via CLI {#generate-via-cli}
+## Loading order
 
-Use the following commands to generate the configuration file interactively:
+1. `--config /absolute/path/config.yaml` selects an explicit file.
+2. Otherwise, the native binary uses `SEMAPHORE_CONFIG_PATH` as a **file path**.
+3. Otherwise, it searches the working directory, `/usr/local/etc/semaphore`, then `/etc/semaphore`; in each directory it tries `config.json`, `config.yaml`, then `config.yml` and loads the first readable file.
+4. `--no-config` skips file loading and uses environment variables and defaults.
+5. Present environment variables override their tagged file fields. Object-valued environment variables must contain JSON, even when the file is YAML.
+6. Defaults are applied to zero-valued fields, and configuration is validated.
 
-* For the Semaphore server:
-  ```
-  semaphore setup
-  ```
-* For the Semaphore runner:
-  ```
-  semaphore runner setup
-  ```
-  
-  :::tip
-    For more details about runner configuration, see the <a href="./../runners">Runners</a> section.
-  :::
+The Docker wrappers use `SEMAPHORE_CONFIG_PATH` as a **directory**, defaulting to `/etc/semaphore`.
+The server wrapper generates/loads `config.json` there; the runner wrapper starts with `--no-config`.
+See [container bootstrap settings](../../reference/configuration-schemas.md#container-bootstrap-settings) before sharing configuration between native and container deployments.
 
-### Generate on the website {#generate-on-the-website}
+## Server example
 
-Alternatively, you can use the web-based interactive configurator:
-* [Server configurator](https://semaphoreui.com/install/binary/2_13/config)
-* [Runner configurator](https://semaphoreui.com/install/binary/2_13/runner)
+Create `config.yaml` with non-secret deployment values:
 
-## Configuration file example {#configuration-file-example}
-
-Semaphore uses a `config.json` configuration file with following content:
-
-```javascript
-{
-	"mysql_test": {
-		"host": "127.0.0.1:3306",
-		"user": "root",
-		"pass": "***",
-		"name": "semaphore"
-	},
-
-	"dialect": "mysql",
-
-	"git_client": "go_git",
-	"git_attempts": 4,
-
-	"auth": {
-		"totp": {
-			"enabled": false,
-			"allow_recovery": true
-		}
-	},
-
-	"use_remote_runner": true,
-	"runner_registration_token": "73fs***",
-
- 	"tmp_path": "/tmp/semaphore",
- 	"cookie_hash": "96Nt***",
- 	"cookie_encryption": "x0bs***",
- 	"access_key_encryption": "j1ia***",
-
-	"max_tasks_per_template": 3,
-
-	"schedule": {
-		"timezone": "UTC"
-	},
-
-	"log": {
-		"events": {
-			"enabled": true,
-			"path": "./events.log"
-		}
-	},
-
-	"process": {
-		"chroot": "/opt/semaphore/sandbox"
-	}
- }
+```yaml
+# PostgreSQL must already exist; Semaphore creates/migrates its own tables.
+dialect: postgres
+postgres:
+  host: db.example.org:5432
+  user: semaphore
+  name: semaphore
+  options:
+    sslmode: verify-full
+interface: 127.0.0.1
+port: ':3000'
+web_host: https://semaphore.example.org
+tmp_path: /var/lib/semaphore/work
+dirs:
+  secrets: /var/lib/semaphore/secrets
+  repos: /var/lib/semaphore/repositories
+  ssh_agent_sockets: /var/lib/semaphore/sockets
+schedule:
+  timezone: UTC
+max_parallel_tasks: 10
 ```
 
-## Configuration file usage {#configuration-file-usage}
-
-* For Semaphore server:
+Choose the database, paths, bind address and public URL for your deployment.
+The service account needs access to the configured directories and database.
+Supply `SEMAPHORE_DB_PASS`, `SEMAPHORE_COOKIE_HASH`, `SEMAPHORE_COOKIE_ENCRYPTION` and `SEMAPHORE_ACCESS_KEY_ENCRYPTION` from your secret store or service environment before startup.
+Cookie and encryption values are base64-encoded keys; use independent random 32-byte values, persist them, and share the same values across HA nodes.
+For a rotating keyring, configure `encryption.keys_file` instead of the legacy access key variable; see [encryption](../security/encryption.md).
 
 ```bash
-semaphore server --config ./config.json
+semaphore server --config ./config.yaml
 ```
 
-* For Semaphore runner:
+The server starts its HTTP listener and applies database migrations.
+On a new database, create the administrator using the [user commands](../../reference/cli/users.md).
+Verify sign-in and the authenticated `/api/info` response, then run a task from the [getting-started guide](../../getting-started/README.md).
+
+For a single-node SQLite installation replace the PostgreSQL block with:
+
+```yaml
+dialect: sqlite
+sqlite:
+  host: /var/lib/semaphore/database.sqlite
+```
+
+`sqlite.host` is the file path; `sqlite.name` does not select that file.
+SQLite is not the shared database for an HA deployment.
+
+## Runner example
+
+The runner needs the server's public address and either a registration token or its previously issued runner token:
+
+```yaml
+web_host: https://semaphore.example.org
+tmp_path: /var/lib/semaphore/work
+runner:
+  name: runner-01
+  enabled: true
+  tags: [linux, ansible]
+  max_parallel_tasks: 4
+  check_interval_seconds: 1
+  token_file: /var/lib/semaphore/runner-token
+  executor:
+    type: local
+```
+
+For initial registration, supply `SEMAPHORE_RUNNER_REGISTRATION_TOKEN` through the process environment and run:
 
 ```bash
-semaphore runner start --config ./config.json
+semaphore runner start --register --config ./runner.yaml
 ```
 
-## Secrets directory {#secrets-directory}
+Persist the runner token and identity files, then start subsequent runs with `semaphore runner start --config ./runner.yaml`.
+`runner.token` and `runner.token_file` are mutually exclusive.
+`runner.enabled` sets the initial registration state; server-side policy still determines task placement.
+See [runners](../runners.md) for registration permissions, secure identity, Docker and Kubernetes requirements.
 
-Semaphore reads secret files (for example [file-based Key Store entries](/user-guide/key-store/env-and-file-sources) or HashiCorp Vault and OpenBao tokens read from disk) only from a configurable directory.
+## Nested objects and defaults
 
-| Option | Environment variable | Description |
-|--------|---------------------|-------------|
-| `dirs.secrets` | `SEMAPHORE_SECRETS_PATH` | Directory for secret files. Default: `/tmp/semaphore`. |
-| `secrets_path` (legacy) | `SEMAPHORE_SECRETS_PATH` | Top-level setting kept for backward compatibility. Used only when `dirs.secrets` is unset or still at the default path. |
+A dotted reference key such as `runner.executor.type` means nested YAML mappings; it is not a literal YAML key containing dots.
+Named maps use arbitrary stable IDs, such as `oidc_providers.company`; the reference denotes these IDs with `<id>`.
+Members of named maps have no independent environment bindings: supply the whole map as JSON in its parent variable.
 
-**Precedence**: a non-default `dirs.secrets` wins over the legacy `secrets_path`. When you set `SEMAPHORE_SECRETS_PATH`, Semaphore applies it to both fields.
+Defaults are applied **after** environment overrides.
+For non-pointer scalar fields with a tagged default, explicit zero, empty string or false can be replaced by that default.
+For example, `git_attempts: 0` becomes `4`; use `1` for a single attempt.
+The compatibility setting `oidc_providers.<id>.return_via_state` defaults to true and false is treated as unset.
+Descriptions distinguish tagged defaults from runtime fallback behavior and accepted but unwired compatibility settings.
 
-Example using the current layout:
+<a id="secrets-directory"></a>
 
-```json
-{
-  "dirs": {
-    "secrets": "/var/lib/semaphore/secrets"
-  }
-}
-```
+## Secrets and changes
 
-Legacy installations may still use:
+Use secret files or a secret-injecting process environment, and restrict file access to the service account.
+Main-config strings are literal: `${VARIABLE}` in a YAML value is not expanded by the application.
+`dirs.secrets` defines the allowed location of file-based secret sources.
+Legacy `secrets_path` applies only when `dirs.secrets` is empty or still its default `/tmp/semaphore`.
 
-```json
-{
-  "secrets_path": "/var/lib/semaphore/secrets"
-}
-```
+Restart the server or runner after changing startup settings.
+The separate encryption keys file supports polling and SIGHUP reload as described in the encryption guide.
+Database-backed capability lifecycle and administrator settings are separate from startup configuration; see [feature controls](../configuration.md#feature-controls).
 
-Key files selected in the **File** tab of the Key Store form, and token files referenced by external secret storages, must live inside this directory. Paths outside it are rejected with `file path must be inside secrets path`. See [Keys from environment variables and files](/user-guide/key-store/env-and-file-sources).
+## Git operations
 
-## Git operations {#git-operations}
-
-Semaphore clones and updates task repositories before each run. Two options control this behavior:
-
-| Option | Environment variable | Description |
-|--------|---------------------|-------------|
-| `git_client` | `SEMAPHORE_GIT_CLIENT` | Git client implementation: `cmd_git` (default, uses the system `git` binary) or `go_git` (pure Go client). |
-| `git_attempts` | `SEMAPHORE_GIT_ATTEMPTS` | Number of times clone and pull operations are tried before the task fails. Default: `4`. Set to `1` to try once with no retries. |
-
-When a clone or pull fails and retries remain, Semaphore waits with exponential backoff (starting at 1 second, doubling each attempt, capped at 60 seconds) and logs a message such as `Git pull failed (...), retrying in 2s`. Retries apply only to network operations; a failed checkout or authentication error still fails the task after all attempts are exhausted.
-
-If your git server is intermittently unavailable, increase `git_attempts`. If failures are immediate and persistent (wrong credentials, missing repository), fix the underlying issue — retries will not help.
-
+`git_client` selects `cmd_git` (the default, uses installed Git) or `go_git`.
+`git_attempts` sets the total number of clone/pull attempts, default `4`; use `1` for no retries.
+`git_submodule_jobs` sets command-line Git submodule fetch concurrency, default `4`.
+Retries use exponential backoff from one second, capped at 60 seconds.
+Persistent authentication failures require corrected credentials rather than more retries.
+See [repositories](../../user-guide/repositories.md) for repository keys and host verification.

@@ -1,8 +1,3 @@
----
-title: Terraform/OpenTofu
-description: How to run Terraform and OpenTofu code from a task template, pass TF_VAR_ variables, and use workspaces and encrypted HTTP state backends.
----
-
 # Terraform/OpenTofu
 
 Using Semaphore UI you can run Terraform code. To do this, you need to create a **Terraform Code Template**.
@@ -12,7 +7,9 @@ Using Semaphore UI you can run Terraform code. To do this, you need to create a 
 3. Set up the template and click the **Create** button.
 4. Click **Run** to execute the template.
 
-## Passing variables {#passing-variables}
+<a id="passing-variables"></a>
+
+## Passing variables
 
 Variables from the selected **Variable Groups** are injected as environment variables. Prefix names with `TF_VAR_` so Terraform picks them up as input variables:
 
@@ -23,20 +20,28 @@ Variables from the selected **Variable Groups** are injected as environment vari
 
 For sensitive values, use the **Secrets** tab in Variable Groups — they are encrypted at rest.
 
-## Workspaces {#workspaces}
+<a id="workspaces"></a>
 
-Semaphore supports Terraform/OpenTofu workspaces natively. See [Workspaces](./workspaces) for creating and switching workspaces and using SSH keys for private modules.
+## Workspaces
 
-## State backends {#backend-override-and-http-backend-pro}
+Semaphore supports Terraform/OpenTofu workspaces natively. See [Workspaces](workspaces.md) for creating and switching workspaces and using SSH keys for private modules.
 
-Use the [Semaphore EX HTTP state backend](./states) with encrypted version history and durable locks,
+<a id="backend-override-and-http-backend-pro"></a>
+
+## State backends
+
+Use the [Semaphore EX HTTP state backend](states.md) with encrypted version history and durable locks,
 or configure another supported backend in your Terraform or OpenTofu code.
 
-## Destroy flag and state migration {#destroy-flag-and-state-migration}
+<a id="destroy-flag-and-state-migration"></a>
+
+## Destroy flag and state migration
 
 The task run dialog includes toggles for `-destroy` and `-migrate-state`. Use them when tearing down infrastructure or migrating Terraform state.
 
-## Notes {#notes}
+<a id="notes"></a>
+
+## Notes
 
 - Semaphore runs `terraform init` automatically before each run.
 - State is managed by whatever backend is configured in your Terraform code (local, S3, GCS, etc.).

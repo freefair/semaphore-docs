@@ -29,7 +29,7 @@ A lifecycle-test worker resolves one snapshot when it actually begins an action.
 
 This table describes the `lifecycle_test` contract fixture, not a universal permission matrix for every feature.
 Capability IDs do not have generic environment-variable enable switches.
-See [Feature controls](/admin-guide/configuration#feature-controls) for the selected product registry and the controls that govern each feature.
+See [Feature controls](../admin-guide/configuration.md#feature-controls) for the selected product registry and the controls that govern each feature.
 For example, [runtime secrets](runtime-secrets.md) deliberately permit existing secret resolution in `read_only`; their `disabled` and `expired` states retain read access while denying writes and execution.
 TOTP and managed LDAP have their own rollout states and enforcement contracts.
 

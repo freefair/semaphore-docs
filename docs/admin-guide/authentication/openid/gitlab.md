@@ -1,9 +1,3 @@
----
-title: GitLab config
-description: A working oidc_providers block for signing in with GitLab, plus a link to the step-by-step blog tutorial.
----
-
-
 # GitLab config
 
 ```json title="config.json"
@@ -24,4 +18,4 @@ description: A working oidc_providers block for signing in with GitLab, plus a l
 }
 ```
 
-Tutorial in Semaphore UI blog: [GitLab authentication in Semaphore UI](https://semaphoreui.com/blog/openid-authentication/).
+Tutorial in Semaphore UI blog: [GitLab authentication in Semaphore UI](../openid.md).

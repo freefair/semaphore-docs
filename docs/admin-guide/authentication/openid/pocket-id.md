@@ -1,8 +1,3 @@
----
-title: Pocket-ID config
-description: Example config.json for signing in to Semaphore with Pocket-ID, including the scopes and the username and name claims.
----
-
 # Pocket-ID config
 
 ```json title="config.json"

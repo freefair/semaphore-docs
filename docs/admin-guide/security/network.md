@@ -1,8 +1,3 @@
----
-title: Network security
-description: Serving Semaphore over TLS or a VPN, the HTTP-to-HTTPS redirect listener, reverse proxies, and certificates.
----
-
 # Network security
 
 For security reasons, Semaphore **should not be used** over unencrypted HTTP!
@@ -16,11 +11,15 @@ Options you have:
 
 ---
 
-## VPN {#vpn}
+<a id="vpn"></a>
+
+## VPN
 
 You can use a Client-to-Site VPN, that terminates on the Semaphore server, to encrypt & secure the connection.
 
-## TLS {#tls}
+<a id="tls"></a>
+
+## TLS
 
 Semaphore supports SSL/TLS starting from v2.12.
 
@@ -45,7 +44,9 @@ export SEMAPHORE_TLS_CERT_FILE=/path/to/cert/example.com.cert
 export SEMAPHORE_TLS_KEY_FILE=/path/to/key/example.com.key
 ```
 
-### HTTP-to-HTTPS redirect listener {#http-to-https-redirect-listener}
+<a id="http-to-https-redirect-listener"></a>
+
+### HTTP-to-HTTPS redirect listener
 
 To configure the HTTP-to-HTTPS redirect listener, add one of the following fields to the `tls` block in `config.json`, or set the corresponding environment variable.
 
@@ -56,16 +57,19 @@ Use `http_redirect_addr` to bind the listener to a specific IP address and port.
 | Specific IP address and port | `"http_redirect_addr": "172.29.184.90:80"` | `SEMAPHORE_TLS_HTTP_REDIRECT_ADDR=172.29.184.90:80` |
 | All network interfaces on a port | `"http_redirect_port": 80` | `SEMAPHORE_TLS_HTTP_REDIRECT_PORT=80` |
 
-### Reverse proxy {#reverse-proxy}
+<a id="reverse-proxy"></a>
+
+### Reverse proxy
 
 Alternatively, you can use a reverse proxy in front of Semaphore to handle secure connections. For example:
 
-* [NGINX](/admin-guide/reverse-proxy/nginx)
-* [Apache](/admin-guide/reverse-proxy/apache)
-* [Caddy](/admin-guide/reverse-proxy/caddy)
- 
+* [NGINX](../reverse-proxy/nginx.md)
+* [Apache](../reverse-proxy/apache.md)
+* [Caddy](../reverse-proxy/caddy.md)
 
-### Self-signed SSL certificate {#self-signed-ssl-certificate}
+<a id="self-signed-ssl-certificate"></a>
+
+### Self-signed SSL certificate
 
 You can generate your own SSL certificate with using `openssl` CLI tool:
 
@@ -76,7 +80,9 @@ openssl req -x509 -newkey rsa:4096 \
     -subj "/C=US/ST=California/L=San Francisco/O=CompanyName/OU=DevOps/CN=example.com"
 ```
 
-### Let's Encrypt SSL certificate {#lets-encrypt-ssl-certificate}
+<a id="lets-encrypt-ssl-certificate"></a>
+
+### Let's Encrypt SSL certificate
 
 You can use [Certbot](https://certbot.eff.org/) to generate and automatically renew a Let's Encrypt SSL certificate.
 
@@ -87,6 +93,8 @@ sudo snap install certbot
 sudo certbot --apache -n --agree-tos -d example.com -m mail@example.com
 ```
 
-### Others {#others}
+<a id="others"></a>
+
+### Others
 
 If you want to use any other reverse proxy - make sure to also forward websocket connections on the `/api/ws` route!

@@ -1,21 +1,20 @@
----
-title: Syncing secrets from remote storages
-description: How sync paths import secrets from an external secret manager into the Key Store, and what a sync creates, updates, or deletes.
----
-
 # Syncing secrets from remote storages
 
 Semaphore can connect to an external secret manager — such as **HashiCorp Vault**, **OpenBao**, **AWS Secrets Manager**, **Azure Key Vault**, or **Devolutions Server (DVLS)** — and automatically import secrets from it into the Key Store. Instead of copying credentials into Semaphore by hand and keeping them up to date, you point Semaphore at your remote storage and it maintains a local mirror for you.
 
 **Sync paths** are the rules that tell Semaphore *which* secrets to import from a remote storage and *how* to name them once they arrive. A secret manager can hold thousands of secrets across many folders; sync paths let you select just the subtrees you care about and control the naming of the keys that get created.
 
-## Key concepts {#key-concepts}
+<a id="key-concepts"></a>
+
+## Key concepts
 
 - **Remote storage** — a configured connection to an external secret manager, including its address and the credential Semaphore uses to read from it.
 - **Sync** — the process of reading secrets from the remote storage and reconciling them with the keys stored in Semaphore.
 - **Sync path** — a single import rule, made up of a *path*, a *prefix*, and a *separator*.
 
-## How a sync path works {#how-a-sync-path-works}
+<a id="how-a-sync-path-works"></a>
+
+## How a sync path works
 
 Each sync path has three fields:
 
@@ -27,11 +26,13 @@ When a sync runs, Semaphore walks the **path**, and for each secret it finds it 
 
 You can define **multiple sync paths** on a single storage. Each path is imported independently, so you can pull from several unrelated areas of the same secret manager and give each its own prefix and naming style.
 
-:::tip
-Sensible defaults are applied per provider — for example, HashiCorp Vault, OpenBao, and AWS Secrets Manager default to `/` as the separator, Azure Key Vault to `-`, and Devolutions Server to `\` — so in most cases you only need to fill in the path.
-:::
+> **Tip**
+>
+> Sensible defaults are applied per provider — for example, HashiCorp Vault, OpenBao, and AWS Secrets Manager default to `/` as the separator, Azure Key Vault to `-`, and Devolutions Server to `\` — so in most cases you only need to fill in the path.
 
-## Running a sync {#running-a-sync}
+<a id="running-a-sync"></a>
+
+## Running a sync
 
 There are two ways a sync happens:
 
@@ -40,11 +41,13 @@ There are two ways a sync happens:
 
 Each storage records when it was last synced and whether the last attempt failed, so you can always see the state of the mirror.
 
-:::note
-In a high-availability deployment, automatic syncs are coordinated across nodes, so a given sync runs on only one node at a time — you won't get duplicate imports.
-:::
+> **Note**
+>
+> In a high-availability deployment, automatic syncs are coordinated across nodes, so a given sync runs on only one node at a time — you won't get duplicate imports.
 
-## What syncing does to your keys {#what-syncing-does-to-your-keys}
+<a id="what-syncing-does-to-your-keys"></a>
+
+## What syncing does to your keys
 
 A sync is a **full mirror**, not a one-time copy. On every run, Semaphore reconciles the remote storage with the keys it previously imported:
 
@@ -54,20 +57,24 @@ A sync is a **full mirror**, not a one-time copy. On every run, Semaphore reconc
 
 Only keys that Semaphore imported are touched — keys you created manually are never modified or deleted by a sync.
 
-:::warning
-Because imported keys are managed copies of the remote secrets, deleting a storage (or disabling its sync) also removes the keys that came from it.
-:::
+> **Warning**
+>
+> Because imported keys are managed copies of the remote secrets, deleting a storage (or disabling its sync) also removes the keys that came from it.
 
-## Two scopes: shared keys and environment variables {#two-scopes-shared-keys-and-environment-variables}
+<a id="two-scopes-shared-keys-and-environment-variables"></a>
+
+## Two scopes: shared keys and environment variables
 
 Sync paths can be configured in two places:
 
 - **Storage level** — imported secrets become **shared keys**, available across the project wherever keys are used.
-- **Environment level** — a [Variable Group](/user-guide/environment) can point at a storage and its sync paths to import secrets as **environment variables** scoped to that group.
+- **Environment level** — a [Variable Group](../environment.md) can point at a storage and its sync paths to import secrets as **environment variables** scoped to that group.
 
 The mechanics are identical; only the destination of the imported secrets differs.
 
-## Notes and limitations {#notes-and-limitations}
+<a id="notes-and-limitations"></a>
+
+## Notes and limitations
 
 - Syncing is supported only for **external** storage types (HashiCorp Vault, OpenBao, AWS Secrets Manager, Azure Key Vault, Devolutions Server). The built-in **Database** storage holds secrets natively and has nothing to sync.
 - The remote storage credential itself (the token or key Semaphore uses to authenticate) is stored securely and separately from the secrets it imports.

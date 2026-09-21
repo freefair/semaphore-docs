@@ -1,8 +1,3 @@
----
-title: Okta config
-description: Example config.json for Okta single sign-on.
----
-
 # Okta config
 
 ```yaml title="config.json"
@@ -19,7 +14,9 @@ description: Example config.json for Okta single sign-on.
 }
 ```
 
-## IdP-initiated login {#idp-initiated-login}
+<a id="idp-initiated-login"></a>
+
+## IdP-initiated login
 
 Semaphore does not implement IdP-initiated login. `allow_idp_initiated` is not a
 supported provider option, and there is no `/initiate` route. Start the supported
@@ -30,8 +27,9 @@ an Okta application link to:
 https://semaphore.example.com/api/auth/oidc/okta/login
 ```
 
+<a id="related-github-issues"></a>
 
-## Related GitHub Issues {#related-github-issues}
+## Related GitHub Issues
 
 * [#1434](https://github.com/semaphoreui/semaphore/issues/1434) — Help with OIDC Azure AD configuration/debugging
 * [#1864](https://github.com/semaphoreui/semaphore/issues/1864) — v2.9.56 breaks oidc auth with keycloak
@@ -39,7 +37,9 @@ https://semaphore.example.com/api/auth/oidc/okta/login
 
 [Explore all Okta-related issues →](https://github.com/semaphoreui/semaphore/issues?q=is%3Aissue%20okta)
 
-## Related GitHub Discussions {#related-github-discussions}
+<a id="related-github-discussions"></a>
+
+## Related GitHub Discussions
 
 * [#2822](https://github.com/semaphoreui/semaphore/discussions/2822) — When setting up GitHub OpenID, parsing is not possible except for Email
 * [#1030](https://github.com/semaphoreui/semaphore/discussions/1030) &mdash; SAML support?

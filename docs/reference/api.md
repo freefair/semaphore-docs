@@ -1,23 +1,16 @@
----
-title: API
-description: How to create and revoke Semaphore API tokens, and where to find the Swagger, Postman, and built-in API references.
----
-
 # API
 
-## API reference {#api-reference}
+<a id="api-reference"></a>
 
-Semaphore UI provides two formats of API documentation, so you can choose the one that fits your workflow best:
+## API reference
 
-* [Swagger/OpenAPI](https://semaphoreui.com/api-docs) &mdash; ideal if you prefer an interactive, browser-based experience.
-* [Official Postman Collection](https://www.postman.com/semaphoreui) &mdash; explore and test all endpoints in Postman.
-* **Built-in Swagger API documentation** &mdash; interactive API documentation powered by Swagger UI. You can access it on your instance.
+Read the [Markdown endpoint reference](api-endpoints.md) for methods, paths, parameters and response schemas.
+The source contracts live in the product repository as [api-docs.yml](https://github.com/freefair/semaphore-ex/blob/develop/api-docs.yml) and [api-docs-ex.yml](https://github.com/freefair/semaphore-ex/blob/develop/api-docs-ex.yml).
+The Markdown manual is usable without Swagger UI or a documentation server.
 
-![](/assets/swagger-link.webp)
+<a id="getting-started-with-the-api"></a>
 
-All options include complete documentation of available endpoints, parameters, and example responses.
-
-## Getting Started with the API {#getting-started-with-the-api}
+## Getting Started with the API
 
 To start using the Semaphore API, you need to generate an API token.
 This token must be included in the request header as:
@@ -26,27 +19,29 @@ This token must be included in the request header as:
 Authorization: Bearer YOUR_API_TOKEN
 ```
 
-### Creating an API Token {#creating-an-api-token}
+<a id="creating-an-api-token"></a>
+
+### Creating an API Token
 
 There are two ways to create an API token:
 - Through the web interface
 - Using HTTP request
 
-#### Through the web interface (since 2.14) {#through-the-web-interface-since-214}
+<a id="through-the-web-interface-since-214"></a>
+
+#### Through the web interface (since 2.14)
 
 Open the account menu at the bottom of the sidebar and choose **API Tokens**. The page lists your tokens; the **API Reference** link on it opens the Swagger UI built into your instance.
 
-![API Tokens](/assets/api-tokens.webp)
+![API Tokens](../../static/assets/api-tokens.webp)
 
-Click **New Token**, enter a name, choose when the token expires, and copy the value shown after creation. See [Your account](/user-guide/account#api-tokens).
+Click **New Token**, enter a name, choose when the token expires, and copy the value shown after creation. See [Your account](../user-guide/account.md#api-tokens).
 
-<div style={{maxWidth: 420}}>
+![New token dialog](../../static/assets/api-token-new.webp)
 
-![New token dialog](/assets/api-token-new.webp)
+<a id="using-http-request"></a>
 
-</div>
-
-#### Using HTTP request {#using-http-request}
+#### Using HTTP request
 
 You can also authenticate and generate a session token using a direct HTTP request.
 
@@ -81,11 +76,15 @@ The command should return something similar to:
 ```
 ---
 
-## Using token to make API requests {#using-token-to-make-api-requests}
+<a id="using-token-to-make-api-requests"></a>
+
+## Using token to make API requests
 
 Once you have your API token, include it in the **Authorization** header to authenticate your requests.
 
-### Launch a task {#launch-a-task}
+<a id="launch-a-task"></a>
+
+### Launch a task
 
 Use this token for launching a task or anything else:
 
@@ -100,7 +99,9 @@ http://localhost:3000/api/project/1/tasks
 
 ---
 
-## Expiring an API token {#expiring-an-api-token}
+<a id="expiring-an-api-token"></a>
+
+## Expiring an API token
 
 If you no longer need the token, you should expire it to keep your account secure.
 

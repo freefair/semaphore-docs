@@ -1,8 +1,3 @@
----
-title: Keycloak config
-description: Example config.json for signing in to Semaphore with Keycloak.
----
-
 # Keycloak config
 
 ```yaml title="config.json"
@@ -19,7 +14,9 @@ description: Example config.json for signing in to Semaphore with Keycloak.
 }
 ```
 
-## IdP-initiated login {#idp-initiated-login}
+<a id="idp-initiated-login"></a>
+
+## IdP-initiated login
 
 Semaphore does not implement IdP-initiated login. `allow_idp_initiated` is not a
 supported provider option, and there is no `/initiate` route. Start the supported
@@ -32,16 +29,19 @@ https://semaphore.example.com/api/auth/oidc/keycloak/login
 
 Opening this URL starts the normal Authorization Code flow from Semaphore.
 
+<a id="related-github-issues"></a>
 
-## Related GitHub Issues {#related-github-issues}
+## Related GitHub Issues
 
-* [#2308](https://github.com/semaphoreui/semaphore/issues/2308) — How to disable certificate validation for Keycloak server  
-* [#2314](https://github.com/semaphoreui/semaphore/issues/2314) — Option to disable TLS verification  
-* [#1496](https://github.com/semaphoreui/semaphore/issues/1496) — Log out from Keycloak session when logging out from Semaphore  
+* [#2308](https://github.com/semaphoreui/semaphore/issues/2308) — How to disable certificate validation for Keycloak server
+* [#2314](https://github.com/semaphoreui/semaphore/issues/2314) — Option to disable TLS verification
+* [#1496](https://github.com/semaphoreui/semaphore/issues/1496) — Log out from Keycloak session when logging out from Semaphore
 
 [Explore all Keycloak-related issues →](https://github.com/semaphoreui/semaphore/issues?q=is%3Aissue%20keycloak)
 
-## Related GitHub Discussions {#related-github-discussions}
+<a id="related-github-discussions"></a>
+
+## Related GitHub Discussions
 
 * [#1745](https://github.com/semaphoreui/semaphore/discussions/1745) — Username differs from `preferred_username` in OpenID
 * [#1030](https://github.com/semaphoreui/semaphore/discussions/1030) &mdash; SAML support?

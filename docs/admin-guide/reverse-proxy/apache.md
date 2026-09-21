@@ -1,8 +1,3 @@
----
-title: Apache config
-description: The Apache modules to enable and a virtual host that proxies Semaphore on port 3000, including the websocket route.
----
-
 # Apache config
 
 Make sure you have enabled following Apache modules:
@@ -21,7 +16,7 @@ Add following virtual host to your Apache configuration:
     ServerName example.com
 
     ServerAdmin webmaster@localhost
-	
+
     SSLEngine on
     SSLCertificateFile /path/to/example.com.crt
     SSLCertificateKeyFile /path/to/example.com.key

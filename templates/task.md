@@ -1,8 +1,3 @@
----
-title: <Bare infinitive, matches the H1>
-description: <One sentence, 80-160 characters, what the reader accomplishes here.>
----
-
 # <Bare infinitive + object>
 
 <!--
@@ -13,7 +8,9 @@ Aim for eight to ten steps; split anything longer into separate task pages.
 
 <One sentence of context: what this achieves and when you would do it.>
 
-## Before you begin {#before-you-begin}
+<a id="before-you-begin"></a>
+
+## Before you begin
 
 <!-- Delete this section only if there are genuinely no prerequisites. -->
 
@@ -21,7 +18,9 @@ Aim for eight to ten steps; split anything longer into separate task pages.
 - <Resource that must already exist.>
 - <Semaphore version, if the feature has a minimum.>
 
-## Steps {#steps}
+<a id="steps"></a>
+
+## Steps
 
 To <do the task>, follow these steps:
 
@@ -31,7 +30,9 @@ To <do the task>, follow these steps:
 
 <Optional: one short paragraph on how to verify the result.>
 
-## What's next {#whats-next}
+<a id="whats-next"></a>
 
-- [<Related task>](/path)
-- [<Reference page>](/path)
+## What's next
+
+- [<Related task>](README.md)
+- [<Reference page>](README.md)

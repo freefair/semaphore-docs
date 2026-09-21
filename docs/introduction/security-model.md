@@ -1,8 +1,3 @@
----
-title: Security model
-description: What Semaphore protects, the trust boundaries in a deployment, who can cause code to run, and which decisions are left to you.
----
-
 # Security model
 
 Semaphore holds the credentials to your infrastructure and runs code against it. Two
@@ -11,13 +6,15 @@ properties follow from that, and both shape every other decision on this page:
 can run code on the machines that task reaches**.
 
 This page explains the model. For the settings that implement it, see
-[Security](/admin-guide/security).
+[Security](../admin-guide/security.md).
 
-## Trust boundaries {#trust-boundaries}
+<a id="trust-boundaries"></a>
+
+## Trust boundaries
 
 | Boundary | Crossed by | Protected by |
 |---|---|---|
-| Browser ↔ server | Sessions, API tokens | TLS, secure cookies, [reverse proxy](/admin-guide/reverse-proxy) |
+| Browser ↔ server | Sessions, API tokens | TLS, secure cookies, [reverse proxy](../admin-guide/reverse-proxy/README.md) |
 | Server ↔ database | All persistent state | Network restriction; secrets encrypted before they are written |
 | Server ↔ runner | Job payloads, including secrets | HTTPS and a per-runner bearer token |
 | Task ↔ managed hosts | Your automation | The keys you gave the template |
@@ -26,26 +23,30 @@ A task is on the far side of every one of those boundaries. It receives the secr
 it needs in its environment, and from that moment the code in your repository decides
 what happens to them.
 
-## Identity {#identity}
+<a id="identity"></a>
+
+## Identity
 
 Users authenticate in one of three ways, and all three end in the same session:
 
 - **Local accounts.** Passwords are hashed with Argon2id (bcrypt before 2.20, upgraded
   on first login). TOTP two-factor authentication can be required.
-- **[LDAP or Active Directory](/admin-guide/authentication/ldap).** The directory verifies the password;
+- **[LDAP or Active Directory](../admin-guide/authentication/ldap.md).** The directory verifies the password;
   Semaphore keeps only the account.
-- **[OpenID Connect](/admin-guide/authentication/openid).** The provider authenticates and Semaphore
+- **[OpenID Connect](../admin-guide/authentication/openid.md).** The provider authenticates and Semaphore
   maps claims onto users.
 
 Non-interactive access uses **API tokens** created by a user, carrying that user's
 permissions. Runners do not use user identity at all: they authenticate with their own
 registration-issued token.
 
-Tasks can carry identity too. With [task JWTs](/user-guide/task-templates/jwt) a run
+Tasks can carry identity too. With [task JWTs](../user-guide/task-templates/jwt.md) a run
 receives a short-lived signed token naming the project, template, and user, which an
 external secret store can verify instead of you storing a long-lived credential.
 
-## Authorization {#authorization}
+<a id="authorization"></a>
+
+## Authorization
 
 Two levels exist and they are independent.
 
@@ -62,7 +63,7 @@ Being a server administrator does not by itself grant membership in a project.
 | **Guest** | Read project resources. |
 
 This table describes the baseline built-in roles.
-Semaphore includes [custom roles](/user-guide/team) when those four are too
+Semaphore includes [custom roles](../user-guide/team.md) when those four are too
 coarse. They remain authorization controls: a custom role grants only its
 explicit server, project, or template permissions, including an explicit
 template-run grant for a Guest when configured.
@@ -73,7 +74,9 @@ with that project's credentials. A Task Runner can start only existing templates
 unless an explicit custom role grant, template prompt, or survey variable widens that
 boundary deliberately.
 
-## Secrets {#secrets}
+<a id="secrets"></a>
+
+## Secrets
 
 Secret values — SSH private keys, passwords, tokens, secret variables — are encrypted
 with the key in `access_key_encryption` before being stored, so a database dump alone
@@ -87,11 +90,13 @@ task output is worth treating as sensitive: a playbook that prints a variable pr
 it into a log that other project members can read.
 
 If you would rather not hold the secrets at all,
-[external secret storages](/user-guide/key-store) keep values in HashiCorp Vault
+[external secret storages](../user-guide/key-store.md) keep values in HashiCorp Vault
 or OpenBao and fetch them per run. The selected provider and its availability are
 still enforced by server-side configuration and authorization.
 
-## Executing untrusted code {#executing-untrusted-code}
+<a id="executing-untrusted-code"></a>
+
+## Executing untrusted code
 
 With the default setup, a task is a process on the Semaphore server with the server's
 file system and network access. That is appropriate when everyone who can edit a
@@ -99,7 +104,7 @@ template is already trusted with the server.
 
 When they are not, move execution away from the server:
 
-- A [runner](/admin-guide/runners) puts tasks on a different machine, so compromising a
+- A [runner](../admin-guide/runners.md) puts tasks on a different machine, so compromising a
   task does not compromise the web service or the database.
 - The **Docker** or **Kubernetes** executor gives each job a fresh container or Pod
   and applies the configured restricted execution policy. That reduces cross-run and
@@ -108,24 +113,28 @@ When they are not, move execution away from the server:
 - Separate projects with separate keys mean a task can only reach what its own project's
   credentials allow.
 
-:::warning
-A repository that a project member can change is code that will run with that
-project's credentials. Protect the branch a template builds from, or point templates
-at a branch only reviewers can write to.
-:::
+> **Warning**
+>
+> A repository that a project member can change is code that will run with that
+> project's credentials. Protect the branch a template builds from, or point templates
+> at a branch only reviewers can write to.
 
-## What is left to you {#what-is-left-to-you}
+<a id="what-is-left-to-you"></a>
+
+## What is left to you
 
 Semaphore is self-hosted, so parts of the model are yours to supply:
 
-- TLS in front of the service, whether built in or from a [reverse proxy](/admin-guide/reverse-proxy).
+- TLS in front of the service, whether built in or from a [reverse proxy](../admin-guide/reverse-proxy/README.md).
 - Network restriction of the database and of the server's admin surface.
 - Backups of the database and of `access_key_encryption` — the second is useless
   without the first, and the first is unreadable without the second.
-- Keeping the version current. Report vulnerabilities to `security@semaphoreui.com`.
+- Keeping the version current. Report vulnerabilities to the repository maintainers through a private GitHub vulnerability report.
 
-## What's next {#whats-next}
+<a id="whats-next"></a>
 
-- [Security](/admin-guide/security) — the concrete settings, hashing parameters, and hardening steps.
-- [Architecture](/introduction/architecture) — the components these boundaries separate.
-- [Teams](/user-guide/team) — assigning roles in a project.
+## What's next
+
+- [Security](../admin-guide/security.md) — the concrete settings, hashing parameters, and hardening steps.
+- [Architecture](architecture.md) — the components these boundaries separate.
+- [Teams](../user-guide/team.md) — assigning roles in a project.

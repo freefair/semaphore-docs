@@ -2,6 +2,8 @@
 
 ## Status
 
+Website rendering, navigation components and locale builds are superseded by [ADR 0021](0021-publish-plain-markdown-documentation.md).
+
 Accepted
 
 ## Context

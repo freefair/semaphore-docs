@@ -1,8 +1,3 @@
----
-title: Introduction
-description: Orientation for readers new to Semaphore - what it is, how a deployment is put together, the vocabulary, and what to prepare before installing.
----
-
 # Introduction
 
 This section is for anyone meeting Semaphore for the first time, whether you will
@@ -11,23 +6,27 @@ what the product does, what a deployment is made of, what the words in the inter
 mean, and what you need to have ready.
 
 Read it once, in order, and the rest of the documentation stops needing explanation.
-Nothing here asks you to install anything — [Getting Started](/getting-started) does
+Nothing here asks you to install anything — [Getting Started](../getting-started/README.md) does
 that.
 
-## In this section {#in-this-section}
+<a id="in-this-section"></a>
+
+## In this section
 
 | Page | What it covers |
 |---|---|
-| [What is Semaphore](/introduction/what-is-semaphore) | The problem it solves, who it is for, and when a different tool fits better. |
-| [Architecture](/introduction/architecture) | The server, the database, the file cache, runners, and executors. |
-| [Core concepts](/introduction/concepts) | Projects, resources, templates, and tasks, plus a glossary of every term the UI uses. |
-| [Security model](/introduction/security-model) | Trust boundaries, who can cause code to run, and what is encrypted. |
-| [Product capabilities](/editions) | Included features, configuration controls, and unimplemented capabilities. |
-| [Prerequisites](/introduction/prerequisites) | The host, database, network access, and credentials to prepare. |
+| [What is Semaphore](what-is-semaphore.md) | The problem it solves, who it is for, and when a different tool fits better. |
+| [Architecture](architecture.md) | The server, the database, the file cache, runners, and executors. |
+| [Core concepts](concepts.md) | Projects, resources, templates, and tasks, plus a glossary of every term the UI uses. |
+| [Security model](security-model.md) | Trust boundaries, who can cause code to run, and what is encrypted. |
+| [Product capabilities](../editions.md) | Included features, configuration controls, and unimplemented capabilities. |
+| [Prerequisites](prerequisites.md) | The host, database, network access, and credentials to prepare. |
 
-## Where to start {#where-to-start}
+<a id="where-to-start"></a>
 
-Start with [What is Semaphore](/introduction/what-is-semaphore). If you already know
+## Where to start
+
+Start with [What is Semaphore](what-is-semaphore.md). If you already know
 what it does and are here to deploy it, go straight to
-[Prerequisites](/introduction/prerequisites) and then
-[Installation](/admin-guide/installation).
+[Prerequisites](prerequisites.md) and then
+[Installation](../admin-guide/installation.md).

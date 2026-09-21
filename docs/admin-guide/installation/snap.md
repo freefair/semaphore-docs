@@ -1,8 +1,3 @@
----
-title: Snap (deprecated)
-description: Installing the deprecated Semaphore snap, creating the first admin user, and checking the snap service status.
----
-
 # Snap (deprecated)
 
 To install Semaphore via snap, run following command in terminal:
@@ -46,6 +41,6 @@ After installation, you can set up Semaphore via [Snap Configuration](https://sn
 sudo snap get semaphore
 ```
 
-&#x20;List of available options you can find in [Configuration options reference](../configuration#configuration-options).
+&#x20;List of available options you can find in [Configuration options reference](../configuration.md#configuration-options).
 
 ----

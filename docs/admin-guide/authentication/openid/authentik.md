@@ -1,8 +1,3 @@
----
-title: Authentik config
-description: A working oidc_providers block for Authentik, including the provider URL, scopes and claim mappings.
----
-
 # Authentik config
 
 ```yaml title="config.json"

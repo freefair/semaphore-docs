@@ -1,8 +1,3 @@
----
-title: Users
-description: Creating, changing, listing, and deleting users from the command line, plus API token and TOTP (2FA) management.
----
-
 # Users
 
 The `semaphore users` command adds, changes, removes, and inspects users, and
@@ -26,7 +21,9 @@ semaphore users --help
 | [`users token list`](#list-tokens) | List a user's API tokens. |
 | [`users totp disable`](#totp-management) | Reset TOTP and revoke all user sessions. |
 
-## Add a user {#add-a-user}
+<a id="add-a-user"></a>
+
+## Add a user
 
 ```bash
 semaphore user add \
@@ -48,7 +45,9 @@ semaphore user add \
 
 On success the command prints `User <login> <email> added!`.
 
-## Change a user {#change-a-user}
+<a id="change-a-user"></a>
+
+## Change a user
 
 You can find the user to change either by login or by email.
 
@@ -76,7 +75,9 @@ Only the flags you provide are applied; omitted fields are left unchanged.
 `--admin` can only grant admin rights. It cannot revoke them; use the web UI
 for that.
 
-## Show a user {#show-a-user}
+<a id="show-a-user"></a>
+
+## Show a user
 
 Print a single user's details, looked up by login or email.
 
@@ -90,7 +91,9 @@ At least one of `--login` or `--email` is required. The output includes the
 user's ID, creation time, login, name, email, and admin status. If no user
 matches, the command prints a message and exits with a non-zero status.
 
-## List users {#list-users}
+<a id="list-users"></a>
+
+## List users
 
 Print the logins of all users, one per line.
 
@@ -98,7 +101,9 @@ Print the logins of all users, one per line.
 semaphore user list
 ```
 
-## Delete a user {#delete-a-user}
+<a id="delete-a-user"></a>
+
+## Delete a user
 
 Remove a user, looked up by login or email.
 
@@ -110,7 +115,9 @@ semaphore user delete --email admin@example.com
 
 At least one of `--login` or `--email` is required.
 
-## API token management {#api-token-management}
+<a id="api-token-management"></a>
+
+## API token management
 
 Manage a user's API tokens via the CLI:
 
@@ -118,7 +125,9 @@ Manage a user's API tokens via the CLI:
 semaphore user token --help
 ```
 
-### Create a token {#create-a-token}
+<a id="create-a-token"></a>
+
+### Create a token
 
 ```bash
 # Token that never expires
@@ -144,7 +153,9 @@ TOKEN=$(semaphore user token create --login ci --name "CI token" --ttl 720h)
 An invalid `--ttl` value or an unknown login is reported and the command exits
 with a non-zero status.
 
-### List tokens {#list-tokens}
+<a id="list-tokens"></a>
+
+### List tokens
 
 ```bash
 semaphore user token list --login john
@@ -154,7 +165,9 @@ semaphore user token list --login john
 `expired`), and its expiry time in RFC 3339 format (`never` if it has no
 expiry), separated by tabs. Token values are never printed.
 
-## TOTP management {#totp-management}
+<a id="totp-management"></a>
+
+## TOTP management
 
 Use the host-local TOTP command as an administrator recovery path:
 

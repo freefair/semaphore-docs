@@ -1,15 +1,8 @@
----
-title: "Project runners"
-description: Project-level runners, adding one, tokens and registration, routing tasks with tags, and runner security notes.
-sidebar_custom_props:
-  edition: pro
----
-
-# Project runners <Pro />
+# Project runners
 
 Runners execute tasks on machines other than the Semaphore server: closer to the target infrastructure, in another network zone, or with a different toolchain. **Global runners** are registered by an administrator and serve every project. **Project runners** belong to one project and are managed by its team in the **Runners** section.
 
-![Project runners](/assets/project-runners-list.webp)
+![Project runners](../../../static/assets/project-runners-list.webp)
 
 | Column | Content |
 |---|---|
@@ -18,15 +11,13 @@ Runners execute tasks on machines other than the Semaphore server: closer to the
 | **Tag** | Tags of the runner. Templates with a **Runner tag** run only on runners that have that tag. |
 | **Status** | **Online** when the runner polled the server recently, **Offline** otherwise. |
 
-## Adding a runner {#adding-a-runner}
+<a id="adding-a-runner"></a>
+
+## Adding a runner
 
 You need the **Manager** role or higher. Click **New Runner** and fill in the form.
 
-<div class="DialogScreenshot DialogScreenshot--small">
-
-![New runner dialog](/assets/project-runner-new.webp)
-
-</div>
+![New runner dialog](../../../static/assets/project-runner-new.webp)
 
 | Field | Description |
 |---|---|
@@ -40,20 +31,26 @@ You need the **Manager** role or higher. Click **New Runner** and fill in the fo
 
 After creation, click the runner to see its token or registration token again and to copy the configuration snippets.
 
-## Installing the runner {#installing-the-runner}
+<a id="installing-the-runner"></a>
 
-The runner is the same `semaphore` binary or the `semaphoreui/runner` Docker image started in runner mode. Installation, the configuration file, registration commands, executors (local, Docker, Kubernetes), and security are described in the admin guide: [Runners](/admin-guide/runners) and [CLI: Runners](/reference/cli/runners).
+## Installing the runner
 
-## Routing tasks to runners {#routing-tasks-to-runners}
+The runner is the same `semaphore` binary or the `semaphoreui/runner` Docker image started in runner mode. Installation, the configuration file, registration commands, executors (local, Docker, Kubernetes), and security are described in the admin guide: [Runners](../../admin-guide/runners.md) and [CLI: Runners](../../reference/cli/runners.md).
+
+<a id="routing-tasks-to-runners"></a>
+
+## Routing tasks to runners
 
 1. Give the runner one or more **Tags**, for example `windows-qa-server`.
 2. In the template form, set **Runner tag** to the same value.
 3. Tasks of the template wait in the `waiting` status until a runner with that tag is online.
 
-Templates without a runner tag go to the runners marked **Is default**, including global default runners. The runner that executed a task is shown on the **Details** tab of the [task window](../tasks#task-window).
+Templates without a runner tag go to the runners marked **Is default**, including global default runners. The runner that executed a task is shown on the **Details** tab of the [task window](../tasks.md#task-window).
 
-## Security {#security}
+<a id="security"></a>
+
+## Security
 
 - Runners connect to the server, never the other way round, so a runner can live behind NAT or in a private network.
 - Every request from a runner is authenticated with its token. Revoke a runner by deleting it or disabling it.
-- Use HTTPS between runners and the server; see [Network security](/admin-guide/security/network).
+- Use HTTPS between runners and the server; see [Network security](../../admin-guide/security/network.md).

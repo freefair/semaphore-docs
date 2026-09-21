@@ -1,13 +1,10 @@
----
-title: Python
-description: Creating a Python task template, reading variables from os.environ, and choosing the Python version and dependencies.
----
-
 # Python
 
 Semaphore can run Python scripts directly. To do this, create a **Python** task template.
 
-## Creating a Python template {#creating-a-python-template}
+<a id="creating-a-python-template"></a>
+
+## Creating a Python template
 
 1. Go to **Task Templates** section and click the **New Template** button.
 2. Select **Python** as the app type.
@@ -23,7 +20,9 @@ Semaphore can run Python scripts directly. To do this, create a **Python** task 
 4. Click **Create**.
 5. Click **Run** to execute the template.
 
-## Passing variables to scripts {#passing-variables-to-scripts}
+<a id="passing-variables-to-scripts"></a>
+
+## Passing variables to scripts
 
 Variables from the selected **Variable Groups** are injected as environment variables. Access them in Python with `os.environ`:
 
@@ -34,15 +33,19 @@ target = os.environ.get("TARGET_HOST")
 print(f"Deploying to {target}")
 ```
 
-## Python version and dependencies {#python-version-and-dependencies}
+<a id="python-version-and-dependencies"></a>
+
+## Python version and dependencies
 
 Semaphore uses whichever `python3` binary is on `PATH` in the execution environment.
 
 - **Binary/package install**: ensure the correct `python3` is installed on the host.
 - **Docker**: use a custom image with the required Python version.
-- **Docker (additional packages)**: mount a `requirements.txt` at `/etc/semaphore/requirements.txt` in the server or runner container. Semaphore installs it into the bundled Python virtual environment on every container start. See [Installing Additional Python Dependencies](/admin-guide/installation/docker#installing-additional-python-dependencies).
+- **Docker (additional packages)**: mount a `requirements.txt` at `/etc/semaphore/requirements.txt` in the server or runner container. Semaphore installs it into the bundled Python virtual environment on every container start. See [Installing Additional Python Dependencies](../../admin-guide/installation/docker.md#installing-additional-python-dependencies).
 
-## Notes {#notes}
+<a id="notes"></a>
+
+## Notes
 
 - Scripts run non-interactively.
 - Exit code `0` means success; any non-zero exit code marks the task as failed.

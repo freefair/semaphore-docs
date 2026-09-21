@@ -1,8 +1,3 @@
----
-title: PingFederate config
-description: Example config.json for PingFederate single sign-on, with explicit OIDC endpoints and the placeholders to replace.
----
-
 # PingFederate config
 
 ```json title="config.json"

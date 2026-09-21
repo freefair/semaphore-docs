@@ -1,15 +1,12 @@
----
-title: Core concepts
-description: The object model behind the Semaphore interface - projects, resources, templates, and tasks - followed by a glossary of every term the UI uses.
----
-
 # Core concepts
 
 Semaphore has one central idea: a **task template** gathers everything a run needs,
 and running it produces a **task**. Learning where each piece of that "everything"
 is configured is most of learning the product.
 
-## The object model {#the-object-model}
+<a id="the-object-model"></a>
+
+## The object model
 
 ```mermaid
 flowchart TD
@@ -27,47 +24,57 @@ flowchart TD
   Task --> Log[Log and status]
 ```
 
-### Projects hold everything {#projects-hold-everything}
+<a id="projects-hold-everything"></a>
 
-A [project](/user-guide/projects) is the unit of isolation. Repositories, keys,
+### Projects hold everything
+
+A [project](../user-guide/projects.md) is the unit of isolation. Repositories, keys,
 inventories, variable groups, templates, and task history belong to exactly one
 project, and so does team membership. Two projects share nothing except the server
 and its users, which is what makes a project the right boundary between teams,
 environments, or customers.
 
-### Resources describe the inputs {#resources-describe-the-inputs}
+<a id="resources-describe-the-inputs"></a>
+
+### Resources describe the inputs
 
 Four kinds of resource exist so that the same value can be reused by many templates
 and changed in one place:
 
-- A [repository](/user-guide/repositories) is where the playbook or script lives.
-- The [Key Store](/user-guide/key-store) holds the SSH keys, logins, and tokens used
+- A [repository](../user-guide/repositories.md) is where the playbook or script lives.
+- The [Key Store](../user-guide/key-store.md) holds the SSH keys, logins, and tokens used
   to reach the repository and the target hosts.
-- An [inventory](/user-guide/inventory) lists the hosts a run targets and how to
+- An [inventory](../user-guide/inventory.md) lists the hosts a run targets and how to
   connect to them.
-- A [variable group](/user-guide/environment) carries variables and secrets into the
+- A [variable group](../user-guide/environment.md) carries variables and secrets into the
   run's environment.
 
-### Templates define the run {#templates-define-the-run}
+<a id="templates-define-the-run"></a>
 
-A [task template](/user-guide/task-templates) selects an application (Ansible,
+### Templates define the run
+
+A [task template](../user-guide/task-templates/README.md) selects an application (Ansible,
 Terraform, a script), one repository, the playbook or entry point inside it, and the
 inventory, variable group, and keys to use. It also decides what the person starting
-the task may change: [survey variables](/user-guide/task-templates/survey-vars) turn
-a template into a form, and [prompts](/user-guide/task-templates/prompts) let a user
+the task may change: [survey variables](../user-guide/task-templates/survey-vars.md) turn
+a template into a form, and [prompts](../user-guide/task-templates/prompts.md) let a user
 override the branch, inventory, or extra arguments.
 
-### Tasks are the runs {#tasks-are-the-runs}
+<a id="tasks-are-the-runs"></a>
 
-Starting a template creates a [task](/user-guide/tasks). The task has its own log,
+### Tasks are the runs
+
+Starting a template creates a [task](../user-guide/tasks.md). The task has its own log,
 status, duration, and the name of whoever started it, and that record stays after
 the run finishes. Tasks start from the UI, from a
-[schedule](/user-guide/schedules), from an
-[integration webhook](/user-guide/integrations), from the
-[API](/reference/api), or from another template in a
-[workflow](/user-guide/workflows).
+[schedule](../user-guide/schedules.md), from an
+[integration webhook](../user-guide/integrations.md), from the
+[API](../reference/api.md), or from another template in a
+[workflow](../user-guide/workflows.md).
 
-## Glossary {#glossary}
+<a id="glossary"></a>
+
+## Glossary
 
 | Term | Meaning |
 |---|---|
@@ -92,8 +99,10 @@ the run finishes. Tasks start from the UI, from a
 | **View** | A tab that groups a subset of a project's templates in the template list. |
 | **Workflow** | A graph of templates run in sequence with branching, approvals, and delays. |
 
-## What's next {#whats-next}
+<a id="whats-next"></a>
 
-- [Getting Started](/getting-started) — put the concepts to work in order.
-- [User Guide](/user-guide) — one page per concept, with every field.
-- [Architecture](/introduction/architecture) — how the server, database, and runners fit together.
+## What's next
+
+- [Getting Started](../getting-started/README.md) — put the concepts to work in order.
+- [User Guide](../user-guide/README.md) — one page per concept, with every field.
+- [Architecture](architecture.md) — how the server, database, and runners fit together.

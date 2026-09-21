@@ -1,8 +1,3 @@
----
-title: Gitea config
-description: An oidc_providers block for a Gitea instance, how to register the OAuth2 application, and the known name mapping limits.
----
-
 # Gitea config
 
 ```json title="config.json"

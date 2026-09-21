@@ -1,27 +1,22 @@
----
-title: Manually installing Semaphore
-description: Setting up the service user, Python and Ansible requirements, systemd unit files, and troubleshooting a manual install.
----
-
 # Manually installing Semaphore
 
 ----
 
 **Content:**
 
-* [Service User](/admin-guide/installation_manually#service-user)
-* [Python3](/admin-guide/installation_manually#python3)
-* [Ansible Collections & Roles](/admin-guide/installation_manually#ansible-collections--roles)
-* [Reverse Proxy](/admin-guide/installation_manually#reverse-proxy)
-* [Systemd Service](/admin-guide/installation_manually#extended-systemd-service)
-* [Troubleshooting](/admin-guide/installation_manually#troubleshooting)
+* [Service User](installation_manually.md#service-user)
+* [Python3](installation_manually.md#python3)
+* [Ansible Collections & Roles](installation_manually.md#ansible-collections--roles)
+* [Reverse Proxy](installation_manually.md#reverse-proxy)
+* [Systemd Service](installation_manually.md#extended-systemd-service)
+* [Troubleshooting](installation_manually.md#troubleshooting)
 
 ----
 
 This documentation goes into the details on how to set-up Semaphore when using these installation methods:
 
-* [Package manager](/admin-guide/installation/package-manager)
-* [Binary file](/admin-guide/installation/binary-file)
+* [Package manager](installation/package-manager.md)
+* [Binary file](installation/binary-file.md)
 
 The Semaphore software-package is just a part of the whole system needed to successfully run Ansible with it.
 
@@ -31,7 +26,9 @@ NOTE: There are [existing Ansible-Galaxy Roles](https://galaxy.ansible.com/searc
 
 ----
 
-## Service User {#service-user}
+<a id="service-user"></a>
+
+## Service User
 
 Semaphore does not need to be run as user `root` - so you shouldn't.
 
@@ -48,7 +45,9 @@ In this documentation we will assume:
 * it has the shell `/bin/bash` set
 * its home directory is `/home/semaphore`
 
-### Troubleshooting {#troubleshooting}
+<a id="troubleshooting"></a>
+
+### Troubleshooting
 
 If the Ansible execution of Semaphore is failing - you will need to troubleshoot it in the context of the service user.
 
@@ -68,7 +67,9 @@ You have multiple options to do so:
 
 ----
 
-## Python3 {#python3}
+<a id="python3"></a>
+
+## Python3
 
 [Ansible](https://docs.ansible.com/ansible/latest/getting_started/index.html) is build using the [Python3](https://docs.python.org/3/) programming language.
 
@@ -80,7 +81,9 @@ You have multiple options to install required Python modules:
 * Installing them in the service user's context
 * Installing them in a service-specific [Virtual Environment](https://virtualenv.pypa.io/en/latest/)
 
-### Requirements {#requirements}
+<a id="requirements"></a>
+
+### Requirements
 
 Either way - it is recommended to use a `requirements.txt` file to specify the modules that need to be installed.
 
@@ -104,7 +107,9 @@ NOTE: You should also update those requirements from time to time!
 
 An option for doing this automatically is also shown in the service example below.
 
-### Modules in user context {#modules-in-user-context}
+<a id="modules-in-user-context"></a>
+
+### Modules in user context
 
 **Manually**:
 
@@ -122,7 +127,9 @@ sudo --login -u semaphore python3 -m pip install --user --upgrade -r /home/semap
   become_user: 'semaphore'
 ```
 
-### Modules in a virtualenv {#modules-in-a-virtualenv}
+<a id="modules-in-a-virtualenv"></a>
+
+### Modules in a virtualenv
 
 We will assume the virtualenv is created at `/home/semaphore/venv`
 
@@ -153,7 +160,9 @@ deactivate
     state: present  # or 'latest' to upgrade the requirements
 ```
 
-#### Troubleshooting {#troubleshooting-1}
+<a id="troubleshooting-1"></a>
+
+#### Troubleshooting
 
 If you encounter Python3 issues when using a virtual environment, you will need to change into its context to troubleshoot them:
 
@@ -173,11 +182,15 @@ Sometimes a virtual environment also breaks on system upgrades. If this happens 
 
 ----
 
-## Ansible Collections & Roles {#ansible-collections--roles}
+<a id="ansible-collections--roles"></a>
+
+## Ansible Collections & Roles
 
 You might want to pre-install Ansible modules and roles, so they don't need to be installed every time a task runs!
 
-### Requirements {#requirements-1}
+<a id="requirements-1"></a>
+
+### Requirements
 
 It is recommended to use a `requirements.yml` file to specify the modules that need to be installed.
 
@@ -206,7 +219,9 @@ NOTE: You should also update those requirements from time to time!
 
 An option for doing this automatically is also shown in the service example below.
 
-### Install in user-context {#install-in-user-context}
+<a id="install-in-user-context"></a>
+
+### Install in user-context
 
 **Manually**:
 ```bash
@@ -215,7 +230,9 @@ ansible-galaxy collection install --upgrade -r /home/semaphore/requirements.yml
 ansible-galaxy role install --force -r /home/semaphore/requirements.yml
 ```
 
-### Install when using a virtualenv {#install-when-using-a-virtualenv}
+<a id="install-when-using-a-virtualenv"></a>
+
+### Install when using a virtualenv
 
 **Manually**:
 ```bash
@@ -233,24 +250,30 @@ deactivate
 
 ----
 
-## Reverse Proxy {#reverse-proxy}
+<a id="reverse-proxy"></a>
 
-See: [Security - Encrypted connection](/admin-guide/security/network#reverse-proxy)
+## Reverse Proxy
+
+See: [Security - Encrypted connection](security/network.md#reverse-proxy)
 
 ----
 
-## Extended Systemd Service {#extended-systemd-service}
+<a id="extended-systemd-service"></a>
+
+## Extended Systemd Service
 
 Here is the basic template of the systemd service.
 
 Add additional settings under their `[PART]`
 
-### Base {#base}
+<a id="base"></a>
+
+### Base
 
 ```ini
 [Unit]
 Description=Semaphore UI
-Documentation=https://semaphoreui.com/docs
+Documentation=https://github.com/freefair/semaphore-docs
 Wants=network-online.target
 After=network-online.target
 ConditionPathExists=/usr/bin/semaphore
@@ -266,7 +289,9 @@ RestartSec=10s
 WantedBy=multi-user.target
 ```
 
-### Service user {#service-user-1}
+<a id="service-user-1"></a>
+
+### Service user
 
 ```ini
 [Service]
@@ -276,9 +301,13 @@ Group=semaphore
 
 ----
 
-### Python Modules {#python-modules}
+<a id="python-modules"></a>
 
-#### In user-context {#in-user-context}
+### Python Modules
+
+<a id="in-user-context"></a>
+
+#### In user-context
 
 ```ini
 [Service]
@@ -287,11 +316,13 @@ ExecStartPre=/bin/bash -c 'python3 -m pip install --upgrade --user -r /home/sema
 
 # so the executables are found
 Environment="PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/home/semaphore/.local/bin"
-# set the correct python path. You can get the correct path with: python3 -c "import site; print(site.USER_SITE)" 
+# set the correct python path. You can get the correct path with: python3 -c "import site; print(site.USER_SITE)"
 Environment="PYTHONPATH=/home/semaphore/.local/lib/python3.10/site-packages"
 ```
 
-#### In virtualenv {#in-virtualenv}
+<a id="in-virtualenv"></a>
+
+#### In virtualenv
 
 ```ini
 [Service]
@@ -306,9 +337,13 @@ ExecStart=/bin/bash -c 'source /home/semaphore/venv/bin/activate \
 
 ----
 
-### Ansible Collections & Roles {#ansible-collections--roles-1}
+<a id="ansible-collections--roles-1"></a>
 
-#### If using Python3 in user-context {#if-using-python3-in-user-context}
+### Ansible Collections & Roles
+
+<a id="if-using-python3-in-user-context"></a>
+
+#### If using Python3 in user-context
 
 ```ini
 [Service]
@@ -317,7 +352,9 @@ ExecStartPre=/bin/bash -c 'ansible-galaxy collection install --upgrade -r /home/
 ExecStartPre=/bin/bash -c 'ansible-galaxy role install --force -r /home/semaphore/requirements.yml'
 ```
 
-#### If using Python3 in virtualenv {#if-using-python3-in-virtualenv}
+<a id="if-using-python3-in-virtualenv"></a>
+
+#### If using Python3 in virtualenv
 
 ```ini
 # to auto-upgrade ansible collections and roles at service startup
@@ -328,23 +365,31 @@ ExecStartPre=/bin/bash -c 'source /home/semaphore/venv/bin/activate \
 
 ----
 
-### Other use-cases {#other-use-cases}
+<a id="other-use-cases"></a>
 
-#### Using local MariaDB {#using-local-mariadb}
+### Other use-cases
+
+<a id="using-local-mariadb"></a>
+
+#### Using local MariaDB
 
 ```ini
 [Unit]
 Requires=mariadb.service
 ```
 
-#### Using local Nginx {#using-local-nginx}
+<a id="using-local-nginx"></a>
+
+#### Using local Nginx
 
 ```ini
 [Unit]
 Wants=nginx.service
 ```
 
-#### Sending logs to syslog {#sending-logs-to-syslog}
+<a id="sending-logs-to-syslog"></a>
+
+#### Sending logs to syslog
 
 ```ini
 [Service]
@@ -353,14 +398,18 @@ StandardError=journal
 SyslogIdentifier=semaphore
 ```
 
-### Full Examples {#full-examples}
+<a id="full-examples"></a>
 
-#### Python Modules in user-context {#python-modules-in-user-context}
+### Full Examples
+
+<a id="python-modules-in-user-context"></a>
+
+#### Python Modules in user-context
 
 ```ini
 [Unit]
 Description=Semaphore UI
-Documentation=https://semaphoreui.com/docs
+Documentation=https://github.com/freefair/semaphore-docs
 Wants=network-online.target
 After=network-online.target
 ConditionPathExists=/usr/bin/semaphore
@@ -384,12 +433,14 @@ ExecReload=/bin/kill -HUP $MAINPID
 WantedBy=multi-user.target
 ```
 
-#### Python Modules in virtualenv {#python-modules-in-virtualenv}
+<a id="python-modules-in-virtualenv"></a>
+
+#### Python Modules in virtualenv
 
 ```ini
 [Unit]
 Description=Semaphore UI
-Documentation=https://semaphoreui.com/docs
+Documentation=https://github.com/freefair/semaphore-docs
 Wants=network-online.target
 After=network-online.target
 ConditionPathExists=/usr/bin/semaphore
@@ -415,7 +466,9 @@ ExecReload=/bin/kill -HUP $MAINPID
 WantedBy=multi-user.target
 ```
 
-### Fixes {#fixes}
+<a id="fixes"></a>
+
+### Fixes
 
 If you have a custom system language set - you might run into problems that can be resoled by updating the associated environmental variables:
 
@@ -427,7 +480,9 @@ Environment=LC_ALL="en_US.UTF-8"
 
 ----
 
-## Troubleshooting {#troubleshooting-2}
+<a id="troubleshooting-2"></a>
+
+## Troubleshooting
 
 If there is a problem while executing a task it might be an environmental issue with your setup - not an issue with Semaphore itself!
 
@@ -446,9 +501,9 @@ Please go through these steps to verify if the issue occurs outside Semaphore:
   # verify we are using python3 from inside the venv
   which python3
   > /home/semaphore/venv/bin/python3
-  
+
   # troubleshooting
-  
+
   deactivate
   ```
 

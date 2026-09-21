@@ -1,13 +1,10 @@
----
-title: Shell/Bash scripts
-description: Creating a Bash Script template, passing variable groups as environment variables, and script exit codes.
----
-
 # Shell/Bash scripts
 
 Semaphore can run shell scripts using `/bin/bash`. To do this, create a **Bash Script** task template.
 
-## Creating a Bash template {#creating-a-bash-template}
+<a id="creating-a-bash-template"></a>
+
+## Creating a Bash template
 
 1. Go to **Task Templates** section and click the **New Template** button.
 2. Select **Bash** as the app type.
@@ -23,13 +20,11 @@ Semaphore can run shell scripts using `/bin/bash`. To do this, create a **Bash S
 4. Click **Create**.
 5. Click **Run** to execute the template. The New Task dialog for a script template has only the optional message, plus survey variables and prompts if the template defines them.
 
-<div class="DialogScreenshot">
+![New Task dialog for a Bash template](../../../static/assets/task-new-bash.webp)
 
-![New Task dialog for a Bash template](/assets/task-new-bash.webp)
+<a id="passing-variables-to-scripts"></a>
 
-</div>
-
-## Passing variables to scripts {#passing-variables-to-scripts}
+## Passing variables to scripts
 
 Variables from the selected **Variable Groups** are injected as environment variables. Access them in the script with `$VARIABLE_NAME`:
 
@@ -38,10 +33,12 @@ Variables from the selected **Variable Groups** are injected as environment vari
 echo "Deploying to $TARGET_HOST"
 ```
 
-## Notes {#notes}
+<a id="notes"></a>
+
+## Notes
 
 - Make your script executable (`chmod +x`) or ensure it starts with a valid shebang (`#!/bin/bash`).
 - Scripts run non-interactively. Avoid prompts that wait for user input.
 - Exit code `0` means success; any non-zero exit code marks the task as failed.
-- If a very short script produces no log output, see [Bash script output is missing or incomplete](/faq/troubleshooting#bash-script-output-is-missing-or-incomplete) in the troubleshooting guide.
-- To run commands on remote hosts, use [Ansible](./ansible) instead.
+- If a very short script produces no log output, see [Bash script output is missing or incomplete](../../faq/troubleshooting.md#bash-script-output-is-missing-or-incomplete) in the troubleshooting guide.
+- To run commands on remote hosts, use [Ansible](ansible.md) instead.

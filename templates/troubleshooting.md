@@ -1,8 +1,3 @@
----
-title: Troubleshooting <feature>
-description: <One sentence, 80-160 characters, which failures this page covers.>
----
-
 # Troubleshooting <feature>
 
 <!--
@@ -12,7 +7,9 @@ and put the message in backticks.
 Each entry: symptom, then cause, then fix. Keep "workaround" for temporary fixes only.
 -->
 
-## Error: `<the exact message the user sees>` {#error-slug}
+<a id="error-slug"></a>
+
+## Error: `<the exact message the user sees>`
 
 **Cause.** <Why this happens, one or two sentences.>
 
@@ -21,7 +18,9 @@ Each entry: symptom, then cause, then fix. Keep "workaround" for temporary fixes
 1. <Action.>
 2. <Action.>
 
-## <Symptom phrased as the user would describe it> {#symptom-slug}
+<a id="symptom-slug"></a>
+
+## <Symptom phrased as the user would describe it>
 
 **Cause.** <…>
 

@@ -1,13 +1,10 @@
----
-title: Kerberos authentication
-description: Inventory settings, host packages, and krb5.conf changes needed to reach Windows hosts over WinRM with Kerberos.
----
-
 # Kerberos authentication
 
 Semaphore supports Kerberos authentication when running playbooks against **Windows hosts via WinRM**.
 
-## Inventory configuration {#inventory-configuration}
+<a id="inventory-configuration"></a>
+
+## Inventory configuration
 
 ```ini
 [windows]
@@ -35,8 +32,9 @@ ansible_winrm_kinit_mode=managed
 
 This tells Ansible to **automatically acquire a Kerberos ticket** using the provided username/password without requiring you to manually run kinit.
 
+<a id="example-playbook"></a>
 
-##  Example Playbook {#example-playbook}
+##  Example Playbook
 
 ```yaml
 - hosts: all
@@ -48,8 +46,9 @@ This tells Ansible to **automatically acquire a Kerberos ticket** using the prov
 
 This verifies basic connectivity using WinRM + Kerberos.
 
+<a id="semaphore-ui-host-requirements"></a>
 
-## Semaphore UI host requirements {#semaphore-ui-host-requirements}
+## Semaphore UI host requirements
 
 On the Semaphore host, install the following packages:
 
@@ -66,7 +65,9 @@ Then edit `/etc/krb5.conf` and set your default realm (domain name):
 
 This must match your Active Directory domain.
 
-## Notes {#notes}
+<a id="notes"></a>
+
+## Notes
 
 * You do not need to run kinit manually — Ansible handles ticket acquisition when `ansible_winrm_kinit_mode=managed` is set.
 

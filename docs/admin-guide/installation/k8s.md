@@ -1,8 +1,3 @@
----
-title: Kubernetes (Helm chart)
-description: Where to find the official Semaphore Helm chart and its full documentation on Artifact Hub.
----
-
 # Kubernetes (Helm chart)
 
 Semaphore provides a helm chart for installation on Kubernetes.

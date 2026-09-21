@@ -1,27 +1,28 @@
----
-title: Consul Dynamic Inventory with Semaphore
-description: Step-by-step guide to using a Consul catalog as an Ansible dynamic inventory in Semaphore with a Python inventory script.
----
-
 # Consul Dynamic Inventory with Semaphore
 
 ![Ansible Badge](https://img.shields.io/badge/ansible-%23000.svg?style=for-the-badge&logo=ansible&logoColor=white)
 ![Consul Badge](https://img.shields.io/badge/Consul-%23F24C53.svg?style=for-the-badge&logo=consul&logoColor=white)
 
-## Overview {#overview}
+<a id="overview"></a>
+
+## Overview
 
 This guide shows how to use [HashiCorp Consul](https://www.consul.io/) as a dynamic inventory source in Semaphore. Instead of manually listing hosts, Ansible will query Consul's catalog at runtime to discover which hosts to target.
 
 This approach uses a **Python inventory script** committed to your git repository. Semaphore runs the script automatically when executing a playbook.
 
-## Prerequisites {#prerequisites}
+<a id="prerequisites"></a>
+
+## Prerequisites
 
 - A running Consul cluster with registered nodes
 - A Consul ACL token with read access to the catalog *(only if [ACLs](https://developer.hashicorp.com/consul/docs/security/acl) are enabled)*
 - Python 3 installed on the Semaphore host (or runner)
 - A git repository to store your playbook and inventory script
 
-## Step 1 — Create the Inventory Script {#step-1--create-the-inventory-script}
+<a id="step-1--create-the-inventory-script"></a>
+
+## Step 1 — Create the Inventory Script
 
 Create a file called `inventory/consul_inventory.py` in your repository. This script queries the Consul HTTP API and returns host information in the format Ansible expects.
 
@@ -41,7 +42,6 @@ import ssl
 CONSUL_ADDR = os.environ.get("CONSUL_HTTP_ADDR", "https://consul.example.com")
 CONSUL_TOKEN = os.environ.get("CONSUL_HTTP_TOKEN", "")
 
-
 def consul_get(path):
     url = f"{CONSUL_ADDR}/v1/{path}"
     req = urllib.request.Request(url)
@@ -50,7 +50,6 @@ def consul_get(path):
     ctx = ssl.create_default_context()
     with urllib.request.urlopen(req, context=ctx) as resp:
         return json.loads(resp.read())
-
 
 def is_healthy(node_name):
     """Return True if the node has a passing serfHealth check."""
@@ -62,7 +61,6 @@ def is_healthy(node_name):
         )
     except Exception:
         return False
-
 
 def build_inventory():
     inventory = {"_meta": {"hostvars": {}}}
@@ -84,7 +82,6 @@ def build_inventory():
     inventory["all"] = {"hosts": all_hosts}
     return inventory
 
-
 if __name__ == "__main__":
     if len(sys.argv) > 1 and sys.argv[1] == "--host":
         print(json.dumps({}))
@@ -98,11 +95,13 @@ Make the script executable:
 chmod +x inventory/consul_inventory.py
 ```
 
-:::tip
-You can customise this script to group hosts by Consul node metadata, service tags, or datacenters. The example above is a minimal starting point.
-:::
+> **Tip**
+>
+> You can customise this script to group hosts by Consul node metadata, service tags, or datacenters. The example above is a minimal starting point.
 
-## Step 2 — Set Up Your Repository {#step-2--set-up-your-repository}
+<a id="step-2--set-up-your-repository"></a>
+
+## Step 2 — Set Up Your Repository
 
 Your repository should look like this:
 
@@ -113,9 +112,9 @@ my-project/
 └── playbook.yml
 ```
 
-:::note
-This approach uses only the Python standard library to query the Consul API directly. No additional Ansible collections are required for the inventory script to work.
-:::
+> **Note**
+>
+> This approach uses only the Python standard library to query the Consul API directly. No additional Ansible collections are required for the inventory script to work.
 
 A simple test playbook (`playbook.yml`):
 
@@ -130,9 +129,13 @@ A simple test playbook (`playbook.yml`):
 
 Push this repository to your git provider.
 
-## Step 3 — Configure Semaphore {#step-3--configure-semaphore}
+<a id="step-3--configure-semaphore"></a>
 
-### Add a Variable Group {#add-a-variable-group}
+## Step 3 — Configure Semaphore
+
+<a id="add-a-variable-group"></a>
+
+### Add a Variable Group
 
 The inventory script reads the Consul address and token from environment variables. Create a Variable Group in Semaphore to pass these values.
 
@@ -144,18 +147,22 @@ The inventory script reads the Consul address and token from environment variabl
    - `CONSUL_HTTP_TOKEN` = `your-consul-acl-token` *(only required if [ACLs](https://developer.hashicorp.com/consul/docs/security/acl) are enabled on your Consul cluster)*
 5. Click **Create**
 
-:::tip
-If your Consul cluster does not have ACLs enabled, you can omit the `CONSUL_HTTP_TOKEN` variable. The inventory script will still work — it simply won't send an authentication token with its API requests.
-:::
+> **Tip**
+>
+> If your Consul cluster does not have ACLs enabled, you can omit the `CONSUL_HTTP_TOKEN` variable. The inventory script will still work — it simply won't send an authentication token with its API requests.
 
-### Add the Repository {#add-the-repository}
+<a id="add-the-repository"></a>
+
+### Add the Repository
 
 1. Go to **Repositories** and click **New Repository**
 2. Enter the git URL of your repository
 3. Select the access key for your git provider
 4. Click **Create**
 
-### Add the Inventory {#add-the-inventory}
+<a id="add-the-inventory"></a>
+
+### Add the Inventory
 
 1. Go to **Inventory** and click **New Inventory**
 2. Name it (e.g. `consul-dynamic-inventory`)
@@ -164,11 +171,13 @@ If your Consul cluster does not have ACLs enabled, you can omit the `CONSUL_HTTP
 5. Select the SSH key that Ansible will use to connect to your hosts
 6. Click **Create**
 
-:::note
-The path is relative to the root of your git repository. Semaphore clones the repo and passes this path to `ansible-playbook -i inventory/consul_inventory.py`.
-:::
+> **Note**
+>
+> The path is relative to the root of your git repository. Semaphore clones the repo and passes this path to `ansible-playbook -i inventory/consul_inventory.py`.
 
-### Create a Task Template {#create-a-task-template}
+<a id="create-a-task-template"></a>
+
+### Create a Task Template
 
 1. Go to **Task Templates** and click **New Template**
 2. Name it (e.g. `Consul Hello World`)
@@ -176,7 +185,9 @@ The path is relative to the root of your git repository. Semaphore clones the re
 4. Select the repository, inventory, and variable group you created above
 5. Click **Create**
 
-## Step 4 — Run It {#step-4--run-it}
+<a id="step-4--run-it"></a>
+
+## Step 4 — Run It
 
 Click **Run** on your task template. Semaphore will:
 
@@ -196,7 +207,9 @@ ok: [node-02] => {
 }
 ```
 
-## Grouping Hosts by Metadata {#grouping-hosts-by-metadata}
+<a id="grouping-hosts-by-metadata"></a>
+
+## Grouping Hosts by Metadata
 
 Consul supports [node metadata](https://developer.hashicorp.com/consul/docs/agent/config/config-files#node_meta) — key-value pairs attached to each node. You can use these to create Ansible groups automatically.
 
@@ -227,7 +240,9 @@ This creates groups like `role_webserver`, `env_production`, or `os_ubuntu`. You
         state: restarted
 ```
 
-## Further Reading {#further-reading}
+<a id="further-reading"></a>
+
+## Further Reading
 
 - [Ansible Dynamic Inventory Documentation](https://docs.ansible.com/ansible/latest/inventory_guide/intro_dynamic_inventory.html)
 - [Consul Catalog API](https://developer.hashicorp.com/consul/api-docs/catalog)

@@ -1,19 +1,20 @@
----
-title: Troubleshooting
-description: "Fixes for the failures people hit most often: runner 404, Ansible gathering facts, Postgres SSL, git clones, missing script output, and LDAP errors."
----
-
 # Troubleshooting
 
-## Runner prints error 404 {#runner-prints-error-404}
+<a id="runner-prints-error-404"></a>
 
-### How to fix {#how-to-fix}
+## Runner prints error 404
+
+<a id="how-to-fix"></a>
+
+### How to fix
 
 [Getting 401 error code from Runner](https://github.com/semaphoreui/semaphore/discussions/1873?converting=1)
 
 ---
 
-## Gathering Facts issue for localhost {#gathering-facts-issue-for-localhost}
+<a id="gathering-facts-issue-for-localhost"></a>
+
+## Gathering Facts issue for localhost
 
 The issue can occur on Semaphore UI installed via [Snap](https://snapcraft.io/semaphore) or [Docker](https://hub.docker.com/r/semaphoreui/semaphore).
 
@@ -24,13 +25,17 @@ TASK [Gathering Facts] *********************************************************
 fatal: [localhost]: FAILED! => changed=false
 ```
 
-### Why this happens {#why-this-happens}
+<a id="why-this-happens"></a>
+
+### Why this happens
 
 For more information about localhost use in Ansible, read this article [Implicit 'localhost'](https://docs.ansible.com/ansible/latest/inventory/implicit_localhost.html).
 
 Ansible tries to gather facts locally, but Ansible is located in a limited isolated container which doesn't allow this.
 
-### How to fix this {#how-to-fix-this}
+<a id="how-to-fix-this"></a>
+
+### How to fix this
 
 There are two ways:
 
@@ -49,11 +54,15 @@ There are two ways:
 127.0.0.1 ansible_connection=ssh ansible_ssh_user=your_localhost_user
 ```
 ---
-## panic: pq: SSL is not enabled on the server {#panic-pq-ssl-is-not-enabled-on-the-server}
+<a id="panic-pq-ssl-is-not-enabled-on-the-server"></a>
+
+## panic: pq: SSL is not enabled on the server
 
 This means that your Postgres doesn't work by SSL.
 
-### How to fix this {#how-to-fix-this-1}
+<a id="how-to-fix-this-1"></a>
+
+### How to fix this
 
 Add option `sslmode=disable` to the configuration file:
 
@@ -69,11 +78,15 @@ Add option `sslmode=disable` to the configuration file:
 	},
 ```
 ---
-## fatal: bad numeric config value '0' for 'GIT_TERMINAL_PROMPT': invalid unit {#fatal-bad-numeric-config-value-0-for-git_terminal_prompt-invalid-unit}
+<a id="fatal-bad-numeric-config-value-0-for-git_terminal_prompt-invalid-unit"></a>
+
+## fatal: bad numeric config value '0' for 'GIT_TERMINAL_PROMPT': invalid unit
 
 This means that you are trying to access a repository over HTTPS that requires authentication.
 
-### How to fix this {#how-to-fix-this-2}
+<a id="how-to-fix-this-2"></a>
+
+### How to fix this
 
 * Go to **Key Store** screen.
 * Create a new key `Login with password` type.
@@ -83,15 +96,21 @@ This means that you are trying to access a repository over HTTPS that requires a
 
 ---
 
-## Git clone or pull fails intermittently {#git-clone-or-pull-fails-intermittently}
+<a id="git-clone-or-pull-fails-intermittently"></a>
+
+## Git clone or pull fails intermittently
 
 Task logs may show messages like `Git pull failed (...), retrying in 2s` followed by either success or a final failure after several attempts.
 
-### Why this happens {#why-this-happens-1}
+<a id="why-this-happens-1"></a>
+
+### Why this happens
 
 The git server (GitHub, GitLab, Bitbucket, or a self-hosted instance) was temporarily unreachable, returned a transient HTTP error, or the network between Semaphore and the server had a brief outage. Semaphore retries clone and pull operations automatically before failing the task.
 
-### How to fix this {#how-to-fix-this-3}
+<a id="how-to-fix-this-3"></a>
+
+### How to fix this
 
 1. **Transient outages**: Usually resolve on their own. Semaphore retries up to `git_attempts` times (default 4) with exponential backoff between attempts.
 2. **Frequent failures**: Increase the attempt budget in your configuration:
@@ -110,19 +129,25 @@ export SEMAPHORE_GIT_ATTEMPTS=8
 
 3. **Immediate, consistent failures**: Retries will not help. Check repository URL, branch name, access keys, and network connectivity from the Semaphore server or runner host.
 
-See [Git operations](/admin-guide/configuration/config-file#git-operations) for details on `git_client` and `git_attempts`.
+See [Git operations](../admin-guide/configuration/config-file.md#git-operations) for details on `git_client` and `git_attempts`.
 
 ---
 
-## Bash script output is missing or incomplete {#bash-script-output-is-missing-or-incomplete}
+<a id="bash-script-output-is-missing-or-incomplete"></a>
+
+## Bash script output is missing or incomplete
 
 A Bash task finishes successfully but the log shows little or no output from `echo`, `printf`, or other commands — especially when the script exits quickly.
 
-### Why this happens {#why-this-happens-2}
+<a id="why-this-happens-2"></a>
+
+### Why this happens
 
 Semaphore captures stdout and stderr from shell commands while they run. Very short scripts can finish before all buffered output is read, so the last lines may be dropped from the task log.
 
-### How to fix this {#how-to-fix-this-4}
+<a id="how-to-fix-this-4"></a>
+
+### How to fix this
 
 1. **Upgrade**: Recent Semaphore versions drain process output before marking a task complete. Update server and runners if you are on an older release.
 2. **Flush output in the script** when you need guaranteed delivery:
@@ -138,11 +163,15 @@ For critical diagnostics, write to a file inside the repository workspace and `c
 
 ---
 
-## unable to read LDAP response packet: unexpected EOF {#unable-to-read-ldap-response-packet-unexpected-eof}
+<a id="unable-to-read-ldap-response-packet-unexpected-eof"></a>
+
+## unable to read LDAP response packet: unexpected EOF
 
 Most likely, you are trying to connect to the LDAP server using an insecure method, although it expects a secure connection (via TLS).
 
-### How to fix this {#how-to-fix-this-5}
+<a id="how-to-fix-this-5"></a>
+
+### How to fix this
 
 Enable TLS in your `config.json` file:
 
@@ -154,11 +183,15 @@ Enable TLS in your `config.json` file:
 
 ---
 
-## LDAP Result Code 49 "Invalid Credentials" {#ldap-result-code-49-invalid-credentials}
+<a id="ldap-result-code-49-invalid-credentials"></a>
+
+## LDAP Result Code 49 "Invalid Credentials"
 
 You have the wrong password or `binddn`.
 
-### How to fix this {#how-to-fix-this-6}
+<a id="how-to-fix-this-6"></a>
+
+### How to fix this
 
 Use `ldapwhoami` tool and check if your binddn works:
 
@@ -172,18 +205,22 @@ ldapwhoami\
 
 It will ask interactively for the password and should return code **0** and echo out the **DN** as specified.
 
-You also can read the following articles: 
+You also can read the following articles:
 * [ldapsearch: Invalid credentials (49)](https://serverfault.com/q/771549/443463)
 * [https://github.com/semaphoreui/semaphore/issues/906](https://github.com/semaphoreui/semaphore/issues/906)
 
 ---
 
-## LDAP Result Code 32 "No Such Object" {#ldap-result-code-32-no-such-object}
+<a id="ldap-result-code-32-no-such-object"></a>
+
+## LDAP Result Code 32 "No Such Object"
 
 The directory has no entry at the distinguished name Semaphore asked about. It is
 almost always a wrong `ldap_searchdn`, less often a wrong `ldap_binddn`.
 
-### How to fix this {#how-to-fix-this-7}
+<a id="how-to-fix-this-7"></a>
+
+### How to fix this
 
 Check that the search base exists, using the same credentials Semaphore uses:
 
@@ -203,4 +240,4 @@ ldapsearch\
 - Result code **0** means the base is fine and the problem is in
   `ldap_searchfilter`: it matches no entry below that base.
 
-See [LDAP and AD](/admin-guide/authentication/ldap) for the meaning of each option.
+See [LDAP and AD](../admin-guide/authentication/ldap.md) for the meaning of each option.

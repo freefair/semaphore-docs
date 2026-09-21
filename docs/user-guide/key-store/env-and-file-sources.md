@@ -1,8 +1,3 @@
----
-title: Keys from environment variables and files
-description: How a key can read its value from a file or an environment variable on the server, the JSON format, and troubleshooting.
----
-
 # Keys from environment variables and files
 
 Besides storing a secret in the database, a Key Store entry can read its value at task time from
@@ -16,26 +11,30 @@ This is useful when the credential is already provisioned outside Semaphore, for
 Semaphore does not copy the value into its database. Every time a task needs the key, the server
 reads the file or the variable again, so rotating the credential on disk takes effect on the next task.
 
-:::info
-The file or variable is read by the **Semaphore server**, not by a runner. When you use remote runners,
-mount the file on the server host; the server resolves the secret and hands it to the runner.
-:::
+> **Info**
+>
+> The file or variable is read by the **Semaphore server**, not by a runner. When you use remote runners,
+> mount the file on the server host; the server resolves the secret and hands it to the runner.
 
-## Choosing the source {#choosing-the-source}
+<a id="choosing-the-source"></a>
+
+## Choosing the source
 
 When you create or edit a key (**Key Store → New Key**), the top of the form has source tabs:
 
 | Tab | Where the value comes from | What to enter |
 |-----|---------------------------|---------------|
 | **Local** | Semaphore database (encrypted) | The login, password, or private key in the form |
-| **Storage** <Pro /> | External secret storage such as [HashiCorp Vault](/user-guide/key-store/hashicorp-vault) | Storage and the secret path |
+| **Storage**  | External secret storage such as [HashiCorp Vault](hashicorp-vault.md) | Storage and the secret path |
 | **Env** | An environment variable of the Semaphore server process | The variable name, for example `PROD_SSH_KEY` |
 | **File** | A file on the Semaphore server | The **absolute** path to the file, for example `/var/lib/semaphore/secrets/prod.json` |
 
 With **Env** or **File** selected, the login, password, and private-key fields disappear. The whole
 credential, including the login for SSH and Login With Password keys, must be in the file or variable.
 
-## 1. Allow the directory {#allow-the-directory}
+<a id="allow-the-directory"></a>
+
+## 1. Allow the directory
 
 For security, Semaphore only reads key files that are inside its **secrets directory**. Any other
 path is rejected when a task starts:
@@ -46,14 +45,14 @@ Failed to install inventory: file path must be inside secrets path
 
 The default secrets directory is `/tmp/semaphore`. Point it at the directory where your key files
 live using `dirs.secrets` in `config.json` or the `SEMAPHORE_SECRETS_PATH` environment variable.
-See [Secrets directory](/admin-guide/configuration/config-file#secrets-directory) for precedence rules.
+See [Secrets directory](../../admin-guide/configuration/config-file.md#secrets-directory) for precedence rules.
 
 Docker Compose example that mounts a host directory and allows it:
 
 ```yaml
 services:
   semaphore:
-    image: semaphoreui/semaphore:latest
+    image: ghcr.io/freefair/semaphore-ex:latest
     environment:
       SEMAPHORE_SECRETS_PATH: /var/lib/semaphore/secrets
     volumes:
@@ -79,12 +78,16 @@ Rules for the path entered in the **File** tab:
 
 Environment variables have no such restriction; the server just reads the named variable from its own environment.
 
-## 2. Format the value {#format-the-value}
+<a id="format-the-value"></a>
+
+## 2. Format the value
 
 The content of the file (or the value of the variable) depends on the key type. A single trailing
 newline at the end of a file is ignored; anything else is used verbatim.
 
-### SSH key {#ssh-key}
+<a id="ssh-key"></a>
+
+### SSH key
 
 Semaphore expects a **JSON document**, not a raw PEM or OpenSSH private key file:
 
@@ -112,18 +115,16 @@ chmod 0400 /srv/semaphore/secrets/prod_ssh.json
 Then create a key of type **SSH**, open the **File** tab, and enter `/var/lib/semaphore/secrets/prod_ssh.json`
 (the path as seen **inside** the container).
 
-<div class="DialogScreenshot DialogScreenshot--small">
+![](../../../static/assets/key-file-source.webp)
 
-![](/assets/key-file-source.webp)
+> **Warning**
+>
+> Pointing the **File** tab at a raw private key such as `~/.ssh/id_ed25519` does not work.
+> The file is parsed as JSON and the task fails to load the inventory.
 
-</div>
+<a id="login-with-password"></a>
 
-:::warning
-Pointing the **File** tab at a raw private key such as `~/.ssh/id_ed25519` does not work.
-The file is parsed as JSON and the task fails to load the inventory.
-:::
-
-### Login With Password {#login-with-password}
+### Login With Password
 
 Also a JSON document:
 
@@ -136,26 +137,30 @@ Also a JSON document:
 
 Leave `login` empty to use the key as a plain token or password, for example as an Ansible vault password.
 
-## Environment variable example {#environment-variable-example}
+<a id="environment-variable-example"></a>
+
+## Environment variable example
 
 The same JSON format applies to the **Env** tab. In Docker Compose:
 
 ```yaml
 services:
   semaphore:
-    image: semaphoreui/semaphore:latest
+    image: ghcr.io/freefair/semaphore-ex:latest
     environment:
       PROD_SSH_KEY: '{"login":"deploy","passphrase":"","private_key":"-----BEGIN OPENSSH PRIVATE KEY-----\n...\n-----END OPENSSH PRIVATE KEY-----\n"}'
 ```
 
 Create an **SSH** key, select the **Env** tab, and enter `PROD_SSH_KEY` as the variable name.
 
-:::tip
-Environment variables are visible to every process in the container and often end up in
-orchestrator metadata and logs. Prefer the **File** tab with a mounted secret when you can.
-:::
+> **Tip**
+>
+> Environment variables are visible to every process in the container and often end up in
+> orchestrator metadata and logs. Prefer the **File** tab with a mounted secret when you can.
 
-## Troubleshooting {#troubleshooting}
+<a id="troubleshooting"></a>
+
+## Troubleshooting
 
 | Error | Cause | Fix |
 |-------|-------|-----|

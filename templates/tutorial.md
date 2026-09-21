@@ -1,8 +1,3 @@
----
-title: <Bare infinitive with a goal, matches the H1>
-description: <One sentence, 80-160 characters, what the reader will have built by the end.>
----
-
 # <Bare infinitive with a goal>
 
 <!--
@@ -15,30 +10,42 @@ Target 20 to 40 minutes and at most seven main steps.
 
 **Time:** <n> minutes
 
-## What you will learn {#what-you-will-learn}
+<a id="what-you-will-learn"></a>
+
+## What you will learn
 
 By the end of this tutorial you will be able to:
 
 - <Verb + outcome.>
 - <Verb + outcome.>
 
-## Before you begin {#before-you-begin}
+<a id="before-you-begin"></a>
+
+## Before you begin
 
 - <Exact versions and accounts required.>
 - <Anything carried over from a previous tutorial.>
 
-## Step 1: <bare infinitive> {#step-1}
+<a id="step-1"></a>
+
+## Step 1: <bare infinitive>
 
 <Numbered actions with the exact commands or UI path. Show the expected output so the
 reader can confirm they are on track.>
 
-## Step 2: <bare infinitive> {#step-2}
+<a id="step-2"></a>
 
-## Clean up {#clean-up}
+## Step 2: <bare infinitive>
+
+<a id="clean-up"></a>
+
+## Clean up
 
 <How to remove what the tutorial created, so nothing is left running.>
 
-## What's next {#whats-next}
+<a id="whats-next"></a>
 
-- [<Next tutorial>](/path)
-- [<Concept page that explains what just happened>](/path)
+## What's next
+
+- [<Next tutorial>](README.md)
+- [<Concept page that explains what just happened>](README.md)

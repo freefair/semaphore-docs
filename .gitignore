@@ -1,11 +1,10 @@
-/book
-/deploy/invs/yc/files/secrets.yml
-/deploy/venv
-/book_ok
+# Local editor state and historical generated files are not documentation.
+.DS_Store
 node_modules/
 /build
-/.docusaurus
-/.docusaurus-dev
-/.docusaurus-build
-/deploy/invs/aws
-.DS_Store
+/.docusaurus*
+/book
+/book_ok
+/deploy/venv
+/deploy/invs/
+.claude/task-notes/

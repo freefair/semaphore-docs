@@ -1,14 +1,8 @@
----
-title: Package manager
-description: Installing the Semaphore .deb or .rpm package on Debian, Ubuntu, or CentOS, then running setup and starting the server.
----
-
 # Package manager
 
-:::tip
-  Look into the <a href="./../installation_manually">manual installation</a> on how to set-up your Python/Ansible/Systemd environment!
-:::
-
+> **Tip**
+>
+>   Look into the [manual installation](../installation_manually.md) on how to set-up your Python/Ansible/Systemd environment!
 
 Download package file from [Releases page](https://github.com/semaphoreui/semaphore/releases).
 
@@ -16,44 +10,41 @@ Download package file from [Releases page](https://github.com/semaphoreui/semaph
 
 Here are several installation commands, depending on the package manager:
 
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
+### Debian / Ubuntu (x64)
 
-<Tabs>
-  <TabItem value="debian-x64" label="Debian / Ubuntu (x64)">
-    ```bash
-    wget https://github.com/semaphoreui/semaphore/releases/\
-    download/v2.17.15/semaphore_2.17.15_linux_amd64.deb
+```bash
+wget https://github.com/semaphoreui/semaphore/releases/\
+download/v2.17.15/semaphore_2.17.15_linux_amd64.deb
 
-    sudo dpkg -i semaphore_2.17.15_linux_amd64.deb
-    ```
-  </TabItem>
-  <TabItem value="debian-arm64" label="Debian / Ubuntu (ARM64)">
-    ```bash
-    wget https://github.com/semaphoreui/semaphore/releases/\
-    download/v2.17.15/semaphore_2.17.15_linux_arm64.deb
+sudo dpkg -i semaphore_2.17.15_linux_amd64.deb
+```
 
-    sudo dpkg -i semaphore_2.17.15_linux_arm64.deb
-    ```
-  </TabItem>
-  <TabItem value="centos-x64" label="CentOS (x64)">
-    ```bash
-    wget https://github.com/semaphoreui/semaphore/releases/\
-    download/v2.17.15/semaphore_2.17.15_linux_amd64.rpm
+### Debian / Ubuntu (ARM64)
 
-    sudo yum install semaphore_2.17.15_linux_amd64.rpm
-    ```
-  </TabItem>
-  <TabItem value="centos-arm64" label="CentOS (ARM64)">
-    ```bash
-    wget https://github.com/semaphoreui/semaphore/releases/\
-    download/v2.17.15/semaphore_2.17.15_linux_arm64.rpm
+```bash
+wget https://github.com/semaphoreui/semaphore/releases/\
+download/v2.17.15/semaphore_2.17.15_linux_arm64.deb
 
-    sudo yum install semaphore_2.17.15_linux_arm64.rpm
-    ```
-  </TabItem>
-</Tabs>
+sudo dpkg -i semaphore_2.17.15_linux_arm64.deb
+```
 
+### CentOS (x64)
+
+```bash
+wget https://github.com/semaphoreui/semaphore/releases/\
+download/v2.17.15/semaphore_2.17.15_linux_amd64.rpm
+
+sudo yum install semaphore_2.17.15_linux_amd64.rpm
+```
+
+### CentOS (ARM64)
+
+```bash
+wget https://github.com/semaphoreui/semaphore/releases/\
+download/v2.17.15/semaphore_2.17.15_linux_arm64.rpm
+
+sudo yum install semaphore_2.17.15_linux_arm64.rpm
+```
 
 Setup Semaphore by using the following command:
 

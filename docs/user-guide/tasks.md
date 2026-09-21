@@ -1,57 +1,56 @@
----
-title: Tasks
-description: Starting tasks from the New Task dialog, the task window tabs, every task status, stopping tasks, and rerunning them.
----
-
 # Tasks
 
-A task is a single execution of a [task template](./task-templates): one run of an Ansible playbook, a Terraform/OpenTofu/Terragrunt configuration, or a Bash, PowerShell, or Python script. Every task keeps its own log, status, and details, so you can always see what ran, when, by whom, and with which revision of the repository.
+A task is a single execution of a [task template](task-templates/README.md): one run of an Ansible playbook, a Terraform/OpenTofu/Terragrunt configuration, or a Bash, PowerShell, or Python script. Every task keeps its own log, status, and details, so you can always see what ran, when, by whom, and with which revision of the repository.
 
-## Starting a task {#starting-a-task}
+<a id="starting-a-task"></a>
 
-You need the **Task Runner** role or higher in the project (see [Teams](./team)). Start a task in one of two places:
+## Starting a task
+
+You need the **Task Runner** role or higher in the project (see [Teams](team.md)). Start a task in one of two places:
 
 - In **Task Templates**, click the **play** button in the row of the template.
 - On the template page, click the button in the top right corner. Its label depends on the template type: **Run**, **Build**, or **Deploy**.
 
 Both open the **New Task** dialog. Its content depends on the application and on the options enabled in the template.
 
-<div class="DialogScreenshot">
-![New Task dialog for an Ansible template](/assets/task-new-ansible.webp)
-</div>
+![New Task dialog for an Ansible template](../../static/assets/task-new-ansible.webp)
 
 | Field | Shown for | Description |
 |---|---|---|
 | **Message** | all templates | Optional note stored with the task and shown in history and alerts. |
-| **Build Version** | deploy templates | Which build to deploy. The latest successful build is selected by default. See [Build and deploy templates](./task-templates/build-deploy). |
-| Survey variables | templates with [survey variables](./task-templates/survey-vars) | One input per variable; required variables must be filled. |
-| **Dry Run** `--check`, **Diff** `--diff` | Ansible | Run the playbook in check mode or show file changes. Other Ansible prompts (Limit, Tags, Skip tags, Debug) appear when enabled in the template, see [Prompts](./task-templates/prompts). |
-| **Plan**, **Destroy**, **Auto Approve**, **Upgrade**, **Reconfigure** | Terraform, OpenTofu, Terragrunt | Run `plan` only, add `-destroy`, `-auto-approve`, `-upgrade`, or `-reconfigure`. See [Terraform/OpenTofu](./apps/terraform). |
+| **Build Version** | deploy templates | Which build to deploy. The latest successful build is selected by default. See [Build and deploy templates](task-templates/build-deploy.md). |
+| Survey variables | templates with [survey variables](task-templates/survey-vars.md) | One input per variable; required variables must be filled. |
+| **Dry Run** `--check`, **Diff** `--diff` | Ansible | Run the playbook in check mode or show file changes. Other Ansible prompts (Limit, Tags, Skip tags, Debug) appear when enabled in the template, see [Prompts](task-templates/prompts.md). |
+| **Plan**, **Destroy**, **Auto Approve**, **Upgrade**, **Reconfigure** | Terraform, OpenTofu, Terragrunt | Run `plan` only, add `-destroy`, `-auto-approve`, `-upgrade`, or `-reconfigure`. See [Terraform/OpenTofu](apps/terraform/README.md). |
 | **Branch**, **Inventory**, **CLI args** | any application | Override the template values for this run. Each override must be allowed in the template settings. |
 
-<div class="DialogScreenshot">
-![New Task dialog for a Terraform template](/assets/task-new-terraform.webp)
-</div>
+![New Task dialog for a Terraform template](../../static/assets/task-new-terraform.webp)
 
 Click **Run** (or **Build** / **Deploy**) to put the task into the queue.
 
-### Queue and parallel execution {#queue-and-parallel-execution}
+<a id="queue-and-parallel-execution"></a>
 
-Tasks of the same template run one after another unless **Allow parallel tasks** is enabled in the template. The project can also limit the total number of running tasks with **Max number of parallel tasks** in [project settings](./projects/settings). A task that has to wait stays in the `waiting` status and starts automatically when a slot is free.
+### Queue and parallel execution
 
-## SSH authentication from task commands {#ssh-authentication-from-task-commands}
+Tasks of the same template run one after another unless **Allow parallel tasks** is enabled in the template. The project can also limit the total number of running tasks with **Max number of parallel tasks** in [project settings](projects/settings.md). A task that has to wait stays in the `waiting` status and starts automatically when a slot is free.
+
+<a id="ssh-authentication-from-task-commands"></a>
+
+## SSH authentication from task commands
 
 Tasks whose Repository uses an SSH key receive a task-scoped agent through `SSH_AUTH_SOCK`.
 Requirements installers and commands started by the task can use the same identity that authenticates Semaphore's Repository checkout.
 For example, this supports Ansible Galaxy collections and Terraform modules stored in private Git repositories.
 The Inventory SSH key, when present, is available first in the same agent for Ansible managed-host connections, with explicit Ansible connection settings preserved.
-See [SSH keys available to a task](./key-store#ssh-keys-available-to-a-task) for key selection and cleanup behavior.
+See [SSH keys available to a task](key-store.md#ssh-keys-available-to-a-task) for key selection and cleanup behavior.
 
-## Task window {#task-window}
+<a id="task-window"></a>
+
+## Task window
 
 Clicking a task anywhere in the UI opens the task window. The header shows the template, the task number, the commit message of the repository revision, the status badge, who started the task and when, and the duration. The arrows icon expands the window to full screen.
 
-![Task log](/assets/task-log.webp)
+![Task log](../../static/assets/task-log.webp)
 
 | Tab | Content |
 |---|---|
@@ -59,13 +58,9 @@ Clicking a task anywhere in the UI opens the task window. The header shows the t
 | **Details** | Template info (application, template), commit info (message and hash), and running info: message, created, started, and end time, duration, and, when set, the runner, branch, limit, and variables used for the run. |
 | **Summary** | For Ansible tasks: how many hosts finished OK and how many failed, with a table of failed tasks per server. |
 
-<div class="DialogScreenshot" style={{maxWidth: 1000}}>
-![Task details](/assets/task-details.webp)
-</div>
+![Task details](../../static/assets/task-details.webp)
 
-<div class="DialogScreenshot" style={{maxWidth: 1000}}>
-![Task summary](/assets/task-summary.webp)
-</div>
+![Task summary](../../static/assets/task-summary.webp)
 
 ### Ansible task summary
 
@@ -81,7 +76,9 @@ The summary can be in one of these states:
 
 Refreshing the task page loads the same persisted summary rather than reparsing the raw log. Failure messages are bounded and common credential values are redacted before they are stored.
 
-## Task statuses {#task-statuses}
+<a id="task-statuses"></a>
+
+## Task statuses
 
 | Status | Meaning |
 |---|---|
@@ -96,31 +93,34 @@ Refreshing the task page loads the same persisted summary rather than reparsing 
 | `success` | Finished with exit code 0. |
 | `error` | Finished with a non-zero exit code or failed to start. Shown as **Failed** in the UI. |
 
-## Stopping tasks {#stopping-tasks}
+<a id="stopping-tasks"></a>
+
+## Stopping tasks
 
 Open the task window of a running task and click **Stop**. Semaphore sends a termination signal and the task goes to the `stopping` status while the process exits. If the process does not react, the button changes to **Force Stop**; click it to kill the process immediately.
 
 To stop every running and queued task of one template, open the template page and use **Stop all**. The dropdown offers both **Stop** and **Force stop**.
 
+![Stop all menu](../../static/assets/task-stop-all-menu.webp)
 
-<div class="DialogScreenshot" style={{maxWidth: 200}}>
+<a id="running-a-task-again"></a>
 
-![Stop all menu](/assets/task-stop-all-menu.webp)
-
-</div>
-
-## Running a task again {#running-a-task-again}
+## Running a task again
 
 On the **Tasks** tab of a template every row has a **rerun** button. It opens the New Task dialog with the message and parameters of that task filled in.
 
-![Template tasks with rerun buttons](/assets/template-tasks.webp)
+![Template tasks with rerun buttons](../../static/assets/template-tasks.webp)
 
-## Where tasks are listed {#where-tasks-are-listed}
+<a id="where-tasks-are-listed"></a>
 
-- **Dashboard → History**: all tasks of the project, see [History](./projects/history).
+## Where tasks are listed
+
+- **Dashboard → History**: all tasks of the project, see [History](projects/history.md).
 - **Template page → Tasks**: tasks of one template.
 - **Task Templates**: expand a row with the arrow on the left to see the latest tasks of the template without leaving the list.
 
-## Log retention {#log-retention}
+<a id="log-retention"></a>
 
-Tasks and logs are kept forever by default. Use `max_tasks_per_template` to keep only the latest tasks of each template, see [History](./projects/history#task-retention).
+## Log retention
+
+Tasks and logs are kept forever by default. Use `max_tasks_per_template` to keep only the latest tasks of each template, see [History](projects/history.md#task-retention).

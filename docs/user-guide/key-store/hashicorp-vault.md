@@ -1,15 +1,8 @@
----
-title: HashiCorp Vault secret storage
-description: Configuring HashiCorp Vault as external storage for keys and variable groups, including Vault Agent token files.
-sidebar_custom_props:
-  edition: pro
----
-
-# HashiCorp Vault secret storage  <Pro />
+# HashiCorp Vault secret storage
 
 Semaphore UI supports HashiCorp Vault as a storage for secrets.
 
-![](/assets/vault1.webp)
+![](../../../static/assets/vault1.webp)
 
 You can provide the following options:
 - **HashiCorp Vault URL** — address of your Vault server.
@@ -18,31 +11,35 @@ You can provide the following options:
     - Stored in the database.
     - Provided via an environment variable.
     - Provided via a file (useful for Vault Agent).
-      :::warning
-      When the token comes from a **file**, that file must be **inside** the secrets directory Semaphore uses. Configure that directory using `dirs.secrets` or the `SEMAPHORE_SECRETS_PATH` environment variable. The legacy top-level `secrets_path` option is still accepted for older configs. If none are set, the default is `/tmp/semaphore`. See [Secrets directory](/admin-guide/configuration/config-file#secrets-directory) for precedence details.
-
-      Example `config.json` fragment:
-
-      ```json
-      {
-        "dirs": {
-          "secrets": "/root/path/for/secrets"
-        }
-      }
-      ```
-      :::
+> **Warning**
+>
+> When the token comes from a **file**, that file must be **inside** the secrets directory Semaphore uses. Configure that directory using `dirs.secrets` or the `SEMAPHORE_SECRETS_PATH` environment variable. The legacy top-level `secrets_path` option is still accepted for older configs. If none are set, the default is `/tmp/semaphore`. See [Secrets directory](../../admin-guide/configuration/config-file.md#secrets-directory) for precedence details.
+>
+> Example `config.json` fragment:
+>
+> ```json
+> {
+> "dirs": {
+> "secrets": "/root/path/for/secrets"
+> }
+> }
+> ```
 
 The storage can work in read-only mode.
 
-## How to use {#how-to-use}
+<a id="how-to-use"></a>
+
+## How to use
 
 1. Configure the HashiCorp Vault connection in the Semaphore settings (URL, mount path, and token).
 2. When creating or editing a key in the Key Store, select **HashiCorp Vault** as the storage type.
 3. Provide the secret path in Vault where the credential should be stored.
 
-![](/assets/vault2.webp)
+![](../../../static/assets/vault2.webp)
 
-## HashiCorp Vault Agent {#hashicorp-vault-agent}
+<a id="hashicorp-vault-agent"></a>
+
+## HashiCorp Vault Agent
 
 Instead of storing the Vault token directly, you can use [HashiCorp Vault Agent](https://developer.hashicorp.com/vault/docs/agent-and-proxy/agent) to automatically handle token retrieval and renewal.
 
@@ -76,9 +73,10 @@ To set this up:
 
 This approach avoids long-lived static tokens and lets Vault Agent handle authentication and token renewal automatically.
 
+<a id="variable-groups"></a>
 
-## Variable Groups {#variable-groups}
+## Variable Groups
 
-HashiCorp Vault can also be used as a storage for [Variable Groups](/user-guide/environment). When editing a variable group, select **HashiCorp Vault** as the storage type and specify the path of the folder where secrets will be stored.
+HashiCorp Vault can also be used as a storage for [Variable Groups](../environment.md). When editing a variable group, select **HashiCorp Vault** as the storage type and specify the path of the folder where secrets will be stored.
 
-![](/assets/vault3.webp)
+![](../../../static/assets/vault3.webp)

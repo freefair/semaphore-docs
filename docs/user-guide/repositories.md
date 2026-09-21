@@ -1,13 +1,8 @@
----
-title: Repositories
-description: Supported repository URL types, authentication keys, creating and deleting repositories, and how requirements.yml is processed.
----
-
 # Repositories
 
 A Repository is a place to store and manage Ansible content like playbooks and roles.
 
-![Repositories list](/assets/repositories-list.webp)
+![Repositories list](../../static/assets/repositories-list.webp)
 
 The list shows the name, the Git URL with the branch, and the key used for authentication.
 
@@ -19,14 +14,20 @@ Semaphore understands Repositories that are:
 
 All Task Templates require a Repository in order to run.
 
-## Authentication {#authentication}
+<a id="authentication"></a>
+
+## Authentication
+
 If you are using a remote Repository that requires authentication, you will need to configure a key in the **Key Store** section of Semaphore.
 
 For remote Repositories that use SSH, you will need to use your SSH key in the **Key Store**.
 
 For Remote Repositories that do not have authentication, you can create a Key with the type of `None`.
 
-## Creating a New Repository {#creating-a-new-repository}
+<a id="creating-a-new-repository"></a>
+
+## Creating a New Repository
+
 1. Make sure you have configured the key for the Repository you are about to add in the key store section.
 
 2. Go to the Repositories section of Semaphore, click the **New Repository** button in the upper right hand corner.
@@ -44,12 +45,18 @@ For Remote Repositories that do not have authentication, you can create a Key wi
 
 4. Click Save once everything is configured.
 
-## Editing an Existing Repository {#editing-an-existing-repository}
+<a id="editing-an-existing-repository"></a>
+
+## Editing an Existing Repository
+
 1. Go to the Repositories section of Semaphore.
 
 2. Click on the pencil icon next to the Repository you wish to change, then you will be presented with the Repository configuration.
 
-## Deleting a Repository {#deleting-a-repository}
+<a id="deleting-a-repository"></a>
+
+## Deleting a Repository
+
 Make sure the Repository that is about to be delete is not in use by any Task Templates.
 A Repository cannot be deleted if it is used in any Task Templates:
 1. Go to the Repositories section of Semaphore.
@@ -58,24 +65,33 @@ A Repository cannot be deleted if it is used in any Task Templates:
 
 3. Click Yes on the confirmation pop-up if you are sure you want this Repository to be deleted.
 
-## Requirements {#requirements}
+<a id="requirements"></a>
+
+## Requirements
+
 Upon project initialization Semaphore searches for and installs Ansible roles and collections from requirements.yml in the following locations and order.
 
-### Roles {#roles}
+<a id="roles"></a>
+
+### Roles
 
 * `playbook_dir`/roles/requirements.yml
 * `playbook_dir`/requirements.yml
 * `repo_path`/roles/requirements.yml
 * `repo_path`/requirements.yml
 
-### Collection {#collection}
+<a id="collection"></a>
+
+### Collection
 
 * `playbook_dir`/collections/requirements.yml
 * `playbook_dir`/requirements.yml
 * `repo_path`/collections/requirements.yml
 * `repo_path`/requirements.yml
 
-### Processing Logic {#processing-logic}
+<a id="processing-logic"></a>
+
+### Processing Logic
 
 * Each file is processed independently
 * If a file exists, it will be processed according to its type (role or collection)

@@ -1,8 +1,3 @@
----
-title: Azure config
-description: An oidc_providers block with Entra ID endpoints and a supported My Apps launch URL.
----
-
 # Azure config
 
 ```json title="config.json"
@@ -28,7 +23,9 @@ description: An oidc_providers block with Entra ID endpoints and a supported My 
 }
 ```
 
-## IdP-initiated login {#idp-initiated-login}
+<a id="idp-initiated-login"></a>
+
+## IdP-initiated login
 
 Semaphore does not implement IdP-initiated login. `allow_idp_initiated` is not a
 supported provider option, and there is no `/initiate` route. Microsoft Entra ID

@@ -1,8 +1,3 @@
----
-title: Terraform HTTP state backend
-description: Store encrypted Terraform state in Semaphore EX with project-scoped credentials and durable state locks.
----
-
 # Terraform HTTP state backend
 
 Semaphore EX can store Terraform, OpenTofu and Terragrunt workspace state in its database.

@@ -1,54 +1,44 @@
----
-title: Binary file
-description: Downloading and unpacking the Semaphore release archive on Linux or Windows, running setup, and installing it as a systemd service.
----
-
 # Binary file
 
-:::tip
-    Look into the <a href="./../installation_manually">manual installation</a> on how to set-up your Python/Ansible/Systemd environment!
-:::
-
+> **Tip**
+>
+> Look into the [manual installation](../installation_manually.md) on how to set-up your Python/Ansible/Systemd environment!
 
 Download the `*.tar.gz` for your platform from [Releases page](https://github.com/semaphoreui/semaphore/releases). Unpack it and setup Semaphore using the following commands:
 
+### Linux (x64)
 
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
+```bash
+wget https://github.com/semaphoreui/semaphore/releases/download/v2.17.15/semaphore_2.17.15_linux_amd64.tar.gz
 
-<Tabs>
-  <TabItem value="linux-x64" label="Linux (x64)">
-    ```bash
-    wget https://github.com/semaphoreui/semaphore/releases/download/v2.17.15/semaphore_2.17.15_linux_amd64.tar.gz
+tar xf semaphore_2.17.15_linux_amd64.tar.gz
 
-    tar xf semaphore_2.17.15_linux_amd64.tar.gz
+./semaphore setup
+```
 
-    ./semaphore setup
-    ```
-  </TabItem>
-  <TabItem value="linux-arm64" label="Linux (ARM64)">
-    ```
-    wget https://github.com/semaphoreui/semaphore/releases/download/v2.17.15/semaphore_2.17.15_linux_arm64.tar.gz
+### Linux (ARM64)
 
-    tar xf semaphore_2.17.15_linux_arm64.tar.gz
+```
+wget https://github.com/semaphoreui/semaphore/releases/download/v2.17.15/semaphore_2.17.15_linux_arm64.tar.gz
 
-    ./semaphore setup
-    ```
-  </TabItem>
-  <TabItem value="windows-x64" label="Windows (x64)">
-    ```powershell
-    Invoke-WebRequest `
-    -Uri ("https://github.com/semaphoreui/semaphore/releases/" +
-          "download/v2.17.15/semaphore_2.17.15_windows_amd64.zip") `
+tar xf semaphore_2.17.15_linux_arm64.tar.gz
 
-    -OutFile semaphore.zip
+./semaphore setup
+```
 
-    Expand-Archive -Path semaphore.zip  -DestinationPath ./
+### Windows (x64)
 
-    ./semaphore setup
-    ```
-  </TabItem>
-</Tabs>
+```powershell
+Invoke-WebRequest `
+-Uri ("https://github.com/semaphoreui/semaphore/releases/" +
+      "download/v2.17.15/semaphore_2.17.15_windows_amd64.zip") `
+
+-OutFile semaphore.zip
+
+Expand-Archive -Path semaphore.zip  -DestinationPath ./
+
+./semaphore setup
+```
 
 Now you can run Semaphore:
 
@@ -60,17 +50,17 @@ Semaphore will be available via the following URL [https://localhost:3000](https
 
 ----
 
-### Run as a service {#run-as-a-service}
+<a id="run-as-a-service"></a>
 
-For more detailed information &mdash; look into the [extended Systemd service documentation](../installation_manually#extended-systemd-service).
+### Run as a service
+
+For more detailed information &mdash; look into the [extended Systemd service documentation](../installation_manually.md#extended-systemd-service).
 
 If you installed Semaphore via a package manager, or by downloading a binary file, you should create the Semaphore service manually.
 
 Create the systemd service file:
 
-<div class="warning">
   Replace <code>/path/to/semaphore</code> and <code>/path/to/config.json</code> to your semaphore and config file path.
-</div>
 
 ```bash
 sudo cat > /etc/systemd/system/semaphore.service <<EOF

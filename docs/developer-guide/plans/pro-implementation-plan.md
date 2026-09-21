@@ -55,11 +55,8 @@ The current public roadmap also describes Pro workflows and future inventory, no
 
 Primary references:
 
-- [Semaphore pricing and current capability matrix](https://semaphoreui.com/pricing)
-- [Semaphore Pro overview](https://semaphoreui.com/pro)
-- [Semaphore public roadmap](https://semaphoreui.com/roadmap)
-- [Semaphore license activation documentation](https://semaphoreui.com/docs/admin-guide/license)
-- [Semaphore product terms](https://semaphoreui.com/legal/terms-of-service)
+- Current fork behavior: [Product capabilities](../../editions.md).
+- Historical commercial comparisons are superseded by [ADR 0010](../adr/0010-ship-one-full-featured-product.md).
 - [Terraform HTTP backend protocol](https://developer.hashicorp.com/terraform/language/backend/http)
 - [Terraform state security guidance](https://developer.hashicorp.com/terraform/language/manage-sensitive-data)
 

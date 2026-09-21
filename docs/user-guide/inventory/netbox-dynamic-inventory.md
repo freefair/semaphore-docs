@@ -1,30 +1,35 @@
----
-title: Netbox Dynamic Inventory Integration with Semaphore
-description: Configuring the netbox.netbox.nb_inventory plugin as a dynamic inventory in Semaphore using a NetBox API token.
----
-
 # Netbox Dynamic Inventory Integration with Semaphore
 
 ![Ansible Badge](https://img.shields.io/badge/ansible-%23000.svg?style=for-the-badge&logo=ansible&logoColor=white)
 ![Netbox Badge](https://img.shields.io/badge/Netbox-%23F00.svg?style=for-the-badge&logo=netbox&logoColor=white)
 <!-- ![Semaphore Badge](https://img.shields.io/badge/Semaphore-%23187EBB.svg?style=for-the-badge&logo=semaphore&logoColor=white) -->
 
-## 🛠 Key Features {#-key-features}
+<a id="-key-features"></a>
+
+## 🛠 Key Features
 
 This repository demonstrates the use of the `netbox.netbox.nb_inventory` plugin to create a dynamic inventory in Semaphore. It enables automatic synchronization of data from Netbox, simplifying the management of your infrastructure and the execution of Ansible playbooks.
 
-## 🔧 Setup {#-setup}
+<a id="-setup"></a>
 
-### Requirements {#requirements}
+## 🔧 Setup
+
+<a id="requirements"></a>
+
+### Requirements
 
 - Access to Semaphore
 - Access to Netbox with configured API
 
-### 🔑 Netbox Setup {#-netbox-setup}
+<a id="-netbox-setup"></a>
+
+### 🔑 Netbox Setup
 
 Ensure your Netbox is configured and accessible for API interaction. Obtain an API token which will be used to authenticate requests.
 
-### 📡 Configuration in Semaphore {#-configuration-in-semaphore}
+<a id="-configuration-in-semaphore"></a>
+
+### 📡 Configuration in Semaphore
 
 1. In Semaphore, go to the inventory section.
 2. Create a new inventory.
@@ -40,10 +45,14 @@ Ensure your Netbox is configured and accessible for API interaction. Obtain an A
 
    Replace `http://your_netbox_url_here` and `YOUR_NETBOX_API_TOKEN` with the actual data from your Netbox.
 
-## 🚀 Usage {#-usage}
+<a id="-usage"></a>
+
+## 🚀 Usage
 
 Once configured, you can run Ansible playbooks in Semaphore using the dynamic inventory which automatically updates host data from your Netbox.
 
-## 📚 Further Documentation {#-further-documentation}
+<a id="-further-documentation"></a>
+
+## 📚 Further Documentation
 
 Learn more about the `netbox.netbox.nb_inventory` plugin and its capabilities in the [official Ansible documentation](https://docs.ansible.com/ansible/latest/collections/netbox/netbox/nb_inventory_inventory.html).

@@ -1,8 +1,3 @@
----
-title: Snap configuration
-description: Reading and changing Semaphore settings on a Snap installation with snap get, snap set, and snap restart.
----
-
 # Snap configuration
 
 Snap configurations should be used for when Semaphore was installed via Snap.

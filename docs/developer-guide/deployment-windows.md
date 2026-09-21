@@ -1,9 +1,3 @@
----
-sidebar_position: 23
-title: Deployment Windows
-description: Deterministic project deployment admission, blocked occurrences, and audited emergency overrides.
----
-
 # Deployment Windows
 
 Deployment windows are an Enhanced, project-scoped admission policy. Every task or workflow start is evaluated immediately before its durable enqueue. The same evaluator covers authenticated manual starts, schedules, API and webhook workflow triggers, integrations, autorun, and delayed workflow nodes.

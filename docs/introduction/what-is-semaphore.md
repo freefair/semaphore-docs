@@ -1,8 +1,3 @@
----
-title: What is Semaphore
-description: What Semaphore UI does, the problems it solves, who it is for, and the cases where a different tool is the better choice.
----
-
 # What is Semaphore
 
 Semaphore UI is a self-hosted web interface and REST API for running automation that
@@ -12,13 +7,15 @@ use, and it becomes the one place where your team runs that automation, stores t
 secrets it needs, and keeps a record of every run.
 
 You can run tasks individually or combine them into a single pipeline with
-[Workflows](/user-guide/workflows), connecting builds, tests, deployments,
+[Workflows](../user-guide/workflows.md), connecting builds, tests, deployments,
 and infrastructure automation.
 
 Semaphore does not replace Ansible, Terraform, or your scripts. It runs them, on a
 server instead of on someone's laptop.
 
-## The problem it solves {#the-problem-it-solves}
+<a id="the-problem-it-solves"></a>
+
+## The problem it solves
 
 Automation usually starts on a workstation. One engineer has the playbook, the
 inventory, the SSH key, and the right version of Ansible installed. That works until
@@ -30,12 +27,14 @@ Semaphore moves the run to a shared server and adds the parts that were missing:
 | Missing piece | What Semaphore provides |
 |---|---|
 | Everyone needs the tooling installed | One server (or a runner) has it; users only need a browser. |
-| Credentials are copied between laptops | Encrypted [Key Store](/user-guide/key-store) that hands secrets to the run, never to the user. |
-| No record of who ran what | Every [task](/user-guide/tasks) keeps its output, exit status, user, and time. |
-| Nobody should have root to run one playbook | [Roles](/user-guide/team) decide who may run, edit, or only watch. |
-| Runs happen when someone remembers | [Schedules](/user-guide/schedules), [webhooks](/user-guide/integrations), and API calls start them. |
+| Credentials are copied between laptops | Encrypted [Key Store](../user-guide/key-store.md) that hands secrets to the run, never to the user. |
+| No record of who ran what | Every [task](../user-guide/tasks.md) keeps its output, exit status, user, and time. |
+| Nobody should have root to run one playbook | [Roles](../user-guide/team.md) decide who may run, edit, or only watch. |
+| Runs happen when someone remembers | [Schedules](../user-guide/schedules.md), [webhooks](../user-guide/integrations.md), and API calls start them. |
 
-## Who it is for {#who-it-is-for}
+<a id="who-it-is-for"></a>
+
+## Who it is for
 
 - **Infrastructure and platform teams** that already use Ansible or Terraform and want
   their colleagues to run it without handing out production credentials.
@@ -48,44 +47,50 @@ Semaphore moves the run to a shared server and adds the parts that were missing:
 Semaphore is self-hosted. There is no SaaS version: you run the binary or container on
 your own infrastructure, and your secrets never leave it.
 
-## What it runs {#what-it-runs}
+<a id="what-it-runs"></a>
 
-Each [task template](/user-guide/task-templates) chooses an application:
+## What it runs
 
-- [Ansible](/user-guide/apps/ansible) — playbooks with inventories, vault passwords, and
+Each [task template](../user-guide/task-templates/README.md) chooses an application:
+
+- [Ansible](../user-guide/apps/ansible.md) — playbooks with inventories, vault passwords, and
   the full `ansible-playbook` option set.
-- [Terraform, OpenTofu, and Terragrunt](/user-guide/apps/terraform) — plan and apply with
+- [Terraform, OpenTofu, and Terragrunt](../user-guide/apps/terraform/README.md) — plan and apply with
   workspaces and state held by your backend.
-- [Shell](/user-guide/apps/bash), [PowerShell](/user-guide/apps/powershell), and
-  [Python](/user-guide/apps/python) — anything that is not covered by the above.
+- [Shell](../user-guide/apps/bash.md), [PowerShell](../user-guide/apps/powershell.md), and
+  [Python](../user-guide/apps/python.md) — anything that is not covered by the above.
 
-Tasks run on the server itself or on [runners](/admin-guide/runners) placed close to the
+Tasks run on the server itself or on [runners](../admin-guide/runners.md) placed close to the
 systems they manage.
 
-[Workflows](/user-guide/workflows) connect task templates into a pipeline
+[Workflows](../user-guide/workflows.md) connect task templates into a pipeline
 using a visual editor. Each step can run a different application: for example,
 build and test source code with shell scripts, provision infrastructure with
 Terraform, then deploy with Ansible. You can add approval steps, timed pauses,
 and branches that run on success or failure. Semaphore starts downstream tasks
 automatically when their conditions are met.
 
-## When not to use it {#when-not-to-use-it}
+<a id="when-not-to-use-it"></a>
+
+## When not to use it
 
 Knowing the edges saves time later.
 
 - **Replacing Ansible or Terraform.** Semaphore has no execution engine of its own. If
   your playbook does not work from a shell, it will not work from Semaphore.
-- **Acting as a CMDB.** [Inventories](/user-guide/inventory) are the inventories your
+- **Acting as a CMDB.** [Inventories](../user-guide/inventory.md) are the inventories your
   runs need, not a source of truth about your estate. Generate them from your real source
   with a dynamic inventory.
 - **Being your organisation's secret manager.** Secrets are encrypted at rest and are
   designed to be used by tasks, not read back by people. If you already run HashiCorp
-  Vault or another store, [connect it](/user-guide/key-store) rather than copying secrets in.
+  Vault or another store, [connect it](../user-guide/key-store.md) rather than copying secrets in.
 - **Running a single-node service where any downtime is unacceptable.** Multiple active
-  nodes need [high availability](/admin-guide/ha), which requires PostgreSQL or MySQL plus Redis.
+  nodes need [high availability](../admin-guide/ha.md), which requires PostgreSQL or MySQL plus Redis.
 
-## What's next {#whats-next}
+<a id="whats-next"></a>
 
-- [Architecture](/introduction/architecture) — the processes, the database, and where tasks execute.
-- [Core concepts](/introduction/concepts) — the ten words the interface expects you to know.
-- [Getting Started](/getting-started) — install it and run something.
+## What's next
+
+- [Architecture](architecture.md) — the processes, the database, and where tasks execute.
+- [Core concepts](concepts.md) — the ten words the interface expects you to know.
+- [Getting Started](../getting-started/README.md) — install it and run something.

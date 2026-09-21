@@ -1,9 +1,3 @@
----
-sidebar_position: 7
-title: Review an execution
-description: Check task and workflow plans before they start.
----
-
 # Review an execution
 
 Enhanced installations show an execution review inside the existing task and workflow start dialog.

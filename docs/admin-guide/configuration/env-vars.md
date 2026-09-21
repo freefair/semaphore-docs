@@ -1,19 +1,30 @@
----
-title: Environment variables
-description: Overriding configuration with SEMAPHORE_* variables, passing or forwarding environment to app processes, and runner executor JSON.
----
-
 # Environment variables
 
-With using environment variables you can override any available configuration option.
+Only variables listed in the [parameter reference](../../reference/configuration.md) have automatic configuration bindings.
+The [additional schemas](../../reference/configuration-schemas.md) document native special variables and Docker wrapper inputs separately.
+There is no automatic environment variable for an arbitrary dotted configuration key.
 
-You can use interactive evnvironment variables generator (for Docker):
-* for [server](https://semaphoreui.com/install/docker/2_12/)
-* for [runner](https://semaphoreui.com/install/docker/2_12/runner).
+## Value formats and precedence
 
----
+- Strings are passed literally. An explicitly present empty string overrides the file before defaults are applied.
+- Integers are decimal values; malformed values fail parsing.
+- Boolean environment values are true for `1`, `true` or `yes` (case-insensitive words); all other strings become false. Prefer `true` and `false`.
+- Arrays and objects must be JSON, not YAML or comma-separated lists unless the parameter explicitly says otherwise.
+- A whole object, such as `SEMAPHORE_RUNNER_EXECUTOR`, replaces that file object; individual tagged child variables are applied afterward.
+- Defaults can replace scalar zero values after environment loading; see [loading order](config-file.md#loading-order).
 
-## Application environment for apps (Ansible, Terraform, etc.) {#application-environment-for-apps-ansible-terraform-etc}
+```bash
+SEMAPHORE_PORT=3000 SEMAPHORE_MAX_PARALLEL_TASKS=4 \
+  semaphore server --config ./config.yaml
+```
+
+Put secrets into the environment through your service manager or secret store.
+The binary removes variables marked sensitive from its own environment after reading them.
+This does not imply arbitrary keys inside a JSON map are automatically removed or safe to forward.
+
+<a id="application-environment-for-apps-ansible-terraform-etc"></a>
+
+## Application environment for apps (Ansible, Terraform, etc.)
 
 Semaphore can pass environment variables to application processes (Ansible, Terraform/OpenTofu, Python, PowerShell, etc.). There are two related options:
 
@@ -49,7 +60,9 @@ Notes:
 
 ---
 
-## Runner executor configuration {#runner-executor-configuration}
+<a id="runner-executor-configuration"></a>
+
+## Runner executor configuration
 
 For runner deployments, the entire executor block can be set as a single JSON environment variable instead of individual keys:
 
@@ -57,10 +70,12 @@ For runner deployments, the entire executor block can be set as a single JSON en
 export SEMAPHORE_RUNNER_EXECUTOR='{"type":"docker","docker":{"image":"semaphoreui/job:latest"}}'
 ```
 
-This is equivalent to setting `runner.executor.type` and nested `runner.executor.docker.*` fields in the configuration file. See [Configuration options](/admin-guide/configuration) for all runner executor settings.
+This is equivalent to setting `runner.executor.type` and nested `runner.executor.docker.*` fields in the configuration file. See [Configuration options](../configuration.md) for all runner executor settings.
 
 ---
 
-## Secret environment variables in Variable Groups {#secret-environment-variables-in-variable-groups}
+<a id="secret-environment-variables-in-variable-groups"></a>
+
+## Secret environment variables in Variable Groups
 
 In addition to global environment variables, you can define per-project secrets in Variable Groups. Secret keys are masked in the UI and logs. See `User Guide → Variable Groups` for usage and Terraform integration with `TF_VAR_*` variables.

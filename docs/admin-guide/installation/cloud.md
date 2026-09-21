@@ -1,8 +1,3 @@
----
-title: Cloud deployment
-description: Running Semaphore on cloud VMs, containers, or Kubernetes, with managed databases, TLS, secret storage, and runner placement.
----
-
 # Cloud deployment
 
 You can run Semaphore in any cloud environment using the same supported installation methods:
@@ -20,8 +15,7 @@ Essentials:
 
 Related guides:
 
-- [Docker](../installation/docker)
-- [Kubernetes (Helm chart)](../installation/k8s)
-- [Binary file](../installation/binary-file)
-- [Security hardening](../security)
-
+- [Docker](docker.md)
+- [Kubernetes (Helm chart)](k8s.md)
+- [Binary file](binary-file.md)
+- [Security hardening](../security.md)

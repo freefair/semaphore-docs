@@ -1,8 +1,3 @@
----
-title: Docker
-description: A Docker Compose file for Semaphore with MySQL or Postgres, the required secret variables, and installing extra Python dependencies.
----
-
 # Docker
 
 &#x20;Create a `docker-compose.yml` file with following content:
@@ -36,7 +31,7 @@ services:
     restart: unless-stopped
     ports:
       - 3000:3000
-    image: semaphoreui/semaphore:latest
+    image: ghcr.io/freefair/semaphore-ex:latest
     environment:
       SEMAPHORE_DB_USER: semaphore
       SEMAPHORE_DB_PASS: semaphore
@@ -88,14 +83,13 @@ services:
     restart: unless-stopped
     ports:
       - 3000:3000
-    image: semaphoreui/semaphore:latest
+    image: ghcr.io/freefair/semaphore-ex:latest
     environment:
       SEMAPHORE_ADMIN_PASSWORD_FILE: /run/secrets/semaphore_admin_pw
       SEMAPHORE_ADMIN_NAME: admin
       SEMAPHORE_ADMIN_EMAIL: admin@localhost
       SEMAPHORE_ADMIN: admin
 ```
-
 
 Run the following command to start Semaphore with configured database (MySQL or Postgres):
 
@@ -105,7 +99,9 @@ docker-compose up
 
 &#x20;Semaphore will be available via the following URL [http://localhost:3000](http://localhost:3000).
 
-## Installing Additional Python Dependencies {#installing-additional-python-dependencies}
+<a id="installing-additional-python-dependencies"></a>
+
+## Installing Additional Python Dependencies
 
 Some Ansible modules, collections, and Python apps need extra Python packages that are not included in the image.
 Both the server image (`semaphoreui/semaphore`) and the runner image (`semaphoreui/runner`) can install them automatically on container start.
@@ -131,7 +127,7 @@ services:
     restart: unless-stopped
     ports:
       - 3000:3000
-    image: semaphoreui/semaphore:latest
+    image: ghcr.io/freefair/semaphore-ex:latest
     volumes:
       - ./requirements.txt:/etc/semaphore/requirements.txt:ro
 ```
@@ -142,7 +138,7 @@ The same works for a runner container:
 services:
   runner:
     restart: unless-stopped
-    image: semaphoreui/runner:latest
+    image: ghcr.io/freefair/semaphore-ex-runner:latest
     volumes:
       - ./requirements.txt:/etc/semaphore/requirements.txt:ro
 ```
@@ -152,10 +148,12 @@ Or with plain `docker run`:
 ```bash
 docker run -p 3000:3000 \
   -v "$(pwd)/requirements.txt:/etc/semaphore/requirements.txt:ro" \
-  semaphoreui/semaphore:latest
+  ghcr.io/freefair/semaphore-ex:latest
 ```
 
-### How it works {#how-it-works}
+<a id="how-it-works"></a>
+
+### How it works
 
 During startup the container checks for `${SEMAPHORE_CONFIG_PATH}/requirements.txt`. If the file exists, it runs:
 
@@ -172,12 +170,14 @@ Things to keep in mind:
 - **A failed install stops the container.** If `pip3` exits with an error (a typo in a package name, a missing build dependency, or no network), the container exits before Semaphore starts. Check the container logs for the pip output.
 - **Packages that need compilation** (for example some crypto or database drivers) may fail because the image does not ship a compiler. Prefer wheels, or build a custom image for those.
 
-### Alternative: custom image {#alternative-custom-image}
+<a id="alternative-custom-image"></a>
+
+### Alternative: custom image
 
 If you have many dependencies, need system packages, or want faster and offline startups, bake the packages into your own image instead:
 
 ```dockerfile
-FROM semaphoreui/semaphore:latest
+FROM ghcr.io/freefair/semaphore-ex:latest
 
 COPY requirements.txt /tmp/requirements.txt
 RUN pip3 install --no-cache-dir -r /tmp/requirements.txt

@@ -1,8 +1,3 @@
----
-title: Logs
-description: Where the server, activity and task logs go, file and syslog forwarding options, task retention, and SIEM integration.
----
-
 # Logs
 
 Semaphore writes server logs to **stdout** and stores **Task** and **Activity** logs in a **database**.
@@ -10,7 +5,9 @@ Optional structured file exports create additional persistent log files; include
 
 ---
 
-## Server log {#server-log}
+<a id="server-log"></a>
+
+## Server log
 
 The normal server log is written to **stdout**; structured file export is configured separately below.
 If Semaphore is running as a systemd service, you can view the logs with the following command:
@@ -28,14 +25,18 @@ This provides a live (streaming) view of the logs.
 
 ---
 
-## Activity log {#activity-log}
+<a id="activity-log"></a>
+
+## Activity log
 
 The Activity Log captures user actions performed in Semaphore, including:
 
 - Adding or removing resources (e.g., Templates, Inventories, Repositories).
 - Adding or removing team members.
 
-### Structured file logs {#pro-version-210-and-later}
+<a id="pro-version-210-and-later"></a>
+
+### Structured file logs
 
 Semaphore EX can export application events, task lifecycle events, and normalized task
 results as versioned JSON Lines. File export is disabled by default and does not replace the
@@ -117,10 +118,12 @@ last redacted write error, and last successful flush under **System Information 
 logs**. The same data is returned by the authenticated admin-only `GET /api/admin/info` endpoint.
 
 The enhanced writer can also capture filtered structured debug records. See
-[Debug Log Filtering](/developer-guide/debug-log-filtering) for matching semantics, reload behavior,
+[Debug Log Filtering](../developer-guide/debug-log-filtering.md) for matching semantics, reload behavior,
 diagnostics, and the operational cost of broad capture.
 
-#### Activity (events) logging options {#activity-events-logging-options}
+<a id="activity-events-logging-options"></a>
+
+#### Activity (events) logging options
 
 The Activity (events) logging options allow you to configure how Semaphore records user actions and system events to a file. These settings control the behavior of event logging, including whether it's enabled, the format of log entries, and specific logger configurations. When enabled, user actions like creating templates or managing teams will be written to the specified log file according to these settings.
 
@@ -130,7 +133,9 @@ The Activity (events) logging options allow you to configure how Semaphore recor
 | `format`              | `SEMAPHORE_EVENT_LOG_FORMAT`  | Log record format. Structured export requires `json`. |
 | `logger`              | `SEMAPHORE_EVENT_LOGGER`  | [Logger options](#logger-options). |
 
-#### Tasks logging options {#tasks-logging-options}
+<a id="tasks-logging-options"></a>
+
+#### Tasks logging options
 
 The Tasks logging options allow you to configure how Semaphore records task execution details to a file. These settings control the logging of task-related events, including task starts, completions, and their execution status. When enabled, all task operations and their outcomes will be written to the specified log file according to these settings, providing a detailed audit trail of task execution history.
 
@@ -141,9 +146,9 @@ The Tasks logging options allow you to configure how Semaphore records task exec
 | `logger`              | `SEMAPHORE_TASK_LOGGER`  | [Logger options](#logger-options). |
 | `result_logger`       | `SEMAPHORE_TASK_RESULT_LOGGER`  | Logger options. |
 
+<a id="logger-options"></a>
 
-
-#### Logger options {#logger-options}
+#### Logger options
 
 | Parameter             | Type | Description           |
 | --------------------- | ------- | --------------------- |
@@ -153,8 +158,6 @@ The Tasks logging options allow you to configure how Semaphore records task exec
 | `maxbackups`   | Integer | The maximum number of old log files to retain.  The default is to retain all old log files (though MaxAge may still cause them to get deleted.) |
 | `localtime`    | Boolean | Determines if the time used for formatting the timestamps in backup files is the computer's local time.  The default is to use UTC time. |
 | `compress`     | Boolean | Determines if the rotated log files should be compressed using gzip. The default is not to perform compression. |
-
-
 
 Each line is independently valid JSON and uses one of three schemas:
 
@@ -171,11 +174,15 @@ so collectors never consume a permanently malformed tail record.
 
 ---
 
-## Task history {#task-history}
+<a id="task-history"></a>
+
+## Task history
 
 Semaphore stores information about task execution in the database. Task history provides a detailed view of all executed tasks, including their status and logs. You can monitor tasks in real time or review historical logs through the web interface.
 
-### Configuring task retention {#configuring-task-retention}
+<a id="configuring-task-retention"></a>
+
+### Configuring task retention
 
 By default, Semaphore stores all tasks in the database. If you run a large number of tasks, they can occupy a significant amount of disk space.
 
@@ -196,7 +203,9 @@ When the number of tasks exceeds this limit, the oldest Task Logs are automatica
 
 ---
 
-## Syslog protocol support {#syslog-protocol-support}
+<a id="syslog-protocol-support"></a>
+
+## Syslog protocol support
 
 Semaphore can forward activity and task log entries to an external syslog collector for long‑term storage or centralized monitoring. Syslog forwarding is disabled by default.
 
@@ -220,7 +229,9 @@ SEMAPHORE_SYSLOG_ADDRESS=logs.example.com:514
 SEMAPHORE_SYSLOG_TAG=semaphore
 ```
 
-#### Syslog options {#syslog-options}
+<a id="syslog-options"></a>
+
+#### Syslog options
 
 | Parameter             | Environment Variables | Description           |
 | --------------------- | --------------------- | --------------------- |
@@ -229,12 +240,13 @@ SEMAPHORE_SYSLOG_TAG=semaphore
 | `address`              | `SEMAPHORE_SYSLOG_ADDRESS`  | Collector address in `host:port` format. |
 | `tag`              | `SEMAPHORE_SYSLOG_TAG`  | Optional identifier prepended to every message. |
 
-
 Restart the Semaphore service after changing these values so that the new syslog destination is applied.
 
 ---
 
-## SIEM integration {#siem-integration}
+<a id="siem-integration"></a>
+
+## SIEM integration
 
 Semaphore 2.20+ records a security audit trail suitable for forwarding to a SIEM (Splunk, Elastic Security, QRadar, Wazuh, etc.).
 
@@ -246,20 +258,24 @@ Every audit event includes the **action** (`create`, `update`, `delete`, `login_
 
 There are three ways to deliver audit events to your SIEM:
 
-1. **Pull:** read `/api/events` (see [API docs](/reference/api)).
+1. **Pull:** read `/api/events` (see [API docs](../reference/api.md)).
 2. **File collector:** enable structured Activity Log export above and ship the JSON Lines file with your collector.
 3. **Audit webhook:** deliver the signed `semaphore.audit.v1` JSON envelope to an administrator-controlled HTTPS receiver. A SIEM requiring another format needs a receiver-side adapter.
 
-### Audit webhook {#audit-webhook}
+<a id="audit-webhook"></a>
+
+### Audit webhook
 
 Audit-webhook settings are persisted in the database and managed through **System Information → Audit webhook** by an authenticated administrator.
 They are not `log.audit_webhook` configuration fields, and there are no `SEMAPHORE_AUDIT_WEBHOOK_*` environment variables.
 
 Configure the HTTPS endpoint, create the required signing key, verify a controlled test delivery, and use the pause/resume controls to manage background delivery.
 An optional receiver credential is write-only and separate from the signing key.
-See [Audit Webhook Export](/developer-guide/audit-webhook-export#administration-api) for the complete API and [Signed Webhooks](/developer-guide/signed-webhooks) for receiver verification and key rotation.
+See [Audit Webhook Export](../developer-guide/audit-webhook-export.md#administration-api) for the complete API and [Signed Webhooks](../developer-guide/signed-webhooks.md) for receiver verification and key rotation.
 
-#### Audit webhook options {#audit-webhook-options}
+<a id="audit-webhook-options"></a>
+
+#### Audit webhook options
 
 | Control | Administration API | Effect |
 |---|---|---|
@@ -274,7 +290,9 @@ Retryable failures use backoff; the eighth failed attempt becomes terminal.
 Redirects and non-retryable client errors fail earlier.
 Failed deliveries remain in history instead of disappearing after three attempts.
 
-## Summary {#summary}
+<a id="summary"></a>
+
+## Summary
 
 - **Server log:** Written to stdout; viewable via `journalctl` if running under systemd.
 - **Activity and tasks log:** Tracks all user actions. Optionally, Semaphore EX can write these to a file.

@@ -1,9 +1,3 @@
----
-title: Google config
-description: A working oidc_providers block for signing in with Google, including the provider URL, client credentials and claims.
----
-
-
 # Google config
 
 ```json title="config.json"
