@@ -1,5 +1,11 @@
 # Current Slice
 
+- [ ] Maintenance — Upstream generated SSH key compatibility
+  - [x] Preserve dedicated generation and confirmed rotation, encrypted persistence, and public metadata
+  - [x] Adopt image-only dependency installation while retaining product build metadata
+  - [x] Complete focused, browser, Terra, and retained full-product gates
+  - [ ] Publish verified documentation and application commits after approval
+
 - [x] Maintenance — Git SSH command construction
   - [x] Emit one SSH executable and share host-key options across both Git command builders
   - [x] Use the documented known-hosts fallback while preserving the configured verification mode

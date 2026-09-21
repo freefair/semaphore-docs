@@ -181,6 +181,12 @@ This compatibility classifier does not enable AWS or another unselected provider
 
 ### UI Conflict Resolution
 
+Generated SSH keys use the dedicated generation and confirmed-rotation APIs from Slice 062.
+Keep the Ed25519/RSA-3072 policy, encrypted persistence, validated public metadata, fingerprints, audit, and permission checks.
+Upstream's generic `generate_ssh_key` create/update flag is not a second product generation path.
+Review automatically merged access-key model, SQL, encryption, and UI changes together; retain the focused generated-key controls instead of duplicating them in shared hosts.
+See [ADR 0019](../../adr/0019-preserve-generated-ssh-key-contracts.md).
+
 Preserve new upstream fields, loading states, and permission handling in shared host views.
 Insert selected behavior through existing focused components and narrow props/events.
 For the workflow editor, upstream navigation and responsive/collapsible behavior must coexist with version, parameter, RBAC, and validation controls.
