@@ -114,7 +114,9 @@ Defaults are applied **after** environment overrides.
 For non-pointer scalar fields with a tagged default, explicit zero, empty string or false can be replaced by that default.
 For example, `git_attempts: 0` becomes `4`; use `1` for a single attempt.
 The compatibility setting `oidc_providers.<id>.return_via_state` defaults to true and false is treated as unset.
-Descriptions distinguish tagged defaults from runtime fallback behavior and accepted but unwired compatibility settings.
+Environment loading allocates directly nested configuration objects even if omitted, so their member defaults still apply.
+Scalar pointers can remain unset; objects inside named map entries are not allocated by that loader.
+Descriptions distinguish initial/default values from runtime fallbacks and accepted but unwired compatibility settings.
 
 <a id="secrets-directory"></a>
 

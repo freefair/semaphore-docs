@@ -14,8 +14,15 @@ function prose(text) {
   let fence = null;
   return text.split('\n').map(line => {
     const stripped = line.replace(/^(?:\s*> ?)+/, '').trimStart();
-    const match = stripped.match(/^(`{3,}|~{3,})/);
-    if (match) { if (!fence) fence = match[1][0]; else if (fence === match[1][0]) fence = null; return ''; }
+    const match = stripped.match(/^(`{3,}|~{3,})(.*)$/);
+    if (fence) {
+      if (match && match[1][0] === fence.character && match[1].length >= fence.length && !match[2].trim()) fence = null;
+      return '';
+    }
+    if (match && !(match[1][0] === '`' && match[2].includes('`'))) {
+      fence = {character: match[1][0], length: match[1].length};
+      return '';
+    }
     return fence ? '' : line;
   }).join('\n');
 }
@@ -63,11 +70,14 @@ for (const [p, text] of contents) {
     checkedLinks++;
     if (url.startsWith('/')) { fail(p, `site-relative link: ${url}`); continue; }
     const [path, fragment] = url.split('#');
-    let decoded;
-    try { decoded = decodeURIComponent(path.split('?')[0]); } catch { fail(p, `invalid URL: ${url}`); continue; }
+    let decoded, decodedFragment;
+    try {
+      decoded = decodeURIComponent(path.split('?')[0]);
+      decodedFragment = fragment ? decodeURIComponent(fragment) : '';
+    } catch { fail(p, `invalid URL: ${url}`); continue; }
     const target = decoded ? resolve(dirname(p), decoded) : p;
     if (!existsSync(target) || !statSync(target).isFile()) { fail(p, `missing file: ${url}`); continue; }
-    if (fragment && extname(target) === '.md' && anchors.has(target) && !anchors.get(target).has(decodeURIComponent(fragment))) fail(p, `missing anchor: ${url}`);
+    if (decodedFragment && extname(target) === '.md' && anchors.has(target) && !anchors.get(target).has(decodedFragment)) fail(p, `missing anchor: ${url}`);
   }
 }
 // Every canonical page must be discoverable without an application sidebar.

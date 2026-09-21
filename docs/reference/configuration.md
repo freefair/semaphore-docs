@@ -24,10 +24,13 @@ See [Loading and examples](../admin-guide/configuration/config-file.md) for prec
 required deployment values and YAML examples, and [Additional configuration schemas](configuration-schemas.md)
 for logger members, the encryption keys file, bootstrap environment variables and runtime settings.
 
-An empty string, zero, false, empty list or empty map is the Go zero value when no
-explicit default is listed. Pointer fields can be absent (null); consult the description
-for runtime fallbacks. Tagged defaults replace zero values, including explicitly supplied
-zero or false. Defaults inside optional objects apply when that object exists.
+Defaults show tagged or initial field values; descriptions identify additional runtime fallbacks.
+Empty arrays/maps are written as []/{}; nil collections also mean no entries.
+Environment loading allocates directly nested configuration objects even when omitted,
+then member defaults apply. Scalar pointers can remain unset (null).
+Objects inside named map entries are not allocated by environment loading;
+their defaults apply when the object exists, or a consumer supplies a fallback.
+Tagged defaults replace zero values, including explicitly supplied zero or false.
 Map members inherit the parent environment variable as a JSON object, not individual bindings.
 
 ## Contents
@@ -96,7 +99,7 @@ Directories used for repositories, task workspaces, secret files and SSH sockets
 |---|---|---|---|---|
 | `tmp_path` | `SEMAPHORE_TMP_PATH` | string | `/tmp/semaphore` | semaphore stores ephemeral projects here |
 | `secrets_path` | `SEMAPHORE_SECRETS_PATH` | string | `""` | Legacy top-level setting for backwards compatibility. Users should prefer configuring dirs.secrets instead. |
-| `home_dir_mode` | `SEMAPHORE_HOME_DIR_MODE` | string | `template_dir` | Task HOME isolation: `template_dir` uses a per-template home with the checkout in its src subdirectory; `project_home` uses the project directory; `user_home` preserves the process HOME. Default: `template_dir`. One of `user_home`, `project_home`, `template_dir`. |
+| `home_dir_mode` | `SEMAPHORE_HOME_DIR_MODE` | string | `template_dir` | Task HOME handling: `project_home` uses the project temp directory; `template_dir` and `user_home` preserve the process HOME. Only `template_dir` additionally sets ANSIBLE_HOME to the per-template `_home/.ansible` directory, separate from the repository checkout. Default: `template_dir`. One of `user_home`, `project_home`, `template_dir`. |
 | `dirs.secrets` | `SEMAPHORE_SECRETS_PATH` | string | `/tmp/semaphore` | Path to directory where secrets are stored (for example Vault token files). Default: `/tmp/semaphore`. Legacy top-level `secrets_path` is still accepted when `dirs.secrets` is unset or left at the default. |
 | `dirs.repos` | `SEMAPHORE_REPOS_DIR` | string | `""` | Path to directory where repositories are stored. |
 | `dirs.ssh_agent_sockets` | `SEMAPHORE_SSH_AGENT_SOCKETS_DIR` | string | `/tmp/semaphore` | Path to directory where SSH agent sockets are stored. Default: /tmp/semaphore |
@@ -228,7 +231,7 @@ Concurrency, retention, and the environment task processes run in.
 | `max_parallel_tasks` | `SEMAPHORE_MAX_PARALLEL_TASKS` | integer | `9999` | task concurrency |
 | `apps` | `SEMAPHORE_APPS` | object | `{}` | JSON map which contains apps configuration. |
 | `apps.<id>.active` | — | boolean | `false` | Controls this configured app's UI availability. Explicit map entries default to false; auto-discovered installed tools are added active. |
-| `apps.<id>.priority` | — | integer | `0` | Numeric priority used when ordering configured applications; zero when omitted. |
+| `apps.<id>.priority` | — | integer | `0` | Numeric ordering priority. At application discovery, zero or negative values use built-in priorities for ansible (1000), terraform (900), terragrunt (850), tofu (800), bash (700), powershell (600) and python (500). Other application IDs retain their configured value, or zero when omitted. |
 | `apps.<id>.title` | — | string | `""` | Display name of the application in template forms. |
 | `apps.<id>.icon` | — | string | `""` | Icon identifier displayed for the application. |
 | `apps.<id>.color` | — | string | `""` | Application icon color for the light theme. |
@@ -272,7 +275,7 @@ Server-side switches first, then the keys a runner reads from its own configurat
 | `runner.check_interval_seconds` | `SEMAPHORE_RUNNER_CHECK_INTERVAL_SECONDS` | integer | `1` | How often the runner polls the server for new jobs. Plain int, not time.Duration, for env-binding simplicity. |
 | `runner.connection.server_ca_cert_file` | `SEMAPHORE_RUNNER_SERVER_CA_CERT_FILE` | string | `""` | PEM bundle used to verify the Semaphore server's certificate, in addition to the system trust store. Set this when the server uses a self-signed or internal-CA cert. |
 | `runner.connection.skip_tls_verify` | `SEMAPHORE_RUNNER_SKIP_TLS_VERIFY` | boolean | `false` | Disables server certificate verification entirely. This is insecure (vulnerable to MITM) — use only for testing. |
-| `runner.executor` | `SEMAPHORE_RUNNER_EXECUTOR` | object | Unset; see description | The whole executor block as one JSON value, for deployments that configure the runner entirely through environment variables. Equivalent to setting the nested `runner.executor.*` keys. |
+| `runner.executor` | `SEMAPHORE_RUNNER_EXECUTOR` | object | `{}` | The whole executor block as one JSON value, for deployments that configure the runner entirely through environment variables. Equivalent to setting the nested `runner.executor.*` keys. |
 | `runner.executor.type` | `SEMAPHORE_RUNNER_EXECUTOR_TYPE` | string | `local` | Strategy the runner uses to execute each task: `local` (default), `k8s` or `docker`. |
 | `runner.executor.k8s.kubeconfig` | `SEMAPHORE_RUNNER_K8S_KUBECONFIG` | string | `""` | Path to a kubeconfig file. When empty, in-cluster configuration is used (ServiceAccount token + CA cert mounted by Kubernetes). |
 | `runner.executor.k8s.context` | `SEMAPHORE_RUNNER_K8S_CONTEXT` | string | `""` | Exact kubeconfig context selected by the runner operator. It is required whenever KubeconfigPath is set; current-context is never used. |
@@ -364,14 +367,14 @@ Where server, event, and task logs go, and the Prometheus endpoint. See [Logs](.
 | `log.debug_filter` | `SEMAPHORE_DEBUG_FILTER` | string | `""` | Selects debug-log sources for the structured logging service. |
 | `log.events.format` | `SEMAPHORE_EVENT_LOG_FORMAT` | string | `""` | Must be "json" when Enabled is true. |
 | `log.events.enabled` | `SEMAPHORE_EVENT_LOG_ENABLED` | boolean | `false` | Requires Format "json" and a Logger with a filename. |
-| `log.events.logger` | `SEMAPHORE_EVENT_LOGGER` | object | Unset; see description | File destination required when Enabled is true. |
+| `log.events.logger` | `SEMAPHORE_EVENT_LOGGER` | object | `{}` | File destination required when Enabled is true. |
 | `log.tasks.enabled` | `SEMAPHORE_TASK_LOG_ENABLED` | boolean | `false` | Requires Format "json" and at least one filename-backed Logger or ResultLogger destination. |
 | `log.tasks.format` | `SEMAPHORE_TASK_LOG_FORMAT` | string | `""` | Must be "json" when Enabled is true. |
-| `log.tasks.logger` | `SEMAPHORE_TASK_LOGGER` | object | Unset; see description | Optional task-record file destination. When enabled, each configured destination requires a filename. |
-| `log.tasks.result_logger` | `SEMAPHORE_TASK_RESULT_LOGGER` | object | Unset; see description | Optional task-result file destination. When enabled, each configured destination requires a filename. |
+| `log.tasks.logger` | `SEMAPHORE_TASK_LOGGER` | object | `{}` | Optional task-record file destination. When enabled, each configured destination requires a filename. |
+| `log.tasks.result_logger` | `SEMAPHORE_TASK_RESULT_LOGGER` | object | `{}` | Optional task-result file destination. When enabled, each configured destination requires a filename. |
 | `log.debug.enabled` | `SEMAPHORE_DEBUG_LOG_ENABLED` | boolean | `false` | Turns on structured debug file export. Requires format=json and logger.filename; log.debug_filter selects the captured components. |
 | `log.debug.format` | `SEMAPHORE_DEBUG_LOG_FORMAT` | string | `""` | Must be json. Empty or other formats are unsupported by the selected structured file writer. |
-| `log.debug.logger` | `SEMAPHORE_DEBUG_LOGGER` | object | Unset; see description | Configures the debug destination. Requires an absolute, normalized filename; see [Logs](../admin-guide/logs.md#logger-options) for rotation options. |
+| `log.debug.logger` | `SEMAPHORE_DEBUG_LOGGER` | object | `{}` | Configures the debug destination. Requires an absolute, normalized filename; see [Logs](../admin-guide/logs.md#logger-options) for rotation options. |
 
 ## Teams and invitations
 

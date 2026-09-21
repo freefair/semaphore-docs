@@ -6,6 +6,7 @@ Read this file directly; no Swagger UI or site build is required.
 See [API authentication and examples](api.md) and [all data models](api-models.md).
 The YAML blocks preserve the complete authored operation contract, including nested request schemas, defaults, enums and response codes.
 References beginning with `#/definitions/` name entries in the data-model reference.
+References beginning with `#/parameters/` or `#/responses/` name reusable entries in the shared contract below.
 These schemas document the checked-in API contract; consult feature guides for lifecycle and authorization requirements.
 
 ## Shared contract
@@ -14,6 +15,199 @@ These schemas document the checked-in API contract; consult feature guides for l
 basePath: /api
 consumes:
     - application/json
+parameters:
+    alias_id:
+        description: Integration Alias ID
+        in: path
+        name: alias_id
+        required: true
+        type: integer
+        x-example: 15
+    artifact_id:
+        description: Workflow file artifact ID
+        in: path
+        minimum: 1
+        name: artifact_id
+        required: true
+        type: integer
+        x-example: 21
+    credential_id:
+        description: Global credential ID
+        in: path
+        name: credential_id
+        required: true
+        type: integer
+        x-example: 21
+    delivery_id:
+        description: Audit webhook delivery ID
+        in: path
+        name: delivery_id
+        required: true
+        type: integer
+        x-example: 24
+    environment_id:
+        description: environment ID
+        in: path
+        name: environment_id
+        required: true
+        type: integer
+        x-example: 6
+    extractvalue_id:
+        description: extractValue ID
+        in: path
+        name: extractvalue_id
+        required: true
+        type: integer
+        x-example: 12
+    global_runner_id:
+        description: Global runner ID
+        in: path
+        name: runner_id
+        required: true
+        type: integer
+        x-example: 17
+    grant_id:
+        description: Global credential grant ID
+        in: path
+        name: grant_id
+        required: true
+        type: integer
+        x-example: 22
+    history_before:
+        description: Return history records with an ID lower than this cursor
+        in: query
+        minimum: 1
+        name: before
+        required: false
+        type: integer
+    history_count:
+        default: 25
+        description: Maximum number of newest history records to return
+        in: query
+        maximum: 100
+        minimum: 1
+        name: count
+        required: false
+        type: integer
+    integration_id:
+        description: integration ID
+        in: path
+        name: integration_id
+        required: true
+        type: integer
+        x-example: 11
+    inventory_id:
+        description: inventory ID
+        in: path
+        name: inventory_id
+        required: true
+        type: integer
+        x-example: 5
+    invite_id:
+        description: Invite ID
+        in: path
+        name: invite_id
+        required: true
+        type: integer
+        x-example: 14
+    key_id:
+        description: key ID
+        in: path
+        name: key_id
+        required: true
+        type: integer
+        x-example: 3
+    matcher_id:
+        description: matcher ID
+        in: path
+        name: matcher_id
+        required: true
+        type: integer
+        x-example: 13
+    node_id:
+        description: workflow node ID
+        in: path
+        name: node_id
+        required: true
+        type: integer
+        x-example: 20
+    project_id:
+        description: Project ID
+        in: path
+        name: project_id
+        required: true
+        type: integer
+        x-example: 1
+    repository_id:
+        description: repository ID
+        in: path
+        name: repository_id
+        required: true
+        type: integer
+        x-example: 4
+    run_id:
+        description: workflow run ID
+        in: path
+        name: run_id
+        required: true
+        type: integer
+        x-example: 19
+    runner_id:
+        description: Project runner ID
+        in: path
+        name: runner_id
+        required: true
+        type: integer
+        x-example: 16
+    schedule_id:
+        description: schedule ID
+        in: path
+        name: schedule_id
+        required: true
+        type: integer
+        x-example: 9
+    task_id:
+        description: task ID
+        in: path
+        name: task_id
+        required: true
+        type: integer
+        x-example: 8
+    template_id:
+        description: template ID
+        in: path
+        name: template_id
+        required: true
+        type: integer
+        x-example: 7
+    trigger_id:
+        description: Workflow trigger ID
+        in: path
+        name: trigger_id
+        required: true
+        type: integer
+        x-example: 23
+    user_id:
+        description: User ID
+        in: path
+        name: user_id
+        required: true
+        type: integer
+        x-example: 2
+    view_id:
+        description: view ID
+        in: path
+        name: view_id
+        required: true
+        type: integer
+        x-example: 10
+    workflow_id:
+        description: workflow template ID
+        in: path
+        name: workflow_id
+        required: true
+        type: integer
+        x-example: 18
 produces:
     - application/json
     - text/plain; charset=utf-8
@@ -192,7 +386,7 @@ securityDefinitions:
 
 ```yaml
 responses:
-    200:
+    "200":
         description: Apps
         schema:
             items:
@@ -209,13 +403,13 @@ summary: Get apps
 
 ```yaml
 responses:
-    200:
+    "200":
         description: Safe configuration and current/next signing metadata
         schema:
-            $ref: ./api-docs.yml#/definitions/AuditWebhookConfiguration
-    403:
+            $ref: '#/definitions/AuditWebhookConfiguration'
+    "403":
         description: Administrator permission required
-    404:
+    "404":
         description: Audit webhook export is unavailable in this edition
 summary: Read the non-secret audit webhook configuration and signing status
 tags:
@@ -232,15 +426,15 @@ parameters:
       schema:
         $ref: '#/definitions/AuditWebhookConfigurationInput'
 responses:
-    200:
+    "200":
         description: Updated non-secret configuration
         schema:
-            $ref: ./api-docs.yml#/definitions/AuditWebhookConfiguration
-    400:
+            $ref: '#/definitions/AuditWebhookConfiguration'
+    "400":
         description: Invalid endpoint, credential, unknown field, or body
-    403:
+    "403":
         description: Administrator permission required
-    404:
+    "404":
         description: Audit webhook export is unavailable in this edition
 summary: Configure the HTTPS audit receiver and optional legacy Bearer credential
 tags:
@@ -269,16 +463,16 @@ parameters:
       required: false
       type: integer
 responses:
-    200:
+    "200":
         description: Bounded delivery history
         schema:
             items:
-                $ref: ./api-docs.yml#/definitions/AuditWebhookDelivery
+                $ref: '#/definitions/AuditWebhookDelivery'
             maxItems: 100
             type: array
-    400:
+    "400":
         description: Invalid pagination
-    403:
+    "403":
         description: Administrator permission required
 summary: List newest audit webhook deliveries without payloads or signing material
 tags:
@@ -313,18 +507,18 @@ parameters:
       required: false
       type: integer
 responses:
-    200:
+    "200":
         description: Attempt metadata without payloads, secrets, signatures, headers, bodies, or raw errors
         schema:
             items:
-                $ref: ./api-docs.yml#/definitions/AuditWebhookDeliveryAttempt
+                $ref: '#/definitions/AuditWebhookDeliveryAttempt'
             maxItems: 100
             type: array
-    400:
+    "400":
         description: Invalid delivery ID or pagination
-    403:
+    "403":
         description: Administrator permission required
-    404:
+    "404":
         description: Delivery does not exist
 summary: List redacted signed attempts for one audit delivery
 tags:
@@ -339,13 +533,13 @@ tags:
 
 ```yaml
 responses:
-    200:
+    "200":
         description: Updated non-secret configuration
         schema:
-            $ref: ./api-docs.yml#/definitions/AuditWebhookConfiguration
-    403:
+            $ref: '#/definitions/AuditWebhookConfiguration'
+    "403":
         description: Administrator permission required
-    409:
+    "409":
         description: Audit webhook is not configured
 summary: Pause background audit delivery claims
 tags:
@@ -360,13 +554,13 @@ tags:
 
 ```yaml
 responses:
-    200:
+    "200":
         description: Updated non-secret configuration
         schema:
-            $ref: ./api-docs.yml#/definitions/AuditWebhookConfiguration
-    403:
+            $ref: '#/definitions/AuditWebhookConfiguration'
+    "403":
         description: Administrator permission required
-    409:
+    "409":
         description: Audit webhook is not configured
 summary: Resume background audit delivery claims
 tags:
@@ -388,15 +582,15 @@ parameters:
       type: integer
       x-example: 0
 responses:
-    201:
+    "201":
         description: One-time secret and safe signing status
         schema:
-            $ref: ./api-docs.yml#/definitions/AuditWebhookSigningSecret
-    400:
+            $ref: '#/definitions/AuditWebhookSigningSecret'
+    "400":
         description: Invalid revision or signing operation
-    403:
+    "403":
         description: Administrator permission required
-    409:
+    "409":
         description: Signing state changed or already has a current key
 summary: Create and reveal the initial audit signing secret once
 tags:
@@ -418,15 +612,15 @@ parameters:
       type: integer
       x-example: 0
 responses:
-    200:
+    "200":
         description: Safe signing status after revocation
         schema:
-            $ref: ./api-docs.yml#/definitions/WebhookSigningStatus
-    400:
+            $ref: '#/definitions/WebhookSigningStatus'
+    "400":
         description: Invalid revision or signing operation
-    403:
+    "403":
         description: Administrator permission required
-    409:
+    "409":
         description: Signing state changed
 summary: Revoke the staged or retired audit next key
 tags:
@@ -448,15 +642,15 @@ parameters:
       type: integer
       x-example: 0
 responses:
-    200:
+    "200":
         description: Safe signing status after promotion
         schema:
-            $ref: ./api-docs.yml#/definitions/WebhookSigningStatus
-    400:
+            $ref: '#/definitions/WebhookSigningStatus'
+    "400":
         description: Invalid revision or signing operation
-    403:
+    "403":
         description: Administrator permission required
-    409:
+    "409":
         description: Signing state changed or next key is not staged
 summary: Promote a staged audit key and retain the old current key for overlap
 tags:
@@ -478,15 +672,15 @@ parameters:
       type: integer
       x-example: 0
 responses:
-    201:
+    "201":
         description: One-time next secret and safe signing status
         schema:
-            $ref: ./api-docs.yml#/definitions/AuditWebhookSigningSecret
-    400:
+            $ref: '#/definitions/AuditWebhookSigningSecret'
+    "400":
         description: Invalid revision or signing operation
-    403:
+    "403":
         description: Administrator permission required
-    409:
+    "409":
         description: Signing state changed or next-key slot is occupied
 summary: Stage and reveal the next audit signing secret once
 tags:
@@ -510,15 +704,15 @@ parameters:
       required: false
       type: string
 responses:
-    201:
+    "201":
         description: Persisted delivery; inspect its status and attempt history
         schema:
-            $ref: ./api-docs.yml#/definitions/AuditWebhookDelivery
-    400:
+            $ref: '#/definitions/AuditWebhookDelivery'
+    "400":
         description: Invalid key selection
-    403:
+    "403":
         description: Administrator permission required
-    409:
+    "409":
         description: Endpoint or selected signing key is not configured
 summary: Persist and send one controlled signed audit delivery
 tags:
@@ -534,7 +728,7 @@ tags:
 ```yaml
 description: Fetches metadata for login, such as available OIDC providers
 responses:
-    200:
+    "200":
         description: Login metadata
         schema:
             $ref: '#/definitions/LoginMetadata'
@@ -555,9 +749,9 @@ parameters:
       schema:
         $ref: '#/definitions/Login'
 responses:
-    204:
+    "204":
         description: You are logged in
-    400:
+    "400":
         description: something in body is missing / is invalid
 security: []
 summary: Performs Login
@@ -573,7 +767,7 @@ tags:
 
 ```yaml
 responses:
-    204:
+    "204":
         description: Your session was successfully nuked
 summary: Destroys current session
 tags:
@@ -599,7 +793,7 @@ Parameters shared by all methods at this path:
 ```yaml
 description: The user agent is redirected to this endpoint when chosing to sign in via OIDC
 responses:
-    302:
+    "302":
         description: Redirection to the OIDC provider on success, or to the login page on error
 summary: Begin OIDC authentication flow and redirect to OIDC provider
 tags:
@@ -625,7 +819,7 @@ Parameters shared by all methods at this path:
 ```yaml
 description: The user agent is redirected here by the OIDC provider to complete authentication
 responses:
-    302:
+    "302":
         description: Redirection to the Semaphore root URL on success, or to the login page on error
 summary: Finish OIDC authentication flow, upon succes you will be logged in
 tags:
@@ -640,7 +834,7 @@ tags:
 
 ```yaml
 responses:
-    200:
+    "200":
         description: Array of events in chronological order
         schema:
             items:
@@ -657,7 +851,7 @@ summary: Get Events related to Semaphore and projects you are part of
 
 ```yaml
 responses:
-    200:
+    "200":
         description: Array of events in chronological order
         schema:
             items:
@@ -687,15 +881,15 @@ parameters:
       name: offset
       type: integer
 responses:
-    200:
+    "200":
         description: Bounded value-free summaries
         schema:
             items:
-                $ref: ./api-docs.yml#/definitions/GlobalCredentialSummary
+                $ref: '#/definitions/GlobalCredentialSummary'
             type: array
-    400:
+    "400":
         description: Invalid or ambiguous pagination
-    403:
+    "403":
         description: Missing global credential permission
 summary: List global credential summaries
 tags:
@@ -713,15 +907,15 @@ parameters:
       schema:
         $ref: '#/definitions/GlobalCredentialCreateRequest'
 responses:
-    201:
+    "201":
         description: Value-free credential summary
         schema:
-            $ref: ./api-docs.yml#/definitions/GlobalCredentialSummary
-    400:
+            $ref: '#/definitions/GlobalCredentialSummary'
+    "400":
         description: Invalid input
-    403:
+    "403":
         description: Either required permission is missing
-    503:
+    "503":
         description: Local material encryption is unavailable
 summary: Create a global credential and its first immutable version
 tags:
@@ -737,13 +931,13 @@ tags:
 ```yaml
 description: Requires global.credentials.grant and returns at most 200 projects with only ID and name.
 responses:
-    200:
+    "200":
         description: Ordered project selectors
         schema:
             items:
-                $ref: ./api-docs.yml#/definitions/GlobalCredentialGrantProject
+                $ref: '#/definitions/GlobalCredentialGrantProject'
             type: array
-    403:
+    "403":
         description: Missing global.credentials.grant
 summary: List bounded project grant targets
 tags:
@@ -765,13 +959,13 @@ Parameters shared by all methods at this path:
 ```yaml
 description: Requires global.credentials.metadata.manage. Local material and ciphertext are always omitted.
 responses:
-    200:
+    "200":
         description: Detailed value-free metadata
         schema:
-            $ref: ./api-docs.yml#/definitions/GlobalCredentialDetail
-    403:
+            $ref: '#/definitions/GlobalCredentialDetail'
+    "403":
         description: Missing metadata-management permission
-    404:
+    "404":
         description: Credential not found
 summary: Get detailed global credential metadata
 tags:
@@ -789,17 +983,17 @@ parameters:
       schema:
         $ref: '#/definitions/GlobalCredentialMetadataUpdateRequest'
 responses:
-    200:
+    "200":
         description: Updated value-free summary
         schema:
-            $ref: ./api-docs.yml#/definitions/GlobalCredentialSummary
-    400:
+            $ref: '#/definitions/GlobalCredentialSummary'
+    "400":
         description: Invalid input
-    403:
+    "403":
         description: Missing metadata-management permission
-    404:
+    "404":
         description: Credential not found
-    409:
+    "409":
         description: Stale revision
 summary: Update global credential display metadata
 tags:
@@ -818,15 +1012,15 @@ parameters:
       type: integer
       x-example: 1
 responses:
-    204:
+    "204":
         description: Credential deleted
-    400:
+    "400":
         description: Invalid or ambiguous revision
-    403:
+    "403":
         description: Missing metadata-management permission
-    404:
+    "404":
         description: Credential not found
-    409:
+    "409":
         description: Stale revision or dependency guard
 summary: Delete a disabled, ungranted global credential
 tags:
@@ -854,17 +1048,17 @@ parameters:
       schema:
         $ref: '#/definitions/GlobalCredentialEnabledRequest'
 responses:
-    200:
+    "200":
         description: Updated value-free summary
         schema:
-            $ref: ./api-docs.yml#/definitions/GlobalCredentialSummary
-    400:
+            $ref: '#/definitions/GlobalCredentialSummary'
+    "400":
         description: Invalid input
-    403:
+    "403":
         description: Missing metadata-management permission
-    404:
+    "404":
         description: Credential not found
-    409:
+    "409":
         description: Stale revision
 summary: Enable or disable a global credential
 tags:
@@ -898,13 +1092,13 @@ parameters:
       name: offset
       type: integer
 responses:
-    200:
+    "200":
         description: Credential grants
         schema:
             items:
-                $ref: ./api-docs.yml#/definitions/GlobalCredentialGrant
+                $ref: '#/definitions/GlobalCredentialGrant'
             type: array
-    403:
+    "403":
         description: Missing grant permission
 summary: List project grants for one credential
 tags:
@@ -922,17 +1116,17 @@ parameters:
       schema:
         $ref: '#/definitions/GlobalCredentialGrantInput'
 responses:
-    201:
+    "201":
         description: Grant created
         schema:
-            $ref: ./api-docs.yml#/definitions/GlobalCredentialGrant
-    400:
+            $ref: '#/definitions/GlobalCredentialGrant'
+    "400":
         description: Invalid input
-    403:
+    "403":
         description: Missing grant permission
-    404:
+    "404":
         description: Credential not found
-    409:
+    "409":
         description: Grant already exists or a dependency changed
 summary: Grant a project explicit operations on one credential
 tags:
@@ -961,17 +1155,17 @@ parameters:
       schema:
         $ref: '#/definitions/GlobalCredentialGrantUpdateRequest'
 responses:
-    200:
+    "200":
         description: Grant updated
         schema:
-            $ref: ./api-docs.yml#/definitions/GlobalCredentialGrant
-    400:
+            $ref: '#/definitions/GlobalCredentialGrant'
+    "400":
         description: Invalid input
-    403:
+    "403":
         description: Missing grant permission
-    404:
+    "404":
         description: Grant not found for this credential
-    409:
+    "409":
         description: Stale grant revision
 summary: Update allowed operations or expiry
 tags:
@@ -990,15 +1184,15 @@ parameters:
       type: integer
       x-example: 1
 responses:
-    204:
+    "204":
         description: Grant deleted
-    400:
+    "400":
         description: Invalid input or active grant
-    403:
+    "403":
         description: Missing grant permission
-    404:
+    "404":
         description: Grant not found for this credential
-    409:
+    "409":
         description: Stale grant revision
 summary: Delete a revoked grant
 tags:
@@ -1027,15 +1221,15 @@ parameters:
       schema:
         $ref: '#/definitions/GlobalCredentialRevisionRequest'
 responses:
-    200:
+    "200":
         description: Restored grant
         schema:
-            $ref: ./api-docs.yml#/definitions/GlobalCredentialGrant
-    403:
+            $ref: '#/definitions/GlobalCredentialGrant'
+    "403":
         description: Missing grant permission
-    404:
+    "404":
         description: Grant not found for this credential
-    409:
+    "409":
         description: Stale grant revision
 summary: Restore a revoked project grant
 tags:
@@ -1064,15 +1258,15 @@ parameters:
       schema:
         $ref: '#/definitions/GlobalCredentialRevisionRequest'
 responses:
-    200:
+    "200":
         description: Revoked grant
         schema:
-            $ref: ./api-docs.yml#/definitions/GlobalCredentialGrant
-    403:
+            $ref: '#/definitions/GlobalCredentialGrant'
+    "403":
         description: Missing grant permission
-    404:
+    "404":
         description: Grant not found for this credential
-    409:
+    "409":
         description: Stale grant revision
 summary: Revoke a project grant
 tags:
@@ -1094,13 +1288,13 @@ Parameters shared by all methods at this path:
 ```yaml
 description: Requires any global credential administration or audit permission.
 responses:
-    200:
+    "200":
         description: Value-free usage and active-grant counts
         schema:
-            $ref: ./api-docs.yml#/definitions/GlobalCredentialImpact
-    403:
+            $ref: '#/definitions/GlobalCredentialImpact'
+    "403":
         description: Missing global credential permission
-    404:
+    "404":
         description: Credential not found
 summary: Preview credential transition impact
 tags:
@@ -1128,19 +1322,19 @@ parameters:
       schema:
         $ref: '#/definitions/GlobalCredentialRotateRequest'
 responses:
-    200:
+    "200":
         description: Rotated value-free summary
         schema:
-            $ref: ./api-docs.yml#/definitions/GlobalCredentialSummary
-    400:
+            $ref: '#/definitions/GlobalCredentialSummary'
+    "400":
         description: Invalid input
-    403:
+    "403":
         description: Missing rotation permission
-    404:
+    "404":
         description: Credential not found
-    409:
+    "409":
         description: Stale revision
-    503:
+    "503":
         description: Local material encryption is unavailable
 summary: Append a new immutable credential version
 tags:
@@ -1188,17 +1382,17 @@ parameters:
       name: outcome
       type: string
 responses:
-    200:
+    "200":
         description: Bounded newest-first usage history
         schema:
             items:
-                $ref: ./api-docs.yml#/definitions/GlobalCredentialUsage
+                $ref: '#/definitions/GlobalCredentialUsage'
             type: array
-    400:
+    "400":
         description: Invalid or ambiguous filters
-    403:
+    "403":
         description: Missing global.audit.read
-    404:
+    "404":
         description: Credential not found
 summary: List value-free credential resolution history
 tags:
@@ -1215,7 +1409,7 @@ tags:
 ```yaml
 description: you must be authenticated to use this
 responses:
-    200:
+    "200":
         description: ok
         schema:
             $ref: '#/definitions/InfoType'
@@ -1232,7 +1426,7 @@ summary: Fetches information about semaphore
 produces:
     - text/plain
 responses:
-    200:
+    "200":
         description: Successful "PONG" reply
         headers:
             content-type:
@@ -1253,13 +1447,13 @@ summary: PING test
 ```yaml
 description: Requires the policy_guardrails read capability and global.policy_guardrails.manage.
 responses:
-    200:
+    "200":
         description: Current global draft and optional active immutable revision
         schema:
-            $ref: ./api-docs.yml#/definitions/PolicyGuardrailState
-    403:
+            $ref: '#/definitions/PolicyGuardrailState'
+    "403":
         description: Missing global policy-management permission
-    404:
+    "404":
         description: Capability unavailable
 summary: Read the global policy draft and active revision
 tags:
@@ -1291,15 +1485,15 @@ Parameters shared by all methods at this path:
 
 ```yaml
 responses:
-    200:
+    "200":
         description: Added, removed, and structurally changed rule IDs
         schema:
-            $ref: ./api-docs.yml#/definitions/PolicyGuardrailDiff
-    400:
+            $ref: '#/definitions/PolicyGuardrailDiff'
+    "400":
         description: Invalid, equal, duplicated, or unexpected query values
-    403:
+    "403":
         description: Missing global policy-management permission
-    404:
+    "404":
         description: A global revision does not exist
 summary: Compare two immutable global policy revisions
 tags:
@@ -1320,17 +1514,17 @@ parameters:
       schema:
         $ref: '#/definitions/PolicyGuardrailDraftRequest'
 responses:
-    200:
+    "200":
         description: Saved global draft
         schema:
-            $ref: ./api-docs.yml#/definitions/PolicyGuardrailDraft
-    400:
+            $ref: '#/definitions/PolicyGuardrailDraft'
+    "400":
         description: Invalid or ambiguous input
-    403:
+    "403":
         description: Missing global policy-management permission
-    409:
+    "409":
         description: Draft revision conflict
-    413:
+    "413":
         description: Request or YAML source exceeds its bound
 summary: Save the global policy draft using optimistic concurrency
 tags:
@@ -1348,16 +1542,16 @@ parameters:
     - $ref: '#/parameters/history_count'
     - $ref: '#/parameters/history_before'
 responses:
-    200:
+    "200":
         description: Newest value-free evaluation records first
         schema:
             items:
-                $ref: ./api-docs.yml#/definitions/PolicyGuardrailEvaluationRecord
+                $ref: '#/definitions/PolicyGuardrailEvaluationRecord'
             maxItems: 100
             type: array
-    400:
+    "400":
         description: Invalid or unexpected pagination query
-    403:
+    "403":
         description: Missing global policy-management permission
 summary: List immutable policy evaluations across projects
 tags:
@@ -1378,15 +1572,15 @@ parameters:
       schema:
         $ref: '#/definitions/PolicyGuardrailImpactRequest'
 responses:
-    200:
+    "200":
         description: Per-fixture evaluations and allow/deny totals
         schema:
-            $ref: ./api-docs.yml#/definitions/PolicyGuardrailImpact
-    400:
+            $ref: '#/definitions/PolicyGuardrailImpact'
+    "400":
         description: Invalid fixture collection
-    403:
+    "403":
         description: Missing global policy-management permission
-    413:
+    "413":
         description: Request exceeds 2 MiB
 summary: Evaluate the global draft against up to 100 value-free fixtures
 tags:
@@ -1407,15 +1601,15 @@ parameters:
       schema:
         $ref: '#/definitions/PolicyGuardrailPublishRequest'
 responses:
-    201:
+    "201":
         description: New immutable active global revision
         schema:
-            $ref: ./api-docs.yml#/definitions/PolicyGuardrailRevision
-    400:
+            $ref: '#/definitions/PolicyGuardrailRevision'
+    "400":
         description: Invalid request or draft policy
-    403:
+    "403":
         description: Missing global policy-management permission
-    409:
+    "409":
         description: Draft or publish revision conflict
 summary: Compile and publish the current global draft
 tags:
@@ -1433,16 +1627,16 @@ parameters:
     - $ref: '#/parameters/history_count'
     - $ref: '#/parameters/history_before'
 responses:
-    200:
+    "200":
         description: Newest revisions first
         schema:
             items:
-                $ref: ./api-docs.yml#/definitions/PolicyGuardrailRevision
+                $ref: '#/definitions/PolicyGuardrailRevision'
             maxItems: 100
             type: array
-    400:
+    "400":
         description: Invalid or unexpected pagination query
-    403:
+    "403":
         description: Missing global policy-management permission
 summary: List immutable global policy revisions
 tags:
@@ -1464,17 +1658,17 @@ parameters:
       schema:
         $ref: '#/definitions/PolicyGuardrailRollbackRequest'
 responses:
-    201:
+    "201":
         description: New immutable rollback revision
         schema:
-            $ref: ./api-docs.yml#/definitions/PolicyGuardrailRevision
-    400:
+            $ref: '#/definitions/PolicyGuardrailRevision'
+    "400":
         description: Invalid revision or rollback reason
-    403:
+    "403":
         description: Missing global rollback permission
-    404:
+    "404":
         description: Source global revision does not exist
-    409:
+    "409":
         description: Draft revision conflict
 summary: Publish a new global revision copied from an earlier revision
 tags:
@@ -1495,15 +1689,15 @@ parameters:
       schema:
         $ref: '#/definitions/PolicyGuardrailFixtureRequest'
 responses:
-    200:
+    "200":
         description: Deterministic evaluation
         schema:
-            $ref: ./api-docs.yml#/definitions/PolicyGuardrailEvaluation
-    400:
+            $ref: '#/definitions/PolicyGuardrailEvaluation'
+    "400":
         description: Invalid policy or fixture
-    403:
+    "403":
         description: Missing global policy-management permission
-    413:
+    "413":
         description: Request exceeds 2 MiB or YAML exceeds 64 KiB
 summary: Evaluate global policy YAML against one value-free fixture
 tags:
@@ -1524,15 +1718,15 @@ parameters:
       schema:
         $ref: '#/definitions/PolicyGuardrailSourceRequest'
 responses:
-    200:
+    "200":
         description: Bounded validation result
         schema:
-            $ref: ./api-docs.yml#/definitions/PolicyGuardrailValidation
-    400:
+            $ref: '#/definitions/PolicyGuardrailValidation'
+    "400":
         description: Invalid request shape
-    403:
+    "403":
         description: Missing global policy-management permission
-    413:
+    "413":
         description: Request or YAML source exceeds its bound
 summary: Validate and fingerprint global policy YAML without saving it
 tags:
@@ -1553,7 +1747,7 @@ Parameters shared by all methods at this path:
 
 ```yaml
 responses:
-    200:
+    "200":
         description: Project
         schema:
             $ref: '#/definitions/Project'
@@ -1577,7 +1771,7 @@ parameters:
                     minimum: 1
                     type: integer
 responses:
-    204:
+    "204":
         description: Project saved
 summary: Update project
 tags:
@@ -1588,7 +1782,7 @@ tags:
 
 ```yaml
 responses:
-    204:
+    "204":
         description: Project deleted
 summary: Delete project
 tags:
@@ -1609,7 +1803,7 @@ Parameters shared by all methods at this path:
 
 ```yaml
 responses:
-    200:
+    "200":
         description: Backup
         schema:
             $ref: '#/definitions/ProjectBackup'
@@ -1647,7 +1841,7 @@ parameters:
       type: string
       x-example: desc
 responses:
-    200:
+    "200":
         description: environment
         schema:
             items:
@@ -1668,7 +1862,7 @@ parameters:
       schema:
         $ref: '#/definitions/EnvironmentRequest'
 responses:
-    201:
+    "201":
         description: Environment created
         schema:
             $ref: '#/definitions/Environment'
@@ -1692,7 +1886,7 @@ Parameters shared by all methods at this path:
 
 ```yaml
 responses:
-    200:
+    "200":
         description: environment object
         schema:
             $ref: '#/definitions/Environment'
@@ -1711,7 +1905,7 @@ parameters:
       schema:
         $ref: '#/definitions/EnvironmentRequest'
 responses:
-    204:
+    "204":
         description: Environment Updated
 summary: Update environment
 tags:
@@ -1722,7 +1916,7 @@ tags:
 
 ```yaml
 responses:
-    204:
+    "204":
         description: environment removed
 summary: Removes environment
 tags:
@@ -1743,7 +1937,7 @@ Parameters shared by all methods at this path:
 
 ```yaml
 responses:
-    200:
+    "200":
         description: Array of events in chronological order
         schema:
             items:
@@ -1781,17 +1975,17 @@ parameters:
       name: offset
       type: integer
 responses:
-    200:
+    "200":
         description: Value-free effective project metadata
         schema:
             items:
-                $ref: ./api-docs.yml#/definitions/GrantedCredential
+                $ref: '#/definitions/GrantedCredential'
             type: array
-    400:
+    "400":
         description: Invalid or ambiguous pagination
-    403:
+    "403":
         description: Missing project.credentials.granted.list
-    404:
+    "404":
         description: Project not found or not visible
 summary: List effective granted credential metadata for one project
 tags:
@@ -1813,7 +2007,7 @@ Parameters shared by all methods at this path:
 
 ```yaml
 responses:
-    200:
+    "200":
         description: integration
         schema:
             items:
@@ -1834,7 +2028,7 @@ parameters:
       schema:
         $ref: '#/definitions/IntegrationRequest'
 responses:
-    201:
+    "201":
         description: Integration Created
         schema:
             $ref: '#/definitions/Integration'
@@ -1857,7 +2051,7 @@ Parameters shared by all methods at this path:
 
 ```yaml
 responses:
-    200:
+    "200":
         description: Integration Aliases
         schema:
             items:
@@ -1872,7 +2066,7 @@ tags:
 
 ```yaml
 responses:
-    200:
+    "200":
         description: Integration Alias Created
         schema:
             $ref: '#/definitions/IntegrationAlias'
@@ -1896,7 +2090,7 @@ Parameters shared by all methods at this path:
 
 ```yaml
 responses:
-    204:
+    "204":
         description: integration alias removed
 summary: Remove integration alias
 tags:
@@ -1918,7 +2112,7 @@ Parameters shared by all methods at this path:
 
 ```yaml
 responses:
-    200:
+    "200":
         description: Integration Value
         schema:
             $ref: '#/definitions/Integration'
@@ -1937,7 +2131,7 @@ parameters:
       schema:
         $ref: '#/definitions/IntegrationRequest'
 responses:
-    204:
+    "204":
         description: Integration updated
 summary: Update Integration
 tags:
@@ -1948,7 +2142,7 @@ tags:
 
 ```yaml
 responses:
-    204:
+    "204":
         description: integration removed
 summary: Remove integration
 tags:
@@ -1970,7 +2164,7 @@ Parameters shared by all methods at this path:
 
 ```yaml
 responses:
-    200:
+    "200":
         description: Integration Aliases
         schema:
             items:
@@ -1985,7 +2179,7 @@ tags:
 
 ```yaml
 responses:
-    200:
+    "200":
         description: Integration Alias Created
         schema:
             $ref: '#/definitions/IntegrationAlias'
@@ -2010,7 +2204,7 @@ Parameters shared by all methods at this path:
 
 ```yaml
 responses:
-    204:
+    "204":
         description: integration alias removed
 summary: Remove integration alias
 tags:
@@ -2032,7 +2226,7 @@ Parameters shared by all methods at this path:
 
 ```yaml
 responses:
-    200:
+    "200":
         description: Integration Matcher
         schema:
             items:
@@ -2053,9 +2247,9 @@ parameters:
       schema:
         $ref: '#/definitions/IntegrationMatcher'
 responses:
-    200:
+    "200":
         description: Integration Matcher Created
-    400:
+    "400":
         description: Bad Integration Matcher params
 summary: Add Integration Matcher
 tags:
@@ -2084,9 +2278,9 @@ parameters:
       schema:
         $ref: '#/definitions/IntegrationMatcherRequest'
 responses:
-    204:
+    "204":
         description: Integration Matcher updated
-    400:
+    "400":
         description: Bad integration matcher parameter
 summary: Updates Integration Matcher
 tags:
@@ -2097,7 +2291,7 @@ tags:
 
 ```yaml
 responses:
-    204:
+    "204":
         description: integration matcher removed
 summary: Removes integration matcher
 tags:
@@ -2119,7 +2313,7 @@ Parameters shared by all methods at this path:
 
 ```yaml
 responses:
-    200:
+    "200":
         description: Integration Extracted Value
         schema:
             items:
@@ -2140,9 +2334,9 @@ parameters:
       schema:
         $ref: '#/definitions/IntegrationExtractValue'
 responses:
-    201:
+    "201":
         description: Integration Extract Value Created
-    400:
+    "400":
         description: Bad Integration Extract Value params
 summary: Add Integration Extracted Value
 tags:
@@ -2171,9 +2365,9 @@ parameters:
       schema:
         $ref: '#/definitions/IntegrationExtractValueRequest'
 responses:
-    204:
+    "204":
         description: Integration Extract Value updated
-    400:
+    "400":
         description: Bad integration extract value parameter
 summary: Updates Integration ExtractValue
 tags:
@@ -2184,7 +2378,7 @@ tags:
 
 ```yaml
 responses:
-    204:
+    "204":
         description: integration extract value removed
 summary: Removes integration extract value
 tags:
@@ -2222,7 +2416,7 @@ parameters:
       required: true
       type: string
 responses:
-    200:
+    "200":
         description: inventory
         schema:
             items:
@@ -2243,7 +2437,7 @@ parameters:
       schema:
         $ref: '#/definitions/InventoryRequest'
 responses:
-    201:
+    "201":
         description: inventory created
         schema:
             $ref: '#/definitions/Inventory'
@@ -2267,7 +2461,7 @@ Parameters shared by all methods at this path:
 
 ```yaml
 responses:
-    200:
+    "200":
         description: inventory object
         schema:
             $ref: '#/definitions/Inventory'
@@ -2286,7 +2480,7 @@ parameters:
       schema:
         $ref: '#/definitions/InventoryRequest'
 responses:
-    204:
+    "204":
         description: Inventory updated
 summary: Updates inventory
 tags:
@@ -2297,7 +2491,7 @@ tags:
 
 ```yaml
 responses:
-    204:
+    "204":
         description: inventory removed
 summary: Removes inventory
 tags:
@@ -2319,9 +2513,9 @@ Parameters shared by all methods at this path:
 
 ```yaml
 responses:
-    200:
+    "200":
         description: Alias metadata without credential material
-    403:
+    "403":
         description: Project-resource management permission required
 summary: List Terraform HTTP backend aliases for one workspace inventory
 tags:
@@ -2343,11 +2537,11 @@ parameters:
             - auth_key_id
         type: object
 responses:
-    201:
+    "201":
         description: Generated alias metadata
-    400:
+    "400":
         description: Invalid or cross-project credential binding
-    403:
+    "403":
         description: Project-resource management permission required
 summary: Create a generated Terraform HTTP backend alias
 tags:
@@ -2374,9 +2568,9 @@ Parameters shared by all methods at this path:
 
 ```yaml
 responses:
-    200:
+    "200":
         description: Alias metadata
-    404:
+    "404":
         description: Alias not found
 summary: Read Terraform HTTP backend alias metadata
 tags:
@@ -2398,9 +2592,9 @@ parameters:
             - auth_key_id
         type: object
 responses:
-    200:
+    "200":
         description: Updated alias metadata
-    400:
+    "400":
         description: Invalid credential binding
 summary: Change the project login-password credential used by an alias
 tags:
@@ -2411,9 +2605,9 @@ tags:
 
 ```yaml
 responses:
-    204:
+    "204":
         description: Alias deleted
-    404:
+    "404":
         description: Alias not found
 summary: Delete a Terraform HTTP backend alias
 tags:
@@ -2463,7 +2657,7 @@ parameters:
       type: string
       x-example: asc
 responses:
-    200:
+    "200":
         description: Access Keys
         schema:
             items:
@@ -2484,11 +2678,11 @@ parameters:
       schema:
         $ref: '#/definitions/AccessKeyRequest'
 responses:
-    201:
+    "201":
         description: Access Key created
         schema:
             $ref: '#/definitions/AccessKey'
-    400:
+    "400":
         description: Bad type
 summary: Add access key
 tags:
@@ -2516,13 +2710,13 @@ parameters:
       schema:
         $ref: '#/definitions/GeneratedSSHKeyCreateRequest'
 responses:
-    201:
+    "201":
         description: SSH key generated
         schema:
-            $ref: ./api-docs.yml#/definitions/GeneratedSSHKeyResponse
-    400:
+            $ref: '#/definitions/GeneratedSSHKeyResponse'
+    "400":
         description: Invalid request, algorithm, storage, or encryption configuration
-    403:
+    "403":
         description: Project-resource management permission required
 summary: Generate and store a local SSH key pair
 tags:
@@ -2550,9 +2744,9 @@ parameters:
       schema:
         $ref: '#/definitions/AccessKeyRequest'
 responses:
-    204:
+    "204":
         description: Key updated
-    400:
+    "400":
         description: Bad type
 summary: Updates access key
 tags:
@@ -2563,7 +2757,7 @@ tags:
 
 ```yaml
 responses:
-    204:
+    "204":
         description: access key removed
 summary: Removes access key
 tags:
@@ -2592,13 +2786,13 @@ parameters:
       schema:
         $ref: '#/definitions/GeneratedSSHKeyRotateRequest'
 responses:
-    200:
+    "200":
         description: SSH key rotated
         schema:
-            $ref: ./api-docs.yml#/definitions/GeneratedSSHKeyResponse
-    400:
+            $ref: '#/definitions/GeneratedSSHKeyResponse'
+    "400":
         description: Rotation not confirmed or key is not eligible
-    403:
+    "403":
         description: Project-resource management permission required
 summary: Rotate a local SSH key with a newly generated pair
 tags:
@@ -2616,7 +2810,7 @@ description: Sends a test notification to all enabled messengers for the project
 parameters:
     - $ref: '#/parameters/project_id'
 responses:
-    409:
+    "409":
         description: Alerts not enabled for the project
 summary: Send test notification
 tags:
@@ -2638,13 +2832,13 @@ Parameters shared by all methods at this path:
 ```yaml
 description: Requires the policy_guardrails read capability and project.policy_guardrails.manage.
 responses:
-    200:
+    "200":
         description: Current draft and optional active immutable revision
         schema:
-            $ref: ./api-docs.yml#/definitions/PolicyGuardrailState
-    403:
+            $ref: '#/definitions/PolicyGuardrailState'
+    "403":
         description: Missing project policy-management permission
-    404:
+    "404":
         description: Capability unavailable or project hidden
 summary: Read the project policy draft and active revision
 tags:
@@ -2678,15 +2872,15 @@ Parameters shared by all methods at this path:
 
 ```yaml
 responses:
-    200:
+    "200":
         description: Added, removed, and structurally changed rule IDs
         schema:
-            $ref: ./api-docs.yml#/definitions/PolicyGuardrailDiff
-    400:
+            $ref: '#/definitions/PolicyGuardrailDiff'
+    "400":
         description: Invalid, equal, duplicated, or unexpected query values
-    403:
+    "403":
         description: Missing project policy-management permission
-    404:
+    "404":
         description: A revision is not visible in this project scope
 summary: Compare two immutable project policy revisions
 tags:
@@ -2714,17 +2908,17 @@ parameters:
       schema:
         $ref: '#/definitions/PolicyGuardrailDraftRequest'
 responses:
-    200:
+    "200":
         description: Saved draft with its next revision
         schema:
-            $ref: ./api-docs.yml#/definitions/PolicyGuardrailDraft
-    400:
+            $ref: '#/definitions/PolicyGuardrailDraft'
+    "400":
         description: Invalid or ambiguous input
-    403:
+    "403":
         description: Missing project policy-management permission
-    409:
+    "409":
         description: Draft revision conflict
-    413:
+    "413":
         description: Request or YAML source exceeds its bound
 summary: Save a project policy draft using optimistic concurrency
 tags:
@@ -2749,16 +2943,16 @@ parameters:
     - $ref: '#/parameters/history_count'
     - $ref: '#/parameters/history_before'
 responses:
-    200:
+    "200":
         description: Newest value-free evaluation records first
         schema:
             items:
-                $ref: ./api-docs.yml#/definitions/PolicyGuardrailEvaluationRecord
+                $ref: '#/definitions/PolicyGuardrailEvaluationRecord'
             maxItems: 100
             type: array
-    400:
+    "400":
         description: Invalid or unexpected pagination query
-    403:
+    "403":
         description: Missing project policy-management permission
 summary: List immutable project policy evaluations
 tags:
@@ -2786,15 +2980,15 @@ parameters:
       schema:
         $ref: '#/definitions/PolicyGuardrailImpactRequest'
 responses:
-    200:
+    "200":
         description: Per-fixture evaluations and allow/deny totals
         schema:
-            $ref: ./api-docs.yml#/definitions/PolicyGuardrailImpact
-    400:
+            $ref: '#/definitions/PolicyGuardrailImpact'
+    "400":
         description: Invalid fixture collection or project scope
-    403:
+    "403":
         description: Missing project policy-management permission
-    413:
+    "413":
         description: Request exceeds 2 MiB
 summary: Evaluate the project draft against up to 100 value-free fixtures
 tags:
@@ -2822,15 +3016,15 @@ parameters:
       schema:
         $ref: '#/definitions/PolicyGuardrailPublishRequest'
 responses:
-    201:
+    "201":
         description: New immutable active revision
         schema:
-            $ref: ./api-docs.yml#/definitions/PolicyGuardrailRevision
-    400:
+            $ref: '#/definitions/PolicyGuardrailRevision'
+    "400":
         description: Invalid request or draft policy
-    403:
+    "403":
         description: Missing project policy-management permission
-    409:
+    "409":
         description: Draft or publish revision conflict
 summary: Compile and publish the current project draft
 tags:
@@ -2855,16 +3049,16 @@ parameters:
     - $ref: '#/parameters/history_count'
     - $ref: '#/parameters/history_before'
 responses:
-    200:
+    "200":
         description: Newest revisions first
         schema:
             items:
-                $ref: ./api-docs.yml#/definitions/PolicyGuardrailRevision
+                $ref: '#/definitions/PolicyGuardrailRevision'
             maxItems: 100
             type: array
-    400:
+    "400":
         description: Invalid or unexpected pagination query
-    403:
+    "403":
         description: Missing project policy-management permission
 summary: List immutable project policy revisions
 tags:
@@ -2893,17 +3087,17 @@ parameters:
       schema:
         $ref: '#/definitions/PolicyGuardrailRollbackRequest'
 responses:
-    201:
+    "201":
         description: New immutable rollback revision
         schema:
-            $ref: ./api-docs.yml#/definitions/PolicyGuardrailRevision
-    400:
+            $ref: '#/definitions/PolicyGuardrailRevision'
+    "400":
         description: Invalid revision or rollback reason
-    403:
+    "403":
         description: Missing project rollback permission
-    404:
+    "404":
         description: Source revision not visible in this project scope
-    409:
+    "409":
         description: Draft revision conflict
 summary: Publish a new project revision copied from an earlier revision
 tags:
@@ -2931,15 +3125,15 @@ parameters:
       schema:
         $ref: '#/definitions/PolicyGuardrailFixtureRequest'
 responses:
-    200:
+    "200":
         description: Deterministic evaluation
         schema:
-            $ref: ./api-docs.yml#/definitions/PolicyGuardrailEvaluation
-    400:
+            $ref: '#/definitions/PolicyGuardrailEvaluation'
+    "400":
         description: Invalid policy, fixture, or project scope
-    403:
+    "403":
         description: Missing project policy-management permission
-    413:
+    "413":
         description: Request exceeds 2 MiB or YAML exceeds 64 KiB
 summary: Evaluate policy YAML against one value-free project fixture
 tags:
@@ -2967,15 +3161,15 @@ parameters:
       schema:
         $ref: '#/definitions/PolicyGuardrailSourceRequest'
 responses:
-    200:
+    "200":
         description: Bounded validation result
         schema:
-            $ref: ./api-docs.yml#/definitions/PolicyGuardrailValidation
-    400:
+            $ref: '#/definitions/PolicyGuardrailValidation'
+    "400":
         description: Invalid request shape
-    403:
+    "403":
         description: Missing project policy-management permission
-    413:
+    "413":
         description: Request or YAML source exceeds its bound
 summary: Validate and fingerprint project policy YAML without saving it
 tags:
@@ -3016,7 +3210,7 @@ parameters:
       required: true
       type: string
 responses:
-    200:
+    "200":
         description: repositories
         schema:
             items:
@@ -3037,7 +3231,7 @@ parameters:
       schema:
         $ref: '#/definitions/RepositoryRequest'
 responses:
-    201:
+    "201":
         description: Repository created
         schema:
             $ref: '#/definitions/Repository'
@@ -3061,7 +3255,7 @@ Parameters shared by all methods at this path:
 
 ```yaml
 responses:
-    200:
+    "200":
         description: repository object
         schema:
             $ref: '#/definitions/Repository'
@@ -3080,9 +3274,9 @@ parameters:
       schema:
         $ref: '#/definitions/RepositoryRequest'
 responses:
-    204:
+    "204":
         description: Repository updated
-    400:
+    "400":
         description: Bad request
 summary: Updates repository
 tags:
@@ -3093,7 +3287,7 @@ tags:
 
 ```yaml
 responses:
-    204:
+    "204":
         description: repository removed
 summary: Removes repository
 tags:
@@ -3114,7 +3308,7 @@ Parameters shared by all methods at this path:
 
 ```yaml
 responses:
-    200:
+    "200":
         description: Permissions
         schema:
             properties:
@@ -3144,7 +3338,7 @@ Parameters shared by all methods at this path:
 
 ```yaml
 responses:
-    200:
+    "200":
         description: Runner tags
         schema:
             items:
@@ -3170,7 +3364,7 @@ Parameters shared by all methods at this path:
 ```yaml
 description: Returns runners owned by the project together with global runners that have tags.
 responses:
-    200:
+    "200":
         description: Runners
         schema:
             items:
@@ -3191,13 +3385,13 @@ parameters:
       schema:
         $ref: '#/definitions/RunnerRequest'
 responses:
-    201:
+    "201":
         description: Runner created
         schema:
             $ref: '#/definitions/RunnerWithToken'
-    400:
+    "400":
         description: Invalid request body or mismatched project ID
-    403:
+    "403":
         description: Plan does not allow adding more runners
 summary: Add project runner
 tags:
@@ -3219,11 +3413,11 @@ Parameters shared by all methods at this path:
 
 ```yaml
 responses:
-    200:
+    "200":
         description: Runner
         schema:
             $ref: '#/definitions/Runner'
-    404:
+    "404":
         description: Runner not found
 summary: Get project runner
 tags:
@@ -3240,9 +3434,9 @@ parameters:
       schema:
         $ref: '#/definitions/RunnerRequest'
 responses:
-    204:
+    "204":
         description: Runner updated
-    400:
+    "400":
         description: Invalid request body or mismatched project ID
 summary: Update project runner
 tags:
@@ -3253,7 +3447,7 @@ tags:
 
 ```yaml
 responses:
-    204:
+    "204":
         description: Runner deleted
 summary: Delete project runner
 tags:
@@ -3281,9 +3475,9 @@ parameters:
       schema:
         $ref: '#/definitions/RunnerActive'
 responses:
-    204:
+    "204":
         description: Runner active state updated
-    400:
+    "400":
         description: Invalid request body
 summary: Set project runner active state
 tags:
@@ -3305,7 +3499,7 @@ Parameters shared by all methods at this path:
 
 ```yaml
 responses:
-    204:
+    "204":
         description: Runner cache cleared
 summary: Clear project runner cache
 tags:
@@ -3327,11 +3521,11 @@ Parameters shared by all methods at this path:
 
 ```yaml
 responses:
-    200:
+    "200":
         description: New registration token
         schema:
             $ref: '#/definitions/RunnerRegistrationToken'
-    400:
+    "400":
         description: Runner is already registered
 summary: Regenerate the one-time registration token of an unregistered project runner
 tags:
@@ -3352,7 +3546,7 @@ Parameters shared by all methods at this path:
 
 ```yaml
 responses:
-    200:
+    "200":
         description: Project schedules with backend-authoritative timing
         schema:
             items:
@@ -3373,11 +3567,11 @@ parameters:
       schema:
         $ref: '#/definitions/ScheduleRequest'
 responses:
-    201:
+    "201":
         description: schedule created
         schema:
             $ref: '#/definitions/Schedule'
-    400:
+    "400":
         description: Invalid schedule, timezone, or cron expression
 summary: create schedule
 tags:
@@ -3404,11 +3598,11 @@ parameters:
       schema:
         $ref: '#/definitions/ScheduleRequest'
 responses:
-    200:
+    "200":
         description: Valid schedule with effective timezone and next run
         schema:
-            $ref: ./api-docs.yml#/definitions/Schedule
-    400:
+            $ref: '#/definitions/Schedule'
+    "400":
         description: Invalid schedule, timezone, or cron expression
 summary: Validate a schedule and preview its next occurrence
 tags:
@@ -3430,7 +3624,7 @@ Parameters shared by all methods at this path:
 
 ```yaml
 responses:
-    200:
+    "200":
         description: Schedule
         schema:
             $ref: '#/definitions/Schedule'
@@ -3449,11 +3643,11 @@ parameters:
       schema:
         $ref: '#/definitions/ScheduleRequest'
 responses:
-    200:
+    "200":
         description: schedule updated
         schema:
             $ref: '#/definitions/Schedule'
-    400:
+    "400":
         description: Invalid schedule, timezone, or cron expression
 summary: Updates schedule
 tags:
@@ -3464,7 +3658,7 @@ tags:
 
 ```yaml
 responses:
-    204:
+    "204":
         description: schedule deleted
 summary: Deletes schedule
 tags:
@@ -3485,7 +3679,7 @@ Parameters shared by all methods at this path:
 
 ```yaml
 responses:
-    200:
+    "200":
         description: Array of tasks in chronological order
         schema:
             items:
@@ -3553,11 +3747,11 @@ parameters:
                 type: string
         type: object
 responses:
-    201:
+    "201":
         description: Task queued
         schema:
             $ref: '#/definitions/Task'
-    409:
+    "409":
         description: Reviewed plan is stale, expired, invalid, or currently denied
         schema:
             $ref: '#/definitions/ExecutionPreflightStale'
@@ -3580,7 +3774,7 @@ Parameters shared by all methods at this path:
 
 ```yaml
 responses:
-    200:
+    "200":
         description: Array of tasks in chronological order
         schema:
             items:
@@ -3618,13 +3812,13 @@ parameters:
             - template_id
         type: object
 responses:
-    200:
+    "200":
         description: Value-free, provisional task execution plan
         schema:
-            $ref: ./api-docs.yml#/definitions/ExecutionPreflightPlan
-    403:
+            $ref: '#/definitions/ExecutionPreflightPlan'
+    "403":
         description: Task start permission denied
-    404:
+    "404":
         description: Template hidden or execution preflight capability unavailable
 summary: Preview a task execution plan without starting it
 tags:
@@ -3646,7 +3840,7 @@ Parameters shared by all methods at this path:
 
 ```yaml
 responses:
-    200:
+    "200":
         description: Task
         schema:
             $ref: '#/definitions/Task'
@@ -3659,7 +3853,7 @@ tags:
 
 ```yaml
 responses:
-    204:
+    "204":
         description: task deleted
 summary: Deletes task (including output)
 tags:
@@ -3682,11 +3876,11 @@ Parameters shared by all methods at this path:
 ```yaml
 description: Returns the project-scoped normalized summary without reparsing task logs. Missing or interrupted terminal summaries are repaired from persisted events.
 responses:
-    200:
+    "200":
         description: Persisted task summary
         schema:
-            $ref: ./api-docs.yml#/definitions/TaskSummary
-    404:
+            $ref: '#/definitions/TaskSummary'
+    "404":
         description: Project or task not found
 summary: Get the persisted Ansible task summary
 tags:
@@ -3719,11 +3913,11 @@ Parameters shared by all methods at this path:
 
 ```yaml
 responses:
-    200:
+    "200":
         description: Error result page
         schema:
-            $ref: ./api-docs.yml#/definitions/TaskSummaryErrorPage
-    404:
+            $ref: '#/definitions/TaskSummaryErrorPage'
+    "404":
         description: Project or task not found
 summary: Get a bounded page of redacted Ansible failures
 tags:
@@ -3756,11 +3950,11 @@ Parameters shared by all methods at this path:
 
 ```yaml
 responses:
-    200:
+    "200":
         description: Host result page
         schema:
-            $ref: ./api-docs.yml#/definitions/TaskSummaryHostPage
-    404:
+            $ref: '#/definitions/TaskSummaryHostPage'
+    "404":
         description: Project or task not found
 summary: Get a bounded page of persisted Ansible host results
 tags:
@@ -3793,11 +3987,11 @@ Parameters shared by all methods at this path:
 
 ```yaml
 responses:
-    200:
+    "200":
         description: Stage result page
         schema:
-            $ref: ./api-docs.yml#/definitions/TaskSummaryStagePage
-    404:
+            $ref: '#/definitions/TaskSummaryStagePage'
+    "404":
         description: Project or task not found
 summary: Get a bounded page of persisted Ansible stage results
 tags:
@@ -3837,15 +4031,15 @@ parameters:
       name: outcome
       type: string
 responses:
-    200:
+    "200":
         description: Bounded task-scoped credential provenance
         schema:
             items:
-                $ref: ./api-docs.yml#/definitions/GlobalCredentialUsage
+                $ref: '#/definitions/GlobalCredentialUsage'
             type: array
-    400:
+    "400":
         description: Invalid or ambiguous filters
-    403:
+    "403":
         description: Task is not visible to the current user
 summary: Get value-free credential provenance for a visible task
 tags:
@@ -3868,7 +4062,7 @@ Parameters shared by all methods at this path:
 
 ```yaml
 responses:
-    200:
+    "200":
         description: output
         schema:
             items:
@@ -3894,7 +4088,7 @@ Parameters shared by all methods at this path:
 
 ```yaml
 responses:
-    200:
+    "200":
         description: output
         headers:
             content-type:
@@ -3920,11 +4114,11 @@ Parameters shared by all methods at this path:
 
 ```yaml
 responses:
-    200:
+    "200":
         description: Assignment attempts ordered by generation
         schema:
             items:
-                $ref: ./api-docs.yml#/definitions/RunnerAttempt
+                $ref: '#/definitions/RunnerAttempt'
             type: array
 summary: Get runner assignment attempts for a task
 tags:
@@ -3956,7 +4150,7 @@ parameters:
                 type: boolean
         type: object
 responses:
-    204:
+    "204":
         description: Task queued
 summary: Stop a job
 tags:
@@ -4017,7 +4211,7 @@ parameters:
       required: false
       type: integer
 responses:
-    200:
+    "200":
         description: template
         schema:
             items:
@@ -4030,7 +4224,7 @@ responses:
                             $ref: '#/definitions/TemplateSurveyVar'
                         type: array
             type: array
-    400:
+    "400":
         description: Invalid search or pagination query
 summary: Get template
 tags:
@@ -4047,7 +4241,7 @@ parameters:
       schema:
         $ref: '#/definitions/TemplateRequest'
 responses:
-    201:
+    "201":
         description: template created
         schema:
             $ref: '#/definitions/Template'
@@ -4071,7 +4265,7 @@ Parameters shared by all methods at this path:
 
 ```yaml
 responses:
-    200:
+    "200":
         description: template object
         schema:
             $ref: '#/definitions/Template'
@@ -4090,7 +4284,7 @@ parameters:
       schema:
         $ref: '#/definitions/TemplateRequest'
 responses:
-    204:
+    "204":
         description: template updated
 summary: Updates template
 tags:
@@ -4101,7 +4295,7 @@ tags:
 
 ```yaml
 responses:
-    204:
+    "204":
         description: template removed
 summary: Removes template
 tags:
@@ -4186,7 +4380,7 @@ parameters:
                 type: boolean
         type: object
 responses:
-    204:
+    "204":
         description: tasks stopped
 summary: Stop all active tasks of template
 tags:
@@ -4228,7 +4422,7 @@ parameters:
       type: string
       x-example: desc
 responses:
-    200:
+    "200":
         description: Users
         schema:
             items:
@@ -4261,7 +4455,7 @@ parameters:
                 type: integer
         type: object
 responses:
-    204:
+    "204":
         description: User added
 summary: Link user to project
 tags:
@@ -4304,7 +4498,7 @@ parameters:
             - revision
         type: object
 responses:
-    204:
+    "204":
         description: User updated
 summary: Update user role
 tags:
@@ -4315,7 +4509,7 @@ tags:
 
 ```yaml
 responses:
-    204:
+    "204":
         description: User removed
 summary: Removes user from project
 tags:
@@ -4336,7 +4530,7 @@ Parameters shared by all methods at this path:
 
 ```yaml
 responses:
-    200:
+    "200":
         description: view
         schema:
             items:
@@ -4357,7 +4551,7 @@ parameters:
       schema:
         $ref: '#/definitions/ViewRequest'
 responses:
-    201:
+    "201":
         description: view created
         schema:
             $ref: '#/definitions/View'
@@ -4381,7 +4575,7 @@ Parameters shared by all methods at this path:
 
 ```yaml
 responses:
-    200:
+    "200":
         description: view object
         schema:
             $ref: '#/definitions/View'
@@ -4400,7 +4594,7 @@ parameters:
       schema:
         $ref: '#/definitions/ViewRequest'
 responses:
-    204:
+    "204":
         description: view updated
 summary: Updates view
 tags:
@@ -4411,7 +4605,7 @@ tags:
 
 ```yaml
 responses:
-    204:
+    "204":
         description: view removed
 summary: Removes view
 tags:
@@ -4452,13 +4646,13 @@ parameters:
       required: false
       type: integer
 responses:
-    200:
+    "200":
         description: Visible matching templates in deterministic order
         schema:
             items:
-                $ref: ./api-docs.yml#/definitions/Template
+                $ref: '#/definitions/Template'
             type: array
-    400:
+    "400":
         description: Invalid search or pagination query
 summary: Get visible templates in a view
 tags:
@@ -4480,13 +4674,13 @@ Parameters shared by all methods at this path:
 ```yaml
 description: Requires project resource-management permission.
 responses:
-    200:
+    "200":
         description: Current global/project policies and effective narrowed limits
         schema:
-            $ref: ./api-docs.yml#/definitions/WorkflowArtifactRetentionState
-    403:
+            $ref: '#/definitions/WorkflowArtifactRetentionState'
+    "403":
         description: Missing project resource-management permission
-    404:
+    "404":
         description: Project or Enhanced retention governance is unavailable
 summary: Read effective project workflow file artifact retention
 tags:
@@ -4505,19 +4699,19 @@ parameters:
       schema:
         $ref: '#/definitions/WorkflowArtifactRetentionUpdate'
 responses:
-    200:
+    "200":
         description: Published project policy and effective narrowed limits
         schema:
-            $ref: ./api-docs.yml#/definitions/WorkflowArtifactRetentionState
-    400:
+            $ref: '#/definitions/WorkflowArtifactRetentionState'
+    "400":
         description: Invalid or unexpected input
-    403:
+    "403":
         description: Missing project resource-management permission
-    404:
+    "404":
         description: Project or Enhanced retention governance is unavailable
-    409:
+    "409":
         description: Expected revision is stale or the project policy widens global limits
-    413:
+    "413":
         description: Request exceeds 16 KiB
 summary: Publish a new project workflow file artifact retention revision
 tags:
@@ -4539,7 +4733,7 @@ Parameters shared by all methods at this path:
 
 ```yaml
 responses:
-    200:
+    "200":
         description: workflow templates
         schema:
             items:
@@ -4560,7 +4754,7 @@ parameters:
       schema:
         $ref: '#/definitions/WorkflowTemplate'
 responses:
-    201:
+    "201":
         description: Workflow template created
         schema:
             $ref: '#/definitions/WorkflowTemplate'
@@ -4584,7 +4778,7 @@ Parameters shared by all methods at this path:
 
 ```yaml
 responses:
-    200:
+    "200":
         description: workflow template
         schema:
             $ref: '#/definitions/WorkflowTemplate'
@@ -4603,7 +4797,7 @@ parameters:
       schema:
         $ref: '#/definitions/WorkflowTemplate'
 responses:
-    200:
+    "200":
         description: Updated workflow
         schema:
             $ref: '#/definitions/WorkflowTemplate'
@@ -4616,7 +4810,7 @@ tags:
 
 ```yaml
 responses:
-    204:
+    "204":
         description: workflow removed
 summary: Remove workflow
 tags:
@@ -4638,13 +4832,13 @@ Parameters shared by all methods at this path:
 
 ```yaml
 responses:
-    200:
+    "200":
         description: Value-free, provisional workflow execution plan
         schema:
-            $ref: ./api-docs.yml#/definitions/ExecutionPreflightPlan
-    403:
+            $ref: '#/definitions/ExecutionPreflightPlan'
+    "403":
         description: Workflow start permission denied
-    404:
+    "404":
         description: Workflow hidden or execution preflight capability unavailable
 summary: Preview a workflow execution plan without starting it
 tags:
@@ -4683,7 +4877,7 @@ parameters:
       required: false
       type: string
 responses:
-    201:
+    "201":
         description: workflow run created
         headers:
             Idempotency-Key:
@@ -4691,7 +4885,7 @@ responses:
                 type: string
         schema:
             $ref: '#/definitions/WorkflowRun'
-    409:
+    "409":
         description: Reviewed plan is stale, expired, invalid, or currently denied
         schema:
             $ref: '#/definitions/ExecutionPreflightStale'
@@ -4715,7 +4909,7 @@ Parameters shared by all methods at this path:
 
 ```yaml
 responses:
-    200:
+    "200":
         description: workflow runs
         schema:
             items:
@@ -4742,7 +4936,7 @@ Parameters shared by all methods at this path:
 
 ```yaml
 responses:
-    200:
+    "200":
         description: workflow run details
         schema:
             $ref: '#/definitions/WorkflowRunDetails'
@@ -4767,7 +4961,7 @@ Parameters shared by all methods at this path:
 
 ```yaml
 responses:
-    200:
+    "200":
         description: workflow approvals
         schema:
             items:
@@ -4801,7 +4995,7 @@ parameters:
       schema:
         $ref: '#/definitions/WorkflowApprovalResolveRequest'
 responses:
-    200:
+    "200":
         description: approval resolved
         schema:
             $ref: '#/definitions/WorkflowApproval'
@@ -4826,7 +5020,7 @@ Parameters shared by all methods at this path:
 
 ```yaml
 responses:
-    200:
+    "200":
         description: merged artifacts
         schema:
             additionalProperties: true
@@ -4853,14 +5047,14 @@ Parameters shared by all methods at this path:
 ```yaml
 description: Returns only available or expired metadata after current workflow and artifact-role authorization. Staging and failed uploads are never visible.
 responses:
-    200:
+    "200":
         description: Newest authorized file artifact metadata first
         schema:
             items:
-                $ref: ./api-docs.yml#/definitions/WorkflowFileArtifact
+                $ref: '#/definitions/WorkflowFileArtifact'
             maxItems: 100
             type: array
-    404:
+    "404":
         description: Workflow run is hidden or does not exist
 summary: List authorized file artifact metadata for a workflow run
 tags:
@@ -4878,17 +5072,17 @@ parameters:
       schema:
         $ref: '#/definitions/WorkflowFileArtifactUpload'
 responses:
-    201:
+    "201":
         description: Staging metadata with revision 1
         schema:
-            $ref: ./api-docs.yml#/definitions/WorkflowFileArtifact
-    400:
+            $ref: '#/definitions/WorkflowFileArtifact'
+    "400":
         description: Invalid metadata or task-attempt binding
-    404:
+    "404":
         description: Workflow run or producer is hidden or unavailable
-    409:
+    "409":
         description: Artifact identity or task attempt conflicts with current state
-    413:
+    "413":
         description: Metadata body, per-artifact, per-run, or artifact-count limit exceeded
 summary: Begin a bounded file artifact upload for the current task attempt
 tags:
@@ -4912,11 +5106,11 @@ Parameters shared by all methods at this path:
 
 ```yaml
 responses:
-    200:
+    "200":
         description: Authorized available metadata
         schema:
-            $ref: ./api-docs.yml#/definitions/WorkflowFileArtifact
-    404:
+            $ref: '#/definitions/WorkflowFileArtifact'
+    "404":
         description: Artifact is missing, hidden, partial, failed, expired, or deleted
 summary: Read one available file artifact metadata record
 tags:
@@ -4948,7 +5142,7 @@ parameters:
 produces:
     - application/octet-stream
 responses:
-    200:
+    "200":
         description: Exact immutable file bytes
         headers:
             Accept-Ranges:
@@ -4973,9 +5167,9 @@ responses:
         schema:
             format: binary
             type: string
-    404:
+    "404":
         description: Artifact is missing, hidden, partial, failed, expired, or deleted
-    416:
+    "416":
         description: Range requests are unsupported
 summary: Stream an authorized available file artifact
 tags:
@@ -5009,17 +5203,17 @@ parameters:
         maxLength: 1048576
         type: string
 responses:
-    200:
+    "200":
         description: Updated staging metadata and next revision
         schema:
-            $ref: ./api-docs.yml#/definitions/WorkflowFileArtifact
-    400:
+            $ref: '#/definitions/WorkflowFileArtifact'
+    "400":
         description: Invalid revision, offset, empty body, or task-attempt binding
-    404:
+    "404":
         description: Artifact or producer is hidden or unavailable
-    409:
+    "409":
         description: Revision, offset, state, or task-attempt conflict
-    413:
+    "413":
         description: Chunk exceeds 1 MiB
 summary: Append one exact-offset bounded chunk to a staging artifact
 tags:
@@ -5030,11 +5224,11 @@ tags:
 
 ```yaml
 responses:
-    200:
+    "200":
         description: The same safe content headers as GET, without a response body
-    404:
+    "404":
         description: Artifact is missing, hidden, partial, failed, expired, or deleted
-    416:
+    "416":
         description: Range requests are unsupported
 summary: Authorize and inspect an available file artifact without streaming content
 tags:
@@ -5065,17 +5259,17 @@ parameters:
       type: integer
       x-example: 1
 responses:
-    200:
+    "200":
         description: Available immutable metadata
         schema:
-            $ref: ./api-docs.yml#/definitions/WorkflowFileArtifact
-    400:
+            $ref: '#/definitions/WorkflowFileArtifact'
+    "400":
         description: Invalid revision or task-attempt binding
-    404:
+    "404":
         description: Artifact or producer is hidden or unavailable
-    409:
+    "409":
         description: Revision, state, or task-attempt conflict
-    422:
+    "422":
         description: Content is incomplete or its SHA-256 checksum does not match
 summary: Atomically finalize and expose a complete staging artifact
 tags:
@@ -5098,10 +5292,10 @@ Parameters shared by all methods at this path:
 
 ```yaml
 responses:
-    200:
+    "200":
         description: workflow run stopped
         schema:
-            $ref: ./api-docs.yml#/definitions/WorkflowRun
+            $ref: '#/definitions/WorkflowRun'
 summary: Stop an active workflow run
 tags:
     - workflow
@@ -5122,14 +5316,14 @@ Parameters shared by all methods at this path:
 
 ```yaml
 responses:
-    200:
+    "200":
         description: Triggers including non-secret webhook key metadata
         schema:
             items:
-                $ref: ./api-docs.yml#/definitions/WorkflowTrigger
+                $ref: '#/definitions/WorkflowTrigger'
             maxItems: 64
             type: array
-    403:
+    "403":
         description: Workflow administration permission required
 summary: List safe workflow trigger resources
 tags:
@@ -5147,15 +5341,15 @@ parameters:
       schema:
         $ref: '#/definitions/WorkflowTriggerMutation'
 responses:
-    201:
+    "201":
         description: Trigger plus one-time credential material when its type requires it
         schema:
-            $ref: ./api-docs.yml#/definitions/WorkflowTriggerCredentialResult
-    400:
+            $ref: '#/definitions/WorkflowTriggerCredentialResult'
+    "400":
         description: Invalid or unexpected input
-    403:
+    "403":
         description: Workflow administration permission required
-    409:
+    "409":
         description: Trigger limit or state conflict
 summary: Create a trigger and reveal its API credential or webhook signing secret once
 tags:
@@ -5182,14 +5376,14 @@ parameters:
     - $ref: '#/parameters/history_count'
     - $ref: '#/parameters/history_before'
 responses:
-    200:
+    "200":
         description: Newest safe invocation records first
         schema:
             items:
-                $ref: ./api-docs.yml#/definitions/WorkflowTriggerHistoryEntry
+                $ref: '#/definitions/WorkflowTriggerHistoryEntry'
             maxItems: 100
             type: array
-    403:
+    "403":
         description: Workflow administration permission required
 summary: List safe trigger invocation and webhook replay history
 tags:
@@ -5219,13 +5413,13 @@ parameters:
       schema:
         $ref: '#/definitions/WorkflowTriggerRevisionRequest'
 responses:
-    200:
+    "200":
         description: Updated trigger and one-time signing secret
         schema:
-            $ref: ./api-docs.yml#/definitions/WorkflowTriggerCredentialResult
-    403:
+            $ref: '#/definitions/WorkflowTriggerCredentialResult'
+    "403":
         description: Workflow administration permission required
-    409:
+    "409":
         description: Stale revision, invalid signing state, or encryption unavailable
 summary: Create and reveal a current signing secret once for a migrated webhook trigger
 tags:
@@ -5255,13 +5449,13 @@ parameters:
       schema:
         $ref: '#/definitions/WorkflowTriggerRevisionRequest'
 responses:
-    200:
+    "200":
         description: Updated trigger with safe key IDs and generations
         schema:
-            $ref: ./api-docs.yml#/definitions/WorkflowTrigger
-    403:
+            $ref: '#/definitions/WorkflowTrigger'
+    "403":
         description: Workflow administration permission required
-    409:
+    "409":
         description: Stale revision or next key is not staged
 summary: Promote a staged workflow webhook key and retain the old key for overlap
 tags:
@@ -5291,13 +5485,13 @@ parameters:
       schema:
         $ref: '#/definitions/WorkflowTriggerRevisionRequest'
 responses:
-    200:
+    "200":
         description: Updated trigger with safe key metadata
         schema:
-            $ref: ./api-docs.yml#/definitions/WorkflowTrigger
-    403:
+            $ref: '#/definitions/WorkflowTrigger'
+    "403":
         description: Workflow administration permission required
-    409:
+    "409":
         description: Stale revision or invalid signing state
 summary: Revoke a staged or retired workflow webhook next key
 tags:
@@ -5327,13 +5521,13 @@ parameters:
       schema:
         $ref: '#/definitions/WorkflowTriggerRevisionRequest'
 responses:
-    200:
+    "200":
         description: Updated trigger and one-time next signing secret
         schema:
-            $ref: ./api-docs.yml#/definitions/WorkflowTriggerCredentialResult
-    403:
+            $ref: '#/definitions/WorkflowTriggerCredentialResult'
+    "403":
         description: Workflow administration permission required
-    409:
+    "409":
         description: Stale revision, occupied next-key slot, or encryption unavailable
 summary: Stage and reveal the next workflow webhook signing secret once
 tags:
@@ -5349,7 +5543,7 @@ tags:
 
 ```yaml
 responses:
-    200:
+    "200":
         description: List of projects
         schema:
             items:
@@ -5372,7 +5566,7 @@ parameters:
       schema:
         $ref: '#/definitions/ProjectRequest'
 responses:
-    201:
+    "201":
         description: Created project
         schema:
             $ref: '#/definitions/Project'
@@ -5397,7 +5591,7 @@ parameters:
       schema:
         $ref: '#/definitions/ProjectBackup'
 responses:
-    200:
+    "200":
         description: Created project
         schema:
             $ref: '#/definitions/Project'
@@ -5458,7 +5652,7 @@ tags:
 
 ```yaml
 responses:
-    200:
+    "200":
         description: Runner tags
         schema:
             items:
@@ -5477,7 +5671,7 @@ tags:
 
 ```yaml
 responses:
-    200:
+    "200":
         description: Runners
         schema:
             items:
@@ -5498,11 +5692,11 @@ parameters:
       schema:
         $ref: '#/definitions/RunnerRequest'
 responses:
-    201:
+    "201":
         description: Runner created
         schema:
             $ref: '#/definitions/RunnerWithToken'
-    400:
+    "400":
         description: Runner not created
 summary: Add global runner
 tags:
@@ -5523,11 +5717,11 @@ Parameters shared by all methods at this path:
 
 ```yaml
 responses:
-    200:
+    "200":
         description: Runner
         schema:
             $ref: '#/definitions/Runner'
-    404:
+    "404":
         description: Runner not found
 summary: Get global runner
 tags:
@@ -5544,9 +5738,9 @@ parameters:
       schema:
         $ref: '#/definitions/RunnerRequest'
 responses:
-    204:
+    "204":
         description: Runner updated
-    400:
+    "400":
         description: Runner not updated
 summary: Update global runner
 tags:
@@ -5557,7 +5751,7 @@ tags:
 
 ```yaml
 responses:
-    204:
+    "204":
         description: Runner deleted
 summary: Delete global runner
 tags:
@@ -5584,9 +5778,9 @@ parameters:
       schema:
         $ref: '#/definitions/RunnerActive'
 responses:
-    204:
+    "204":
         description: Runner active state updated
-    400:
+    "400":
         description: Invalid request body
 summary: Set global runner active state
 tags:
@@ -5607,7 +5801,7 @@ Parameters shared by all methods at this path:
 
 ```yaml
 responses:
-    204:
+    "204":
         description: Runner cache cleared
 summary: Clear global runner cache
 tags:
@@ -5628,11 +5822,11 @@ Parameters shared by all methods at this path:
 
 ```yaml
 responses:
-    200:
+    "200":
         description: New registration token
         schema:
             $ref: '#/definitions/RunnerRegistrationToken'
-    400:
+    "400":
         description: Runner is already registered
 summary: Regenerate the one-time registration token of an unregistered global runner
 tags:
@@ -5658,11 +5852,11 @@ Parameters shared by all methods at this path:
 
 ```yaml
 responses:
-    200:
+    "200":
         description: Current state JSON
-    401:
+    "401":
         description: Invalid alias credentials
-    404:
+    "404":
         description: Alias or state not found
 summary: Read the current encrypted Terraform HTTP backend state
 tags:
@@ -5684,11 +5878,11 @@ parameters:
             version: 4
         type: object
 responses:
-    200:
+    "200":
         description: State stored
-    401:
+    "401":
         description: Invalid alias credentials
-    409:
+    "409":
         description: State locked by another client
 summary: Append a new encrypted Terraform HTTP backend state version
 tags:
@@ -5699,11 +5893,11 @@ tags:
 
 ```yaml
 responses:
-    200:
+    "200":
         description: State deleted
-    401:
+    "401":
         description: Invalid alias credentials
-    409:
+    "409":
         description: State locked by another client
 summary: Append a deletion tombstone for the current Terraform state
 tags:
@@ -5718,7 +5912,7 @@ tags:
 
 ```yaml
 responses:
-    200:
+    "200":
         description: User
         schema:
             $ref: '#/definitions/User'
@@ -5737,7 +5931,7 @@ tags:
 description: |
     Returns the per-user options of the authenticated user as a key/value map. Keys are returned without the internal `user<id>.` namespace prefix. Returns an empty object when the user has no stored options.
 responses:
-    200:
+    "200":
         description: User options
         schema:
             additionalProperties:
@@ -5764,11 +5958,11 @@ parameters:
       schema:
         $ref: '#/definitions/Option'
 responses:
-    200:
+    "200":
         description: Stored option
         schema:
             $ref: '#/definitions/Option'
-    400:
+    "400":
         description: Unknown user option key
 summary: Stores a single option for the current user
 tags:
@@ -5783,7 +5977,7 @@ tags:
 
 ```yaml
 responses:
-    200:
+    "200":
         description: API Tokens
         schema:
             items:
@@ -5809,7 +6003,7 @@ parameters:
                 type: string
         type: object
 responses:
-    201:
+    "201":
         description: API Token
         schema:
             $ref: '#/definitions/APIToken'
@@ -5838,7 +6032,7 @@ Parameters shared by all methods at this path:
 
 ```yaml
 responses:
-    204:
+    "204":
         description: Expired API Token
 summary: Expires API token
 tags:
@@ -5854,7 +6048,7 @@ tags:
 
 ```yaml
 responses:
-    200:
+    "200":
         description: Users
         schema:
             items:
@@ -5877,11 +6071,11 @@ parameters:
       schema:
         $ref: '#/definitions/UserRequest'
 responses:
-    201:
+    "201":
         description: User created
         schema:
             $ref: '#/definitions/User'
-    400:
+    "400":
         description: User creation failed
 summary: Creates a user
 tags:
@@ -5902,7 +6096,7 @@ Parameters shared by all methods at this path:
 
 ```yaml
 responses:
-    200:
+    "200":
         description: User profile
         schema:
             $ref: '#/definitions/User'
@@ -5923,7 +6117,7 @@ parameters:
       schema:
         $ref: '#/definitions/UserPutRequest'
 responses:
-    204:
+    "204":
         description: User Updated
 summary: Updates user details
 tags:
@@ -5934,7 +6128,7 @@ tags:
 
 ```yaml
 responses:
-    204:
+    "204":
         description: User deleted
 summary: Deletes user
 tags:
@@ -5967,7 +6161,7 @@ parameters:
                 type: string
         type: object
 responses:
-    204:
+    "204":
         description: Password updated
 summary: Updates user password
 tags:
@@ -5983,13 +6177,13 @@ tags:
 ```yaml
 description: Requires global system-management permission. A missing global policy is represented by effective built-in revision 0.
 responses:
-    200:
+    "200":
         description: Published global policy, if any, and effective limits
         schema:
-            $ref: ./api-docs.yml#/definitions/WorkflowArtifactRetentionState
-    403:
+            $ref: '#/definitions/WorkflowArtifactRetentionState'
+    "403":
         description: Missing global system-management permission
-    404:
+    "404":
         description: Enhanced retention governance is unavailable
 summary: Read global workflow file artifact retention
 tags:
@@ -6007,19 +6201,19 @@ parameters:
       schema:
         $ref: '#/definitions/WorkflowArtifactRetentionUpdate'
 responses:
-    200:
+    "200":
         description: Published global policy and effective limits
         schema:
-            $ref: ./api-docs.yml#/definitions/WorkflowArtifactRetentionState
-    400:
+            $ref: '#/definitions/WorkflowArtifactRetentionState'
+    "400":
         description: Invalid or unexpected input
-    403:
+    "403":
         description: Missing global system-management permission
-    404:
+    "404":
         description: Enhanced retention governance is unavailable
-    409:
+    "409":
         description: Expected revision is stale or a current project policy would be widened
-    413:
+    "413":
         description: Request exceeds 16 KiB
 summary: Publish a new global workflow file artifact retention revision
 tags:
@@ -6076,15 +6270,15 @@ parameters:
       schema:
         $ref: '#/definitions/WorkflowTriggerInvocationInput'
 responses:
-    201:
+    "201":
         description: Event claimed durably and workflow start recorded
         schema:
-            $ref: ./api-docs.yml#/definitions/WorkflowTriggerFireResult
-    401:
+            $ref: '#/definitions/WorkflowTriggerFireResult'
+    "401":
         description: Authentication, signature, key, timestamp, trigger state, or authorization rejected without detail
-    409:
+    "409":
         description: Event ID was already claimed; no second workflow is started
-    413:
+    "413":
         description: Body exceeds 256 KiB
 security: []
 summary: Start a workflow from an authenticated, fresh, replay-protected webhook
@@ -6100,9 +6294,9 @@ tags:
 
 ```yaml
 responses:
-    200:
+    "200":
         description: OK
-    401:
+    "401":
         description: not authenticated
 schemes:
     - ws
